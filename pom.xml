@@ -17,4 +17,13 @@
   <build>
     <finalName>AMCChessGame</finalName>
   </build>
+  <scm>
+  	<url>http://adrian@192.168.1.5:7990/scm/cg/amcchessgame.git</url>
+  	<connection>scm:git:http://adrian@192.168.1.5:7990/scm/cg/amcchessgame.git</connection>
+  	<developerConnection>Adrian McLaughlin</developerConnection>
+  </scm>
+  <issueManagement>
+  	<system>Jira</system>
+  	<url>http://192.168.1.5:8081/</url>
+  </issueManagement>
 </project>
