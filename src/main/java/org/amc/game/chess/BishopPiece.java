@@ -15,7 +15,8 @@ public class BishopPiece implements ChessPiece
 	}
 	
 	@Override
-	public boolean isValidMove(Coordinate letterCoordinate, int numberCoordinate)
+	public boolean isValidMove(ChessBoard board,Coordinate letterCoordinateOne,int numberCoordinateOne,
+			Coordinate letterCoordinateTwo,int numberCoordinateTwo)
 	{
 		return false;
 	}
