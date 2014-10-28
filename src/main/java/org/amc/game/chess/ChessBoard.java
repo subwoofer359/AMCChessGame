@@ -32,5 +32,20 @@ public class ChessBoard
 		
 	}
 	
-	private final ChessPiece[][] board=new ChessPiece[8][8];
+	private final ChessPiece[][] board;
+	
+	public ChessBoard(){
+		board=new ChessPiece[8][8];
+	}
+	
+	/**
+	 * Sets up the board in it's initial state
+	 */
+	public void initialise(){
+		
+	}
+	
+	public void move(Coordinate letterCoordinateOne,int numberCoordinateOne,Coordinate letterCoordinateTwo,int numberCoordinateTwo){
+		
+	}
 }
