@@ -45,12 +45,12 @@ public class ChessBoard
 		
 	}
 	
-	public void move(Coordinate letterCoordinateOne,int numberCoordinateOne,Coordinate letterCoordinateTwo,int numberCoordinateTwo){
+	public void move(Move move){
 		
 	}
 	
-	void putPieceOnBoardAt(ChessPiece piece,Coordinate letterCoordinate,int numberCoordinate){
-		this.board[letterCoordinate.getName()][numberCoordinate-1]=piece;
+	void putPieceOnBoardAt(ChessPiece piece,Location location){
+		this.board[location.getLetter().getName()][location.getNumber()-1]=piece;
 	}
 	
 	ChessPiece getPieceFromBoardAt(int letterCoordinate,int numberCoordinate){

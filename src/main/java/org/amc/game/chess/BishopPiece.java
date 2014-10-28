@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import org.amc.game.chess.ChessBoard.Coordinate;
 /**
  * Represents a Bishop in the game of chess
  * @author Adrian Mclaughlin
@@ -15,19 +14,20 @@ public class BishopPiece implements ChessPiece
 	}
 	
 	@Override
-	public boolean isValidMove(ChessBoard board,Coordinate letterCoordinateOne,int numberCoordinateOne,
-			Coordinate letterCoordinateTwo,int numberCoordinateTwo)
+	public boolean isValidMove(ChessBoard board,Move move)
 	{
-		System.out.printf("(%d,%d)%n",letterCoordinateOne.getName()-letterCoordinateTwo.getName(),numberCoordinateOne-numberCoordinateTwo);
+		Location start=move.getStart();
+		Location end=move.getEnd();
+		System.out.printf("(%d,%d)%n",start.getLetter().getName()-end.getLetter().getName(),start.getNumber()-end.getNumber());
 		
-		int moveInX=letterCoordinateOne.getName()-letterCoordinateTwo.getName();
-		int moveInY=numberCoordinateOne-numberCoordinateTwo;
+		int moveInX=start.getLetter().getName()-end.getLetter().getName();
+		int moveInY=start.getNumber()-end.getNumber();
 		if(Math.abs(moveInX)!=Math.abs(moveInY)){
 			System.out.println("inValid move");
 			return false;
 		}else{
-			int positionX=letterCoordinateOne.getName();
-			int positionY=numberCoordinateOne;
+			int positionX=start.getLetter().getName();
+			int positionY=start.getNumber();
 			for(int i=0;i<Math.abs(moveInX);i++){
 				positionX=positionX-1*(int)Math.signum(moveInX);
 				positionY=positionY-1*(int)Math.signum(moveInY);

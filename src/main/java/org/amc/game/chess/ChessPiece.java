@@ -19,8 +19,7 @@ public interface ChessPiece
 	 * @param numberCoordinateTwo destination coordinate Number 1-8
 	 * @return true is the Piece can successful make this move
 	 */
-	public boolean isValidMove(ChessBoard board,Coordinate letterCoordinateOne,int numberCoordinateOne,
-			Coordinate letterCoordinateTwo,int numberCoordinateTwo);
+	public boolean isValidMove(ChessBoard board,Move move);
 	
 	public Colour getColour();
 }
