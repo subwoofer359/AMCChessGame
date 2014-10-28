@@ -9,5 +9,11 @@ package org.amc.game.chess;
  */
 public interface ChessPiece
 {
-	public boolean isValidMove();
+	/**
+	 * 
+	 * @param letterCoordinate Letter A through H
+	 * @param numberCoordinate Number 1-8
+	 * @return true is the Piece can successful make this move
+	 */
+	public boolean isValidMove(ChessBoard.Coordinate letterCoordinate,int numberCoordinate);
 }
