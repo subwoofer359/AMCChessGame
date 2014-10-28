@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import org.amc.game.chess.ChessBoard.Coordinate;
-
 /**
  * Represents a Chess piece.
  * Responsible for the piece's valid moves
@@ -12,14 +10,17 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 public interface ChessPiece
 {
 	/**
+	 * Checks if the move is a valid chess move
 	 * 
-	 * @param letterCoordinateOne source coordinate Letter A through H
-	 * @param numberCoordinateOne source coordinate Number 1-8
-	 * @param letterCoordinateTwo destination coordinate Letter A through H
-	 * @param numberCoordinateTwo destination coordinate Number 1-8
+	 * @param board The Chessboard
+	 * @param move The move to be checked
 	 * @return true is the Piece can successful make this move
 	 */
 	public boolean isValidMove(ChessBoard board,Move move);
 	
+	/**
+	 * 
+	 * @return the colour of the ChessPiece
+	 */
 	public Colour getColour();
 }
