@@ -1,12 +1,10 @@
 package org.amc.game.chess;
 
-public class KingPiece implements ChessPiece
+public class KingPiece extends SimplePiece
 {
 
-	private Colour colour;
-	
 	public KingPiece(Colour colour){
-		this.colour=colour;
+		super(colour);
 	}
 	
 	@Override
@@ -14,11 +12,4 @@ public class KingPiece implements ChessPiece
 	{
 		return false;
 	}
-
-	@Override
-	public Colour getColour()
-	{
-		return this.colour;
-	}
-
 }

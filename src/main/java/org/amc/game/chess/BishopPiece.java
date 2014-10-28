@@ -5,12 +5,10 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class BishopPiece implements ChessPiece
+public class BishopPiece extends SimplePiece
 {
-	private Colour colour;
-	
 	public BishopPiece(Colour colour){
-		this.colour=colour;
+		super(colour);
 	}
 	
 	@Override
@@ -45,9 +43,5 @@ public class BishopPiece implements ChessPiece
 			System.out.println("Valid move");
 			return true;
 		}
-	}
-	
-	public Colour getColour(){
-		return this.colour;
 	}
 }
