@@ -21,4 +21,6 @@ public interface ChessPiece
 	 */
 	public boolean isValidMove(ChessBoard board,Coordinate letterCoordinateOne,int numberCoordinateOne,
 			Coordinate letterCoordinateTwo,int numberCoordinateTwo);
+	
+	public Colour getColour();
 }

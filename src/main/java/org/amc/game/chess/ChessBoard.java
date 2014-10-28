@@ -10,7 +10,7 @@ package org.amc.game.chess;
  */
 public class ChessBoard
 {
-	public enum Coordinate{
+	public enum Coordinate implements Comparable<Coordinate>{
 		A(0),
 		B(1),
 		C(2),
@@ -47,5 +47,13 @@ public class ChessBoard
 	
 	public void move(Coordinate letterCoordinateOne,int numberCoordinateOne,Coordinate letterCoordinateTwo,int numberCoordinateTwo){
 		
+	}
+	
+	void putPieceOnBoardAt(ChessPiece piece,Coordinate letterCoordinate,int numberCoordinate){
+		this.board[letterCoordinate.getName()][numberCoordinate-1]=piece;
+	}
+	
+	ChessPiece getPieceFromBoardAt(int letterCoordinate,int numberCoordinate){
+		return board[letterCoordinate][numberCoordinate-1];
 	}
 }
