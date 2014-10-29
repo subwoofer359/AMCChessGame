@@ -16,7 +16,6 @@ public class BishopPieceTest
 	public void setUp() throws Exception
 	{
 		board=new ChessBoard();
-		board.initialise();
 	}
 
 	@After

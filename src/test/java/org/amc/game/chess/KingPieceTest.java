@@ -14,7 +14,6 @@ public class KingPieceTest
 	public void setUp() throws Exception
 	{
 		board=new ChessBoard();
-		board.initialise();
 	}
 
 	@After
