@@ -20,5 +20,21 @@ public class Move
 		return end;
 	}
 	
+	public Integer getDistanceX(){
+		return start.getLetter().getName()-end.getLetter().getName();
+	}
+	
+	public Integer getDistanceY(){
+		return start.getNumber()-end.getNumber();
+	}
+	
+	public Integer getAbsoluteDistanceX(){
+		return Math.abs(getDistanceX());
+	}
+	
+	public Integer getAbsoluteDistanceY(){
+		return Math.abs(getDistanceY());
+	}
+	
 	
 }
