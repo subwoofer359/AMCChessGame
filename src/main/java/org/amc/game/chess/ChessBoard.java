@@ -42,11 +42,26 @@ public class ChessBoard
 	 * Sets up the board in it's initial state
 	 */
 	public void initialise(){
+		putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.C,1));
+		putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.F,1));
+		putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.D, 1));
 		
+		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C,1));
+		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F,1));
+		putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.D, 1));
 	}
 	
-	public void move(Move move){
-		
+	public void move(Player player,Move move)throws InvalidMoveException{
+		ChessPiece piece=getPieceFromBoardAt(move.getStart());
+		if(piece==null){
+			throw new InvalidMoveException("No piece at "+move.getStart());
+		}else if (player.getColour()!=piece.getColour()){
+			throw new InvalidMoveException("Player can only move their own pieces");
+		}else{
+			if(piece.isValidMove(this, move)){
+				putPieceOnBoardAt(piece, move.getEnd());
+			}
+		}
 	}
 	
 	void putPieceOnBoardAt(ChessPiece piece,Location location){
@@ -55,5 +70,9 @@ public class ChessBoard
 	
 	ChessPiece getPieceFromBoardAt(int letterCoordinate,int numberCoordinate){
 		return board[letterCoordinate][numberCoordinate-1];
+	}
+	
+	ChessPiece getPieceFromBoardAt(Location location){
+		return getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
 	}
 }
