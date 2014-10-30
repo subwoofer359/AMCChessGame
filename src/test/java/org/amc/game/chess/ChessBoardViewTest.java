@@ -23,5 +23,5 @@ public class ChessBoardViewTest {
         ChessBoardView view= new ChessBoardView(board);
         view.displayTheBoard();
     }
-
+ 
 }
