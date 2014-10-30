@@ -5,7 +5,7 @@ package org.amc.util;
  * @version 1.1
  */
 
-public interface MyObserver
+public interface Observer
 {
 	/**
 	 * method called by subject to notify observer

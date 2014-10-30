@@ -11,7 +11,7 @@ public interface Subject {
      * 
      * @param observer The Object observing
      */
-    public abstract void attachObserver(MyObserver observer);
+    public abstract void attachObserver(Observer observer);
 
     /**
      * notify Observers
@@ -24,6 +24,6 @@ public interface Subject {
      * 
      * @param O Observer to be removed
      */
-    public void removeObserver(MyObserver observer);
+    public void removeObserver(Observer observer);
 
 }

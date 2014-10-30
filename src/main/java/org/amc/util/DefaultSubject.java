@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class DefaultSubject implements Subject {
-    private List<MyObserver> observers;
+    private List<Observer> observers;
 
     /**
      * 
@@ -17,14 +17,14 @@ public class DefaultSubject implements Subject {
      */
     public DefaultSubject() {
         super();
-        observers = new ArrayList<MyObserver>();
+        observers = new ArrayList<Observer>();
 
     }
 
     /**
      * @see org.amc.util.Subject#attachObserver(org.amc.util.MyObserver)
      */
-    public void attachObserver(MyObserver observer) {
+    public void attachObserver(Observer observer) {
         observers.add(observer);
     }
 
@@ -32,13 +32,13 @@ public class DefaultSubject implements Subject {
      * @see org.amc.util.Subject#notifyObservers(java.lang.Object)
      */
     public void notifyObservers(Object message) {
-        for (MyObserver observer:observers) {
+        for (Observer observer:observers) {
             observer.update(this, message);
         }
 
     }
 
-    public void removeObserver(MyObserver O) {
+    public void removeObserver(Observer O) {
         observers.remove(O);
     }
 }
