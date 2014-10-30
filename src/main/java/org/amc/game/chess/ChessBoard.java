@@ -62,6 +62,7 @@ public class ChessBoard extends DefaultSubject
 		}else{
 			if(piece.isValidMove(this, move)){
 				putPieceOnBoardAt(piece, move.getEnd());
+				this.notifyObservers(null);
 			}
 		}
 	}
