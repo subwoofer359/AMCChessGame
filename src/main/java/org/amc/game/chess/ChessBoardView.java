@@ -20,7 +20,7 @@ public class ChessBoardView implements Observer{
     
     @Override
     public void update(Subject subject, Object message) {
-        // TODO Auto-generated method stub
+        displayTheBoard();
         
     }
     
@@ -28,40 +28,53 @@ public class ChessBoardView implements Observer{
      * Prints the ChessBoard and position of the pieces on the screen
      */
     void displayTheBoard(){
+        StringBuilder sb=new StringBuilder();
         int row=8;
-        printBoardHeader();
+        sb.append(printBoardHeader());
         while(row>0){
             int col=0;
-            StringBuilder sb=new StringBuilder();
             while(col<8){
-                sb.append('|');
-                ChessPiece piece=chessBoard.getPieceFromBoardAt(col, row);
-                if(piece==null){
-                    sb.append("   ");
-                }else{
-                    sb.append(' ');
-                    sb.append(piece.getClass().getSimpleName().charAt(0));
-                    sb.append(' ');
-                }
+                sb.append(printSquare(col, row));
                 col++;
             }
-            sb.append('|');
-            sb.append(row);
-            sb.append('\n');
-            System.out.print(sb.toString());
-            printLine();
+            sb.append(addRowEnd(row));
+            
+            sb.append(getLine());
             row--;
         }
+        System.out.print(sb.toString());
         //printBoardFooter();
     }
     
-    private void printBoardHeader(){
+    private StringBuilder printSquare(int col,int row){
+        StringBuilder sb=new StringBuilder();
+        sb.append('|');
+        ChessPiece piece=chessBoard.getPieceFromBoardAt(col, row);
+        if(piece==null){
+            sb.append("   ");
+        }else{
+            sb.append(' ');
+            sb.append(piece.getClass().getSimpleName().charAt(0));
+            sb.append(' ');
+        }
+        return sb;
+    }
+    
+    private StringBuilder addRowEnd(int row){
+        StringBuilder sb=new StringBuilder();
+        sb.append('|');
+        sb.append(row);
+        sb.append('\n');
+        return sb;
+    }
+    
+    private StringBuilder printBoardHeader(){
         
         StringBuilder sb=getLetterHeader();
         
         sb.append(getLine());
         
-        System.out.print(sb.toString());
+        return sb;
     }
     
     private StringBuilder getLetterHeader(){
@@ -73,10 +86,6 @@ public class ChessBoardView implements Observer{
         }
         sb.append('\n');
         return sb;
-    }
-
-    private void printLine(){
-        System.out.print(this.getLine().toString());
     }
     
     private StringBuilder getLine(){
