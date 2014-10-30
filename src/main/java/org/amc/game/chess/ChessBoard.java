@@ -65,6 +65,10 @@ public class ChessBoard extends DefaultSubject
 				putPieceOnBoardAt(piece, move.getEnd());
 				this.notifyObservers(null);
 			}
+			else
+			{
+			    throw new InvalidMoveException("Not a valid move");
+			}
 		}
 	}
 	
