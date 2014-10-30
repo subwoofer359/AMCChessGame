@@ -7,13 +7,19 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+
 public class ChessBoardTest
 {
 
+    private ChessBoard board;
+    private Player whitePlayer;
+    private Player blackPlayer;
 	@Before
 	public void setUp() throws Exception
 	{
+	    board=new ChessBoard();
+	    whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
+	    blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
 	}
 
 	@After
@@ -21,34 +27,46 @@ public class ChessBoardTest
 	{
 	}
 
-	@Test
+	@Ignore
 	public void testInitialise()
 	{
 		fail("Not yet implemented");
 	}
 
-	@Test
-	public void testMove()
+	@Test(expected=InvalidMoveException.class)
+	public void testPlayerCantMoveOtherPlayersPiece() throws InvalidMoveException
 	{
-		fail("Not yet implemented");
+	    BishopPiece bishop=new BishopPiece(Colour.WHITE);
+	    board.putPieceOnBoardAt(bishop, new Location(ChessBoard.Coordinate.A,8));
+	    
+	    board.move(blackPlayer, new Move(
+	                    new Location(ChessBoard.Coordinate.A,8),
+	                    new Location(ChessBoard.Coordinate.B,7)));
 	}
-
+	
 	@Test
-	public void testPutPieceOnBoardAt()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetPieceFromBoardAtIntInt()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetPieceFromBoardAtLocation()
-	{
-		fail("Not yet implemented");
+    public void testPlayerCanMoveTheirOwnPiece() throws InvalidMoveException
+    {
+        BishopPiece bishop=new BishopPiece(Colour.WHITE);
+        Location startofMove=new Location(ChessBoard.Coordinate.A,8);
+        Location endOfMove=new Location(ChessBoard.Coordinate.B,7);
+        
+        board.putPieceOnBoardAt(bishop,startofMove);
+        
+        board.move(whitePlayer, new Move(startofMove,endOfMove));
+        
+        assertEquals(bishop, board.getPieceFromBoardAt(endOfMove));
+        assertNull(board.getPieceFromBoardAt(startofMove));
+    }
+	
+	@Test(expected=InvalidMoveException.class)
+	public void testMoveWithAnEmptySquare()throws InvalidMoveException{
+	    Location startofMove=new Location(ChessBoard.Coordinate.A,8);
+        Location endOfMove=new Location(ChessBoard.Coordinate.B,7);
+        
+        
+        board.move(whitePlayer, new Move(startofMove,endOfMove));
+        
 	}
 
 }

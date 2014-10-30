@@ -61,11 +61,16 @@ public class ChessBoard extends DefaultSubject
 			throw new InvalidMoveException("Player can only move their own pieces");
 		}else{
 			if(piece.isValidMove(this, move)){
+			    removePieceOnBoardAt(piece, move.getStart());
 				putPieceOnBoardAt(piece, move.getEnd());
 				this.notifyObservers(null);
 			}
 		}
 	}
+	
+	void removePieceOnBoardAt(ChessPiece piece,Location location){
+        this.board[location.getLetter().getName()][location.getNumber()-1]=null;
+    }
 	
 	void putPieceOnBoardAt(ChessPiece piece,Location location){
 		this.board[location.getLetter().getName()][location.getNumber()-1]=piece;
