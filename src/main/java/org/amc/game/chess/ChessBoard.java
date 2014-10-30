@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import org.amc.util.DefaultSubject;
+
 
 /**
  * Represents a Chess Board
@@ -8,7 +10,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessBoard
+public class ChessBoard extends DefaultSubject
 {
 	public enum Coordinate implements Comparable<Coordinate>{
 		A(0),
@@ -44,11 +46,11 @@ public class ChessBoard
 	public void initialise(){
 		putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.C,1));
 		putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.F,1));
-		putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.D, 1));
+		putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.E, 1));
 		
-		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C,1));
-		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F,1));
-		putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.D, 1));
+		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C,8));
+		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F,8));
+		putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.E, 8));
 	}
 	
 	public void move(Player player,Move move)throws InvalidMoveException{
