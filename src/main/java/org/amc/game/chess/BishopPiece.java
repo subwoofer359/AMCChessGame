@@ -17,7 +17,6 @@ public class BishopPiece extends SimplePiece
 		if(validMovement(move.getDistanceX(),move.getDistanceY())){
 			return canMakeMove(board,move);
 		}else{
-			System.out.println("inValid move");
 			return false;
 		}
 	}
