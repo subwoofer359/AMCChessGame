@@ -18,4 +18,10 @@ public interface Controller {
      * @return current inputParser
      */
     public InputParser getInputParser();
+    
+    /**
+     * 
+     * @param parser InputParser
+     */
+    public void setInputParser(InputParser parser);
 }

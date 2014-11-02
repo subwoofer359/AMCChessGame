@@ -100,47 +100,22 @@ public class ChessBoardView implements Observer{
     }
 
     public static void main(String[] args){
-        Console console=System.console();
-        if(console==null){
-            System.err.println("A Console couldn't be retrieved");
-            System.exit(1);
-        }
         ChessBoard board=new ChessBoard();
         board.initialise();
         Player playerOne=new HumanPlayer("Stephen", Colour.WHITE);
         Player playerTwo=new HumanPlayer("Chris", Colour.BLACK);
-        Player currentPlayer=playerOne;
-        
+        ConsoleController controller=new ConsoleController(board, playerOne, playerTwo);
         ChessBoardView view=new ChessBoardView(board);
         view.displayTheBoard();
         START:while(true){
-            String input=console.readLine("Player(%s) move:",currentPlayer.getName());
-            if(input.length()!=4){
-                System.out.println("Move must be enter like so: a1b2");
-            }else{
-                String startString=input.substring(0, 2);
-                String endString=input.substring(2,4);
-                System.out.println(startString);
-                System.out.println(endString);
-                
-                Location startSquare=new Location(Coordinate.valueOf(String.valueOf(startString.charAt(0))),
-                                Integer.parseInt(String.valueOf(startString.charAt(1))));
-                Location endSquare=new Location(Coordinate.valueOf(String.valueOf(endString.charAt(0))),
-                                Integer.parseInt(String.valueOf(endString.charAt(1))));
-                
-                try {
-                    board.move(currentPlayer, new Move(startSquare,endSquare));
-                } catch (InvalidMoveException e) {
-                    System.out.println(e.getMessage());
-                    continue START;
-                }
+            try{
+                controller.takeTurn();
+            }catch(InvalidMoveException ime){
+                System.out.println(ime.getMessage());
+                continue START;
             }
-            
-            if(currentPlayer.equals(playerOne)){
-                currentPlayer=playerTwo;
-            }else{
-                currentPlayer=playerOne;
-            }
+        
+            controller.changePlayer();
         }
     }
     
