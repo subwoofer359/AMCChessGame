@@ -3,7 +3,12 @@ package org.amc.game.chess;
 public class InvalidMoveException extends Exception
 {
 	
-	public InvalidMoveException()
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public InvalidMoveException()
 	{
 		super();
 	}
