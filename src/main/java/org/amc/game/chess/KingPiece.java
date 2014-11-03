@@ -24,7 +24,7 @@ public class KingPiece extends SimplePiece
 	 * @return if true if a valid move
 	 */
 	private boolean validMovement(int distanceX,int distanceY){
-		return (distanceX<=1 && distanceY<=1);
+		return distanceX<=1 && distanceY<=1;
 	}
 	
 	private boolean canMakeMove(ChessBoard board,Move move){

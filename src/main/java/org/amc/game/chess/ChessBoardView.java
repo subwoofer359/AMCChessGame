@@ -4,7 +4,6 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 
-import java.io.Console;
 
 
 /**
