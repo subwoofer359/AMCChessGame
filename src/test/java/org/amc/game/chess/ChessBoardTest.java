@@ -93,6 +93,13 @@ public class ChessBoardTest
 	    assertFalse(board.isGameOver(whitePlayer, blackPlayer));
 	    board.putPieceOnBoardAt(bishop,new Location(Coordinate.E,8));
 	    assertTrue(board.isGameOver(whitePlayer, blackPlayer));
+	    
+	    board.initialise();
+        bishop=new BishopPiece(Colour.BLACK);
+        
+        assertFalse(board.isGameOver(whitePlayer, blackPlayer));
+        board.putPieceOnBoardAt(bishop,new Location(Coordinate.E,1));
+        assertTrue(board.isGameOver(whitePlayer, blackPlayer));
 	   
 	}
 	

@@ -121,7 +121,19 @@ public class ChessBoard extends DefaultSubject
 	    
 	}
 	
-	public boolean isGameOver(Player playerOne,Player PlayerTwo){
-	    return !(doesThePlayerStillHaveTheirKing(playerOne) && doesThePlayerStillHaveTheirKing(PlayerTwo));
+	public boolean isGameOver(Player playerOne,Player playerTwo){
+	    boolean playerOneHaveTheirKing=doesThePlayerStillHaveTheirKing(playerOne);
+	    boolean playerTwoHaveTheirKing=doesThePlayerStillHaveTheirKing(playerTwo);
+	    if(!playerOneHaveTheirKing){
+	        playerTwo.isWinner(true);
+	        return true;
+	    }else if(!playerTwoHaveTheirKing){
+	        playerOne.isWinner(true);
+	        return true;
+	    }
+	    else
+	    {
+	        return false;
+	    }
 	}
 }

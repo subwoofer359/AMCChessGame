@@ -106,7 +106,7 @@ public class ChessBoardView implements Observer{
         ConsoleController controller=new ConsoleController(board, playerOne, playerTwo);
         ChessBoardView view=new ChessBoardView(board);
         view.displayTheBoard();
-        START:while(true){
+        START:while(!board.isGameOver(playerOne, playerTwo)){
             try{
                 controller.takeTurn();
             }catch(InvalidMoveException ime){
@@ -116,6 +116,14 @@ public class ChessBoardView implements Observer{
         
             controller.changePlayer();
         }
+        if(playerOne.isWinner()){
+            System.out.println("Player "+playerOne.getName()+" has won");
+        }
+        else
+        {
+            System.out.println("Player "+playerTwo.getName()+" has won");
+        }
+        
     }
     
 }
