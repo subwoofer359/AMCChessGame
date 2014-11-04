@@ -2,6 +2,9 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Represents a Chess Board
@@ -86,5 +89,35 @@ public class ChessBoard extends DefaultSubject
 	
 	ChessPiece getPieceFromBoardAt(Location location){
 		return getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
+	}
+	
+	boolean doesThePlayerStillHaveTheirKing(Player player){
+	    List<ChessPiece> allPlayersChessPieces=getAllPlayersChessPiecesOnTheBoard(player);
+	    for(ChessPiece piece:allPlayersChessPieces){
+	        if(piece.getClass().equals(KingPiece.class)){
+	            return true;
+	        }
+	    }
+	    return false;
+	    
+	}
+	
+	List<ChessPiece> getAllPlayersChessPiecesOnTheBoard(Player player){
+	    List<ChessPiece> pieceList=new ArrayList<ChessPiece>();
+	    for(Coordinate letter:Coordinate.values()){
+            for(int i=1;i<=8;i++){
+                ChessPiece piece=getPieceFromBoardAt(letter.getName(),i);
+                if(piece==null){
+                    
+                }
+                else{
+                    if(piece.getColour().equals(player.getColour())){
+                        pieceList.add(piece);
+                    }
+                }
+            }
+        }
+	    return pieceList;
+	    
 	}
 }
