@@ -108,7 +108,7 @@ public class ChessBoard extends DefaultSubject
             for(int i=1;i<=8;i++){
                 ChessPiece piece=getPieceFromBoardAt(letter.getName(),i);
                 if(piece==null){
-                    
+                    continue;
                 }
                 else{
                     if(piece.getColour().equals(player.getColour())){
@@ -119,5 +119,9 @@ public class ChessBoard extends DefaultSubject
         }
 	    return pieceList;
 	    
+	}
+	
+	public boolean isGameOver(Player playerOne,Player PlayerTwo){
+	    return !(doesThePlayerStillHaveTheirKing(playerOne) && doesThePlayerStillHaveTheirKing(PlayerTwo));
 	}
 }

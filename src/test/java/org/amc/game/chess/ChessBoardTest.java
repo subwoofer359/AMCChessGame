@@ -85,6 +85,17 @@ public class ChessBoardTest
         assertFalse(board.doesThePlayerStillHaveTheirKing(blackPlayer));
     }
 	
+	@Test
+	public void isGameOverOnePlayerLosesTheirKing(){
+	    board.initialise();
+	    BishopPiece bishop=new BishopPiece(Colour.WHITE);
+	    
+	    assertFalse(board.isGameOver(whitePlayer, blackPlayer));
+	    board.putPieceOnBoardAt(bishop,new Location(Coordinate.E,8));
+	    assertTrue(board.isGameOver(whitePlayer, blackPlayer));
+	   
+	}
+	
 	
 
 }
