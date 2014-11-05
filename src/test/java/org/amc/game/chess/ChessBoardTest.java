@@ -69,40 +69,4 @@ public class ChessBoardTest
         board.move(whitePlayer, new Move(startofMove,endOfMove));
         
 	}
-	
-	@Test
-	public void testPlayerHasTheirKing(){
-	    KingPiece kingWhite=new KingPiece(Colour.WHITE);
-	    board.putPieceOnBoardAt(kingWhite, new Location(Coordinate.D,4));
-	    assertTrue(board.doesThePlayerStillHaveTheirKing(whitePlayer));
-	}
-	
-	@Test
-    public void testPlayerDoesNotHaveTheirKing(){
-        KingPiece kingWhite=new KingPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(kingWhite, new Location(Coordinate.D,4));
-        assertTrue(board.doesThePlayerStillHaveTheirKing(whitePlayer));
-        assertFalse(board.doesThePlayerStillHaveTheirKing(blackPlayer));
-    }
-	
-	@Test
-	public void isGameOverOnePlayerLosesTheirKing(){
-	    board.initialise();
-	    BishopPiece bishop=new BishopPiece(Colour.WHITE);
-	    
-	    assertFalse(board.isGameOver(whitePlayer, blackPlayer));
-	    board.putPieceOnBoardAt(bishop,new Location(Coordinate.E,8));
-	    assertTrue(board.isGameOver(whitePlayer, blackPlayer));
-	    
-	    board.initialise();
-        bishop=new BishopPiece(Colour.BLACK);
-        
-        assertFalse(board.isGameOver(whitePlayer, blackPlayer));
-        board.putPieceOnBoardAt(bishop,new Location(Coordinate.E,1));
-        assertTrue(board.isGameOver(whitePlayer, blackPlayer));
-	   
-	}
-	
-	
-
 }
