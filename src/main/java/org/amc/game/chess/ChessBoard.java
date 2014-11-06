@@ -2,10 +2,6 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 /**
  * Represents a Chess Board
  * Responsibility is to know the position of all the pieces

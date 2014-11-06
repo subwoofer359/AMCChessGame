@@ -2,7 +2,6 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

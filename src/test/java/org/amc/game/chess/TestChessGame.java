@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Mockito.*;
+
 public class TestChessGame {
 
     private Player whitePlayer;
@@ -61,21 +63,57 @@ public class TestChessGame {
     }
     
     @Test
-    public void testStart(){
+    public void testStartPlayerOneWinner(){
+        final String[] winningMoves={"F1B5","C8A6","B5E8"};
         board.initialise();
         game.setView(new ChessBoardView(board));
         ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
-        controller.setConsole(new MockUserInput());
+        controller.setConsole(new MockUserInput(winningMoves));
         game.setController(controller);
         game.start();
-        fail("Need to improve coverage");
-        
+        assertTrue(whitePlayer.isWinner());
+        assertFalse(blackPlayer.isWinner());
     }
+    
+    @Test
+    public void testStartPlayerTwoWinner(){
+        final String[] winningMoves={"F1E2","F8B4","E2D3","B4E1"};
+        board.initialise();
+        game.setView(new ChessBoardView(board));
+        ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
+        controller.setConsole(new MockUserInput(winningMoves));
+        game.setController(controller);
+        game.start();
+        assertFalse(whitePlayer.isWinner());
+        assertTrue(blackPlayer.isWinner());
+    }
+    
+    /**
+     * Todo Need to add an assertion, just calls a line in a catch block in ChessGame.start()
+     */
+    @Test
+    public void testStartThrowsInvalidMoveException(){
+        final String[] winningMoves={"F1E1","F1E2","F8B4","E2D3","B4E1"};
+        board.initialise();
+        game.setView(new ChessBoardView(board));
+        ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
+        controller.setConsole(new MockUserInput(winningMoves));
+        game.setController(controller);
+        game.start();
+        assertFalse(whitePlayer.isWinner());
+        assertTrue(blackPlayer.isWinner());
+    }
+    
     
     public static class MockUserInput implements ConsoleController.UserConsole{
 
-        private String[] output={"F1B5","C8A6","B5E8"};
+        private String[] output={};
         private int counter=0;
+        
+        public MockUserInput(String[] desiredOutput) {
+            this.output=desiredOutput;
+        }
+        
         @Override
         public String readLine(String fmt, Object... args) {
             return getNextOutput();
@@ -95,6 +133,7 @@ public class TestChessGame {
                 return null;
             }
         }      
+        
     }
     
 }
