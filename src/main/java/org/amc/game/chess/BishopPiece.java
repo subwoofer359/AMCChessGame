@@ -12,7 +12,7 @@ public class BishopPiece extends SimplePiece
 	}
 	
 	boolean validMovement(Move move){
-		return move.getAbsoluteDistanceX()==move.getAbsoluteDistanceY();
+		return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY());
 	}
 	
 	boolean canMakeMove(ChessBoard board,Move move){
