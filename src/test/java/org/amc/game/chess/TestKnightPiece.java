@@ -11,6 +11,27 @@ public class TestKnightPiece implements ChessPieceTest{
     private ChessBoard board;
     private Location testStartPosition=new Location(ChessBoard.Coordinate.D,4);
     
+    private Location[] validLocationsFromD4={
+                    new Location(ChessBoard.Coordinate.B,5),
+                    new Location(ChessBoard.Coordinate.C,6),
+                    new Location(ChessBoard.Coordinate.E,6),
+                    new Location(ChessBoard.Coordinate.F,5),
+                    new Location(ChessBoard.Coordinate.B,3),
+                    new Location(ChessBoard.Coordinate.C,2),
+                    new Location(ChessBoard.Coordinate.E,2),
+                    new Location(ChessBoard.Coordinate.F,3)
+    };
+    
+    private Location[] notValidLocationsFromD4={
+                    new Location(ChessBoard.Coordinate.B,4),
+                    new Location(ChessBoard.Coordinate.D,6),
+                    new Location(ChessBoard.Coordinate.F,4),
+                    new Location(ChessBoard.Coordinate.D,2),
+                    new Location(ChessBoard.Coordinate.C,5),
+                    new Location(ChessBoard.Coordinate.C,3),
+                    new Location(ChessBoard.Coordinate.E,5),
+                    new Location(ChessBoard.Coordinate.E,3)
+    };
     
     @Before
     public void setUp() throws Exception {
@@ -27,51 +48,51 @@ public class TestKnightPiece implements ChessPieceTest{
         KnightPiece knight = new KnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight,testStartPosition);
         
-        Location[] validLocations={
-                        new Location(ChessBoard.Coordinate.B,5),
-                        new Location(ChessBoard.Coordinate.C,6),
-                        new Location(ChessBoard.Coordinate.E,6),
-                        new Location(ChessBoard.Coordinate.F,5),
-                        new Location(ChessBoard.Coordinate.B,3),
-                        new Location(ChessBoard.Coordinate.C,2),
-                        new Location(ChessBoard.Coordinate.E,2),
-                        new Location(ChessBoard.Coordinate.F,3)
-        };
-        for(Location endPosition:validLocations){
+        for(Location endPosition:validLocationsFromD4){
             assertTrue(knight.isValidMove(board, new Move(testStartPosition,endPosition)));
         }
     }
-
+    
+    @Test
     @Override
     public void testOnEmptyBoardIsNotValidMove() {
         KnightPiece knight = new KnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight,testStartPosition);
         
-        Location[] notValidLocations={
-                        new Location(ChessBoard.Coordinate.B,4),
-                        new Location(ChessBoard.Coordinate.D,6),
-                        new Location(ChessBoard.Coordinate.F,4),
-                        new Location(ChessBoard.Coordinate.D,2),
-                        new Location(ChessBoard.Coordinate.C,5),
-                        new Location(ChessBoard.Coordinate.C,3),
-                        new Location(ChessBoard.Coordinate.E,5),
-                        new Location(ChessBoard.Coordinate.E,3)
-        };
-        for(Location endPosition:notValidLocations){
+        for(Location endPosition:notValidLocationsFromD4){
             assertFalse(knight.isValidMove(board, new Move(testStartPosition,endPosition)));
         }
         
     }
 
+    @Test
     @Override
     public void testOnBoardIsValidCapture() {
-        // TODO Auto-generated method stub
+        for(int i=0;i<validLocationsFromD4.length;i++)
+        {
+            board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), validLocationsFromD4[i]);
+        }
+        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(knight,testStartPosition);
         
+        for(Location endPosition:validLocationsFromD4){
+            assertTrue(knight.isValidMove(board, new Move(testStartPosition,endPosition)));
+        }
     }
 
+    @Test
     @Override
     public void testOnBoardInvalidCapture() {
-        // TODO Auto-generated method stub
+        for(int i=0;i<validLocationsFromD4.length;i++)
+        {
+            board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), validLocationsFromD4[i]);
+        }
+        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(knight,testStartPosition);
+        
+        for(Location endPosition:validLocationsFromD4){
+            assertFalse(knight.isValidMove(board, new Move(testStartPosition,endPosition)));
+        }
         
     }
 
