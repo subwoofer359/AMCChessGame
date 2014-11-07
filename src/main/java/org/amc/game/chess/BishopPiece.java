@@ -27,10 +27,10 @@ public class BishopPiece extends SimplePiece
 	
 	private boolean canMakeMove(ChessBoard board,Move move){
 		Location start=move.getStart();
-		Location end=move.getEnd();
-		System.out.printf("(%d,%d)%n",start.getLetter().getName()-end.getLetter().getName(),start.getNumber()-end.getNumber());
+		
 		int positionX=start.getLetter().getName();
 		int positionY=start.getNumber();
+		
 		for(int i=0;i<move.getAbsoluteDistanceX();i++){
 			positionX=positionX-1*(int)Math.signum(move.getDistanceX());
 			positionY=positionY-1*(int)Math.signum(move.getDistanceY());
