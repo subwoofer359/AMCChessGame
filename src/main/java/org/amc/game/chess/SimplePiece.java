@@ -5,7 +5,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public abstract class SimplePiece implements ChessPiece
+abstract class SimplePiece implements ChessPiece
 {
 	private Colour colour;
 	
@@ -30,7 +30,4 @@ public abstract class SimplePiece implements ChessPiece
 	abstract boolean validMovement(Move move);
 	
 	abstract boolean canMakeMove(ChessBoard board,Move move);
-	
-	
-	
 }
