@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
 
-public class BishopPieceTest
+public class BishopPieceTest implements ChessPieceTest
 {
 
 	private ChessBoard board;
@@ -23,10 +23,11 @@ public class BishopPieceTest
 	{
 	}
 
-	/**
-	 * Simple valid move on an empty chess board
-	 */
-	@Test
+	/* (non-Javadoc)
+     * @see org.amc.game.chess.ChessPieceTest#testOnEmptyBoardIsValidMove()
+     */
+	@Override
+    @Test
 	public void testOnEmptyBoardIsValidMove()
 	{
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
@@ -48,10 +49,11 @@ public class BishopPieceTest
 		assertTrue(isValid);
 	}
 	
-	/**
-	 * Simple invalid move on an empty chess board
-	 */
-	@Test
+	/* (non-Javadoc)
+     * @see org.amc.game.chess.ChessPieceTest#testOnEmptyBoardIsNotValidMove()
+     */
+	@Override
+    @Test
 	public void testOnEmptyBoardIsNotValidMove()
 	{
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
@@ -76,10 +78,11 @@ public class BishopPieceTest
 		assertFalse(isValid);
 	}
 	
-	/**
-	 * A move to capture an enemy piece
-	 */
-	@Test
+	/* (non-Javadoc)
+     * @see org.amc.game.chess.ChessPieceTest#testOnBoardIsValidCapture()
+     */
+	@Override
+    @Test
 	public void testOnBoardIsValidCapture(){
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
 		BishopPiece bishopWhite = new BishopPiece(Colour.WHITE);
@@ -93,10 +96,11 @@ public class BishopPieceTest
 		assertTrue(isValid);
 	}
 	
-	/**
-	 * A move to a square occupied by a player's own piece
-	 */
-	@Test
+	/* (non-Javadoc)
+     * @see org.amc.game.chess.ChessPieceTest#testOnBoardInvalidCapture()
+     */
+	@Override
+    @Test
 	public void testOnBoardInvalidCapture(){
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
 		BishopPiece bishopWhite = new BishopPiece(Colour.BLACK);
@@ -110,10 +114,11 @@ public class BishopPieceTest
 		assertFalse(isValid);
 	}
 	
-	/**
-	 * A move through an enemy piece
-	 */
-	@Test
+	/* (non-Javadoc)
+     * @see org.amc.game.chess.ChessPieceTest#testOnBoardIsNotValidMove()
+     */
+	@Override
+    @Test
 	public void testOnBoardIsNotValidMove(){
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
 		BishopPiece bishopWhite = new BishopPiece(Colour.WHITE);
