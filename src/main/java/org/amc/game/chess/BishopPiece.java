@@ -11,21 +11,11 @@ public class BishopPiece extends SimplePiece
 		super(colour);
 	}
 	
-	@Override
-	public boolean isValidMove(ChessBoard board,Move move)
-	{
-		if(validMovement(move.getDistanceX(),move.getDistanceY())){
-			return canMakeMove(board,move);
-		}else{
-			return false;
-		}
+	boolean validMovement(Move move){
+		return move.getAbsoluteDistanceX()==move.getAbsoluteDistanceY();
 	}
 	
-	private boolean validMovement(int distanceX,int distanceY){
-		return Math.abs(distanceX)==Math.abs(distanceY);
-	}
-	
-	private boolean canMakeMove(ChessBoard board,Move move){
+	boolean canMakeMove(ChessBoard board,Move move){
 		Location start=move.getStart();
 		
 		int positionX=start.getLetter().getName();

@@ -16,4 +16,21 @@ public abstract class SimplePiece implements ChessPiece
 	public final Colour getColour(){
 		return colour;
 	}
+	
+	@Override
+    public final boolean isValidMove(ChessBoard board, Move move)
+    {
+        if(validMovement(move)){
+            return canMakeMove(board, move);
+        }else{
+            return false;
+        }
+    }
+	
+	abstract boolean validMovement(Move move);
+	
+	abstract boolean canMakeMove(ChessBoard board,Move move);
+	
+	
+	
 }

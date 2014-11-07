@@ -9,17 +9,8 @@ public class KnightPiece extends SimplePiece {
         super(colour);
     }
 
-    @Override
-    public boolean isValidMove(ChessBoard board, Move move) {
-        if(validMovement(move)){
-            return canMakeMove(board, move);
-        }
-        else{
-            return false;
-        }
-    }
     
-    private boolean canMakeMove(ChessBoard board,Move move){
+    boolean canMakeMove(ChessBoard board,Move move){
         Location endSquare=move.getEnd();
         return isEndSquareOccupiedByOpponentsPiece(board, endSquare);      
     }
@@ -37,7 +28,7 @@ public class KnightPiece extends SimplePiece {
         }
     }
     
-    private boolean validMovement(Move move){
+    boolean validMovement(Move move){
         return (move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==1) ||
                (move.getAbsoluteDistanceX()==1 && move.getAbsoluteDistanceY()==2);
     }

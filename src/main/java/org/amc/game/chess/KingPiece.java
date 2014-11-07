@@ -6,28 +6,20 @@ public class KingPiece extends SimplePiece
 	public KingPiece(Colour colour){
 		super(colour);
 	}
-	
-	@Override
-	public boolean isValidMove(ChessBoard board, Move move)
-	{
-		if(validMovement(move.getAbsoluteDistanceX(),move.getAbsoluteDistanceY())){
-			return canMakeMove(board, move);
-		}else{
-			return false;
-		}
-	}
-	
+
 	/**
 	 * King can only move one space in any direction
 	 * @param distanceX
 	 * @param distanceY
 	 * @return if true if a valid move
 	 */
-	private boolean validMovement(int distanceX,int distanceY){
+	boolean validMovement(Move move){
+	    int distanceX=move.getAbsoluteDistanceX();
+	    int distanceY=move.getAbsoluteDistanceY();
 		return distanceX<=1 && distanceY<=1;
 	}
 	
-	private boolean canMakeMove(ChessBoard board,Move move){
+	boolean canMakeMove(ChessBoard board,Move move){
 		ChessPiece piece=board.getPieceFromBoardAt(
 				move.getEnd().getLetter().getName(), move.getEnd().getNumber());
 		if(piece==null){
