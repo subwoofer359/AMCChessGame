@@ -18,4 +18,15 @@ public class Location
 	public Integer getNumber(){
 		return this.number;
 	}
+	
+	@Override
+	public String toString(){
+	    StringBuilder sb=new StringBuilder();
+	    sb.append('(');
+	    sb.append(this.letter.name());
+	    sb.append(',');
+	    sb.append(this.number);
+	    sb.append(')');
+	    return sb.toString();
+	}
 }
