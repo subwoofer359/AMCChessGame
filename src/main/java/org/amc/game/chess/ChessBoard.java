@@ -46,10 +46,15 @@ public class ChessBoard extends DefaultSubject
 		putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.C,1));
 		putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.F,1));
 		putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.E, 1));
+		putPieceOnBoardAt(new KnightPiece(Colour.WHITE), new Location(Coordinate.B, 1));
+		putPieceOnBoardAt(new KnightPiece(Colour.WHITE), new Location(Coordinate.G, 1));
+		
 		
 		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C,8));
 		putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F,8));
 		putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.E, 8));
+		putPieceOnBoardAt(new KnightPiece(Colour.BLACK), new Location(Coordinate.B, 8));
+        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), new Location(Coordinate.G, 8));
 	}
 	
 	public void move(Player player,Move move)throws InvalidMoveException{
