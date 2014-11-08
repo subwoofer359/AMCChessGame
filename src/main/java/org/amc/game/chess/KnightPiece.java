@@ -29,8 +29,8 @@ public class KnightPiece extends SimplePiece {
     }
     
     boolean validMovement(Move move){
-        return (move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==1) ||
-               (move.getAbsoluteDistanceX()==1 && move.getAbsoluteDistanceY()==2);
+        return move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==1 ||
+               move.getAbsoluteDistanceX()==1 && move.getAbsoluteDistanceY()==2;
     }
 
     /*

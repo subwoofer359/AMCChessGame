@@ -10,7 +10,7 @@ public class RookPiece extends ComplexPiece {
     @Override
     boolean validMovement(Move move) {
         System.out.println("validMovement:"+move.getAbsoluteDistanceX()+" "+move.getAbsoluteDistanceY());
-        return (move.getAbsoluteDistanceX()==0 && move.getAbsoluteDistanceY()>0)||
-                        (move.getAbsoluteDistanceX()>0 && move.getAbsoluteDistanceY()==0);
+        return move.getAbsoluteDistanceX()==0 && move.getAbsoluteDistanceY()>0||
+                        move.getAbsoluteDistanceX()>0 && move.getAbsoluteDistanceY()==0;
     }
 }
