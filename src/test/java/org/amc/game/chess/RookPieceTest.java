@@ -41,7 +41,8 @@ public class RookPieceTest implements ChessPieceTest{
                     new Location(ChessBoard.Coordinate.B,7),
                     new Location(ChessBoard.Coordinate.E,7),
                     new Location(ChessBoard.Coordinate.F,4),
-                    new Location(ChessBoard.Coordinate.C,3)
+                    new Location(ChessBoard.Coordinate.C,3),
+                    new Location(ChessBoard.Coordinate.D,5)
     };
     
     
