@@ -36,6 +36,7 @@ public class ChessBoard extends DefaultSubject
 	private final ChessPiece[][] board;
 	
 	public ChessBoard(){
+	    super();
 		board=new ChessPiece[8][8];
 	}
 	
