@@ -1,5 +1,10 @@
 package org.amc.game.chess;
 
+/**
+ * Represents a Queen Chess piece
+ * @author Adrian Mclaughlin
+ *
+ */
 public class QueenPiece extends ComplexPiece {
 
     public QueenPiece(Colour colour) {
@@ -9,8 +14,9 @@ public class QueenPiece extends ComplexPiece {
 
     @Override
     boolean validMovement(Move move) {
-        // TODO Auto-generated method stub
-        return false;
+        return Move.isDiagonalMove(move) || Move.isUpOrDownMove(move); 
+                        
+                        
+                        
     }
-
 }

@@ -49,4 +49,13 @@ public class Move
 	    return sb.toString();
 	}
 	
+	public static boolean isUpOrDownMove(Move move){
+        return move.getAbsoluteDistanceX()==0 && move.getAbsoluteDistanceY()>0||
+                        move.getAbsoluteDistanceX()>0 && move.getAbsoluteDistanceY()==0;
+    }
+    
+    public static boolean isDiagonalMove(Move move){
+        return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY());
+    }
+	
 }

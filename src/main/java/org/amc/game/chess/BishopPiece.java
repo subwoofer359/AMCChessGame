@@ -13,6 +13,6 @@ public class BishopPiece extends ComplexPiece {
 
     @Override
     boolean validMovement(Move move) {
-        return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY());
+        return Move.isDiagonalMove(move);
     }
 }
