@@ -12,28 +12,9 @@ import java.util.List;
 public class RookPieceTest implements ChessPieceTest{
     private ChessBoard board;
     private Location testStartPosition=new Location(ChessBoard.Coordinate.D,5);
-    private Location[] validLocationsFromD4={
-                    new Location(ChessBoard.Coordinate.D,6),
-                    new Location(ChessBoard.Coordinate.D,7),
-                    new Location(ChessBoard.Coordinate.D,8),
-                    
-                    new Location(ChessBoard.Coordinate.D,4),
-                    new Location(ChessBoard.Coordinate.D,3),
-                    new Location(ChessBoard.Coordinate.D,2),
-                    new Location(ChessBoard.Coordinate.D,1),
-                    
-                    new Location(ChessBoard.Coordinate.E,5),
-                    new Location(ChessBoard.Coordinate.F,5),
-                    new Location(ChessBoard.Coordinate.G,5),
-                    new Location(ChessBoard.Coordinate.H,5),
-                    
-                    new Location(ChessBoard.Coordinate.C,5),
-                    new Location(ChessBoard.Coordinate.B,5),
-                    new Location(ChessBoard.Coordinate.A,5),
-                    
-    };
     
-    private Location[] notValidLocationsFromD4={
+    
+    private Location[] notValidLocationsFromD5={
                     new Location(ChessBoard.Coordinate.C,6),
                     new Location(ChessBoard.Coordinate.E,6),
                     new Location(ChessBoard.Coordinate.E,4),
@@ -61,7 +42,7 @@ public class RookPieceTest implements ChessPieceTest{
         RookPiece rook=new RookPiece(Colour.WHITE);
         board.putPieceOnBoardAt(rook,testStartPosition);
         
-        for(Location endPosition:validLocationsFromD4){
+        for(Location endPosition:ValidMovements.getListOfUpAndDownLocationsFromD5()){
             System.out.println(endPosition);
             assertTrue(rook.isValidMove(board, new Move(testStartPosition,endPosition)));
             
@@ -74,7 +55,7 @@ public class RookPieceTest implements ChessPieceTest{
         RookPiece rook=new RookPiece(Colour.WHITE);
         board.putPieceOnBoardAt(rook,testStartPosition);
         
-        for(Location endPosition:notValidLocationsFromD4){
+        for(Location endPosition:notValidLocationsFromD5){
             assertFalse(rook.isValidMove(board, new Move(testStartPosition,endPosition)));
         }
     }

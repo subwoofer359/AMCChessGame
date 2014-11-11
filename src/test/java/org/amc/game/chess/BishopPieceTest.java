@@ -2,15 +2,17 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.mockito.Mockito.*;
 
 public class BishopPieceTest implements ChessPieceTest
 {
-
 	private ChessBoard board;
+	private Location testStartPosition=new Location(ChessBoard.Coordinate.D,5);
 	
 	@Before
 	public void setUp() throws Exception
@@ -31,22 +33,14 @@ public class BishopPieceTest implements ChessPieceTest
 	public void testOnEmptyBoardIsValidMove()
 	{
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
-		board.putPieceOnBoardAt(bishop,new Location(ChessBoard.Coordinate.F, 8));
+		board.putPieceOnBoardAt(bishop,this.testStartPosition);
 		
-		boolean isValid = bishop.isValidMove(this.board,new Move(
-						new Location(ChessBoard.Coordinate.F, 8),
-						new Location(ChessBoard.Coordinate.G,7)));
-		isValid =isValid & bishop.isValidMove(this.board,new Move(
-				new Location(ChessBoard.Coordinate.F, 8),
-				new Location(ChessBoard.Coordinate.D,6)));
-		isValid =isValid & bishop.isValidMove(this.board,new Move(
-				new Location(ChessBoard.Coordinate.F,8), 
-				new Location(ChessBoard.Coordinate.A,3)));
-		isValid =isValid & bishop.isValidMove(this.board,new Move(
-				new Location(ChessBoard.Coordinate.H, 1),
-				new Location(ChessBoard.Coordinate.A,8)));
-		
-		assertTrue(isValid);
+		for(Location endPosition:ValidMovements.getListOfDiagonalLocationsFromD5()){
+            System.out.println(endPosition);
+            assertTrue(bishop.isValidMove(board, new Move(testStartPosition,endPosition)));
+            
+        }
+
 	}
 	
 	/* (non-Javadoc)
@@ -85,15 +79,19 @@ public class BishopPieceTest implements ChessPieceTest
     @Test
 	public void testOnBoardIsValidCapture(){
 		BishopPiece bishop = new BishopPiece(Colour.BLACK);
-		BishopPiece bishopWhite = new BishopPiece(Colour.WHITE);
-		board.putPieceOnBoardAt(bishop, new Location(ChessBoard.Coordinate.F, 8));
-		board.putPieceOnBoardAt(bishopWhite, new Location(ChessBoard.Coordinate.D, 6));
+		board.putPieceOnBoardAt(bishop,this.testStartPosition);
+        
+		board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.A,8));
+		board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.G,8));
+		board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.A,2));
+		board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.H,1));
 		
-		boolean isValid=bishop.isValidMove(this.board,new Move(
-				new Location(ChessBoard.Coordinate.F,8),
-				new Location(ChessBoard.Coordinate.D,6)));
 		
-		assertTrue(isValid);
+        for(Location endPosition:ValidMovements.getListOfDiagonalLocationsFromD5()){
+            System.out.println(endPosition);
+            assertTrue(bishop.isValidMove(board, new Move(testStartPosition,endPosition)));    
+        }
+		
 	}
 	
 	/* (non-Javadoc)
@@ -102,16 +100,13 @@ public class BishopPieceTest implements ChessPieceTest
 	@Override
     @Test
 	public void testOnBoardInvalidCapture(){
-		BishopPiece bishop = new BishopPiece(Colour.BLACK);
-		BishopPiece bishopWhite = new BishopPiece(Colour.BLACK);
-		board.putPieceOnBoardAt(bishop, new Location(ChessBoard.Coordinate.F, 8));
-		board.putPieceOnBoardAt(bishopWhite, new Location(ChessBoard.Coordinate.D, 6));
-		
-		boolean isValid=bishop.isValidMove(this.board,new Move(
-				new Location(ChessBoard.Coordinate.F,8),
-				new Location(ChessBoard.Coordinate.D,6)));
-		
-		assertFalse(isValid);
+	    BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(bishop,this.testStartPosition);
+        
+        for(Location endPosition:ValidMovements.getListOfDiagonalLocationsFromD5()){
+            board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK),endPosition);
+            assertFalse(bishop.isValidMove(board, new Move(testStartPosition,endPosition)));    
+        }
 	}
 	
 	/* (non-Javadoc)
