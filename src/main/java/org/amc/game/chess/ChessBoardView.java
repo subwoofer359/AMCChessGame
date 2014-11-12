@@ -4,16 +4,15 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 
-
-
 /**
  * Creates a simple console base view of the ChessBoard
  * @author Adrian Mclaughlin
  *
  */
-public class ChessBoardView implements Observer{
+public class ChessBoardView implements Observer{   
     private ChessBoard chessBoard;
     final int WIDTH_OF_BOARD=ChessBoard.Coordinate.values().length;
+    
     public ChessBoardView(ChessBoard chessBoard) {
         this.chessBoard=chessBoard;
         this.chessBoard.attachObserver(this);
@@ -55,7 +54,7 @@ public class ChessBoardView implements Observer{
             sb.append("   ");
         }else{
             sb.append(' ');
-            sb.append(piece.getClass().getSimpleName().charAt(0));
+            sb.append(getChessPieceMapping(piece));
             sb.append(' ');
         }
         return sb;
@@ -115,4 +114,29 @@ public class ChessBoardView implements Observer{
         
     }
     
+    private Character getChessPieceMapping(ChessPiece piece) {
+        Character[] whiteSymbols = { 'K', 'Q', 'B', 'k', 'R', 'p' };
+        Character[] blackSymbols = { '\u0136', '\u0150', '\u00DF', '\u0138', '\u0158', '\u03F8' };
+        int index = -1;
+
+        if (piece.getClass().equals(KingPiece.class)) {
+            index = 0;
+        }else if (piece.getClass().equals(QueenPiece.class)){
+            index=1;
+        } else if (piece.getClass().equals(BishopPiece.class)) {
+            index = 2;
+        } else if (piece.getClass().equals(KnightPiece.class)) {
+            index = 3;
+        } else if (piece.getClass().equals(RookPiece.class)) {
+            index = 4;
+        } else if (piece.getClass().equals(PawnPiece.class)) {
+            index = 5;
+        }
+
+        if (piece.getColour().equals(Colour.BLACK)) {
+            return blackSymbols[index];
+        } else {
+            return whiteSymbols[index];
+        }
+    }
 }
