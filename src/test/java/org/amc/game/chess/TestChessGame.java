@@ -25,6 +25,17 @@ public class TestChessGame {
         game.setBoard(board);
     }
 
+    public void setupChessBoardInSimpleTestState(){
+        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.C,1));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.F,1));
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.E, 1));
+           
+        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C,8));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F,8));
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.E, 8));
+    
+    }
+    
     @After
     public void tearDown() throws Exception {
     }
@@ -65,7 +76,7 @@ public class TestChessGame {
     @Test
     public void testStartPlayerOneWinner(){
         final String[] winningMoves={"F1B5","C8A6","B5E8"};
-        board.initialise();
+        setupChessBoardInSimpleTestState();
         game.setView(new ChessBoardView(board));
         ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
         controller.setConsole(new MockUserInput(winningMoves));
@@ -78,7 +89,7 @@ public class TestChessGame {
     @Test
     public void testStartPlayerTwoWinner(){
         final String[] winningMoves={"F1E2","F8B4","E2D3","B4E1"};
-        board.initialise();
+        setupChessBoardInSimpleTestState();
         game.setView(new ChessBoardView(board));
         ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
         controller.setConsole(new MockUserInput(winningMoves));
@@ -94,7 +105,7 @@ public class TestChessGame {
     @Test
     public void testStartThrowsInvalidMoveException(){
         final String[] winningMoves={"F1E1","F1E2","F8B4","E2D3","B4E1"};
-        board.initialise();
+        setupChessBoardInSimpleTestState();
         game.setView(new ChessBoardView(board));
         ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
         controller.setConsole(new MockUserInput(winningMoves));
