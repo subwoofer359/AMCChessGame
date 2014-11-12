@@ -45,10 +45,10 @@ public class PawnPiece extends SimplePiece {
     private boolean isMovingForward(Move move){
         int moveInYDirection=move.getDistanceY();
         if(this.getColour().equals(Colour.WHITE)){
-            return moveInYDirection>0;
+            return moveInYDirection<0;
         }
         else{
-            return moveInYDirection<0;
+            return moveInYDirection>0;
         }
     }
     

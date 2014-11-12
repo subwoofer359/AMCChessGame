@@ -7,10 +7,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PawnPieceTest implements ChessPieceTest  {
+public class PawnPieceTest  {
     private ChessBoard board;
-    private Location testStartPosition = new Location(ChessBoard.Coordinate.F, 2);
-    private static final Location[] invalidMovesFromF2={
+    private Location testWhiteStartPosition = new Location(ChessBoard.Coordinate.F, 2);
+    private Location testBlackStartPosition = new Location(ChessBoard.Coordinate.F, 7);
+    
+    private static final Location[] invalidWhiteMovesFromF2={
         new Location(ChessBoard.Coordinate.F,1),
         new Location(ChessBoard.Coordinate.E,1),
         new Location(ChessBoard.Coordinate.E,2),
@@ -23,6 +25,19 @@ public class PawnPieceTest implements ChessPieceTest  {
         new Location(ChessBoard.Coordinate.H,4),
     };
     
+    private static final Location[] invalidBlackMovesFromF7={
+        new Location(ChessBoard.Coordinate.F,8),
+        new Location(ChessBoard.Coordinate.E,8),
+        new Location(ChessBoard.Coordinate.E,7),
+        new Location(ChessBoard.Coordinate.G,7),
+        new Location(ChessBoard.Coordinate.G,8),
+        new Location(ChessBoard.Coordinate.E,5),
+        new Location(ChessBoard.Coordinate.G,5),
+        new Location(ChessBoard.Coordinate.F,4),
+        new Location(ChessBoard.Coordinate.D,5),
+        new Location(ChessBoard.Coordinate.H,5),
+    };
+    
     @Before
     public void setUp() throws Exception {
         board = new ChessBoard();
@@ -33,53 +48,79 @@ public class PawnPieceTest implements ChessPieceTest  {
     }
 
     @Test
-    @Override
-    public void testOnEmptyBoardIsValidMove() {
-        PawnPiece pawn=new PawnPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(pawn, testStartPosition);
+    public void testOnEmptyBoardIsValidWhiteMove() {
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
         
-        assertTrue(pawn.isValidMove(board, new Move(testStartPosition,
+        assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition,
                         new Location(ChessBoard.Coordinate.F,3))));
-        assertTrue(pawn.isValidMove(board, new Move(testStartPosition,
+        assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition,
                         new Location(ChessBoard.Coordinate.F,4))));
         
     }
+    
+    @Test
+    public void testOnEmptyBoardIsValidBlackMove() {
+        PawnPiece pawn=new PawnPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        
+        assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition,
+                        new Location(ChessBoard.Coordinate.F,6))));
+        assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition,
+                        new Location(ChessBoard.Coordinate.F,5))));
+        
+    }
 
     @Test
-    @Override
-    public void testOnEmptyBoardIsNotValidMove() {
-        PawnPiece pawn=new PawnPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(pawn, testStartPosition);
+    public void testOnEmptyBoardIsNotValidWhiteMove() {
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
         
-        for(Location endLocation:invalidMovesFromF2){
-            assertFalse(pawn.isValidMove(board, new Move(testStartPosition,endLocation)));
+        for(Location endLocation:invalidWhiteMovesFromF2){
+            assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocation)));
         }
         
     }
-
+    
     @Test
-    public void testOnEmptyBoardIsNotValidNonIntialMove() {
+    public void testOnEmptyBoardIsNotValidBlackMove() {
         PawnPiece pawn=new PawnPiece(Colour.BLACK);
-        pawn.moved();
-        board.putPieceOnBoardAt(pawn, testStartPosition);
-        Location endLocation=new Location(Coordinate.F,4);
-        assertFalse(pawn.isValidMove(board, new Move(testStartPosition,endLocation)));
+        board.putPieceOnBoardAt(pawn, testBlackStartPosition);
         
+        for(Location endLocation:invalidBlackMovesFromF7){
+            assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,endLocation)));
+        }
         
     }
     
-    @Override
+
+    @Test
+    public void testOnEmptyBoardIsNotValidNonIntialWhiteMove() {
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        pawn.moved();
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        Location endLocation=new Location(Coordinate.F,4);
+        assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocation)));
+    }
+    
+    @Test
+    public void testOnEmptyBoardIsNotValidNonIntialBlackMove() {
+        PawnPiece pawn=new PawnPiece(Colour.BLACK);
+        pawn.moved();
+        board.putPieceOnBoardAt(pawn, testBlackStartPosition);
+        Location endLocation=new Location(Coordinate.F,4);
+        assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,endLocation)));
+    }
+    
     public void testOnBoardIsValidCapture() {
 
         
     }
 
-    @Override
     public void testOnBoardInvalidCapture() {
       
     }
 
-    @Override
     public void testOnBoardIsNotValidMove() {
         // TODO Auto-generated method stub
         
