@@ -23,6 +23,7 @@ public class PawnPieceTest  {
         new Location(ChessBoard.Coordinate.F,5),
         new Location(ChessBoard.Coordinate.D,4),
         new Location(ChessBoard.Coordinate.H,4),
+        new Location(ChessBoard.Coordinate.H,1)
     };
     
     private static final Location[] invalidBlackMovesFromF7={
@@ -36,6 +37,7 @@ public class PawnPieceTest  {
         new Location(ChessBoard.Coordinate.F,4),
         new Location(ChessBoard.Coordinate.D,5),
         new Location(ChessBoard.Coordinate.H,5),
+        new Location(ChessBoard.Coordinate.H,8)
     };
     
     @Before
@@ -112,18 +114,82 @@ public class PawnPieceTest  {
         assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,endLocation)));
     }
     
-    public void testOnBoardIsValidCapture() {
-
-        
+    @Test
+    public void testOnBoardIsValidWhiteCapture() {
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        PawnPiece enemyPawn=new PawnPiece(Colour.BLACK);
+        Location captureLocationOne= new Location(Coordinate.E,3);
+        Location captureLocationTwo= new Location(Coordinate.G,3);
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        board.putPieceOnBoardAt(enemyPawn,captureLocationOne);
+        board.putPieceOnBoardAt(enemyPawn, captureLocationTwo);
+        assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition,captureLocationOne)));
+        assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition,captureLocationTwo)));
+    }
+    
+    @Test
+    public void testOnBoardIsValidBlackCapture() {
+        PawnPiece pawn=new PawnPiece(Colour.BLACK);
+        PawnPiece enemyPawn=new PawnPiece(Colour.WHITE);
+        Location captureLocationOne= new Location(Coordinate.E,6);
+        Location captureLocationTwo= new Location(Coordinate.G,6);
+        board.putPieceOnBoardAt(pawn, testBlackStartPosition);
+        board.putPieceOnBoardAt(enemyPawn,captureLocationOne);
+        board.putPieceOnBoardAt(enemyPawn, captureLocationTwo);
+        assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition,captureLocationOne)));
+        assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition,captureLocationTwo)));
+    }
+    
+    @Test
+    public void testOnBoardInvalidWhiteCapture() {
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        PawnPiece enemyPawn=new PawnPiece(Colour.WHITE);
+        Location captureLocationOne= new Location(Coordinate.E,3);
+        Location captureLocationTwo= new Location(Coordinate.G,3);
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        board.putPieceOnBoardAt(enemyPawn,captureLocationOne);
+        assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,captureLocationOne)));
+        assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,captureLocationTwo)));
+    }
+    
+    @Test
+    public void testOnBoardInvalidBlackCapture() {
+        PawnPiece pawn=new PawnPiece(Colour.BLACK);
+        PawnPiece enemyPawn=new PawnPiece(Colour.BLACK);
+        Location captureLocationOne= new Location(Coordinate.E,6);
+        Location captureLocationTwo= new Location(Coordinate.G,6);
+        board.putPieceOnBoardAt(pawn, testBlackStartPosition);
+        board.putPieceOnBoardAt(enemyPawn,captureLocationOne);
+        assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,captureLocationOne)));
+        assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,captureLocationTwo)));
     }
 
-    public void testOnBoardInvalidCapture() {
-      
-    }
-
-    public void testOnBoardIsNotValidMove() {
-        // TODO Auto-generated method stub
+    @Test
+    public void testOnBoardIsNotValidBlackMove() {
+        PawnPiece pawn=new PawnPiece(Colour.BLACK);
+        PawnPiece enemyPawn=new PawnPiece(Colour.WHITE);
+        board.putPieceOnBoardAt(pawn, testBlackStartPosition);
+        Location endLocationOne=new Location(Coordinate.F, 6);
+        Location endLocationTwo=new Location(Coordinate.F, 5);
         
+        board.putPieceOnBoardAt(enemyPawn,endLocationOne );
+        
+        assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,endLocationOne)));
+        assertFalse(pawn.isValidMove(board, new Move(testBlackStartPosition,endLocationTwo)));
+    }
+    
+    @Test
+    public void testOnBoardIsNotValidWhiteMove() {
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        PawnPiece enemyPawn=new PawnPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        Location endLocationOne=new Location(Coordinate.F, 3);
+        Location endLocationTwo=new Location(Coordinate.F, 4);
+        
+        board.putPieceOnBoardAt(enemyPawn,endLocationOne );
+        
+        assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocationOne)));
+        assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocationTwo)));
     }
     
 }

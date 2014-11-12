@@ -23,7 +23,32 @@ public class PawnPiece extends SimplePiece {
 
     @Override
     boolean canMakeMove(ChessBoard board, Move move) {
-        return true;
+        if(Move.isUpOrDownMove(move)){
+            if(move.getAbsoluteDistanceY()==2){
+                int positionX=move.getStart().getLetter().getName();
+                int positionY=move.getStart().getNumber();
+                positionX=positionX-1*(int)Math.signum(move.getDistanceX());
+                positionY=positionY-1*(int)Math.signum(move.getDistanceY());
+                return board.getPieceFromBoardAt(move.getEnd())==null && 
+                                board.getPieceFromBoardAt(positionX, positionY)==null;
+            }else{
+                return board.getPieceFromBoardAt(move.getEnd())==null;
+            }
+        }else if(Move.isDiagonalMove(move)){
+            ChessPiece piece=board.getPieceFromBoardAt(move.getEnd());
+            if(piece==null){
+                return false;
+            }else{
+                return endSquareOccupiedByEnemyPiece(piece);
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    
+    private boolean endSquareOccupiedByEnemyPiece(ChessPiece piece){
+        return !piece.getColour().equals(getColour());
     }
 
     public void moved(){
