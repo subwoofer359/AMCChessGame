@@ -3,12 +3,16 @@ package org.amc.game.chess;
 /**
  * Represents a Knight Chess Piece
  * 
- * possible moves
- * (x-2,y-1),(x-2,y+1),(x-1,y+2),(x+1,y+2),
+ * The knight moves to any of the closest squares that are not on the same rank,
+ * file, or diagonal, thus the move forms an "L"-shape: two squares vertically
+ * and one square horizontally, or two squares horizontally and one square
+ * vertically
+ * 
+ * possible moves (x-2,y-1),(x-2,y+1),(x-1,y+2),(x+1,y+2),
  * (x+2,y-1),(x+2,y+1),(x-1,y-2),(x+1,y-2)
  *
- * 
  * @author Adrian Mclaughlin
+ * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  *
  */
 public class KnightPiece extends SimplePiece {
@@ -17,27 +21,33 @@ public class KnightPiece extends SimplePiece {
         super(colour);
     }
 
-    
-    boolean canMakeMove(ChessBoard board,Move move){
-        Location endSquare=move.getEnd();
-        return isEndSquareOccupiedByOpponentsPiece(board, endSquare);      
+    /**
+     * @see SimplePiece#isValidMove(ChessBoard, Move)
+     */
+    @Override
+    boolean validMovement(Move move) {
+        return move.getAbsoluteDistanceX() == 2 && move.getAbsoluteDistanceY() == 1
+                        || move.getAbsoluteDistanceX() == 1 && move.getAbsoluteDistanceY() == 2;
     }
-    
-    private boolean isEndSquareOccupiedByOpponentsPiece(ChessBoard board,Location endSquare){
-        ChessPiece piece=board.getPieceFromBoardAt(endSquare.getLetter().getName(),endSquare.getNumber());
-        if(piece==null){
+
+    /**
+     * @see SimplePiece#canMakeMove(ChessBoard, Move)
+     */
+    @Override
+    boolean canMakeMove(ChessBoard board, Move move) {
+        Location endSquare = move.getEnd();
+        return isEndSquareOccupiedByOpponentsPiece(board, endSquare);
+    }
+
+    private boolean isEndSquareOccupiedByOpponentsPiece(ChessBoard board, Location endSquare) {
+        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getName(),
+                        endSquare.getNumber());
+        if (piece == null) {
             return true;
-        }
-        else if(piece.getColour().equals(getColour())){
+        } else if (piece.getColour().equals(getColour())) {
             return false;
-        }
-        else{
+        } else {
             return true;
         }
-    }
-    
-    boolean validMovement(Move move){
-        return move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==1 ||
-               move.getAbsoluteDistanceX()==1 && move.getAbsoluteDistanceY()==2;
     }
 }

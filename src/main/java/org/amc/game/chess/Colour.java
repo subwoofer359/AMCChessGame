@@ -7,8 +7,6 @@ package org.amc.game.chess;
  * @author Adrian McLaughlin
  *
  */
-public enum Colour
-{
-	WHITE,
-	BLACK;
+public enum Colour {
+    WHITE, BLACK;
 }
