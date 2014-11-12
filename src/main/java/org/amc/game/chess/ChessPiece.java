@@ -23,4 +23,18 @@ public interface ChessPiece
 	 * @return the colour of the ChessPiece
 	 */
 	public Colour getColour();
+	
+	
+	/**
+	 * Sets the move state of the ChessPiece
+	 */
+	public void moved();
+	
+	/**
+	 * Checks if the ChessPiece has moved since the start of the game
+	 * 
+	 * @return true if the ChessPiece has moved
+	 */
+	public boolean hasMoved();
+	
 }

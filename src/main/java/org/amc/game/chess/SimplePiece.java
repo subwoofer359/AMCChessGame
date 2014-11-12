@@ -8,6 +8,7 @@ package org.amc.game.chess;
 abstract class SimplePiece implements ChessPiece
 {
 	private Colour colour;
+	private Boolean hasMoved=false;
 	
 	public SimplePiece(Colour colour){
 		this.colour=colour;
@@ -27,7 +28,21 @@ abstract class SimplePiece implements ChessPiece
         }
     }
 	
+	
+	
 	abstract boolean validMovement(Move move);
 	
 	abstract boolean canMakeMove(ChessBoard board,Move move);
+
+    @Override
+    public void moved() {
+        this.hasMoved=true;
+        
+    }
+
+    @Override
+    public boolean hasMoved() {
+        // TODO Auto-generated method stub
+        return this.hasMoved;
+    }
 }

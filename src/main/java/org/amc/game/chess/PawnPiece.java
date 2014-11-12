@@ -2,7 +2,7 @@ package org.amc.game.chess;
 
 public class PawnPiece extends SimplePiece {
 
-    private Boolean initialMove=true;
+   
     public PawnPiece(Colour colour) {
         super(colour);
     }
@@ -10,7 +10,7 @@ public class PawnPiece extends SimplePiece {
     @Override
     boolean validMovement(Move move) {
         if(move.getAbsoluteDistanceX()==0){
-            if(initialMove){
+            if(!hasMoved()){
                 return isMovingForwardOneOrTwoSquares(move);
             }else{
                 return isMovingForwardOneSquareOnly(move);
@@ -51,10 +51,6 @@ public class PawnPiece extends SimplePiece {
         return !piece.getColour().equals(getColour());
     }
 
-    public void moved(){
-        this.initialMove=false;
-    }
-    
     private boolean isMovingForwardOneOrTwoSquares(Move move){
         return isMovingForward(move) && move.getAbsoluteDistanceY()>0 && move.getAbsoluteDistanceY()<=2;
     }
