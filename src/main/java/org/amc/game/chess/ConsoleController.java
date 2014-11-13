@@ -10,39 +10,12 @@ import java.text.ParseException;
  *
  */
 public class ConsoleController implements Controller {
-
-    private ChessBoard board;
-    private Player currentPlayer;
-    private Player playerOne;
-    private Player playerTwo;
     private UserConsole console = new GameTextConsole();
     private InputParser parser = new SimpleInputParser();
+    private ChessGame chessGame;
 
-    public ConsoleController(ChessBoard board, Player playerOne, Player playerTwo) {
-        this.board = board;
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
-        this.currentPlayer = this.playerOne;
-    }
-
-    /**
-     * @see Controller#getCurrentPlayer()
-     */
-    @Override
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    /**
-     * @see Controller#changePlayer()
-     */
-    @Override
-    public void changePlayer() {
-        if (currentPlayer.equals(playerOne)) {
-            currentPlayer = playerTwo;
-        } else {
-            currentPlayer = playerOne;
-        }
+    public ConsoleController(ChessGame chessGame) {
+        this.chessGame=chessGame;
     }
 
     /**
@@ -64,10 +37,10 @@ public class ConsoleController implements Controller {
      * @see Controller#takeTurn()
      */
     public void takeTurn() throws InvalidMoveException {
-        String input = console.readLine("Player(%s) move:", currentPlayer.getName());
+        String input = console.readLine("Player(%s) move:", chessGame.getCurrentPlayer().getName());
         try {
             Move move = getInputParser().parseMoveString(input);
-            board.move(currentPlayer, move);
+            chessGame.move(chessGame.getCurrentPlayer(), move);
         } catch (ParseException pe) {
             throw new InvalidMoveException(pe);
         }

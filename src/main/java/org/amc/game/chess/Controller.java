@@ -8,13 +8,6 @@ package org.amc.game.chess;
  */
 public interface Controller {
 
-    public Player getCurrentPlayer();
-
-    /**
-     * Change the current player
-     */
-    public void changePlayer();
-
     /**
      * @return current inputParser
      */

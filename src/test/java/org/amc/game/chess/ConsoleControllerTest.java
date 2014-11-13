@@ -22,18 +22,6 @@ public class ConsoleControllerTest {
     }
 
     @Test
-    public void testChangePlayer() {
-        Player player1=new HumanPlayer("Test1", Colour.BLACK);
-        Player player2=new HumanPlayer("Test2", Colour.WHITE);
-        ConsoleController controller=new ConsoleController(new ChessBoard(),player1, player2);
-        assertEquals(player1, controller.getCurrentPlayer());
-        controller.changePlayer();
-        assertEquals(player2, controller.getCurrentPlayer());
-        controller.changePlayer();
-        assertEquals(player1, controller.getCurrentPlayer());
-    }
-    
-    @Test
     public void testTakeTurn()throws InvalidMoveException{
         Player player1=new HumanPlayer("Test1", Colour.BLACK);
         Player player2=new HumanPlayer("Test2", Colour.WHITE);
@@ -42,9 +30,10 @@ public class ConsoleControllerTest {
         
         ChessPiece piece =new BishopPiece(Colour.BLACK);
         ChessBoard board=new ChessBoard();
+        ChessGame game=new ChessGame(board,player1,player2);
         board.putPieceOnBoardAt(piece,startLocation);
         
-        ConsoleController controller=new ConsoleController(board,player1, player2);
+        ConsoleController controller=new ConsoleController(game);
         MockUserInput userInput=new MockUserInput();
         userInput.setOutput("A1B2");
         controller.setConsole(userInput);
@@ -67,8 +56,9 @@ public class ConsoleControllerTest {
         ChessPiece piece =new BishopPiece(Colour.BLACK);
         ChessBoard board=new ChessBoard();
         board.putPieceOnBoardAt(piece,startLocation);
+        ChessGame game=new ChessGame(board,player1,player2);
         
-        ConsoleController controller=new ConsoleController(board,player1, player2);
+        ConsoleController controller=new ConsoleController(game);
         controller.setInputParser(parser);
         MockUserInput userInput=new MockUserInput();
         userInput.setOutput("A1B2");
