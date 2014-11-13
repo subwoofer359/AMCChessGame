@@ -107,10 +107,42 @@ public class PawnPiece extends SimplePiece {
     }
 
     private boolean canCapture(ChessBoard board, Move move) {
-        if (isEndSquareEmpty(board, move)) {
+        if(isEnPassantCapture(board, move)){
+            return true;
+        }else if (isEndSquareEmpty(board, move)) {
             return false;
         } else {
             return isEndSquareOccupiedByOpponentsPiece(board, move);
+        }
+    }
+    
+    /**
+     * Checks to see if the pawn do an en passant capture move
+     * @param board
+     * @param move
+     * @return
+     */
+    boolean isEnPassantCapture(ChessBoard board,Move move){
+        Move lastMove=board.getTheLastMove();
+        ChessPiece piece=board.getPieceFromBoardAt(lastMove.getEnd());
+        if(!isEndSquareEmpty(board, move)){
+            return false;
+        }
+        //capture square is empty
+        if(piece!=null && piece instanceof PawnPiece){
+            if(lastMove.getAbsoluteDistanceY()==2){
+                if(move.getEnd().getLetter().equals(lastMove.getEnd().getLetter())){
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }else{
+            return false;
         }
     }
 }
