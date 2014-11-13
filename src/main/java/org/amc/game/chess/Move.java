@@ -86,7 +86,7 @@ public class Move {
      * @param move
      * @return boolean
      */
-    public static boolean isUpOrDownMove(Move move) {
+    public static boolean isFileOrRankMove(Move move) {
         return move.getAbsoluteDistanceX() == 0 && move.getAbsoluteDistanceY() > 0
                         || move.getAbsoluteDistanceX() > 0 && move.getAbsoluteDistanceY() == 0;
     }

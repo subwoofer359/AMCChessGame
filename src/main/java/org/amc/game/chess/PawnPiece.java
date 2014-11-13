@@ -75,7 +75,7 @@ public class PawnPiece extends SimplePiece {
      */
     @Override
     boolean canMakeMove(ChessBoard board, Move move) {
-        if (Move.isUpOrDownMove(move)) {
+        if (Move.isFileOrRankMove(move)) {
             if (move.getAbsoluteDistanceY() == 2) {
                 return endSquareIsEmpty(board, move) && canMoveTwoSquaresForward(board, move);
             } else {

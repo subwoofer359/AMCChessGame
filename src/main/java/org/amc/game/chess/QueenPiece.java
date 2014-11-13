@@ -20,6 +20,6 @@ public class QueenPiece extends ComplexPiece {
      */
     @Override
     boolean validMovement(Move move) {
-        return Move.isDiagonalMove(move) || Move.isUpOrDownMove(move);
+        return Move.isDiagonalMove(move) || Move.isFileOrRankMove(move);
     }
 }

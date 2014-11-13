@@ -19,6 +19,6 @@ public class RookPiece extends ComplexPiece {
      */
     @Override
     boolean validMovement(Move move) {
-        return Move.isUpOrDownMove(move);
+        return Move.isFileOrRankMove(move);
     }
 }
