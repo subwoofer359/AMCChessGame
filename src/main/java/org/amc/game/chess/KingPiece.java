@@ -29,16 +29,10 @@ public class KingPiece extends SimplePiece {
      */
     @Override
     boolean canMakeMove(ChessBoard board, Move move) {
-        ChessPiece piece = board.getPieceFromBoardAt(move.getEnd().getLetter().getName(), 
-                        move.getEnd().getNumber());
-        if (piece == null) {
+        if (isEndSquareEmpty(board, move)) {
             return true;
         } else {
-            return endSquareNotOccupiedByPlayersOwnPiece(piece);
+            return this.isEndSquareOccupiedByOpponentsPiece(board, move);
         }
-    }
-
-    private boolean endSquareNotOccupiedByPlayersOwnPiece(ChessPiece piece) {
-        return !piece.getColour().equals(getColour());
     }
 }

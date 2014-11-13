@@ -107,15 +107,10 @@ public class PawnPiece extends SimplePiece {
     }
 
     private boolean canCapture(ChessBoard board, Move move) {
-        ChessPiece piece = board.getPieceFromBoardAt(move.getEnd());
-        if (piece == null) {
+        if (isEndSquareEmpty(board, move)) {
             return false;
         } else {
-            return endSquareOccupiedByEnemyPiece(piece);
+            return isEndSquareOccupiedByOpponentsPiece(board, move);
         }
-    }
-
-    private boolean endSquareOccupiedByEnemyPiece(ChessPiece piece) {
-        return !piece.getColour().equals(getColour());
     }
 }
