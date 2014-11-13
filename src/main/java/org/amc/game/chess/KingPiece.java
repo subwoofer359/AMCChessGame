@@ -18,18 +18,19 @@ public class KingPiece extends SimplePiece {
     /**
      * @see SimplePiece#validMovement(Move)
      */
+    @Override
     boolean validMovement(Move move) {
-        int distanceX = move.getAbsoluteDistanceX();
-        int distanceY = move.getAbsoluteDistanceY();
-        return distanceX <= 1 && distanceY <= 1;
+        return move.getAbsoluteDistanceX() <= 1 && 
+                        move.getAbsoluteDistanceY() <= 1;
     }
 
     /**
      * @see SimplePiece#canMakeMove(ChessBoard, Move)
      */
+    @Override
     boolean canMakeMove(ChessBoard board, Move move) {
-        ChessPiece piece = board.getPieceFromBoardAt(move.getEnd().getLetter().getName(), move
-                        .getEnd().getNumber());
+        ChessPiece piece = board.getPieceFromBoardAt(move.getEnd().getLetter().getName(), 
+                        move.getEnd().getNumber());
         if (piece == null) {
             return true;
         } else {
