@@ -92,7 +92,7 @@ public class ChessBoard extends DefaultSubject {
                 removePieceOnBoardAt(piece, move.getStart());
                 putPieceOnBoardAt(piece, move.getEnd());
                 piece.moved();
-                this.notifyObservers(null);
+                this.notifyObservers(move);
             } else {
                 throw new InvalidMoveException("Not a valid move");
             }

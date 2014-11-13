@@ -18,14 +18,14 @@ public class Move {
     /**
      * @return the start Location
      */
-    public final Location getStart() {
+    public Location getStart() {
         return start;
     }
 
     /**
      * @return the end Location
      */
-    public final Location getEnd() {
+    public Location getEnd() {
         return end;
     }
 
@@ -100,5 +100,4 @@ public class Move {
     public static boolean isDiagonalMove(Move move) {
         return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY());
     }
-
 }
