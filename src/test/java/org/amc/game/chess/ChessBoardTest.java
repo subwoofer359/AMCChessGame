@@ -1,7 +1,11 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.TestChessGame.MockUserInput;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,12 +18,16 @@ public class ChessBoardTest
     private ChessBoard board;
     private Player whitePlayer;
     private Player blackPlayer;
+    private Location endLocation;
+    private Location startLocation;
 	@Before
 	public void setUp() throws Exception
 	{
 	    board=new ChessBoard();
 	    whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
 	    blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
+	    startLocation=new Location(ChessBoard.Coordinate.A,8);
+        endLocation=new Location(ChessBoard.Coordinate.B,7);
 	}
 
 	@After
@@ -68,4 +76,16 @@ public class ChessBoardTest
         board.move(whitePlayer, new Move(startofMove,endOfMove));
         
 	}
+	
+	   @Test
+	    public void testMovesAreSaved() throws InvalidMoveException{
+	        Player playerOne=new HumanPlayer("Stephen",Colour.BLACK);
+	        BishopPiece bishop=new BishopPiece(Colour.BLACK);
+	        board.putPieceOnBoardAt(bishop,startLocation);
+	        Move move =new Move(startLocation,endLocation);
+	        board.move(playerOne, move);
+	        Move lastMove=board.getTheLastMove();
+	        assertEquals(lastMove.getStart(),startLocation);
+	        assertEquals(lastMove.getEnd(),endLocation);
+	    }
 }

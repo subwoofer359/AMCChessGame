@@ -85,24 +85,7 @@ public class TestChessGame {
         assertTrue(whitePlayer.isWinner());
         assertFalse(blackPlayer.isWinner());
     }
-    
-    @Test
-    public void testMovesAreSaved(){
-        setupChessBoardInSimpleTestState();
-        final String[] winningMoves={"F1E2","F8B4","E2D3","B4E1"};
-        setupChessBoardInSimpleTestState();
-        game.setView(new ChessBoardView(board));
-        ConsoleController controller=new ConsoleController(board, whitePlayer, blackPlayer);
-        controller.setConsole(new MockUserInput(winningMoves));
-        game.setController(controller);
-        game.start();
-        Move lastMove=game.getTheLastMove();
-        assertEquals(lastMove.getStart().getLetter(),Coordinate.B);
-        assertEquals(lastMove.getStart().getNumber().intValue(),4);
-        assertEquals(lastMove.getEnd().getLetter(),Coordinate.E);
-        assertEquals(lastMove.getEnd().getNumber().intValue(),1);
-    }
-    
+       
     @Test
     public void testStartPlayerTwoWinner(){
         final String[] winningMoves={"F1E2","F8B4","E2D3","B4E1"};

@@ -2,6 +2,9 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a Chess Board Responsibility is to know the position of all the
  * pieces
@@ -37,9 +40,13 @@ public class ChessBoard extends DefaultSubject {
 
     private final ChessPiece[][] board;
 
+    List<Move> allGameMoves;
+    private static final Move EMPTY_MOVE=new EmptyMove();
+    
     public ChessBoard() {
         super();
         board = new ChessPiece[8][8];
+        allGameMoves=new ArrayList<>();
     }
 
     /**
@@ -92,7 +99,8 @@ public class ChessBoard extends DefaultSubject {
                 removePieceOnBoardAt(piece, move.getStart());
                 putPieceOnBoardAt(piece, move.getEnd());
                 piece.moved();
-                this.notifyObservers(move);
+                this.allGameMoves.add(move);
+                this.notifyObservers(null);
             } else {
                 throw new InvalidMoveException("Not a valid move");
             }
@@ -144,5 +152,19 @@ public class ChessBoard extends DefaultSubject {
      */
     ChessPiece getPieceFromBoardAt(Location location) {
         return getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
+    }
+    
+    /**
+     * Return the last Move make or null if no move has yet to be made
+     * @return Move
+     */
+    Move getTheLastMove(){
+        if(allGameMoves.isEmpty()){
+            return EMPTY_MOVE;
+        }
+        else
+        {
+            return allGameMoves.get(allGameMoves.size()-1);
+        }
     }
 }

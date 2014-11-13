@@ -1,9 +1,6 @@
 package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.amc.util.Observer;
-import org.amc.util.Subject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,28 +10,20 @@ import java.util.List;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessGame implements Observer {
+public class ChessGame {
     private ChessBoard board;
     private ChessBoardView view;
     private Controller controller;
     private Player playerOne;
-    private Player playerTwo;
-    private List<Move> allGameMoves;
-    private static final Move EMPTY_MOVE=new EmptyMove(); 
+    private Player playerTwo; 
 
-    public ChessGame(){
-        allGameMoves=new ArrayList<>();
-    }
-    
     public ChessGame(Player playerOne, Player playerTwo) {
-        this();
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
     public final void setBoard(ChessBoard board) {
         this.board = board;
-        this.board.attachObserver(this);
     }
 
     public final void setView(ChessBoardView view) {
@@ -106,19 +95,7 @@ public class ChessGame implements Observer {
         return pieceList;
     }
     
-    /**
-     * Return the last Move make or null if no move has yet to be made
-     * @return Move
-     */
-    Move getTheLastMove(){
-        if(allGameMoves.isEmpty()){
-            return EMPTY_MOVE;
-        }
-        else
-        {
-            return allGameMoves.get(allGameMoves.size()-1);
-        }
-    }
+    
 
     /**
      * Start the Game
@@ -142,10 +119,4 @@ public class ChessGame implements Observer {
         }
     }
 
-    @Override
-    public void update(Subject subject, Object message) {
-        if(message instanceof Move){
-            allGameMoves.add((Move)message);
-        }
-    }
 }
