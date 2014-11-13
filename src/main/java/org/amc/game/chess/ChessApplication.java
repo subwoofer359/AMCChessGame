@@ -10,14 +10,14 @@ import java.util.List;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessGame {
+public class ChessApplication {
     private ChessBoard board;
     private ChessBoardView view;
     private Controller controller;
     private Player playerOne;
     private Player playerTwo; 
 
-    public ChessGame(Player playerOne, Player playerTwo) {
+    public ChessApplication(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }

@@ -166,7 +166,7 @@ public class ChessBoardView implements Observer {
         Player playerTwo = new HumanPlayer("Chris", Colour.BLACK);
         ConsoleController controller = new ConsoleController(board, playerOne, playerTwo);
         ChessBoardView view = new ChessBoardView(board);
-        ChessGame game = new ChessGame(playerOne, playerTwo);
+        ChessApplication game = new ChessApplication(playerOne, playerTwo);
         game.setBoard(board);
         game.setController(controller);
         game.setView(view);

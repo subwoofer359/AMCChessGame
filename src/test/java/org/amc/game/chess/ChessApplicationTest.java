@@ -9,19 +9,19 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class TestChessGame {
+public class ChessApplicationTest {
 
     private Player whitePlayer;
     private Player blackPlayer;
     private ChessBoard board;
-    private ChessGame game;
+    private ChessApplication game;
     
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
         blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
         board=new ChessBoard();
-        game=new ChessGame(whitePlayer,blackPlayer);
+        game=new ChessApplication(whitePlayer,blackPlayer);
         game.setBoard(board);
     }
 
