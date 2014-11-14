@@ -90,7 +90,7 @@ public class ChessBoard extends DefaultSubject {
      */
     public void move(Player player, Move move) throws InvalidMoveException {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
-        removePieceOnBoardAt(piece, move.getStart());
+        removePieceOnBoardAt(move.getStart());
         putPieceOnBoardAt(piece, move.getEnd());
         piece.moved();
         this.allGameMoves.add(move);
@@ -100,11 +100,9 @@ public class ChessBoard extends DefaultSubject {
     /**
      * Removes the ChessPiece from the Board The square it occupied is set back
      * to null
-     * 
-     * @param piece
      * @param location
      */
-    void removePieceOnBoardAt(ChessPiece piece, Location location) {
+    void removePieceOnBoardAt(Location location) {
         this.board[location.getLetter().getName()][location.getNumber() - 1] = null;
     }
 

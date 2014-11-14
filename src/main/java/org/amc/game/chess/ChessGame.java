@@ -57,11 +57,11 @@ public class ChessGame {
                     Location endSquare=move.getEnd();
                     if(piece.getColour().equals(Colour.WHITE)){
                         Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
-                        board.removePieceOnBoardAt(null, capturedPawn);
+                        board.removePieceOnBoardAt(capturedPawn);
                     }
                     else{
                         Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
-                        board.removePieceOnBoardAt(null, capturedPawn);
+                        board.removePieceOnBoardAt(capturedPawn);
                     }    
                 }
                 board.move(player, move);
