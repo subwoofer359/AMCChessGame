@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestKnightPiece implements ChessPieceTest{
+public class KnightPieceTest implements ChessPieceTest{
 
     private ChessBoard board;
     private Location testStartPosition=new Location(ChessBoard.Coordinate.D,4);
