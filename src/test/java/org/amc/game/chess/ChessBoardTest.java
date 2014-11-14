@@ -1,9 +1,8 @@
 package org.amc.game.chess;
 
-import static org.junit.Assert.assertEquals;
-
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,33 +29,6 @@ public class ChessBoardTest {
     public void tearDown() throws Exception {
     }
 
-    @Ignore
-    public void testInitialise() {
-        fail("Not yet implemented");
-    }
-
-    @Test(expected = InvalidMoveException.class)
-    public void testPlayerCantMoveOtherPlayersPiece() throws InvalidMoveException {
-        BishopPiece bishop = new BishopPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(bishop, startLocation);
-        board.move(blackPlayer, new Move(startLocation, new Location(
-                        ChessBoard.Coordinate.B, 7)));
-    }
-
-    @Test
-    public void testPlayerCanMoveTheirOwnPiece() throws InvalidMoveException {
-        BishopPiece bishop = new BishopPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(bishop, startLocation);
-        board.move(whitePlayer, new Move(startLocation, endLocation));
-        assertEquals(bishop, board.getPieceFromBoardAt(endLocation));
-        assertNull(board.getPieceFromBoardAt(startLocation));
-    }
-
-    @Test(expected = InvalidMoveException.class)
-    public void testMoveWithAnEmptySquare() throws InvalidMoveException {
-        board.move(whitePlayer, new Move(startLocation, endLocation));
-    }
-
     @Test
     public void testMovesAreSaved() throws InvalidMoveException {
         Player playerOne = new HumanPlayer("Stephen", Colour.BLACK);
@@ -67,5 +39,36 @@ public class ChessBoardTest {
         Move lastMove = board.getTheLastMove();
         assertEquals(lastMove.getStart(), startLocation);
         assertEquals(lastMove.getEnd(), endLocation);
+    }
+    
+    @Test
+    public void getEmptyMove(){
+        Move move=board.getTheLastMove();
+        assertTrue(move instanceof EmptyMove);
+    }
+    
+    @Test
+    public void testInitialse(){
+        board.initialise();
+        for(int i=7;i<=8;i++){
+            for(Coordinate coord:Coordinate.values()){
+                ChessPiece piece=board.getPieceFromBoardAt(coord.getName(), i);
+                assertTrue(piece instanceof ChessPiece);
+                assertEquals(piece.getColour(),Colour.BLACK);
+            }
+        }
+        for(int i=3;i<=6;i++){
+            for(Coordinate coord:Coordinate.values()){
+                assertNull(board.getPieceFromBoardAt(coord.getName(), i));
+            }
+        }
+        for(int i=1;i<=2;i++){
+            for(Coordinate coord:Coordinate.values()){
+                ChessPiece piece=board.getPieceFromBoardAt(coord.getName(), i);
+                assertTrue(piece instanceof ChessPiece);
+                assertEquals(piece.getColour(),Colour.WHITE);
+            }
+        }
+        
     }
 }

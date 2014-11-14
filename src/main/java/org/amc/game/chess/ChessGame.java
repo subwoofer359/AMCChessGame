@@ -31,7 +31,38 @@ public class ChessGame {
     }
     
     public void move(Player player, Move move)throws InvalidMoveException{
-        board.move(player, move);
+        ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
+        if (piece == null) {
+            throw new InvalidMoveException("No piece at " + move.getStart());
+        } else if (player.getColour() != piece.getColour()) {
+            throw new InvalidMoveException("Player can only move their own pieces");
+        } else {
+            if (piece.isValidMove(board, move)) {
+                if(isMoveEnPassantCapture(move)){
+                    Location endSquare=move.getEnd();
+                    if(piece.getColour().equals(Colour.WHITE)){
+                        Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
+                        board.removePieceOnBoardAt(null, capturedPawn);
+                    }
+                    else{
+                        Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
+                        board.removePieceOnBoardAt(null, capturedPawn);
+                    }    
+                }
+                board.move(player, move);
+            } else {
+                throw new InvalidMoveException("Not a valid move");
+            }
+        }
+    }
+    
+    boolean isMoveEnPassantCapture(Move move){
+        ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
+        if(piece instanceof PawnPiece){
+            return ((PawnPiece)piece).isEnPassantCapture(board, move);
+        }else{
+            return false;
+        }
     }
     
     /**

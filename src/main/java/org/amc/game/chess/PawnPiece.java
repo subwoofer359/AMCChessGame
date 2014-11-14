@@ -120,7 +120,7 @@ public class PawnPiece extends SimplePiece {
      * Checks to see if the pawn do an en passant capture move
      * @param board
      * @param move
-     * @return
+     * @return true if it's a valid en passant move
      */
     boolean isEnPassantCapture(ChessBoard board,Move move){
         Move lastMove=board.getTheLastMove();

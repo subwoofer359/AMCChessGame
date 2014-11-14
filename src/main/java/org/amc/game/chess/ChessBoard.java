@@ -90,21 +90,11 @@ public class ChessBoard extends DefaultSubject {
      */
     public void move(Player player, Move move) throws InvalidMoveException {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
-        if (piece == null) {
-            throw new InvalidMoveException("No piece at " + move.getStart());
-        } else if (player.getColour() != piece.getColour()) {
-            throw new InvalidMoveException("Player can only move their own pieces");
-        } else {
-            if (piece.isValidMove(this, move)) {
-                removePieceOnBoardAt(piece, move.getStart());
-                putPieceOnBoardAt(piece, move.getEnd());
-                piece.moved();
-                this.allGameMoves.add(move);
-                this.notifyObservers(null);
-            } else {
-                throw new InvalidMoveException("Not a valid move");
-            }
-        }
+        removePieceOnBoardAt(piece, move.getStart());
+        putPieceOnBoardAt(piece, move.getEnd());
+        piece.moved();
+        this.allGameMoves.add(move);
+        this.notifyObservers(null);
     }
 
     /**
