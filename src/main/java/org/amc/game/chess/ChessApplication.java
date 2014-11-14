@@ -40,6 +40,7 @@ public class ChessApplication {
                 controller.takeTurn();
             } catch (InvalidMoveException ime) {
                 System.out.println(ime.getMessage());
+                view.displayTheBoard();
                 continue START;
             }
 
