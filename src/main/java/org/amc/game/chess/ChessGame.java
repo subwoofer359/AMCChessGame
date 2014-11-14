@@ -4,7 +4,12 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Contains the Rules of Chess
+ * 
+ * @author Adrian Mclaughlin
+ *
+ */
 public class ChessGame {
     private ChessBoard board;
     private Player currentPlayer;
@@ -30,6 +35,16 @@ public class ChessGame {
         }
     }
     
+    /**
+     * Move a ChessPiece from one square to another as long as the move is valid
+     * 
+     * @param player
+     *            Player making the move
+     * @param move
+     *            Move
+     * @throws InvalidMoveException
+     *             if not a valid movement
+     */
     public void move(Player player, Move move)throws InvalidMoveException{
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         if (piece == null) {
