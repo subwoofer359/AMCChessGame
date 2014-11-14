@@ -27,6 +27,9 @@ public class ChessGame {
         return currentPlayer;
     }
     
+    /**
+     * Changes the current player
+     */
     public void changePlayer() {
         if (currentPlayer.equals(playerOne)) {
             currentPlayer = playerTwo;
@@ -49,28 +52,47 @@ public class ChessGame {
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         if (piece == null) {
             throw new InvalidMoveException("No piece at " + move.getStart());
-        } else if (player.getColour() != piece.getColour()) {
+        } else if (notPlayersChessPiece(player, piece)) {
             throw new InvalidMoveException("Player can only move their own pieces");
-        } else {
-            if (piece.isValidMove(board, move)) {
-                if(isMoveEnPassantCapture(move)){
-                    Location endSquare=move.getEnd();
-                    if(piece.getColour().equals(Colour.WHITE)){
-                        Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
-                        board.removePieceOnBoardAt(capturedPawn);
-                    }
-                    else{
-                        Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
-                        board.removePieceOnBoardAt(capturedPawn);
-                    }    
-                }
+        } else if (piece.isValidMove(board, move)) {
+                checkForEnPassantCapture(piece, move);
                 board.move(player, move);
-            } else {
-                throw new InvalidMoveException("Not a valid move");
-            }
+        } else {
+            throw new InvalidMoveException("Not a valid move");
         }
     }
     
+    /**
+     * Return true if the Player owns the chess piece
+     * @param player
+     * @param piece
+     * @return boolean
+     */
+    private boolean notPlayersChessPiece(Player player,ChessPiece piece){
+        return player.getColour() != piece.getColour();
+    }
+    
+    private void checkForEnPassantCapture(ChessPiece piece,Move move){
+        if(isMoveEnPassantCapture(move)){
+            Location endSquare=move.getEnd();
+            if(piece.getColour().equals(Colour.WHITE)){
+                Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
+                board.removePieceOnBoardAt(capturedPawn);
+            }
+            else{
+                Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
+                board.removePieceOnBoardAt(capturedPawn);
+            }    
+        }
+    }
+    
+    /**
+     * Checks to see if the move is en passant
+     * calls the PawnPiece.isEnPassantCapture
+     * 
+     * @param move
+     * @return boolean
+     */
     boolean isMoveEnPassantCapture(Move move){
         ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
         if(piece instanceof PawnPiece){
