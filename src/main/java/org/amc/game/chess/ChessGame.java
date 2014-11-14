@@ -103,6 +103,14 @@ public class ChessGame {
     }
     
     /**
+     * Checks to see if the player is doing the castling move
+     * @return boolean true if the player is castling
+     */
+    boolean isCastlingMove(){
+        return false;
+    }
+    
+    /**
      * Checks to see if the game has reached it's completion
      * 
      * @param playerOne

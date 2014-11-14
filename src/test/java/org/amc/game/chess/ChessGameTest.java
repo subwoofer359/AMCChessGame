@@ -151,4 +151,9 @@ public class ChessGameTest {
         assertEquals(bishop, board.getPieceFromBoardAt(endLocation));
         assertNull(board.getPieceFromBoardAt(startLocation));
     }
+    
+    @Test
+    public void testCastlingMove(){
+        
+    }
 }
