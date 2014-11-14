@@ -16,24 +16,24 @@ public interface ChessPiece {
      *            The move to be checked
      * @return true is the Piece can successful make this move
      */
-    public boolean isValidMove(ChessBoard board, Move move);
+    boolean isValidMove(ChessBoard board, Move move);
 
     /**
      * 
      * @return the colour of the ChessPiece
      */
-    public Colour getColour();
+    Colour getColour();
 
     /**
      * Sets the move state of the ChessPiece
      */
-    public void moved();
+    void moved();
 
     /**
      * Checks if the ChessPiece has moved since the start of the game
      * 
      * @return true if the ChessPiece has moved
      */
-    public boolean hasMoved();
+    boolean hasMoved();
 
 }

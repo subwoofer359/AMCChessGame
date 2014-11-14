@@ -11,19 +11,19 @@ public interface Subject {
      * 
      * @param observer The Object observing
      */
-    public abstract void attachObserver(Observer observer);
+    void attachObserver(Observer observer);
 
     /**
      * notify Observers
      * 
      * @param message = Object passed to observers
      */
-    public abstract void notifyObservers(Object message);
+    void notifyObservers(Object message);
 
     /**
      * 
      * @param O Observer to be removed
      */
-    public void removeObserver(Observer observer);
+    void removeObserver(Observer observer);
 
 }

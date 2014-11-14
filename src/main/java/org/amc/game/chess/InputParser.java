@@ -18,5 +18,5 @@ public interface InputParser {
      * 
      * @throws ParseException
      */
-    public Move parseMoveString(String moveString) throws ParseException;
+    Move parseMoveString(String moveString) throws ParseException;
 }

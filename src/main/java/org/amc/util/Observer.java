@@ -12,5 +12,5 @@ public interface Observer
 	 * @param subject The Subject calling the update
 	 * @param message Object passed by Subject
 	 */
-	public void update(Subject subject, Object message);
+	void update(Subject subject, Object message);
 }

@@ -12,26 +12,26 @@ public interface Player {
      * 
      * @return String
      */
-    public String getName();
+    String getName();
 
     /**
      * Colour of the Player
      * 
      * @return enum Colour
      */
-    public Colour getColour();
+    Colour getColour();
 
     /**
      * The player is the winner
      * 
      * @return boolean true if they are
      */
-    public boolean isWinner();
+    boolean isWinner();
 
     /**
      * Sets the Player's win state
      * 
      * @param isWinner
      */
-    public void isWinner(boolean isWinner);
+    void isWinner(boolean isWinner);
 }
