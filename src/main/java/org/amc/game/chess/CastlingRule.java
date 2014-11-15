@@ -20,10 +20,7 @@ public class CastlingRule implements ChessRule {
     public boolean isCastlingMove(ChessBoard board, Move move) {
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         if (piece instanceof KingPiece && ((KingPiece) piece).isCastlingMove(move)) {
-            int rank = 8;
-            if (piece.getColour().equals(Colour.WHITE)) {
-                rank = 1;
-            }
+            int rank=move.getStart().getNumber();
             if (isKingCastlingToTheRight(move)) {
                 ChessPiece rook = board.getPieceFromBoardAt(new Location(H, rank));
                 if (board.isEndSquareEmpty(new Location(F, rank))
