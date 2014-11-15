@@ -134,4 +134,11 @@ public class CastlingTest {
         Move whiteKingCastleMove=new Move(whiteKingStartPosition, castlingKingLocation);
         chessGame.move(whitePlayer, whiteKingCastleMove);
     }
+    
+    @Test
+    public void testLeftRookMovesToCastlePosition() throws InvalidMoveException{
+        Location castlingKingLocation=new Location(C,1);
+        Move whiteKingCastleMove=new Move(whiteKingStartPosition, castlingKingLocation);
+        chessGame.move(whitePlayer, whiteKingCastleMove);
+    }
 }
