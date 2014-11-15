@@ -124,9 +124,9 @@ public class ChessGameTest {
         Move move =new Move(startSquare,endSquare);
         
         board.putPieceOnBoardAt(bishop,startSquare);
-        ChessGame chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        EnPassantRule rule =new EnPassantRule();
         
-        assertFalse(chessGame.isMoveEnPassantCapture(move));
+        assertFalse(rule.isMoveEnPassantCapture(board,move));
         
     }
     
@@ -150,10 +150,5 @@ public class ChessGameTest {
         chessGame.move(whitePlayer, new Move(startLocation, endLocation));
         assertEquals(bishop, board.getPieceFromBoardAt(endLocation));
         assertNull(board.getPieceFromBoardAt(startLocation));
-    }
-    
-    @Test
-    public void testCastlingMove(){
-        
     }
 }

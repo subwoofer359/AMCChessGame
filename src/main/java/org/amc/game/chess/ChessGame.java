@@ -1,7 +1,6 @@
 package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
-
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -15,12 +14,16 @@ public class ChessGame {
     private Player currentPlayer;
     private Player playerOne;
     private Player playerTwo;
+    List<ChessRule> chessRules;
     
     public ChessGame(ChessBoard board, Player playerOne, Player playerTwo) {
         this.board = board;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.currentPlayer = this.playerOne;
+        chessRules=new ArrayList<>();
+        chessRules.add(new EnPassantRule());
+        chessRules.add(new CastlingRule());
     }
     
     public Player getCurrentPlayer() {
@@ -55,7 +58,9 @@ public class ChessGame {
         } else if (notPlayersChessPiece(player, piece)) {
             throw new InvalidMoveException("Player can only move their own pieces");
         } else if (piece.isValidMove(board, move)) {
-                checkForEnPassantCapture(piece, move);
+                for(ChessRule rule:chessRules){
+                    rule.applyRule(board, move);
+                }
                 board.move(player, move);
         } else {
             throw new InvalidMoveException("Not a valid move");
@@ -70,44 +75,6 @@ public class ChessGame {
      */
     private boolean notPlayersChessPiece(Player player,ChessPiece piece){
         return player.getColour() != piece.getColour();
-    }
-    
-    private void checkForEnPassantCapture(ChessPiece piece,Move move){
-        if(isMoveEnPassantCapture(move)){
-            Location endSquare=move.getEnd();
-            if(piece.getColour().equals(Colour.WHITE)){
-                Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
-                board.removePieceOnBoardAt(capturedPawn);
-            }
-            else{
-                Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
-                board.removePieceOnBoardAt(capturedPawn);
-            }    
-        }
-    }
-    
-    /**
-     * Checks to see if the move is en passant
-     * calls the PawnPiece.isEnPassantCapture
-     * 
-     * @param move
-     * @return boolean
-     */
-    boolean isMoveEnPassantCapture(Move move){
-        ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
-        if(piece instanceof PawnPiece){
-            return ((PawnPiece)piece).isEnPassantCapture(board, move);
-        }else{
-            return false;
-        }
-    }
-    
-    /**
-     * Checks to see if the player is doing the castling move
-     * @return boolean true if the player is castling
-     */
-    boolean isCastlingMove(){
-        return false;
     }
     
     /**

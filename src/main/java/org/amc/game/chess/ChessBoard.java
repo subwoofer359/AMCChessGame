@@ -155,4 +155,10 @@ public class ChessBoard extends DefaultSubject {
             return allGameMoves.get(allGameMoves.size()-1);
         }
     }
+    
+    boolean isEndSquareEmpty(Location location){
+        ChessPiece piece = getPieceFromBoardAt(location.getLetter().getName(),
+                        location.getNumber());
+        return piece==null;
+    }
 }

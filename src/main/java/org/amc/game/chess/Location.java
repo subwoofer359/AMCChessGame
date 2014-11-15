@@ -8,7 +8,7 @@ import org.amc.game.chess.ChessBoard.Coordinate;
  * @author Adrian Mclaughlin
  *
  */
-public class Location {
+public class Location implements Comparable<Location> {
     private Coordinate letter;
     private Integer number;
 
@@ -44,4 +44,11 @@ public class Location {
         sb.append(')');
         return sb.toString();
     }
+
+    @Override
+    public int compareTo(Location o) {
+        return this.getLetter().compareTo(o.getLetter());
+    }
+    
+    
 }

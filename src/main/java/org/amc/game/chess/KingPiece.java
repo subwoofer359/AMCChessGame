@@ -20,10 +20,18 @@ public class KingPiece extends SimplePiece {
      */
     @Override
     boolean validMovement(Move move) {
-        return move.getAbsoluteDistanceX() <= 1 && 
-                        move.getAbsoluteDistanceY() <= 1;
+        return isMoveOneSquareInAnyDirection(move) ||
+                        isCastlingMove(move);
     }
 
+    boolean isCastlingMove(Move move){
+        if(this.hasMoved()){
+            return false;
+        }else{
+            return move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==0;
+        }
+    }
+    
     /**
      * @see SimplePiece#canMakeMove(ChessBoard, Move)
      */
@@ -34,5 +42,10 @@ public class KingPiece extends SimplePiece {
         } else {
             return this.isEndSquareOccupiedByOpponentsPiece(board, move);
         }
+    }
+    
+    boolean isMoveOneSquareInAnyDirection(Move move){
+        return move.getAbsoluteDistanceX() <= 1 && 
+                        move.getAbsoluteDistanceY() <= 1;
     }
 }
