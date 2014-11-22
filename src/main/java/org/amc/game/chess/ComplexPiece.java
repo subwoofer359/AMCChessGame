@@ -33,9 +33,7 @@ public abstract class ComplexPiece extends SimplePiece {
                     return false;
                 }
             }
-            System.out.printf("(%d,%d)%n", positionX, positionY);
         }
-        System.out.println("Valid move");
         return true;
     }
 
