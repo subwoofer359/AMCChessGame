@@ -1,9 +1,11 @@
 package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
+import static org.amc.game.chess.StartingSquare.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Represents a Chess Board Responsibility is to know the position of all the
@@ -53,26 +55,26 @@ public class ChessBoard extends DefaultSubject {
      * Sets up the board in it's initial state
      */
     public void initialise() {
-        putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.C, 1));
-        putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.F, 1));
-        putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.E, 1));
-        putPieceOnBoardAt(new QueenPiece(Colour.WHITE), new Location(Coordinate.D, 1));
-        putPieceOnBoardAt(new KnightPiece(Colour.WHITE), new Location(Coordinate.B, 1));
-        putPieceOnBoardAt(new KnightPiece(Colour.WHITE), new Location(Coordinate.G, 1));
-        putPieceOnBoardAt(new RookPiece(Colour.WHITE), new Location(Coordinate.A, 1));
-        putPieceOnBoardAt(new RookPiece(Colour.WHITE), new Location(Coordinate.H, 1));
+        putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_LEFT.getLocation());
+        putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_RIGHT.getLocation());
+        putPieceOnBoardAt(new KingPiece(Colour.WHITE), WHITE_KING.getLocation());
+        putPieceOnBoardAt(new QueenPiece(Colour.WHITE), WHITE_QUEEN.getLocation());
+        putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_LEFT.getLocation());
+        putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_RIGHT.getLocation());
+        putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_LEFT.getLocation());
+        putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_RIGHT.getLocation());
         for (Coordinate coord : Coordinate.values()) {
             putPieceOnBoardAt(new PawnPiece(Colour.WHITE), new Location(coord, 2));
         }
 
-        putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C, 8));
-        putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F, 8));
-        putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.E, 8));
-        putPieceOnBoardAt(new QueenPiece(Colour.BLACK), new Location(Coordinate.D, 8));
-        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), new Location(Coordinate.B, 8));
-        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), new Location(Coordinate.G, 8));
-        putPieceOnBoardAt(new RookPiece(Colour.BLACK), new Location(Coordinate.A, 8));
-        putPieceOnBoardAt(new RookPiece(Colour.BLACK), new Location(Coordinate.H, 8));
+        putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_LEFT.getLocation());
+        putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_RIGHT.getLocation());
+        putPieceOnBoardAt(new KingPiece(Colour.BLACK), BLACK_KING.getLocation());
+        putPieceOnBoardAt(new QueenPiece(Colour.BLACK), BLACK_QUEEN.getLocation());
+        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_LEFT.getLocation());
+        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_RIGHT.getLocation());
+        putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_LEFT.getLocation());
+        putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_RIGHT.getLocation());
         for (Coordinate coord : Coordinate.values()) {
             putPieceOnBoardAt(new PawnPiece(Colour.BLACK), new Location(coord, 7));
         }

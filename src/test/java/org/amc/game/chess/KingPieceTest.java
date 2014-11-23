@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 public class KingPieceTest
 {
 	private ChessBoard board;
@@ -80,7 +79,7 @@ public class KingPieceTest
 				)));
 		assertFalse(king.isValidMove(board, new Move(
 				new Location(ChessBoard.Coordinate.F,7),
-				new Location(ChessBoard.Coordinate.E,1)
+				StartingSquare.WHITE_KING.getLocation()
 				)));
 		
 		assertFalse(king.isValidMove(board, new Move(
