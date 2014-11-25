@@ -1,8 +1,8 @@
 package org.amc.game.chess;
 
 import static org.junit.Assert.*;
+import static org.amc.game.chess.StartingSquare.*;
 
-import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,13 +45,13 @@ public class ChessApplicationTest {
         assertTrue(blackPlayer.isWinner());
     }
     private void setupChessBoardInSimpleTestState(){
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.C,1));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(Coordinate.F,1));
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), new Location(Coordinate.E, 1));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE),WHITE_BISHOP_LEFT.getLocation());
+        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_RIGHT.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), WHITE_KING.getLocation());
            
-        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.C,8));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), new Location(Coordinate.F,8));
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), new Location(Coordinate.E, 8));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_LEFT.getLocation());
+        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_RIGHT.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), BLACK_KING.getLocation());
     
     }
     

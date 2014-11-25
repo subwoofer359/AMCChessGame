@@ -82,15 +82,10 @@ public class ChessBoard extends DefaultSubject {
 
     /**
      * Move a ChessPiece from one square to another as long as the move is valid
-     * 
-     * @param player
-     *            Player making the move
      * @param move
      *            Move
-     * @throws InvalidMoveException
-     *             if not a valid movement
      */
-    public void move(Player player, Move move) throws InvalidMoveException {
+    public void move(Move move) {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
         removePieceOnBoardAt(move.getStart());
         putPieceOnBoardAt(piece, move.getEnd());
