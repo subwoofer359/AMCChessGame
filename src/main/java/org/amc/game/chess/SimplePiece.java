@@ -18,7 +18,7 @@ abstract class SimplePiece implements ChessPiece {
      * @see ChessPiece#getColour()
      */
     @Override
-    public final Colour getColour() {
+    public Colour getColour() {
         return colour;
     }
 
@@ -27,7 +27,7 @@ abstract class SimplePiece implements ChessPiece {
      *      pattern
      */
     @Override
-    public final boolean isValidMove(ChessBoard board, Move move) {
+    public boolean isValidMove(ChessBoard board, Move move) {
         if (validMovement(move)) {
             return canMakeMove(board, move);
         } else {
