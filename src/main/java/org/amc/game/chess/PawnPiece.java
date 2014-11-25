@@ -107,7 +107,7 @@ public class PawnPiece extends SimplePiece {
     }
 
     private boolean canCapture(ChessBoard board, Move move) {
-        if (isEndSquareEmpty(board, move)) {
+        if (board.isEndSquareEmpty(move.getEnd())) {
             return false;
         } else {
             return isEndSquareOccupiedByOpponentsPiece(board, move);

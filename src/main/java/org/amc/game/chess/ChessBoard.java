@@ -1,6 +1,7 @@
 package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
+
 import static org.amc.game.chess.StartingSquare.*;
 
 import java.util.ArrayList;
@@ -158,4 +159,5 @@ public class ChessBoard extends DefaultSubject {
                         location.getNumber());
         return piece==null;
     }
+    
 }

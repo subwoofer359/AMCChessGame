@@ -1,5 +1,10 @@
 package org.amc.game.chess;
 
+/**
+ * Encapsulates the en passant capture rule of chess
+ * @author Adrian Mclaughlin
+ *
+ */
 public class EnPassantRule implements ChessRule {
 
 
@@ -47,7 +52,7 @@ public class EnPassantRule implements ChessRule {
     boolean isEnPassantCapture(ChessBoard board, Move move) {
         Move lastMove = board.getTheLastMove();
         ChessPiece piece = board.getPieceFromBoardAt(lastMove.getEnd());
-        if (!isEndSquareEmpty(board, move)) {
+        if (!board.isEndSquareEmpty(move.getEnd())) {
             return false;
         }
         if (isPawnChessPiece(piece) && lastMove.getAbsoluteDistanceY() == 2
@@ -58,18 +63,6 @@ public class EnPassantRule implements ChessRule {
         }
     }
     
-    /**
-     * Checks to see if the end Square is empty
-     * @param board
-     * @param move
-     * @return true if empty
-     */
-    boolean isEndSquareEmpty(ChessBoard board, Move move){
-        Location endSquare = move.getEnd();
-        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getName(),
-                        endSquare.getNumber());
-        return piece==null;
-    }
     
     private boolean isPawnChessPiece(ChessPiece piece) {
         return piece != null && piece instanceof PawnPiece;

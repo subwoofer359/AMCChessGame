@@ -72,18 +72,7 @@ abstract class SimplePiece implements ChessPiece {
         return this.hasMoved;
     }
     
-    /**
-     * Checks to see if the end Square is empty
-     * @param board
-     * @param move
-     * @return true if empty
-     */
-    boolean isEndSquareEmpty(ChessBoard board, Move move){
-        Location endSquare = move.getEnd();
-        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getName(),
-                        endSquare.getNumber());
-        return piece==null;
-    }
+
     
     /**
      * Checks to see if the opposing Player's ChessPiece is in the end Square

@@ -28,7 +28,7 @@ public class KingPiece extends SimplePiece {
      */
     @Override
     boolean canMakeMove(ChessBoard board, Move move) {
-        if (isEndSquareEmpty(board, move)) {
+        if (board.isEndSquareEmpty(move.getEnd())) {
             return true;
         } else {
             return this.isEndSquareOccupiedByOpponentsPiece(board, move);
