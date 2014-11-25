@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import org.amc.game.chess.Location;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 /**
