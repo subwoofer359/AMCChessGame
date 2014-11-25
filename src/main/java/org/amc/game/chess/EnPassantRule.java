@@ -32,13 +32,52 @@ public class EnPassantRule implements ChessRule {
     boolean isMoveEnPassantCapture(ChessBoard board,Move move){
         ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
         if(piece instanceof PawnPiece){
-            return ((PawnPiece)piece).isEnPassantCapture(board, move);
+            return isEnPassantCapture(board, move);
         }else{
             return false;
         }
     }
-
-
+    /**
+     * Checks to see if the pawn do an en passant capture move
+     * 
+     * @param board
+     * @param move
+     * @return true if it's a valid en passant move
+     */
+    boolean isEnPassantCapture(ChessBoard board, Move move) {
+        Move lastMove = board.getTheLastMove();
+        ChessPiece piece = board.getPieceFromBoardAt(lastMove.getEnd());
+        if (!isEndSquareEmpty(board, move)) {
+            return false;
+        }
+        if (isPawnChessPiece(piece) && lastMove.getAbsoluteDistanceY() == 2
+                        && moveToSameFile(move, lastMove)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Checks to see if the end Square is empty
+     * @param board
+     * @param move
+     * @return true if empty
+     */
+    boolean isEndSquareEmpty(ChessBoard board, Move move){
+        Location endSquare = move.getEnd();
+        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getName(),
+                        endSquare.getNumber());
+        return piece==null;
+    }
+    
+    private boolean isPawnChessPiece(ChessPiece piece) {
+        return piece != null && piece instanceof PawnPiece;
+    }
+    
+    private boolean moveToSameFile(Move myMove, Move lastOpposingMove) {
+        return myMove.getEnd().getLetter().equals(lastOpposingMove.getEnd().getLetter());
+    }
 
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {

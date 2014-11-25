@@ -72,61 +72,7 @@ public class ChessGameTest {
        
     }
     
-    @Test
-    public void TestWhiteEnPassantCapture()throws InvalidMoveException{
-        PawnPiece whitePawn=new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn=new PawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition=new Location(E,5);
-        Location whitePawnEndPosition=new Location(F,6);
-        Location blackPawnStartPosition=new Location(F,7);
-        Location blackPawnEndPosition=new Location(F,5);
-        board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
-        board.putPieceOnBoardAt(blackPawn, blackPawnEndPosition);
-        
-        Move blackMove =new Move(blackPawnStartPosition,blackPawnEndPosition);
-        Move whiteEnPassantMove =new Move(whitePawnStartPosition,new Location(F,6));
-        
-        board.allGameMoves.add(blackMove);
-        
-        chessGame.move(whitePlayer, whiteEnPassantMove);
-        assertTrue(board.getPieceFromBoardAt(whitePawnEndPosition).equals(whitePawn));
-        assertNull(board.getPieceFromBoardAt(blackPawnEndPosition));
-    }
-    
-    @Test
-    public void TestBlackEnPassantCapture()throws InvalidMoveException{
-        PawnPiece whitePawn=new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn=new PawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition=new Location(F,2);
-        Location whitePawnEndPosition=new Location(F,4);
-        Location blackPawnStartPosition=new Location(G,4);
-        Location blackPawnEndPosition=new Location(F,3);
-        board.putPieceOnBoardAt(blackPawn, blackPawnStartPosition);
-        board.putPieceOnBoardAt(whitePawn, whitePawnEndPosition);
-        
-        Move blackEnPassantMove =new Move(blackPawnStartPosition,blackPawnEndPosition);
-        Move whiteMove =new Move(whitePawnStartPosition,whitePawnEndPosition);
-        
-        board.allGameMoves.add(whiteMove);
-        
-        chessGame.move(blackPlayer, blackEnPassantMove);
-        assertTrue(board.getPieceFromBoardAt(blackPawnEndPosition).equals(blackPawn));
-        assertNull(board.getPieceFromBoardAt(whitePawnEndPosition));
-    }
-    
-    @Test
-    public void notMoveEnPassantCapture() {
-        BishopPiece bishop=new BishopPiece(Colour.WHITE);
-        Location startSquare=new Location(A,2);
-        Location endSquare=new Location(B,3);
-        Move move =new Move(startSquare,endSquare);
-        
-        board.putPieceOnBoardAt(bishop,startSquare);
-        EnPassantRule rule =new EnPassantRule();
-        
-        assertFalse(rule.isMoveEnPassantCapture(board,move));
-        
-    }
+
     
     @Test(expected = InvalidMoveException.class)
     public void testMoveWithAnEmptySquare()throws InvalidMoveException {
