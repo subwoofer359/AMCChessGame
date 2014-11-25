@@ -25,6 +25,7 @@ abstract class SimplePiece implements ChessPiece {
     /**
      * @see ChessPiece#isValidMove(ChessBoard, Move) Using Template design
      *      pattern
+     * Should be final not to be overridden by subclasses
      */
     @Override
     public boolean isValidMove(ChessBoard board, Move move) {
