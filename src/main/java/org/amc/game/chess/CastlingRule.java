@@ -1,18 +1,13 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.A;
-import static org.amc.game.chess.ChessBoard.Coordinate.B;
-import static org.amc.game.chess.ChessBoard.Coordinate.C;
-import static org.amc.game.chess.ChessBoard.Coordinate.D;
-import static org.amc.game.chess.ChessBoard.Coordinate.F;
-import static org.amc.game.chess.ChessBoard.Coordinate.G;
-import static org.amc.game.chess.ChessBoard.Coordinate.H;
+import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 public class CastlingRule implements ChessRule {
 
     @Override
     public void applyRule(ChessBoard board, Move move) {
         if(isRuleApplicable(board, move)){
+            board.move(move);
             moveRook(board,move);
         }
     }
