@@ -35,7 +35,7 @@ public class ChessBoardTest {
         BishopPiece bishop = new BishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, startLocation);
         Move move = new Move(startLocation, endLocation);
-        board.move(playerOne, move);
+        board.move(move);
         Move lastMove = board.getTheLastMove();
         assertEquals(lastMove.getStart(), startLocation);
         assertEquals(lastMove.getEnd(), endLocation);
