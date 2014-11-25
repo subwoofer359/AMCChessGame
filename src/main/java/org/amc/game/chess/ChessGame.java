@@ -69,6 +69,7 @@ public class ChessGame {
                 throw new InvalidMoveException("Not a valid move");
             }
         }else if(doesAGameRuleApply(board, move)){
+            //Todo add isPlayersKingInCheck check
             for(ChessRule rule:chessRules){
               rule.applyRule(board, move);
           }
