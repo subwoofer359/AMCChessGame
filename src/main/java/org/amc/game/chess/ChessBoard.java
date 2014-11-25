@@ -42,13 +42,14 @@ public class ChessBoard extends DefaultSubject {
     }
 
     private final ChessPiece[][] board;
+    private final int BOARD_WIDTH=8;
 
     List<Move> allGameMoves;
     private static final Move EMPTY_MOVE=new EmptyMove();
     
     public ChessBoard() {
         super();
-        board = new ChessPiece[8][8];
+        board = new ChessPiece[Coordinate.values().length][BOARD_WIDTH];
         allGameMoves=new ArrayList<>();
     }
 
@@ -160,4 +161,43 @@ public class ChessBoard extends DefaultSubject {
         return piece==null;
     }
     
+    List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(Player player){
+        List<ChessPieceLocation> listOfPieces=new ArrayList<>();
+        for(Coordinate letterIndex:Coordinate.values()){
+            for(int i=1;i<=BOARD_WIDTH;i++){
+                ChessPiece piece=getPieceFromBoardAt(letterIndex.getName(), i);
+                if(piece!=null && piece.getColour().equals(player.getColour())){
+                    listOfPieces.add(new ChessPieceLocation(piece, new Location(letterIndex,i)));
+                }
+            }
+        }
+        return listOfPieces;
+    }
+    
+    Location getPlayersKingLocation(Player player){
+        for(Coordinate letterIndex:Coordinate.values()){
+            for(int i=1;i<=BOARD_WIDTH;i++){
+                ChessPiece piece=getPieceFromBoardAt(letterIndex.getName(), i);
+                if(piece!=null && piece instanceof KingPiece && piece.getColour().equals(player.getColour())){
+                    return new Location(letterIndex,i);
+                }
+            }
+        }
+        throw new RuntimeException("Player's king not found this should not happened");
+    }
+    
+    public class ChessPieceLocation{
+        private ChessPiece piece;
+        private Location location;
+        public ChessPieceLocation(ChessPiece piece,Location location){
+            this.piece=piece;
+            this.location=location;
+        }
+        public final ChessPiece getPiece() {
+            return piece;
+        }
+        public final Location getLocation() {
+            return location;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
 import java.util.ArrayList;
@@ -163,6 +164,14 @@ public class ChessGame {
      * @return Boolean true if the opponent can capture the Player's king on the next turn
      */
     boolean isPlayersKingInCheck(Player player,ChessBoard board){
+        Location playersKingLocation=board.getPlayersKingLocation(player);
+        List<ChessPieceLocation> listOfEnemysPieces=board.getListOfPlayersPiecesOnTheBoard(player==playerOne?playerTwo:playerOne);
+        for(ChessPieceLocation pieceLocation:listOfEnemysPieces){
+            List<Location> possibleMoves =pieceLocation.getPiece().getAllPossibleMoves(pieceLocation.getLocation());
+            if(possibleMoves.contains(playersKingLocation)){
+                return true;
+            }
+        }
         return false;
     }
     
