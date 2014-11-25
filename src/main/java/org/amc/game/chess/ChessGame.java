@@ -1,6 +1,7 @@
 package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -57,14 +58,30 @@ public class ChessGame {
             throw new InvalidMoveException("No piece at " + move.getStart());
         } else if (notPlayersChessPiece(player, piece)) {
             throw new InvalidMoveException("Player can only move their own pieces");
-        } else if (piece.isValidMove(board, move)) {
-                for(ChessRule rule:chessRules){
-                    rule.applyRule(board, move);
+        } else if(isPlayersKingInCheck(player, board)){
+            if(piece.isValidMove(board, move)){
+                if(isPlayersKingInCheck(player, board)){
+                    throw new InvalidMoveException("King is checked");
+                }else{
+                    board.move(move);
                 }
-                board.move(player, move);
-        } else {
+            }else{
+                throw new InvalidMoveException("Not a valid move");
+            }
+        }else if(doesAGameRuleApply(board, move)){
+            for(ChessRule rule:chessRules){
+              rule.applyRule(board, move);
+          }
+        }else if(piece.isValidMove(board, move)){
+                if(isPlayersKingInCheck(player, board)){
+                    throw new InvalidMoveException("King is checked");
+                }else{
+                    board.move(move);
+                }
+        }else{
             throw new InvalidMoveException("Not a valid move");
         }
+        
     }
     
     /**
@@ -137,4 +154,40 @@ public class ChessGame {
         }
         return pieceList;
     }
+    
+    /**
+     * Checks to see if the opponent's ChessPieces are attacking the Player's king
+     * @param player Player who King might be under attack
+     * @param board ChessBoard current ChessBoard
+     * @return Boolean true if the opponent can capture the Player's king on the next turn
+     */
+    boolean isPlayersKingInCheck(Player player,ChessBoard board){
+        return false;
+    }
+    
+    /**
+     * Checks to see if a game rule applies to the Player's move
+     * Only applies one rule per move
+     * @param board
+     * @param move
+     * @return Boolean true if a Game rule applies to the Player's move
+     */
+    boolean doesAGameRuleApply(ChessBoard board, Move move){
+        for(ChessRule rule:chessRules){
+            if(rule.isRuleApplicable(board, move)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    void setGameRules(List<ChessRule> rules){
+        this.chessRules=rules;
+    }
+    
+    void setChessBoard(ChessBoard board){
+        this.board=board;
+    }
+    
+    
 }
