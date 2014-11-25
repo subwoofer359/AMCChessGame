@@ -20,16 +20,7 @@ public class KingPiece extends SimplePiece {
      */
     @Override
     boolean validMovement(Move move) {
-        return isMoveOneSquareInAnyDirection(move) ||
-                        isCastlingMove(move);
-    }
-
-    boolean isCastlingMove(Move move){
-        if(this.hasMoved()){
-            return false;
-        }else{
-            return move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==0;
-        }
+        return isMoveOneSquareInAnyDirection(move);
     }
     
     /**
