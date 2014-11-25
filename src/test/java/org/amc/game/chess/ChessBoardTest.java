@@ -31,7 +31,6 @@ public class ChessBoardTest {
 
     @Test
     public void testMovesAreSaved() throws InvalidMoveException {
-        Player playerOne = new HumanPlayer("Stephen", Colour.BLACK);
         BishopPiece bishop = new BishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, startLocation);
         Move move = new Move(startLocation, endLocation);
