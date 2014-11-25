@@ -1,5 +1,8 @@
 package org.amc.game.chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a Queen Chess piece The queen combines the power of the rook and
  * bishop and can move any number of squares along rank, file, or diagonal.
@@ -21,5 +24,11 @@ public class QueenPiece extends ComplexPiece {
     @Override
     boolean validMovement(Move move) {
         return Move.isDiagonalMove(move) || Move.isFileOrRankMove(move);
+    }
+    
+    @Override
+    public List<Location> getAllPossibleMoves(Location location) {
+       List<Location> possibleSquares=new ArrayList<>();
+       return possibleSquares;
     }
 }

@@ -1,5 +1,8 @@
 package org.amc.game.chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a Rook in the game of Chess
  *
@@ -20,5 +23,11 @@ public class RookPiece extends ComplexPiece {
     @Override
     boolean validMovement(Move move) {
         return Move.isFileOrRankMove(move);
+    }
+    
+    @Override
+    public List<Location> getAllPossibleMoves(Location location) {
+       List<Location> possibleSquares=new ArrayList<>();
+       return possibleSquares;
     }
 }

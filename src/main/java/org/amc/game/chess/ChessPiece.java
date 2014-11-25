@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import java.util.List;
+
 /**
  * Represents a Chess piece. Responsible for the piece's valid moves
  * 
@@ -36,4 +38,11 @@ public interface ChessPiece {
      */
     boolean hasMoved();
 
+    /**
+     * Get all the possible moves the Piece can make
+     * 
+     * @param location Location the location of the ChessPiece
+     * @return List
+     */
+    List<Location> getAllPossibleMoves(Location location);
 }

@@ -1,5 +1,8 @@
 package org.amc.game.chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a Bishop in the game of chess
  * 
@@ -18,4 +21,12 @@ public class BishopPiece extends ComplexPiece {
     boolean validMovement(Move move) {
         return Move.isDiagonalMove(move);
     }
+
+    @Override
+    public List<Location> getAllPossibleMoves(Location location) {
+       List<Location> possibleSquares=new ArrayList<>();
+       return possibleSquares;
+    }
+    
+    
 }
