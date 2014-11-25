@@ -104,7 +104,7 @@ public class CastlingTest {
     public void testSquareBetweenKingAndRightRookNotEmpty(){
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(F,1));
         assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(G,1));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), castlingKingRightLocation);
         board.removePieceOnBoardAt(new Location(F,1));
         assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
     }
@@ -113,10 +113,10 @@ public class CastlingTest {
     public void testSquareBetweenKingAndLeftRookNotEmpty(){
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(B,1));
         assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(C,1));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), castlingKingLeftLocation);
         board.removePieceOnBoardAt(new Location(B,1));
         assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
-        board.removePieceOnBoardAt(new Location(C,1));
+        board.removePieceOnBoardAt(castlingKingLeftLocation);
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(D,1));
         assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
     }
