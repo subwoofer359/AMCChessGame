@@ -12,14 +12,22 @@ public class CastlingRule implements ChessRule {
 
     @Override
     public void applyRule(ChessBoard board, Move move) {
-        if(isCastlingMove(board, move)){
+        if(isRuleApplicable(board, move)){
             moveRook(board,move);
         }
     }
     
-    public boolean isCastlingMove(ChessBoard board, Move move) {
+    public boolean isCastlingMove(ChessBoard board,Move move){
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
-        if (piece instanceof KingPiece && ((KingPiece) piece).isCastlingMove(move)) {
+        if(piece instanceof KingPiece){
+            return !piece.hasMoved() && move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==0;
+        }else{
+            return false;
+        }
+        
+    }
+    public boolean isRuleApplicable(ChessBoard board, Move move) {    
+        if (isCastlingMove(board, move)) {
             int rank=move.getStart().getNumber();
             if (isKingCastlingToTheRight(move)) {
                 ChessPiece rook = board.getPieceFromBoardAt(new Location(H, rank));

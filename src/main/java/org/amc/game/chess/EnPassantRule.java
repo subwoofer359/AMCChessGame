@@ -8,6 +8,7 @@ public class EnPassantRule implements ChessRule {
         if(isMoveEnPassantCapture(board,move)){
             Location endSquare=move.getEnd();
             ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
+            board.move(move);
             if(piece.getColour().equals(Colour.WHITE)){
                 Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
                 board.removePieceOnBoardAt(capturedPawn);
@@ -18,6 +19,8 @@ public class EnPassantRule implements ChessRule {
             }    
         }
     }
+    
+    
     
     /**
      * Checks to see if the move is en passant
@@ -33,5 +36,13 @@ public class EnPassantRule implements ChessRule {
         }else{
             return false;
         }
+    }
+
+
+
+    @Override
+    public boolean isRuleApplicable(ChessBoard board, Move move) {
+        // TODO Move code from PawnPiece.isEnPassantCapture to here
+        return isMoveEnPassantCapture(board, move);
     }
 }
