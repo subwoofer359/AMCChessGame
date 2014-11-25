@@ -2,8 +2,16 @@ package org.amc.game.chess;
 
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
+/**
+ * Encapsulates the Castling move rule in chess
+ * @author Adrian Mclaughlin
+ *
+ */
 public class CastlingRule implements ChessRule {
 
+    /**
+     * @see ChessRule#applyRule(ChessBoard, Move)
+     */
     @Override
     public void applyRule(ChessBoard board, Move move) {
         if(isRuleApplicable(board, move)){
@@ -12,7 +20,7 @@ public class CastlingRule implements ChessRule {
         }
     }
     
-    public boolean isCastlingMove(ChessBoard board,Move move){
+    private boolean isCastlingMove(ChessBoard board,Move move){
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         if(piece instanceof KingPiece){
             return !piece.hasMoved() && move.getAbsoluteDistanceX()==2 && move.getAbsoluteDistanceY()==0;
@@ -21,6 +29,11 @@ public class CastlingRule implements ChessRule {
         }
         
     }
+    
+    /**
+     * @see ChessRule#isRuleApplicable(ChessBoard, Move)
+     */
+    @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {    
         if (isCastlingMove(board, move)) {
             int rank=move.getStart().getNumber();
@@ -49,7 +62,7 @@ public class CastlingRule implements ChessRule {
         }
     }
     
-    public void moveRook(ChessBoard board,Move move){
+    private void moveRook(ChessBoard board,Move move){
         int rank=move.getStart().getNumber();
         Location rookLocation=null;
         Location rookNewLocation=null;

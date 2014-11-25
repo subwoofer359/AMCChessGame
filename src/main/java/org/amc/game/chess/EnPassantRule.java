@@ -6,8 +6,9 @@ package org.amc.game.chess;
  *
  */
 public class EnPassantRule implements ChessRule {
-
-
+    /**
+     * @see ChessRule#applyRule(ChessBoard, Move)
+     */
     @Override
     public void applyRule(ChessBoard board, Move move) {
         if(isMoveEnPassantCapture(board,move)){
@@ -52,7 +53,7 @@ public class EnPassantRule implements ChessRule {
     boolean isEnPassantCapture(ChessBoard board, Move move) {
         Move lastMove = board.getTheLastMove();
         ChessPiece piece = board.getPieceFromBoardAt(lastMove.getEnd());
-        if (!board.isEndSquareEmpty(move.getEnd())) {
+        if (isEndSquareNotEmpty(board, move)) {
             return false;
         }
         if (isPawnChessPiece(piece) && lastMove.getAbsoluteDistanceY() == 2
@@ -63,6 +64,9 @@ public class EnPassantRule implements ChessRule {
         }
     }
     
+    private boolean isEndSquareNotEmpty(ChessBoard board,Move move){
+        return !board.isEndSquareEmpty(move.getEnd());
+    }
     
     private boolean isPawnChessPiece(ChessPiece piece) {
         return piece != null && piece instanceof PawnPiece;
@@ -72,9 +76,11 @@ public class EnPassantRule implements ChessRule {
         return myMove.getEnd().getLetter().equals(lastOpposingMove.getEnd().getLetter());
     }
 
+    /**
+     * @see ChessRule#isRuleApplicable(ChessBoard, Move)
+     */
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {
-        // TODO Move code from PawnPiece.isEnPassantCapture to here
         return isMoveEnPassantCapture(board, move);
     }
 }
