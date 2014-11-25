@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import org.junit.Test;
-
 public interface ChessPieceTest {
 
     /**
