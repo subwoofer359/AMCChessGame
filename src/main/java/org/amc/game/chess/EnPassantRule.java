@@ -26,7 +26,14 @@ public class EnPassantRule implements ChessRule {
         }
     }
     
-    
+    /**
+     * @see ChessRule#unapplyRule(ChessBoard, Move)
+     */
+    @Override
+    public void unapplyRule(ChessBoard board, Move move) {
+        // TODO Auto-generated method stub
+        
+    }
     
     /**
      * Checks to see if the move is en passant
