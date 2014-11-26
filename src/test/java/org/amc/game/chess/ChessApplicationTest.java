@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import static org.amc.game.chess.StartingSquare.*;
 
@@ -18,10 +19,11 @@ public class ChessApplicationTest {
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
-        blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
+        blackPlayer=new HumanPlayer("Robin", Colour.BLACK);        
         board=new ChessBoard();
         game=new ChessApplication(whitePlayer,blackPlayer);
-        chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        chessGame=spy(new ChessGame(board, whitePlayer, blackPlayer));
+        doReturn(false).when(chessGame).isPlayersKingInCheck(any(HumanPlayer.class), any(ChessBoard.class));
         game.setChessGame(chessGame);
     }
     

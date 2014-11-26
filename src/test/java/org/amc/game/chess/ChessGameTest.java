@@ -21,6 +21,8 @@ public class ChessGameTest {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
         blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
         board=new ChessBoard();
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), StartingSquare.WHITE_KING.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
         startLocation = new Location(A, 8);
         endLocation = new Location(B, 7);
@@ -41,15 +43,12 @@ public class ChessGameTest {
     
     @Test
     public void testPlayerHasTheirKing(){
-        KingPiece kingWhite=new KingPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(kingWhite, new Location(D,4));
         assertTrue(chessGame.doesThePlayerStillHaveTheirKing(whitePlayer));
     }
     
     @Test
     public void testPlayerDoesNotHaveTheirKing(){
-        KingPiece kingWhite=new KingPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(kingWhite, new Location(D,4));
+        board.removePieceOnBoardAt(StartingSquare.BLACK_KING.getLocation());
         assertTrue(chessGame.doesThePlayerStillHaveTheirKing(whitePlayer));
         assertFalse(chessGame.doesThePlayerStillHaveTheirKing(blackPlayer));
     }
@@ -60,14 +59,14 @@ public class ChessGameTest {
         BishopPiece bishop=new BishopPiece(Colour.WHITE);
         
         assertFalse(chessGame.isGameOver(whitePlayer, blackPlayer));
-        board.putPieceOnBoardAt(bishop,new Location(E,8));
+        board.putPieceOnBoardAt(bishop,StartingSquare.BLACK_KING.getLocation());
         assertTrue(chessGame.isGameOver(whitePlayer, blackPlayer));
         
         board.initialise();
         bishop=new BishopPiece(Colour.BLACK);
         
         assertFalse(chessGame.isGameOver(whitePlayer, blackPlayer));
-        board.putPieceOnBoardAt(bishop,new Location(E,1));
+        board.putPieceOnBoardAt(bishop,StartingSquare.WHITE_KING.getLocation());
         assertTrue(chessGame.isGameOver(whitePlayer, blackPlayer));
        
     }
@@ -97,36 +96,27 @@ public class ChessGameTest {
     
     @Test
     public void doesGameRuleApply(){
-        KingPiece king =new KingPiece(Colour.WHITE);
         RookPiece rook = new RookPiece(Colour.WHITE);
-        Location kingStartPosition = new Location(E,1);
         Location rookStartPosition = new Location(H,1);
-        Move move=new Move(kingStartPosition,new Location(G,1));
-        board.putPieceOnBoardAt(king, kingStartPosition);
+        Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(G,1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         assertTrue(chessGame.doesAGameRuleApply(board, move));
     }
     
     @Test
     public void doesNotGameRuleApply(){
-        KingPiece king =new KingPiece(Colour.WHITE);
         RookPiece rook = new RookPiece(Colour.WHITE);
-        Location kingStartPosition = new Location(E,1);
         Location rookStartPosition = new Location(H,1);
-        Move move=new Move(kingStartPosition,new Location(F,1));
-        board.putPieceOnBoardAt(king, kingStartPosition);
+        Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(F,1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         assertFalse(chessGame.doesAGameRuleApply(board, move));
     }
     
     @Test
     public void gameRuleApplied() throws InvalidMoveException{
-        KingPiece king =new KingPiece(Colour.WHITE);
         RookPiece rook = new RookPiece(Colour.WHITE);
-        Location kingStartPosition = new Location(E,1);
         Location rookStartPosition = new Location(H,1);
-        Move move=new Move(kingStartPosition,new Location(F,1));
-        board.putPieceOnBoardAt(king, kingStartPosition);
+        Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(F,1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         chessGame.move(whitePlayer, move);
     }

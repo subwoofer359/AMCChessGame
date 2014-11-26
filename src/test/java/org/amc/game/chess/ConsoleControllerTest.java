@@ -3,7 +3,6 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,27 +11,30 @@ import java.text.ParseException;
 import static org.mockito.Mockito.*;
 
 public class ConsoleControllerTest {
-
+    private ChessBoard board;
+    private Player player1;
+    private Player player2;
+    private Location startLocation;
+    private Location endLocation;
+    private ChessGame game;
+    private ChessPiece piece;
+    
     @Before
     public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
+        player1=new HumanPlayer("Test1", Colour.BLACK);
+        player2=new HumanPlayer("Test2", Colour.WHITE);
+        board=new ChessBoard();
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), StartingSquare.WHITE_KING.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
+        startLocation=new Location(Coordinate.A,1);
+        endLocation=new Location(Coordinate.B,2);
+        game=new ChessGame(board,player1,player2);
+        piece =new BishopPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(piece,startLocation);
     }
 
     @Test
     public void testTakeTurn()throws InvalidMoveException{
-        Player player1=new HumanPlayer("Test1", Colour.BLACK);
-        Player player2=new HumanPlayer("Test2", Colour.WHITE);
-        Location startLocation=new Location(Coordinate.A,1);
-        Location endLocation=new Location(Coordinate.B,2);
-        
-        ChessPiece piece =new BishopPiece(Colour.BLACK);
-        ChessBoard board=new ChessBoard();
-        ChessGame game=new ChessGame(board,player1,player2);
-        board.putPieceOnBoardAt(piece,startLocation);
-        
         ConsoleController controller=new ConsoleController(game);
         MockUserInput userInput=new MockUserInput();
         userInput.setOutput("A1B2");
@@ -43,21 +45,11 @@ public class ConsoleControllerTest {
         assertNull(board.getPieceFromBoardAt(startLocation));
     }
     
+    @SuppressWarnings("unchecked")
     @Test(expected=InvalidMoveException.class)
     public void testTakeTurnThrowsException()throws InvalidMoveException,ParseException{
-        Player player1=new HumanPlayer("Test1", Colour.BLACK);
-        Player player2=new HumanPlayer("Test2", Colour.WHITE);
-        Location startLocation=new Location(Coordinate.A,1);
-        Location endLocation=new Location(Coordinate.B,2);
         InputParser parser=mock(InputParser.class);
         when(parser.parseMoveString(anyString())).thenThrow(ParseException.class);
-        
-        
-        ChessPiece piece =new BishopPiece(Colour.BLACK);
-        ChessBoard board=new ChessBoard();
-        board.putPieceOnBoardAt(piece,startLocation);
-        ChessGame game=new ChessGame(board,player1,player2);
-        
         ConsoleController controller=new ConsoleController(game);
         controller.setInputParser(parser);
         MockUserInput userInput=new MockUserInput();
