@@ -26,6 +26,7 @@ public class ChessGame {
         chessRules=new ArrayList<>();
         chessRules.add(new EnPassantRule());
         chessRules.add(new CastlingRule());
+        chessRules.add(new PawnPromotionRule());
     }
     
     public Player getCurrentPlayer() {
