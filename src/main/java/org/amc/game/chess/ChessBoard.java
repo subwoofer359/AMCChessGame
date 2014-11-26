@@ -84,8 +84,7 @@ public class ChessBoard extends DefaultSubject {
 
     /**
      * Move a ChessPiece from one square to another as long as the move is valid
-     * @param move
-     *            Move
+     * @param move Move
      */
     public void move(Move move) {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
@@ -95,6 +94,8 @@ public class ChessBoard extends DefaultSubject {
         this.allGameMoves.add(move);
         this.notifyObservers(null);
     }
+    
+    
 
     /**
      * Removes the ChessPiece from the Board The square it occupied is set back
@@ -184,6 +185,16 @@ public class ChessBoard extends DefaultSubject {
             }
         }
         throw new RuntimeException("Player's king not found this should not happened");
+    }
+    
+    /**
+     * Removes a move saved from previous players turns
+     * Can throw an exception if the Move doesn't exist
+     * 
+     * @param move Move to be removed
+     */
+    public void removeMoveFromMoveList(Move move){
+        this.allGameMoves.remove(move);
     }
     
     public class ChessPieceLocation{

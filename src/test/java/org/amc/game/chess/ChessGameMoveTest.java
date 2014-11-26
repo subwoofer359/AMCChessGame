@@ -80,7 +80,7 @@ public class ChessGameMoveTest {
         verify(board, times(1)).move(move);
     }
     
-    @Test
+    @Test(expected=InvalidMoveException.class)
     public void testMoveIntoCheckNoSpecialMove() throws InvalidMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
@@ -89,12 +89,8 @@ public class ChessGameMoveTest {
         doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
                         any(Move.class));
 
-        try{
-            spyChessGame.move(whitePlayer, move);
-        }catch(InvalidMoveException ie){
-            assertTrue(ie instanceof InvalidMoveException);
-        }
-
+        spyChessGame.move(whitePlayer, move);
+        
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
         verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
@@ -119,7 +115,7 @@ public class ChessGameMoveTest {
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
         verify(spyChessGame, times(0)).doesAGameRuleApply(board, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
-        verify(board, times(0)).move(move);
+        verify(board, times(1)).move(move);
     }
     
     @Test(expected=InvalidMoveException.class)
@@ -145,7 +141,7 @@ public class ChessGameMoveTest {
 
         spyChessGame.move(whitePlayer, move);
 
-        verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
+        verify(spyChessGame, times(1)).isPlayersKingInCheck(whitePlayer, board);
         verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
         verify(chessPiece, times(0)).isValidMove(board, move);
         verify(board, times(0)).move(move);

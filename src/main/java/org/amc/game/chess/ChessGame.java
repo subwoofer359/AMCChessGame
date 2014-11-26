@@ -61,10 +61,11 @@ public class ChessGame {
             throw new InvalidMoveException("Player can only move their own pieces");
         } else if(isPlayersKingInCheck(player, board)){
             if(piece.isValidMove(board, move)){
+                ReversibleMove reversible=new ReversibleMove(board, move);
+                reversible.move();
                 if(isPlayersKingInCheck(player, board)){
+                    reversible.undoMove();
                     throw new InvalidMoveException("King is checked");
-                }else{
-                    board.move(move);
                 }
             }else{
                 throw new InvalidMoveException("Not a valid move");
@@ -75,10 +76,11 @@ public class ChessGame {
               rule.applyRule(board, move);
           }
         }else if(piece.isValidMove(board, move)){
+                ReversibleMove reversible=new ReversibleMove(board, move);
+                reversible.move();
                 if(isPlayersKingInCheck(player, board)){
+                    reversible.undoMove();
                     throw new InvalidMoveException("King is checked");
-                }else{
-                    board.move(move);
                 }
         }else{
             throw new InvalidMoveException("Not a valid move");
@@ -198,6 +200,4 @@ public class ChessGame {
     void setChessBoard(ChessBoard board){
         this.board=board;
     }
-    
-    
 }

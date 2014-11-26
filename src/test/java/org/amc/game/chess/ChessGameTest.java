@@ -5,6 +5,7 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ChessGameTest {
