@@ -20,13 +20,5 @@ public class BishopPiece extends ComplexPiece {
     @Override
     boolean validMovement(Move move) {
         return Move.isDiagonalMove(move);
-    }
-
-    @Override
-    public List<Location> getAllPossibleMoves(Location location) {
-       List<Location> possibleSquares=new ArrayList<>();
-       return possibleSquares;
-    }
-    
-    
+    }    
 }

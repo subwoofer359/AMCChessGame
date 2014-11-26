@@ -37,12 +37,4 @@ public interface ChessPiece {
      * @return true if the ChessPiece has moved
      */
     boolean hasMoved();
-
-    /**
-     * Get all the possible moves the Piece can make
-     * 
-     * @param location Location the location of the ChessPiece
-     * @return List
-     */
-    List<Location> getAllPossibleMoves(Location location);
 }

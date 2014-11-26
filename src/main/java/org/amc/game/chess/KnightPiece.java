@@ -1,8 +1,5 @@
 package org.amc.game.chess;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a Knight Chess Piece
  * 
@@ -43,11 +40,5 @@ public class KnightPiece extends SimplePiece {
         }else{        
             return isEndSquareOccupiedByOpponentsPiece(board, move);
         }
-    }
-    
-    @Override
-    public List<Location> getAllPossibleMoves(Location location) {
-       List<Location> possibleSquares=new ArrayList<>();
-       return possibleSquares;
     }
 }

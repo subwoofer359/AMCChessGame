@@ -1,8 +1,5 @@
 package org.amc.game.chess;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a King in the game of Chess
  * 
@@ -18,11 +15,6 @@ public class KingPiece extends SimplePiece {
         super(colour);
     }
 
-    @Override
-    public List<Location> getAllPossibleMoves(Location location) {
-       List<Location> possibleSquares=new ArrayList<>();
-       return possibleSquares;
-    }
     /**
      * @see SimplePiece#validMovement(Move)
      */
