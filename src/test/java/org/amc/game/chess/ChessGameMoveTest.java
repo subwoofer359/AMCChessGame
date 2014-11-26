@@ -141,7 +141,7 @@ public class ChessGameMoveTest {
 
         spyChessGame.move(whitePlayer, move);
 
-        verify(spyChessGame, times(1)).isPlayersKingInCheck(whitePlayer, board);
+        verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
         verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
         verify(chessPiece, times(0)).isValidMove(board, move);
         verify(board, times(0)).move(move);
