@@ -167,8 +167,8 @@ public class ChessGame {
         Location playersKingLocation=board.getPlayersKingLocation(player);
         List<ChessPieceLocation> listOfEnemysPieces=board.getListOfPlayersPiecesOnTheBoard(player==playerOne?playerTwo:playerOne);
         for(ChessPieceLocation pieceLocation:listOfEnemysPieces){
-            List<Location> possibleMoves =pieceLocation.getPiece().getAllPossibleMoves(pieceLocation.getLocation());
-            if(possibleMoves.contains(playersKingLocation)){
+            Move move=new Move(pieceLocation.getLocation(),playersKingLocation);
+            if(pieceLocation.getPiece().isValidMove(board, move)){
                 return true;
             }
         }

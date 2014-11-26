@@ -1,9 +1,8 @@
 package org.amc.game.chess;
 
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +14,27 @@ import java.util.Collection;
 
 
 @RunWith(Parameterized.class)
-public class IsKingInCheckTest {
+public class IsKingNotInCheckTest {
+
     private Player whitePlayer;
     private Player blackPlayer;
     private ChessPiece attackingChessPiece;
     private Location attackingChessPieceLocation;
-
-    public IsKingInCheckTest(ChessPiece attackingChessPiece,Location attackingChessPieceLocation) {
+    
+    public IsKingNotInCheckTest(ChessPiece attackingChessPiece,Location attackingChessPieceLocation) {
         this.attackingChessPiece=attackingChessPiece;
         this.attackingChessPieceLocation=attackingChessPieceLocation;
+    }
+    
+    @Parameters
+    public static Collection<?> addedChessPieces(){
+        
+        return Arrays.asList(new Object[][]{
+                        {new BishopPiece(Colour.BLACK), new Location(A,2)},
+                        {new PawnPiece(Colour.BLACK), new Location(E,2)},
+                        {new BishopPiece(Colour.WHITE), new Location(A,2)}
+                        });
+        
     }
     
     @Before
@@ -32,29 +43,15 @@ public class IsKingInCheckTest {
         blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Parameters
-    public static Collection<?> addedChessPieces(){
-        
-        return Arrays.asList(new Object[][]{
-                        {new BishopPiece(Colour.BLACK), new Location(A,5)},
-                        {new PawnPiece(Colour.BLACK), new Location(F,2)},
-                        {new KnightPiece(Colour.BLACK), new Location(D,3)}
-                        });
-        
-    }
-    
     @Test
-    public void testKingIsChecked() {
+    public void testKingIsNotChecked() {
         ChessBoard board=new ChessBoard();
         ChessPiece whiteKing=new KingPiece(Colour.WHITE);
+        ChessPiece blackKing=new KingPiece(Colour.BLACK);
         board.putPieceOnBoardAt(whiteKing, StartingSquare.WHITE_KING.getLocation());
+        board.putPieceOnBoardAt(blackKing, StartingSquare.BLACK_KING.getLocation());
         board.putPieceOnBoardAt(attackingChessPiece, attackingChessPieceLocation);
         ChessGame chessGame=new ChessGame(board,whitePlayer, blackPlayer);
-        assertTrue(chessGame.isPlayersKingInCheck(whitePlayer,board));
+        assertFalse(chessGame.isPlayersKingInCheck(whitePlayer,board));
     }
-   
 }
