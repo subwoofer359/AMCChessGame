@@ -61,34 +61,37 @@ public class ChessGame {
             throw new InvalidMoveException("Player can only move their own pieces");
         } else if(isPlayersKingInCheck(player, board)){
             if(piece.isValidMove(board, move)){
-                ReversibleMove reversible=new ReversibleMove(board, move);
-                reversible.move();
-                if(isPlayersKingInCheck(player, board)){
-                    reversible.undoMove();
-                    throw new InvalidMoveException("King is checked");
-                }
+                thenMoveChessPiece(player,move);
             }else{
                 throw new InvalidMoveException("Not a valid move");
             }
         }else if(doesAGameRuleApply(board, move)){
-            for(ChessRule rule:chessRules){
-              rule.applyRule(board, move);
-              if(isPlayersKingInCheck(player, board)){
-                  rule.unapplyRule(board, move);
-                  throw new InvalidMoveException("King is checked");
-              }
-          }
+            thenApplyGameRule(player, move);
         }else if(piece.isValidMove(board, move)){
-                ReversibleMove reversible=new ReversibleMove(board, move);
-                reversible.move();
-                if(isPlayersKingInCheck(player, board)){
-                    reversible.undoMove();
-                    throw new InvalidMoveException("King is checked");
-                }
+                thenMoveChessPiece(player,move);
         }else{
             throw new InvalidMoveException("Not a valid move");
         }
         
+    }
+    
+    private void thenApplyGameRule(Player player,Move move) throws InvalidMoveException{
+        for(ChessRule rule:chessRules){
+            rule.applyRule(board, move);
+            if(isPlayersKingInCheck(player, board)){
+                rule.unapplyRule(board, move);
+                throw new InvalidMoveException("King is checked");
+            }
+        }
+    }
+
+    private void thenMoveChessPiece(Player player,Move move) throws InvalidMoveException{
+        ReversibleMove reversible=new ReversibleMove(board, move);
+        reversible.move();
+        if(isPlayersKingInCheck(player, board)){
+            reversible.undoMove();
+            throw new InvalidMoveException("King is checked");
+        }
     }
     
     /**
