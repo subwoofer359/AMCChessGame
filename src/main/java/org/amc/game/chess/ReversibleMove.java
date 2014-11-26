@@ -24,4 +24,7 @@ public class ReversibleMove{
         piece=null;
     }
 
+    public final Move getMove() {
+        return move;
+    }
 }

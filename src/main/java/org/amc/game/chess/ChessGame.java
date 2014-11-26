@@ -71,9 +71,12 @@ public class ChessGame {
                 throw new InvalidMoveException("Not a valid move");
             }
         }else if(doesAGameRuleApply(board, move)){
-            //Todo add isPlayersKingInCheck check
             for(ChessRule rule:chessRules){
               rule.applyRule(board, move);
+              if(isPlayersKingInCheck(player, board)){
+                  rule.unapplyRule(board, move);
+                  throw new InvalidMoveException("King is checked");
+              }
           }
         }else if(piece.isValidMove(board, move)){
                 ReversibleMove reversible=new ReversibleMove(board, move);

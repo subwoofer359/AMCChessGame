@@ -9,14 +9,28 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  */
 public class CastlingRule implements ChessRule {
 
+    private ReversibleMove kingsMove;
+    private ReversibleMove rooksMove;
     /**
      * @see ChessRule#applyRule(ChessBoard, Move)
      */
     @Override
     public void applyRule(ChessBoard board, Move move) {
         if(isRuleApplicable(board, move)){
-            board.move(move);
+            kingsMove=new ReversibleMove(board,move);
+            kingsMove.move();
             moveRook(board,move);
+        }
+    }
+    
+    /**
+     * @see ChessRule#unapplyRule(ChessBoard, Move)
+     */
+    @Override
+    public void unapplyRule(ChessBoard board,Move move){
+        if(board.getTheLastMove().equals(rooksMove.getMove())){
+            rooksMove.undoMove();
+            kingsMove.undoMove();
         }
     }
     
@@ -66,19 +80,16 @@ public class CastlingRule implements ChessRule {
         int rank=move.getStart().getNumber();
         Location rookLocation=null;
         Location rookNewLocation=null;
-        ChessPiece piece=null;
         if(isKingCastlingToTheRight(move)){
             rookLocation=new Location(H,rank);
             rookNewLocation=new Location(F,rank);
-            piece=board.getPieceFromBoardAt(rookLocation);
             
         }else{
             rookLocation=new Location(A,rank);
             rookNewLocation=new Location(D,rank);
-            piece=board.getPieceFromBoardAt(rookLocation);
         }
-        board.removePieceOnBoardAt(rookLocation);
-        board.putPieceOnBoardAt(piece, rookNewLocation);
+        rooksMove=new ReversibleMove(board,new Move(rookLocation,rookNewLocation));
+        rooksMove.move();
     }
     
     private boolean isKingCastlingToTheRight(Move move){
