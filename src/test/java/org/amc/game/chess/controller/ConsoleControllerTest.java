@@ -1,8 +1,21 @@
-package org.amc.game.chess;
+package org.amc.game.chess.controller;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.BishopPiece;
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessPiece;
+import org.amc.game.chess.Colour;
+import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.KingPiece;
+import org.amc.game.chess.Location;
+import org.amc.game.chess.Player;
+import org.amc.game.chess.StartingSquare;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.controller.ConsoleController;
+import org.amc.game.chess.controller.InputParser;
 import org.junit.Before;
 import org.junit.Test;
 

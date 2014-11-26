@@ -1,4 +1,6 @@
-package org.amc.game.chess;
+package org.amc.game.chess.controller;
+
+import org.amc.game.chess.Move;
 
 import java.text.ParseException;
 

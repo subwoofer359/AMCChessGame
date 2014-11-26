@@ -1,4 +1,10 @@
-package org.amc.game.chess;
+package org.amc.game;
+
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.Player;
+import org.amc.game.chess.controller.Controller;
+import org.amc.game.chess.view.ChessBoardView;
 
 /**
  * Represents a game of Chess

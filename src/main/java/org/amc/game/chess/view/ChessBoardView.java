@@ -1,6 +1,21 @@
-package org.amc.game.chess;
+package org.amc.game.chess.view;
 
+import org.amc.game.ChessApplication;
+import org.amc.game.chess.BishopPiece;
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessPiece;
+import org.amc.game.chess.Colour;
+import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.KingPiece;
+import org.amc.game.chess.KnightPiece;
+import org.amc.game.chess.Location;
+import org.amc.game.chess.PawnPiece;
+import org.amc.game.chess.Player;
+import org.amc.game.chess.QueenPiece;
+import org.amc.game.chess.RookPiece;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.controller.ConsoleController;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 
@@ -31,15 +46,13 @@ public class ChessBoardView implements Observer {
     /**
      * Prints the ChessBoard and position of the pieces on the screen
      */
-    void displayTheBoard() {
+    public void displayTheBoard() {
         StringBuilder sb = new StringBuilder();
         int row = 8;
         sb.append(printBoardHeader());
         while (row > 0) {
-            int col = 0;
-            while (col < 8) {
-                sb.append(printSquare(col, row));
-                col++;
+            for(Coordinate coord:ChessBoard.Coordinate.values()){
+                sb.append(printSquare(coord, row));
             }
             sb.append(addRowEnd(row));
 
@@ -57,10 +70,10 @@ public class ChessBoardView implements Observer {
      * @param row
      * @return StringBuilder
      */
-    private StringBuilder printSquare(int col, int row) {
+    private StringBuilder printSquare(Coordinate coordinate, int row) {
         StringBuilder sb = new StringBuilder();
         sb.append('|');
-        ChessPiece piece = chessBoard.getPieceFromBoardAt(col, row);
+        ChessPiece piece = chessBoard.getPieceFromBoardAt(new Location(coordinate,row));//getPieceFromBoardAt(col, row);
         if (piece == null) {
             sb.append("   ");
         } else {

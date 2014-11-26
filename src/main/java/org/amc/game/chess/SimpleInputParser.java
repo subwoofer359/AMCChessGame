@@ -1,6 +1,7 @@
 package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.controller.InputParser;
 
 import java.text.ParseException;
 

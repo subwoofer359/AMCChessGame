@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import java.util.List;
-
 /**
  * Represents a Chess piece. Responsible for the piece's valid moves
  * 

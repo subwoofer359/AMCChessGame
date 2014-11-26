@@ -1,4 +1,9 @@
-package org.amc.game.chess;
+package org.amc.game.chess.controller;
+
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.Move;
+import org.amc.game.chess.SimpleInputParser;
 
 import java.io.Console;
 import java.text.ParseException;

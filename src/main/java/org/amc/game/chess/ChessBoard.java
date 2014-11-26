@@ -113,7 +113,7 @@ public class ChessBoard extends DefaultSubject {
      * @param piece
      * @param location
      */
-    void putPieceOnBoardAt(ChessPiece piece, Location location) {
+    public void putPieceOnBoardAt(ChessPiece piece, Location location) {
         this.board[location.getLetter().getName()][location.getNumber() - 1] = piece;
     }
 
@@ -138,7 +138,7 @@ public class ChessBoard extends DefaultSubject {
      *            Location
      * @return ChessPiece
      */
-    ChessPiece getPieceFromBoardAt(Location location) {
+    public ChessPiece getPieceFromBoardAt(Location location) {
         return getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
     }
     
@@ -193,7 +193,7 @@ public class ChessBoard extends DefaultSubject {
      * 
      * @param move Move to be removed
      */
-    public void removeMoveFromMoveList(Move move){
+    void removeMoveFromMoveList(Move move){
         this.allGameMoves.remove(move);
     }
     

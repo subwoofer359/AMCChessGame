@@ -55,11 +55,25 @@ public class ChessGame {
      */
     public void move(Player player, Move move)throws InvalidMoveException{
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
+        checkChessPieceExistOnSquare(piece, move);
+        checkItsthePlayersPiece(player, piece);
+        moveThePlayersChessPiece(player, board, piece, move);
+    }
+    
+    private void checkChessPieceExistOnSquare(ChessPiece piece, Move move)throws InvalidMoveException{
         if (piece == null) {
             throw new InvalidMoveException("No piece at " + move.getStart());
-        } else if (notPlayersChessPiece(player, piece)) {
+        }
+    }
+    
+    private void checkItsthePlayersPiece(Player player,ChessPiece piece)throws InvalidMoveException{
+        if (notPlayersChessPiece(player, piece)) {
             throw new InvalidMoveException("Player can only move their own pieces");
-        } else if(isPlayersKingInCheck(player, board)){
+        } 
+    }
+   
+    private void moveThePlayersChessPiece(Player player,ChessBoard board,ChessPiece piece,Move move) throws InvalidMoveException{
+        if(isPlayersKingInCheck(player, board)){
             if(piece.isValidMove(board, move)){
                 thenMoveChessPiece(player,move);
             }else{
@@ -72,7 +86,6 @@ public class ChessGame {
         }else{
             throw new InvalidMoveException("Not a valid move");
         }
-        
     }
     
     private void thenApplyGameRule(Player player,Move move) throws InvalidMoveException{
@@ -111,7 +124,7 @@ public class ChessGame {
      * @param playerTwo
      * @return Boolean
      */
-    boolean isGameOver(Player playerOne, Player playerTwo) {
+    public boolean isGameOver(Player playerOne, Player playerTwo) {
         boolean playerOneHaveTheirKing = doesThePlayerStillHaveTheirKing(playerOne);
         boolean playerTwoHaveTheirKing = doesThePlayerStillHaveTheirKing(playerTwo);
         if (!playerOneHaveTheirKing) {
@@ -171,7 +184,7 @@ public class ChessGame {
      * @param board ChessBoard current ChessBoard
      * @return Boolean true if the opponent can capture the Player's king on the next turn
      */
-    boolean isPlayersKingInCheck(Player player,ChessBoard board){
+    public boolean isPlayersKingInCheck(Player player,ChessBoard board){
         Location playersKingLocation=board.getPlayersKingLocation(player);
         List<ChessPieceLocation> listOfEnemysPieces=board.getListOfPlayersPiecesOnTheBoard(player==playerOne?playerTwo:playerOne);
         for(ChessPieceLocation pieceLocation:listOfEnemysPieces){

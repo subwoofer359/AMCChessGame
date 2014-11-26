@@ -1,7 +1,9 @@
-package org.amc.game.chess;
+package org.amc.game.chess.view;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

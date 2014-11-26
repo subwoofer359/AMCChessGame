@@ -1,7 +1,10 @@
-package org.amc.game.chess;
+package org.amc.game.chess.controller;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
+import org.amc.game.chess.SimpleInputParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
