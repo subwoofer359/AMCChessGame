@@ -1,6 +1,6 @@
 package org.amc.game.chess;
 
-public class PawnPromotion extends PawnPieceRule {
+public class PawnPromotionRule extends PawnPieceRule {
     private static final int BLACK_PROMOTION_RANK=1;
     private static final int WHITE_PROMOTION_RANK=8;
     

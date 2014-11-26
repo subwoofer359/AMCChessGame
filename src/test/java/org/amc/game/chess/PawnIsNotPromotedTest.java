@@ -28,7 +28,7 @@ public class PawnIsNotPromotedTest {
     @Before
     public void setUp() throws Exception {
         board=new ChessBoard();
-        this.promotion=new PawnPromotion();
+        this.promotion=new PawnPromotionRule();
     }
     
     @Parameters
