@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.view.ChessBoardView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ public class PawnIsPromotedTest {
     @Before
     public void setUp() throws Exception {
         board=new ChessBoard();
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), StartingSquare.WHITE_KING.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
         this.promotion=new PawnPromotionRule();
     }
     
@@ -47,6 +50,19 @@ public class PawnIsPromotedTest {
         board.putPieceOnBoardAt(piece, move.getStart());
         assertTrue(promotion.isRuleApplicable(board, move));
         promotion.applyRule(board, move);
+        ChessPiece piece=board.getPieceFromBoardAt(move.getEnd());
+        assertNotNull(piece);
+        assertFalse(piece instanceof PawnPiece);
+    }
+    
+    @Test
+    public void testChessGamePawnPromotion()throws InvalidMoveException{
+        Player whitePlayer=new HumanPlayer("Test1", Colour.WHITE);
+        Player blackPlayer=new HumanPlayer("Test2", Colour.BLACK);
+        ChessGame chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        ChessBoardView view=new ChessBoardView(board);
+        board.putPieceOnBoardAt(piece, move.getStart());
+        chessGame.move(piece.getColour().equals(Colour.WHITE)?whitePlayer:blackPlayer, move);
         ChessPiece piece=board.getPieceFromBoardAt(move.getEnd());
         assertNotNull(piece);
         assertFalse(piece instanceof PawnPiece);

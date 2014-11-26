@@ -22,6 +22,7 @@ public class PawnPromotionRule extends PawnPieceRule {
             Colour colour=board.getPieceFromBoardAt(move.getEnd()).getColour();
             ChessPiece queenPiece=new QueenPiece(colour);
             board.putPieceOnBoardAt(queenPiece, move.getEnd());
+            board.notifyObservers(null);
         }
 
     }
