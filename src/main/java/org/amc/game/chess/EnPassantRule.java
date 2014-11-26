@@ -5,7 +5,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class EnPassantRule implements ChessRule {
+public class EnPassantRule extends PawnPieceRule{
     /**
      * @see ChessRule#applyRule(ChessBoard, Move)
      */
@@ -74,11 +74,7 @@ public class EnPassantRule implements ChessRule {
     private boolean isEndSquareNotEmpty(ChessBoard board,Move move){
         return !board.isEndSquareEmpty(move.getEnd());
     }
-    
-    private boolean isPawnChessPiece(ChessPiece piece) {
-        return piece != null && piece instanceof PawnPiece;
-    }
-    
+   
     private boolean moveToSameFile(Move myMove, Move lastOpposingMove) {
         return myMove.getEnd().getLetter().equals(lastOpposingMove.getEnd().getLetter());
     }
