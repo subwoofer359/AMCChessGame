@@ -1,9 +1,20 @@
 package org.amc.game.chess;
 
+/**
+ * Encapsulate the Pawn Promotion rule
+ * Automatically promotions the pawn to a queen.
+ * Needs to be improved
+ * 
+ * @author Adrian Mclaughlin
+ *
+ */
 public class PawnPromotionRule extends PawnPieceRule {
     private static final int BLACK_PROMOTION_RANK=1;
     private static final int WHITE_PROMOTION_RANK=8;
     
+    /**
+     * @see ChessRule#applyRule(ChessBoard, Move)
+     */
     @Override
     public void applyRule(ChessBoard board, Move move) {
         if(isRuleApplicable(board, move)){
@@ -15,12 +26,17 @@ public class PawnPromotionRule extends PawnPieceRule {
 
     }
 
+    /**
+     * Rule can't be unapplied
+     */
     @Override
     public void unapplyRule(ChessBoard board, Move move) {
         // Do nothing
-
     }
 
+    /**
+     * @see ChessRule#isRuleApplicable(ChessBoard, Move)
+     */
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {
         ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
