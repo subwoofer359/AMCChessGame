@@ -15,9 +15,14 @@ public class ReversibleMove{
         board.move(this.move);
     }
     
+    public void testMove(){
+        piece=board.getPieceFromBoardAt(move.getEnd());
+        board.quietMove(this.move);
+    }
+    
     public void undoMove(){
         Move undoMove=new Move(move.getEnd(),move.getStart());
-        board.move(undoMove);
+        board.quietMove(undoMove);
         board.removeMoveFromMoveList(move);
         board.removeMoveFromMoveList(undoMove);
         board.putPieceOnBoardAt(piece, move.getEnd());
