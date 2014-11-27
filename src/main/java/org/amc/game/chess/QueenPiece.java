@@ -22,4 +22,9 @@ public class QueenPiece extends ComplexPiece {
     boolean validMovement(Move move) {
         return Move.isDiagonalMove(move) || Move.isFileOrRankMove(move);
     }
+    
+    @Override
+    public boolean canSlide() {
+        return true;
+    }
 }

@@ -35,4 +35,6 @@ public interface ChessPiece {
      * @return true if the ChessPiece has moved
      */
     boolean hasMoved();
+    
+    boolean canSlide();
 }

@@ -41,4 +41,9 @@ public class KnightPiece extends SimplePiece {
             return isEndSquareOccupiedByOpponentsPiece(board, move);
         }
     }
+    
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
 }
