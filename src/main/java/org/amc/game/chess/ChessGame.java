@@ -156,6 +156,13 @@ public class ChessGame {
         
     }
     
+    /**
+     * Player's king has no safe squares to move to
+     * 
+     * @param player Player who's King is checkec
+     * @param board ChessBoard
+     * @return Boolean
+     */
     boolean cantKingMoveOutOfCheck(Player player,ChessBoard board){
         Location kingLocation=board.getPlayersKingLocation(player);
         ChessPiece kingPiece=board.getPieceFromBoardAt(kingLocation);
@@ -178,18 +185,61 @@ public class ChessGame {
         return possibleMoveLocations.isEmpty();
     }
     
+    /**
+     * Checks to see if the Player can capture the attacking ChessPiece
+     * Only if the capture doesn't lead to the King still being checked 
+     * 
+     * @param player Player
+     * @param board ChessBoard
+     * @return Boolean
+     */
     boolean canAttackingPieceBeCaptured(Player player,ChessBoard board){
         Location attackingPieceLocation=board.getTheLastMove().getEnd();
         List<ChessPieceLocation> myPieces=board.getListOfPlayersPiecesOnTheBoard(player);
         for(ChessPieceLocation cpl:myPieces){
             ChessPiece piece=cpl.getPiece();
             Move move=new Move(cpl.getLocation(),attackingPieceLocation);
-            return piece.isValidMove(board, move);
+            if(piece.isValidMove(board, move)){
+                ReversibleMove checkMove =new ReversibleMove(board,move);
+                checkMove.testMove();
+                if(!isPlayersKingInCheck(player, board)){
+                    checkMove.undoMove();
+                    return true;
+                }else{
+                        checkMove.undoMove();
+                }
+            }
         }
         return false;
     }
     
+    /**
+     * Checks to see if the attacking ChessPiece can be blocked
+     * 
+     * @param player
+     * @param board
+     * @return Boolean true if the attacking ChessPiece can be blocked.
+     */
     boolean canAttackingPieceBeBlocked(Player player,ChessBoard board){
+        Location attackingPieceLocation=board.getTheLastMove().getEnd();
+        Location playersKingLocation=board.getPlayersKingLocation(player);
+        List<ChessPieceLocation> myPieces=board.getListOfPlayersPiecesOnTheBoard(player);
+        ChessPiece attacker=board.getPieceFromBoardAt(attackingPieceLocation);
+        if(!attacker.canSlide()){
+            return false;
+        }else{
+            Move move=new Move(attackingPieceLocation,playersKingLocation);
+            Set<Location> blockingSquares=board.getAllSquaresInAMove(move);
+            for(Location blockingSquare:blockingSquares){
+                for(ChessPieceLocation cpl:myPieces){
+                    Move blockingMove=new Move(cpl.getLocation(),blockingSquare);
+                    ChessPiece piece=cpl.getPiece();
+                    if(!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
