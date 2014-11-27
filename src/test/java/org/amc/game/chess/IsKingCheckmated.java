@@ -14,6 +14,7 @@ public class IsKingCheckmated {
     private ChessGame chessGame;
     private ChessPiece whiteKing;
     private ChessPiece blackKing;
+    private PlayersKingCheckmated checkmateCondtion;
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
@@ -22,6 +23,7 @@ public class IsKingCheckmated {
         blackKing=new KingPiece(Colour.BLACK);
         board=new ChessBoard(); 
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        checkmateCondtion=new PlayersKingCheckmated();
     }
 
     @Test
@@ -137,7 +139,7 @@ public class IsKingCheckmated {
         board.move(move);
         
         assertFalse(chessGame.isCheckMate(blackPlayer, board));
-        assertTrue(chessGame.canAttackingPieceBeBlocked(blackPlayer, board));
+        assertTrue(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer, whitePlayer,board));
     }
     
     @Test
@@ -151,7 +153,7 @@ public class IsKingCheckmated {
         Move move =new Move(new Location(E,7),new Location(D,6));
         board.move(move);
        
-        assertTrue(chessGame.canAttackingPieceBeCaptured(blackPlayer, board));
+        assertTrue(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer,whitePlayer, board));
         assertFalse(chessGame.isCheckMate(blackPlayer, board));
     }
     
@@ -169,7 +171,7 @@ public class IsKingCheckmated {
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),new Location(F,2));
         Move move =new Move(new Location(H,8),new Location(H,5));
         board.move(move);
-        assertFalse(chessGame.canAttackingPieceBeBlocked(blackPlayer, board));
+        assertFalse(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer,whitePlayer, board));
     }
     
     @Test
@@ -180,7 +182,7 @@ public class IsKingCheckmated {
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),new Location(F,2));
         Move move =new Move(new Location(H,8),new Location(H,5));
         board.move(move);
-        assertTrue(chessGame.canAttackingPieceBeBlocked(blackPlayer, board));
+        assertTrue(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer, whitePlayer,board));
     }
     
 

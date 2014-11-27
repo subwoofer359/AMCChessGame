@@ -223,6 +223,29 @@ public class ChessBoard extends DefaultSubject {
         this.allGameMoves.remove(move);
     }
     
+    /**
+     * creates a List of all the Player's pieces still on the board
+     * 
+     * @param player
+     * @return List of ChessPieces
+     */
+    List<ChessPiece> getAllPlayersChessPiecesOnTheBoard(Player player) {
+        List<ChessPiece> pieceList = new ArrayList<ChessPiece>();
+        for (Coordinate letter : Coordinate.values()) {
+            for (int i = 1; i <= 8; i++) {
+                ChessPiece piece = getPieceFromBoardAt(letter.getName(), i);
+                if (piece == null) {
+                    continue;
+                } else {
+                    if (piece.getColour().equals(player.getColour())) {
+                        pieceList.add(piece);
+                    }
+                }
+            }
+        }
+        return pieceList;
+    }
+    
     public class ChessPieceLocation{
         private ChessPiece piece;
         private Location location;
