@@ -130,10 +130,10 @@ public class ChessGame {
     public boolean isGameOver(Player playerOne, Player playerTwo) {
         boolean playerOneHaveTheirKing = doesThePlayerStillHaveTheirKing(playerOne);
         boolean playerTwoHaveTheirKing = doesThePlayerStillHaveTheirKing(playerTwo);
-        if (!playerOneHaveTheirKing) {
+        if (!playerOneHaveTheirKing || isCheckMate(playerOne, board)) {
             playerTwo.isWinner(true);
             return true;
-        } else if (!playerTwoHaveTheirKing) {
+        } else if (!playerTwoHaveTheirKing || isCheckMate(playerTwo,board)) {
             playerOne.isWinner(true);
             return true;
         } else {
@@ -149,6 +149,14 @@ public class ChessGame {
      * @return Boolean true if checkmate has occurred
      */
     boolean isCheckMate(Player player,ChessBoard board){
+        return isPlayersKingInCheck(player, board) && 
+        cantKingMoveOutOfCheck(player, board) && 
+        !canAttackingPieceBeCaptured(player,board) &&
+        !canAttackingPieceBeBlocked(player,board);
+        
+    }
+    
+    boolean cantKingMoveOutOfCheck(Player player,ChessBoard board){
         Location kingLocation=board.getPlayersKingLocation(player);
         ChessPiece kingPiece=board.getPieceFromBoardAt(kingLocation);
         Set<Location> possibleMoveLocations=new KingPiece(player.getColour()).getPossibleMoveLocations(board,kingLocation);
@@ -167,7 +175,22 @@ public class ChessGame {
         }
         possibleMoveLocations.removeAll(squaresUnderAttack);
         board.putPieceOnBoardAt(kingPiece, kingLocation);
-        return possibleMoveLocations.isEmpty() && isPlayersKingInCheck(player, board);
+        return possibleMoveLocations.isEmpty();
+    }
+    
+    boolean canAttackingPieceBeCaptured(Player player,ChessBoard board){
+        Location attackingPieceLocation=board.getTheLastMove().getEnd();
+        List<ChessPieceLocation> myPieces=board.getListOfPlayersPiecesOnTheBoard(player);
+        for(ChessPieceLocation cpl:myPieces){
+            ChessPiece piece=cpl.getPiece();
+            Move move=new Move(cpl.getLocation(),attackingPieceLocation);
+            return piece.isValidMove(board, move);
+        }
+        return false;
+    }
+    
+    boolean canAttackingPieceBeBlocked(Player player,ChessBoard board){
+        return false;
     }
 
     /**

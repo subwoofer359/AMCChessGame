@@ -66,6 +66,19 @@ public class IsKingCheckmated {
     }
     
     @Test
+    public void notCheckmateSupportMate(){
+        board.putPieceOnBoardAt(new QueenPiece(Colour.WHITE),new Location(B,1));
+        Move move=new Move(new Location(B,1),new Location(B,6));
+        board.move(move);
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),new Location(C,6));
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),new Location(A,6));
+        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK),new Location(C,7));
+        
+        assertFalse(chessGame.isCheckMate(blackPlayer, board));
+        
+    }
+    
+    @Test
     public void checkmateRightTriangleMate(){
         board.putPieceOnBoardAt(new QueenPiece(Colour.WHITE),new Location(H,1));
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),new Location(H,6));
@@ -81,6 +94,17 @@ public class IsKingCheckmated {
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),new Location(F,2));
         
         assertTrue(chessGame.isCheckMate(blackPlayer, board));
+    }
+    
+    @Test
+    public void notCheckmateOuterRowMate(){
+        board.putPieceOnBoardAt(new QueenPiece(Colour.WHITE),new Location(H,4));
+        board.move(new Move(new Location(H,4),new Location(H,5)));
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),new Location(F,2));
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),new Location(H,3));
+        board.putPieceOnBoardAt(new RookPiece(Colour.BLACK),new Location(A,4));
+        
+        assertFalse(chessGame.isCheckMate(blackPlayer, board));
     }
     
     @Test
