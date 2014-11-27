@@ -4,7 +4,9 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 /**
  * Contains the Rules of Chess
  * 
@@ -137,6 +139,35 @@ public class ChessGame {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Checks to see if the player's king is checkmated.
+     * 
+     * @param player Player whos king ChessPiece is checkmated
+     * @param board ChessBoard
+     * @return Boolean true if checkmate has occurred
+     */
+    boolean isCheckMate(Player player,ChessBoard board){
+        Location kingLocation=board.getPlayersKingLocation(player);
+        ChessPiece kingPiece=board.getPieceFromBoardAt(kingLocation);
+        Set<Location> possibleMoveLocations=new KingPiece(player.getColour()).getPossibleMoveLocations(board,kingLocation);
+        board.removePieceOnBoardAt(kingLocation);
+        Set<Location> squaresUnderAttack=new HashSet<>();
+        List<ChessPieceLocation> enemyLocations=board.getListOfPlayersPiecesOnTheBoard(player==playerOne?playerTwo:playerOne);
+        for(Location loc:possibleMoveLocations){
+            for(ChessPieceLocation cpl:enemyLocations){
+                Move move=new Move(cpl.getLocation(), loc);
+                ChessPiece piece=cpl.getPiece();
+                if(piece.isValidMove(board, move)){
+                    squaresUnderAttack.add(loc);
+                    break;
+                }
+            }
+        }
+        possibleMoveLocations.removeAll(squaresUnderAttack);
+        board.putPieceOnBoardAt(kingPiece, kingLocation);
+        return possibleMoveLocations.isEmpty() && isPlayersKingInCheck(player, board);
     }
 
     /**
