@@ -5,7 +5,9 @@ import org.amc.util.DefaultSubject;
 import static org.amc.game.chess.StartingSquare.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -87,12 +89,21 @@ public class ChessBoard extends DefaultSubject {
      * @param move Move
      */
     public void move(Move move) {
+        quietMove(move);
+        this.notifyObservers(null);
+    }
+    /**
+     * Move a ChessPiece from one square to another as long as the move is valid
+     * Doesn't update Observers
+     * @param move Move
+     */
+    
+    void quietMove(Move move) {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
         removePieceOnBoardAt(move.getStart());
         putPieceOnBoardAt(piece, move.getEnd());
         piece.moved();
         this.allGameMoves.add(move);
-        this.notifyObservers(null);
     }
     
     
@@ -154,6 +165,21 @@ public class ChessBoard extends DefaultSubject {
         {
             return allGameMoves.get(allGameMoves.size()-1);
         }
+    }
+    
+    Set<Location> getAllSquaresInAMove(Move move){
+       Set<Location> squares=new HashSet<>();
+       int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
+       int positionX = move.getStart().getLetter().getName();
+       int positionY = move.getStart().getNumber();
+
+       for (int i = 0; i < distance-1; i++) {
+           positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
+           positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+           squares.add(new Location(Coordinate.values()[positionX],positionY));
+       }
+ 
+       return squares;
     }
     
     boolean isEndSquareEmpty(Location location){
