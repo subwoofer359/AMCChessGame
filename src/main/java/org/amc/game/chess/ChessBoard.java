@@ -42,7 +42,7 @@ public class ChessBoard extends DefaultSubject {
     }
 
     private final ChessPiece[][] board;
-    private final int BOARD_WIDTH=8;
+    public final int BOARD_WIDTH=8;
 
     List<Move> allGameMoves;
     private static final Move EMPTY_MOVE=new EmptyMove();
