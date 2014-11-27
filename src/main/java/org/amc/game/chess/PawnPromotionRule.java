@@ -13,7 +13,7 @@ public class PawnPromotionRule extends PawnPieceRule {
     private static final int WHITE_PROMOTION_RANK=8;
     
     /**
-     * @see ChessRule#applyRule(ChessBoard, Move)
+     * @see ChessMoveRule#applyRule(ChessBoard, Move)
      */
     @Override
     public void applyRule(ChessBoard board, Move move) {
@@ -36,7 +36,7 @@ public class PawnPromotionRule extends PawnPieceRule {
     }
 
     /**
-     * @see ChessRule#isRuleApplicable(ChessBoard, Move)
+     * @see ChessMoveRule#isRuleApplicable(ChessBoard, Move)
      */
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {

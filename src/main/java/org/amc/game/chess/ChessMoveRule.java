@@ -1,7 +1,7 @@
 package org.amc.game.chess;
 
 
-public interface ChessRule {
+public interface ChessMoveRule {
     
     void applyRule(ChessBoard board,Move move);
     

@@ -18,7 +18,7 @@ public class ChessGame {
     private Player currentPlayer;
     private Player playerOne;
     private Player playerTwo;
-    List<ChessRule> chessRules;
+    List<ChessMoveRule> chessRules;
     
     public ChessGame(ChessBoard board, Player playerOne, Player playerTwo) {
         this.board = board;
@@ -92,7 +92,7 @@ public class ChessGame {
     }
     
     private void thenApplyGameRule(Player player,Move move) throws InvalidMoveException{
-        for(ChessRule rule:chessRules){
+        for(ChessMoveRule rule:chessRules){
             rule.applyRule(board, move);
             if(isPlayersKingInCheck(player, board)){
                 rule.unapplyRule(board, move);
@@ -259,7 +259,7 @@ public class ChessGame {
      * @return Boolean true if a Game rule applies to the Player's move
      */
     boolean doesAGameRuleApply(ChessBoard board, Move move){
-        for(ChessRule rule:chessRules){
+        for(ChessMoveRule rule:chessRules){
             if(rule.isRuleApplicable(board, move)){
                 return true;
             }
@@ -267,7 +267,7 @@ public class ChessGame {
         return false;
     }
     
-    void setGameRules(List<ChessRule> rules){
+    void setGameRules(List<ChessMoveRule> rules){
         this.chessRules=rules;
     }
     

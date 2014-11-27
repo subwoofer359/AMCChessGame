@@ -15,7 +15,7 @@ public class ChessGameMoveTest {
     private Player whitePlayer;
     private Player blackPlayer;
     private ChessPiece chessPiece;
-    private ChessRule mockRule;
+    private ChessMoveRule mockRule;
     private ChessBoard board;
     private ChessGame chessGame;
     private Move move;
@@ -35,8 +35,8 @@ public class ChessGameMoveTest {
         
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         
-        mockRule = mock(ChessRule.class);
-        List<ChessRule> rules = new ArrayList<>();
+        mockRule = mock(ChessMoveRule.class);
+        List<ChessMoveRule> rules = new ArrayList<>();
         rules.add(mockRule);
         chessGame.setGameRules(rules);
         chessGame.setChessBoard(board);

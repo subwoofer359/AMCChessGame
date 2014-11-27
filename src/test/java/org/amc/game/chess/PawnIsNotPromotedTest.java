@@ -17,7 +17,7 @@ public class PawnIsNotPromotedTest {
 
     private ChessBoard board;
     private ChessPiece piece;
-    private ChessRule promotion;
+    private ChessMoveRule promotion;
     private Move move;
     
     public PawnIsNotPromotedTest(ChessPiece piece,Move move) {

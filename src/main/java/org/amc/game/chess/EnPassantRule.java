@@ -7,7 +7,7 @@ package org.amc.game.chess;
  */
 public class EnPassantRule extends PawnPieceRule{
     /**
-     * @see ChessRule#applyRule(ChessBoard, Move)
+     * @see ChessMoveRule#applyRule(ChessBoard, Move)
      */
     @Override
     public void applyRule(ChessBoard board, Move move) {
@@ -27,7 +27,7 @@ public class EnPassantRule extends PawnPieceRule{
     }
     
     /**
-     * @see ChessRule#unapplyRule(ChessBoard, Move)
+     * @see ChessMoveRule#unapplyRule(ChessBoard, Move)
      */
     @Override
     public void unapplyRule(ChessBoard board, Move move) {
@@ -80,7 +80,7 @@ public class EnPassantRule extends PawnPieceRule{
     }
 
     /**
-     * @see ChessRule#isRuleApplicable(ChessBoard, Move)
+     * @see ChessMoveRule#isRuleApplicable(ChessBoard, Move)
      */
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {

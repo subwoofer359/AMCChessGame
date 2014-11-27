@@ -7,12 +7,12 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  * @author Adrian Mclaughlin
  *
  */
-public class CastlingRule implements ChessRule {
+public class CastlingRule implements ChessMoveRule {
 
     private ReversibleMove kingsMove;
     private ReversibleMove rooksMove;
     /**
-     * @see ChessRule#applyRule(ChessBoard, Move)
+     * @see ChessMoveRule#applyRule(ChessBoard, Move)
      */
     @Override
     public void applyRule(ChessBoard board, Move move) {
@@ -24,7 +24,7 @@ public class CastlingRule implements ChessRule {
     }
     
     /**
-     * @see ChessRule#unapplyRule(ChessBoard, Move)
+     * @see ChessMoveRule#unapplyRule(ChessBoard, Move)
      */
     @Override
     public void unapplyRule(ChessBoard board,Move move){
@@ -45,7 +45,7 @@ public class CastlingRule implements ChessRule {
     }
     
     /**
-     * @see ChessRule#isRuleApplicable(ChessBoard, Move)
+     * @see ChessMoveRule#isRuleApplicable(ChessBoard, Move)
      */
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {    
