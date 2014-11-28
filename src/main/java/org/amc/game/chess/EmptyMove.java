@@ -40,7 +40,6 @@ public class EmptyMove extends Move {
 
     @Override
     public Location getEnd() {
-        // TODO Auto-generated method stub
         return new Location(Coordinate.A, 1);
     }
 

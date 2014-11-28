@@ -36,5 +36,10 @@ public interface ChessPiece {
      */
     boolean hasMoved();
     
+    /**
+     * The Chess piece can't be lifted off the board when making a move 
+     * 
+     * @return Boolean false if it can be lifted over other Chess pieces on the board
+     */
     boolean canSlide();
 }
