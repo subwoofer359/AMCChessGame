@@ -22,7 +22,6 @@ public class BishopPiece extends ComplexPiece {
     @Override
     public boolean canSlide() {
         return true;
-    }    
-    
-    
+    }
+
 }
