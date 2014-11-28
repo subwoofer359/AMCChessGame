@@ -20,7 +20,7 @@ public class ReversibleMoveTest {
     }
 
     @Test
-    public void test() {
+    public void test() throws InvalidMoveException{
         Location pawnStartLocation=new Location(A,2);
         Location pawnEndLocation=new Location(A,3);
         Move pawnMove=new Move(pawnStartLocation,pawnEndLocation);

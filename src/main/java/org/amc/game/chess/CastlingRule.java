@@ -51,8 +51,12 @@ public class CastlingRule implements ChessMoveRule {
     @Override
     public void unapplyRule(ChessBoard board, Move move) {
         if (board.getTheLastMove().equals(rooksMove.getMove())) {
-            rooksMove.undoMove();
-            kingsMove.undoMove();
+            try{
+                rooksMove.undoMove();
+                kingsMove.undoMove();
+            }catch(InvalidMoveException ime){
+                
+            }
         }
     }
 

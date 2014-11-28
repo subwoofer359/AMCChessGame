@@ -31,6 +31,7 @@ public class ChessGameMoveTest {
         when(chessPiece.getColour()).thenReturn(Colour.WHITE);
       
         when(board.getPieceFromBoardAt(any(Location.class))).thenReturn(chessPiece);
+        when(board.getTheLastMove()).thenReturn(move);
         
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         
