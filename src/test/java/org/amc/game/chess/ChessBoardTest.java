@@ -51,19 +51,19 @@ public class ChessBoardTest {
         board.initialise();
         for(int i=7;i<=8;i++){
             for(Coordinate coord:Coordinate.values()){
-                ChessPiece piece=board.getPieceFromBoardAt(coord.getName(), i);
+                ChessPiece piece=board.getPieceFromBoardAt(coord.getIndex(), i);
                 assertTrue(piece instanceof ChessPiece);
                 assertEquals(piece.getColour(),Colour.BLACK);
             }
         }
         for(int i=3;i<=6;i++){
             for(Coordinate coord:Coordinate.values()){
-                assertNull(board.getPieceFromBoardAt(coord.getName(), i));
+                assertNull(board.getPieceFromBoardAt(coord.getIndex(), i));
             }
         }
         for(int i=1;i<=2;i++){
             for(Coordinate coord:Coordinate.values()){
-                ChessPiece piece=board.getPieceFromBoardAt(coord.getName(), i);
+                ChessPiece piece=board.getPieceFromBoardAt(coord.getIndex(), i);
                 assertTrue(piece instanceof ChessPiece);
                 assertEquals(piece.getColour(),Colour.WHITE);
             }

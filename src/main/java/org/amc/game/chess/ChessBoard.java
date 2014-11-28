@@ -26,18 +26,18 @@ public class ChessBoard extends DefaultSubject {
     public enum Coordinate implements Comparable<Coordinate> {
         A(0), B(1), C(2), D(3), E(4), F(5), G(6), H(7);
 
-        private int name;
+        private int letterIndex;
 
-        private Coordinate(int name) {
-            this.name = name;
+        private Coordinate(int letterIndex) {
+            this.letterIndex = letterIndex;
         }
 
         /**
          * 
          * @return int value of the Letter Coordinate
          */
-        public int getName() {
-            return this.name;
+        public int getIndex() {
+            return this.letterIndex;
         }
 
     }
@@ -95,7 +95,7 @@ public class ChessBoard extends DefaultSubject {
      * @param location
      */
     void removePieceOnBoardAt(Location location) {
-        this.board[location.getLetter().getName()][location.getNumber() - 1] = null;
+        this.board[location.getLetter().getIndex()][location.getNumber() - 1] = null;
     }
 
     /**
@@ -106,7 +106,7 @@ public class ChessBoard extends DefaultSubject {
      * @param location
      */
     public void putPieceOnBoardAt(ChessPiece piece, Location location) {
-        this.board[location.getLetter().getName()][location.getNumber() - 1] = piece;
+        this.board[location.getLetter().getIndex()][location.getNumber() - 1] = piece;
     }
 
     /**
@@ -131,7 +131,7 @@ public class ChessBoard extends DefaultSubject {
      * @return ChessPiece
      */
     public ChessPiece getPieceFromBoardAt(Location location) {
-        return getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
+        return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
     }
 
     /**
@@ -150,7 +150,7 @@ public class ChessBoard extends DefaultSubject {
     Set<Location> getAllSquaresInAMove(Move move) {
         Set<Location> squares = new HashSet<>();
         int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
-        int positionX = move.getStart().getLetter().getName();
+        int positionX = move.getStart().getLetter().getIndex();
         int positionY = move.getStart().getNumber();
 
         for (int i = 0; i < distance - 1; i++) {
@@ -163,7 +163,7 @@ public class ChessBoard extends DefaultSubject {
     }
 
     boolean isEndSquareEmpty(Location location) {
-        ChessPiece piece = getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
+        ChessPiece piece = getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
         return piece == null;
     }
 
@@ -171,7 +171,7 @@ public class ChessBoard extends DefaultSubject {
         List<ChessPieceLocation> listOfPieces = new ArrayList<>();
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
-                ChessPiece piece = getPieceFromBoardAt(letterIndex.getName(), i);
+                ChessPiece piece = getPieceFromBoardAt(letterIndex.getIndex(), i);
                 if (piece != null && piece.getColour().equals(player.getColour())) {
                     listOfPieces.add(new ChessPieceLocation(piece, new Location(letterIndex, i)));
                 }
@@ -183,7 +183,7 @@ public class ChessBoard extends DefaultSubject {
     Location getPlayersKingLocation(Player player) {
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
-                ChessPiece piece = getPieceFromBoardAt(letterIndex.getName(), i);
+                ChessPiece piece = getPieceFromBoardAt(letterIndex.getIndex(), i);
                 if (piece != null && piece instanceof KingPiece
                                 && piece.getColour().equals(player.getColour())) {
                     return new Location(letterIndex, i);
@@ -214,7 +214,7 @@ public class ChessBoard extends DefaultSubject {
         List<ChessPiece> pieceList = new ArrayList<ChessPiece>();
         for (Coordinate letter : Coordinate.values()) {
             for (int i = 1; i <= 8; i++) {
-                ChessPiece piece = getPieceFromBoardAt(letter.getName(), i);
+                ChessPiece piece = getPieceFromBoardAt(letter.getIndex(), i);
                 if (piece == null) {
                     continue;
                 } else {

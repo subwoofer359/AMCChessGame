@@ -88,7 +88,7 @@ abstract class SimplePiece implements ChessPiece {
      */
     boolean isEndSquareOccupiedByOpponentsPiece(ChessBoard board, Move move) {
         Location endSquare = move.getEnd();
-        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getName(),
+        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getIndex(),
                         endSquare.getNumber());
         if (piece.getColour().equals(getColour())) {
             return false;

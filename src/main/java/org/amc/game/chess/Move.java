@@ -35,7 +35,7 @@ public class Move {
      * @return Integer can be postive or negative
      */
     public Integer getDistanceX() {
-        return start.getLetter().getName() - end.getLetter().getName();
+        return start.getLetter().getIndex() - end.getLetter().getIndex();
     }
 
     /**

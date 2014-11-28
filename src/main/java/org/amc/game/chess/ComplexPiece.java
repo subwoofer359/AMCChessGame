@@ -18,7 +18,7 @@ public abstract class ComplexPiece extends SimplePiece {
      */
     boolean canMakeMove(ChessBoard board, Move move) {
         int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
-        int positionX = move.getStart().getLetter().getName();
+        int positionX = move.getStart().getLetter().getIndex();
         int positionY = move.getStart().getNumber();
 
         for (int i = 0; i < distance; i++) {

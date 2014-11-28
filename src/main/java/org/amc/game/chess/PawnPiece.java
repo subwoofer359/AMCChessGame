@@ -99,7 +99,7 @@ public class PawnPiece extends SimplePiece {
      *         the end Square
      */
     private boolean canMoveTwoSquaresForward(ChessBoard board, Move move) {
-        int positionX = move.getStart().getLetter().getName();
+        int positionX = move.getStart().getLetter().getIndex();
         int positionY = move.getStart().getNumber();
         positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
         positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
