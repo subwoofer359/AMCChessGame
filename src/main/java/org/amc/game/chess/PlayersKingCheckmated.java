@@ -1,6 +1,7 @@
 package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
+import org.amc.game.chess.ChessBoard.Coordinate;
 
 import java.util.HashSet;
 import java.util.List;
@@ -100,7 +101,7 @@ public class PlayersKingCheckmated {
             return false;
         }else{
             Move move=new Move(attackingPieceLocation,playersKingLocation);
-            Set<Location> blockingSquares=board.getAllSquaresInAMove(move);
+            Set<Location> blockingSquares=getAllSquaresInAMove(move);
             for(Location blockingSquare:blockingSquares){
                 for(ChessPieceLocation cpl:myPieces){
                     Move blockingMove=new Move(cpl.getLocation(),blockingSquare);
@@ -116,6 +117,29 @@ public class PlayersKingCheckmated {
     
     boolean isPlayersKingInCheck(Player player,Player opponent,ChessBoard board){
         return this.kingIsChecked.isPlayersKingInCheck(player, opponent, board);
+    }
+    
+    /**
+     * Returns a Set of Squares covered in a move Not including the start and
+     * end squares
+     * 
+     * @param move
+     *            Move
+     * @return Set of Locations
+     */
+    private Set<Location> getAllSquaresInAMove(Move move) {
+        Set<Location> squares = new HashSet<>();
+        int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
+        int positionX = move.getStart().getLetter().getIndex();
+        int positionY = move.getStart().getNumber();
+
+        for (int i = 0; i < distance - 1; i++) {
+            positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
+            positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+            squares.add(new Location(Coordinate.values()[positionX], positionY));
+        }
+
+        return squares;
     }
     
 }

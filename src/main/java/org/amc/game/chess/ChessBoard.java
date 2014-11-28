@@ -2,12 +2,8 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
-import static org.amc.game.chess.StartingSquare.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents a Chess Board Responsibility is to know the position of all the
@@ -42,14 +38,28 @@ public class ChessBoard extends DefaultSubject {
 
     }
 
+    /**
+     * 2 Dimensional array representing the squares on a chess board
+     */
     private final ChessPiece[][] board;
+
+    /**
+     * The width of the Chess Board
+     */
     public final int BOARD_WIDTH = 8;
 
     List<Move> allGameMoves;
+    
+    /**
+     * Represents an non move
+     * @see EmptyMove
+     */
     private static final Move EMPTY_MOVE = new EmptyMove();
 
+    /**
+     * Creates a new chess board array and initialises the moves list.
+     */
     public ChessBoard() {
-        super();
         board = new ChessPiece[Coordinate.values().length][BOARD_WIDTH];
         allGameMoves = new ArrayList<>();
     }
@@ -147,39 +157,56 @@ public class ChessBoard extends DefaultSubject {
         }
     }
 
-    Set<Location> getAllSquaresInAMove(Move move) {
-        Set<Location> squares = new HashSet<>();
-        int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
-        int positionX = move.getStart().getLetter().getIndex();
-        int positionY = move.getStart().getNumber();
 
-        for (int i = 0; i < distance - 1; i++) {
-            positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
-            positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
-            squares.add(new Location(Coordinate.values()[positionX], positionY));
-        }
 
-        return squares;
-    }
-
+    /**
+     * Checks a square to see if it's empty
+     * 
+     * @param location
+     * @return Boolean true if it's empty
+     */
     boolean isEndSquareEmpty(Location location) {
-        ChessPiece piece = getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
-        return piece == null;
+        return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber()) == null;
     }
 
+    /**
+     * Returns a List of the Player's chess pieces on the chessboard
+     * 
+     * @param player
+     *            Player
+     * @return List
+     */
     List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(Player player) {
         List<ChessPieceLocation> listOfPieces = new ArrayList<>();
         for (Coordinate letterIndex : Coordinate.values()) {
-            for (int i = 1; i <= BOARD_WIDTH; i++) {
-                ChessPiece piece = getPieceFromBoardAt(letterIndex.getIndex(), i);
-                if (piece != null && piece.getColour().equals(player.getColour())) {
-                    listOfPieces.add(new ChessPieceLocation(piece, new Location(letterIndex, i)));
-                }
-            }
+            searchFileForChessPieces(player, letterIndex, listOfPieces);
         }
         return listOfPieces;
     }
 
+    private void searchFileForChessPieces(Player player, Coordinate file,
+                    List<ChessPieceLocation> listOfPieces) {
+        for (int i = 1; i <= BOARD_WIDTH; i++) {
+            ChessPiece piece = getPieceFromBoardAt(file.getIndex(), i);
+            if (isPlayersChessPiece(player, piece)) {
+                listOfPieces.add(new ChessPieceLocation(piece, new Location(file, i)));
+            }
+        }
+    }
+
+    private boolean isPlayersChessPiece(Player player, ChessPiece piece) {
+        return piece != null && piece.getColour().equals(player.getColour());
+    }
+
+    /**
+     * Returns the Location of the square where the Player's King is located
+     * 
+     * @param player
+     *            Player
+     * @return Location
+     * @throws RuntimeException
+     *             if no King is found
+     */
     Location getPlayersKingLocation(Player player) {
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
@@ -202,29 +229,6 @@ public class ChessBoard extends DefaultSubject {
      */
     void removeMoveFromMoveList(Move move) {
         this.allGameMoves.remove(move);
-    }
-
-    /**
-     * creates a List of all the Player's pieces still on the board
-     * 
-     * @param player
-     * @return List of ChessPieces
-     */
-    List<ChessPiece> getAllPlayersChessPiecesOnTheBoard(Player player) {
-        List<ChessPiece> pieceList = new ArrayList<ChessPiece>();
-        for (Coordinate letter : Coordinate.values()) {
-            for (int i = 1; i <= 8; i++) {
-                ChessPiece piece = getPieceFromBoardAt(letter.getIndex(), i);
-                if (piece == null) {
-                    continue;
-                } else {
-                    if (piece.getColour().equals(player.getColour())) {
-                        pieceList.add(piece);
-                    }
-                }
-            }
-        }
-        return pieceList;
     }
 
     public class ChessPieceLocation {

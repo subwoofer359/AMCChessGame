@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import org.amc.game.chess.ChessBoard.ChessPieceLocation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,9 +160,9 @@ public class ChessGame {
      * @return false if they lost their King ChessPiece
      */
     boolean doesThePlayerStillHaveTheirKing(Player player) {
-        List<ChessPiece> allPlayersChessPieces = board.getAllPlayersChessPiecesOnTheBoard(player);
-        for (ChessPiece piece : allPlayersChessPieces) {
-            if (piece.getClass().equals(KingPiece.class)) {
+        List<ChessPieceLocation> allPlayersChessPieces = board.getListOfPlayersPiecesOnTheBoard(player);
+        for (ChessPieceLocation pieceLocation : allPlayersChessPieces) {
+            if (pieceLocation.getPiece().getClass().equals(KingPiece.class)) {
                 return true;
             }
         }
