@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import org.amc.game.chess.ChessBoard.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
 
