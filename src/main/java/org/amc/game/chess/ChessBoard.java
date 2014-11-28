@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * Represents a Chess Board Responsibility is to know the position of all the
  * pieces
@@ -44,60 +43,43 @@ public class ChessBoard extends DefaultSubject {
     }
 
     private final ChessPiece[][] board;
-    public final int BOARD_WIDTH=8;
+    public final int BOARD_WIDTH = 8;
 
     List<Move> allGameMoves;
-    private static final Move EMPTY_MOVE=new EmptyMove();
-    
+    private static final Move EMPTY_MOVE = new EmptyMove();
+
     public ChessBoard() {
         super();
         board = new ChessPiece[Coordinate.values().length][BOARD_WIDTH];
-        allGameMoves=new ArrayList<>();
+        allGameMoves = new ArrayList<>();
     }
 
     /**
      * Sets up the board in it's initial state
      */
     public void initialise() {
-        putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_LEFT.getLocation());
-        putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_RIGHT.getLocation());
-        putPieceOnBoardAt(new KingPiece(Colour.WHITE), WHITE_KING.getLocation());
-        putPieceOnBoardAt(new QueenPiece(Colour.WHITE), WHITE_QUEEN.getLocation());
-        putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_LEFT.getLocation());
-        putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_RIGHT.getLocation());
-        putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_LEFT.getLocation());
-        putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_RIGHT.getLocation());
-        for (Coordinate coord : Coordinate.values()) {
-            putPieceOnBoardAt(new PawnPiece(Colour.WHITE), new Location(coord, 2));
-        }
-
-        putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_LEFT.getLocation());
-        putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_RIGHT.getLocation());
-        putPieceOnBoardAt(new KingPiece(Colour.BLACK), BLACK_KING.getLocation());
-        putPieceOnBoardAt(new QueenPiece(Colour.BLACK), BLACK_QUEEN.getLocation());
-        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_LEFT.getLocation());
-        putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_RIGHT.getLocation());
-        putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_LEFT.getLocation());
-        putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_RIGHT.getLocation());
-        for (Coordinate coord : Coordinate.values()) {
-            putPieceOnBoardAt(new PawnPiece(Colour.BLACK), new Location(coord, 7));
-        }
+        SetupChessBoard.setUpChessBoardToDefault(this);
     }
 
     /**
      * Move a ChessPiece from one square to another as long as the move is valid
-     * @param move Move
+     * 
+     * @param move
+     *            Move
      */
     public void move(Move move) {
         quietMove(move);
         this.notifyObservers(null);
     }
+
     /**
      * Move a ChessPiece from one square to another as long as the move is valid
      * Doesn't update Observers
-     * @param move Move
+     * 
+     * @param move
+     *            Move
      */
-    
+
     void quietMove(Move move) {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
         removePieceOnBoardAt(move.getStart());
@@ -105,12 +87,11 @@ public class ChessBoard extends DefaultSubject {
         piece.moved();
         this.allGameMoves.add(move);
     }
-    
-    
 
     /**
      * Removes the ChessPiece from the Board The square it occupied is set back
      * to null
+     * 
      * @param location
      */
     void removePieceOnBoardAt(Location location) {
@@ -152,77 +133,77 @@ public class ChessBoard extends DefaultSubject {
     public ChessPiece getPieceFromBoardAt(Location location) {
         return getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
     }
-    
+
     /**
      * Return the last Move make or null if no move has yet to be made
+     * 
      * @return Move
      */
-    Move getTheLastMove(){
-        if(allGameMoves.isEmpty()){
+    Move getTheLastMove() {
+        if (allGameMoves.isEmpty()) {
             return EMPTY_MOVE;
-        }
-        else
-        {
-            return allGameMoves.get(allGameMoves.size()-1);
+        } else {
+            return allGameMoves.get(allGameMoves.size() - 1);
         }
     }
-    
-    Set<Location> getAllSquaresInAMove(Move move){
-       Set<Location> squares=new HashSet<>();
-       int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
-       int positionX = move.getStart().getLetter().getName();
-       int positionY = move.getStart().getNumber();
 
-       for (int i = 0; i < distance-1; i++) {
-           positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
-           positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
-           squares.add(new Location(Coordinate.values()[positionX],positionY));
-       }
- 
-       return squares;
+    Set<Location> getAllSquaresInAMove(Move move) {
+        Set<Location> squares = new HashSet<>();
+        int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
+        int positionX = move.getStart().getLetter().getName();
+        int positionY = move.getStart().getNumber();
+
+        for (int i = 0; i < distance - 1; i++) {
+            positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
+            positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+            squares.add(new Location(Coordinate.values()[positionX], positionY));
+        }
+
+        return squares;
     }
-    
-    boolean isEndSquareEmpty(Location location){
-        ChessPiece piece = getPieceFromBoardAt(location.getLetter().getName(),
-                        location.getNumber());
-        return piece==null;
+
+    boolean isEndSquareEmpty(Location location) {
+        ChessPiece piece = getPieceFromBoardAt(location.getLetter().getName(), location.getNumber());
+        return piece == null;
     }
-    
-    List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(Player player){
-        List<ChessPieceLocation> listOfPieces=new ArrayList<>();
-        for(Coordinate letterIndex:Coordinate.values()){
-            for(int i=1;i<=BOARD_WIDTH;i++){
-                ChessPiece piece=getPieceFromBoardAt(letterIndex.getName(), i);
-                if(piece!=null && piece.getColour().equals(player.getColour())){
-                    listOfPieces.add(new ChessPieceLocation(piece, new Location(letterIndex,i)));
+
+    List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(Player player) {
+        List<ChessPieceLocation> listOfPieces = new ArrayList<>();
+        for (Coordinate letterIndex : Coordinate.values()) {
+            for (int i = 1; i <= BOARD_WIDTH; i++) {
+                ChessPiece piece = getPieceFromBoardAt(letterIndex.getName(), i);
+                if (piece != null && piece.getColour().equals(player.getColour())) {
+                    listOfPieces.add(new ChessPieceLocation(piece, new Location(letterIndex, i)));
                 }
             }
         }
         return listOfPieces;
     }
-    
-    Location getPlayersKingLocation(Player player){
-        for(Coordinate letterIndex:Coordinate.values()){
-            for(int i=1;i<=BOARD_WIDTH;i++){
-                ChessPiece piece=getPieceFromBoardAt(letterIndex.getName(), i);
-                if(piece!=null && piece instanceof KingPiece && piece.getColour().equals(player.getColour())){
-                    return new Location(letterIndex,i);
+
+    Location getPlayersKingLocation(Player player) {
+        for (Coordinate letterIndex : Coordinate.values()) {
+            for (int i = 1; i <= BOARD_WIDTH; i++) {
+                ChessPiece piece = getPieceFromBoardAt(letterIndex.getName(), i);
+                if (piece != null && piece instanceof KingPiece
+                                && piece.getColour().equals(player.getColour())) {
+                    return new Location(letterIndex, i);
                 }
             }
         }
         throw new RuntimeException("Player's king not found this should not happened");
     }
-    
+
     /**
-     * Removes a move saved from previous players turns
-     * Can throw an exception if the Move doesn't exist
+     * Removes a move saved from previous players turns Can throw an exception
+     * if the Move doesn't exist
      * 
-     * @param move Move to be removed
+     * @param move
+     *            Move to be removed
      */
-    void removeMoveFromMoveList(Move move){
+    void removeMoveFromMoveList(Move move) {
         this.allGameMoves.remove(move);
     }
-    
+
     /**
      * creates a List of all the Player's pieces still on the board
      * 
@@ -245,17 +226,20 @@ public class ChessBoard extends DefaultSubject {
         }
         return pieceList;
     }
-    
-    public class ChessPieceLocation{
+
+    public class ChessPieceLocation {
         private ChessPiece piece;
         private Location location;
-        public ChessPieceLocation(ChessPiece piece,Location location){
-            this.piece=piece;
-            this.location=location;
+
+        public ChessPieceLocation(ChessPiece piece, Location location) {
+            this.piece = piece;
+            this.location = location;
         }
+
         public final ChessPiece getPiece() {
             return piece;
         }
+
         public final Location getLocation() {
             return location;
         }
