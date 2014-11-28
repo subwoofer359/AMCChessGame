@@ -44,14 +44,14 @@ public class ChessGameTest {
     
     @Test
     public void testPlayerHasTheirKing(){
-        assertTrue(chessGame.doesThePlayerStillHaveTheirKing(whitePlayer));
+        assertFalse(chessGame.isThePlayersKingNotOnTheBoard(whitePlayer));
     }
     
     @Test
     public void testPlayerDoesNotHaveTheirKing(){
         board.removePieceOnBoardAt(StartingSquare.BLACK_KING.getLocation());
-        assertTrue(chessGame.doesThePlayerStillHaveTheirKing(whitePlayer));
-        assertFalse(chessGame.doesThePlayerStillHaveTheirKing(blackPlayer));
+        assertFalse(chessGame.isThePlayersKingNotOnTheBoard(whitePlayer));
+        assertTrue(chessGame.isThePlayersKingNotOnTheBoard(blackPlayer));
     }
     
     @Test

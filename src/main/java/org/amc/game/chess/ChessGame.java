@@ -69,12 +69,12 @@ public class ChessGame {
      */
     public void move(Player player, Move move) throws InvalidMoveException {
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
-        checkChessPieceExistOnSquare(piece, move);
+        checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, board, piece, move);
     }
 
-    private void checkChessPieceExistOnSquare(ChessPiece piece, Move move)
+    private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
                     throws InvalidMoveException {
         if (piece == null) {
             throw new InvalidMoveException("No piece at " + move.getStart());
@@ -88,20 +88,36 @@ public class ChessGame {
         }
     }
 
+    private boolean notPlayersChessPiece(Player player, ChessPiece piece) {
+        return player.getColour() != piece.getColour();
+    }
+
     private void moveThePlayersChessPiece(Player player, ChessBoard board, ChessPiece piece,
                     Move move) throws InvalidMoveException {
         if (isPlayersKingInCheck(player, board)) {
-            if (piece.isValidMove(board, move)) {
-                thenMoveChessPiece(player, move);
-            } else {
-                throw new InvalidMoveException("Not a valid move");
-            }
+            doNormalMove(player, piece, move);
         } else if (doesAGameRuleApply(board, move)) {
             thenApplyGameRule(player, move);
-        } else if (piece.isValidMove(board, move)) {
+        } else {
+            doNormalMove(player, piece, move);
+        }
+    }
+
+    private void doNormalMove(Player player, ChessPiece piece, Move move)
+                    throws InvalidMoveException {
+        if (piece.isValidMove(board, move)) {
             thenMoveChessPiece(player, move);
         } else {
             throw new InvalidMoveException("Not a valid move");
+        }
+    }
+
+    private void thenMoveChessPiece(Player player, Move move) throws InvalidMoveException {
+        ReversibleMove reversible = new ReversibleMove(board, move);
+        reversible.move();
+        if (isPlayersKingInCheck(player, board)) {
+            reversible.undoMove();
+            throw new InvalidMoveException("King is checked");
         }
     }
 
@@ -115,26 +131,6 @@ public class ChessGame {
         }
     }
 
-    private void thenMoveChessPiece(Player player, Move move) throws InvalidMoveException {
-        ReversibleMove reversible = new ReversibleMove(board, move);
-        reversible.move();
-        if (isPlayersKingInCheck(player, board)) {
-            reversible.undoMove();
-            throw new InvalidMoveException("King is checked");
-        }
-    }
-
-    /**
-     * Return true if the Player owns the chess piece
-     * 
-     * @param player
-     * @param piece
-     * @return boolean
-     */
-    private boolean notPlayersChessPiece(Player player, ChessPiece piece) {
-        return player.getColour() != piece.getColour();
-    }
-
     /**
      * Checks to see if the game has reached it's completion
      * 
@@ -143,12 +139,12 @@ public class ChessGame {
      * @return Boolean
      */
     public boolean isGameOver(Player playerOne, Player playerTwo) {
-        boolean playerOneHaveTheirKing = doesThePlayerStillHaveTheirKing(playerOne);
-        boolean playerTwoHaveTheirKing = doesThePlayerStillHaveTheirKing(playerTwo);
-        if (!playerOneHaveTheirKing || isCheckMate(playerOne, board)) {
+        boolean playerOneLostTheirKing = isThePlayersKingNotOnTheBoard(playerOne);
+        boolean playerTwoLostTheirKing = isThePlayersKingNotOnTheBoard(playerTwo);
+        if (playerOneLostTheirKing || isCheckMate(playerOne, board)) {
             playerTwo.isWinner(true);
             return true;
-        } else if (!playerTwoHaveTheirKing || isCheckMate(playerTwo, board)) {
+        } else if (playerTwoLostTheirKing || isCheckMate(playerTwo, board)) {
             playerOne.isWinner(true);
             return true;
         } else {
@@ -162,15 +158,15 @@ public class ChessGame {
      * @param player
      * @return false if they lost their King ChessPiece
      */
-    boolean doesThePlayerStillHaveTheirKing(Player player) {
+    boolean isThePlayersKingNotOnTheBoard(Player player) {
         List<ChessPieceLocation> allPlayersChessPieces = board
                         .getListOfPlayersPiecesOnTheBoard(player);
         for (ChessPieceLocation pieceLocation : allPlayersChessPieces) {
             if (pieceLocation.getPiece().getClass().equals(KingPiece.class)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
 
     }
 
