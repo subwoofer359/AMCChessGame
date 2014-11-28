@@ -154,7 +154,7 @@ public class EnPassantTest {
         board.putPieceOnBoardAt(bishop,startSquare);
         EnPassantRule rule =new EnPassantRule();
         
-        assertFalse(rule.isMoveEnPassantCapture(board,move));
+        assertFalse(rule.isEnPassantCapture(board,move));
         
     }
     

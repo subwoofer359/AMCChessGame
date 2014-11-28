@@ -11,71 +11,66 @@ public class EnPassantRule extends PawnPieceRule{
      */
     @Override
     public void applyRule(ChessBoard board, Move move) {
-        if(isMoveEnPassantCapture(board,move)){
+        if(isEnPassantCapture(board,move)){
             Location endSquare=move.getEnd();
             ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
             board.move(move);
-            if(piece.getColour().equals(Colour.WHITE)){
-                Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
-                board.removePieceOnBoardAt(capturedPawn);
-            }
-            else{
-                Location capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
-                board.removePieceOnBoardAt(capturedPawn);
-            }    
+            removeCapturedPawnFromTheChessBoard(board, piece, endSquare);
+                
         }
     }
     
+    private void removeCapturedPawnFromTheChessBoard(ChessBoard board,ChessPiece piece,Location endSquare){
+        Location capturedPawn;
+        if(piece.getColour().equals(Colour.WHITE)){
+            capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
+            
+        }
+        else{
+            capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
+        }
+        board.removePieceOnBoardAt(capturedPawn);
+    }
+    
     /**
+     * En passant move can't be undone
+     * 
      * @see ChessMoveRule#unapplyRule(ChessBoard, Move)
      */
     @Override
     public void unapplyRule(ChessBoard board, Move move) {
-        // TODO Auto-generated method stub
+        // Can't be undone
         
     }
     
     /**
-     * Checks to see if the move is en passant
-     * calls the PawnPiece.isEnPassantCapture
-     * 
-     * @param move
-     * @return boolean
-     */
-    boolean isMoveEnPassantCapture(ChessBoard board,Move move){
-        ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
-        if(piece instanceof PawnPiece){
-            return isEnPassantCapture(board, move);
-        }else{
-            return false;
-        }
-    }
-    /**
-     * Checks to see if the pawn do an en passant capture move
+     * Checks to see if the pawn does an en passant capture move
      * 
      * @param board
      * @param move
      * @return true if it's a valid en passant move
      */
     boolean isEnPassantCapture(ChessBoard board, Move move) {
-        Move lastMove = board.getTheLastMove();
-        ChessPiece piece = board.getPieceFromBoardAt(lastMove.getEnd());
+        Move opponentsMove = board.getTheLastMove();
+        ChessPiece opponentsPiece = getOpponentsChessPieceThatMovedLast(board, opponentsMove);
         if (isEndSquareNotEmpty(board, move)) {
             return false;
         }
-        if (isPawnChessPiece(piece) && lastMove.getAbsoluteDistanceY() == 2
-                        && moveToSameFile(move, lastMove)) {
-            return true;
-        } else {
-            return false;
-        }
+        return isPawnChessPiece(opponentsPiece) && 
+                        opponentsMove.getAbsoluteDistanceY() == 2
+                        && isMoveToSameFile(move, opponentsMove);
+        
+    }
+    
+    private ChessPiece getOpponentsChessPieceThatMovedLast(ChessBoard board,Move opponentsMove){
+        return board.getPieceFromBoardAt(opponentsMove.getEnd());
     }
     
     private boolean isEndSquareNotEmpty(ChessBoard board,Move move){
         return !board.isEndSquareEmpty(move.getEnd());
     }
    
-    private boolean moveToSameFile(Move myMove, Move lastOpposingMove) {
+    private boolean isMoveToSameFile(Move myMove, Move lastOpposingMove) {
         return myMove.getEnd().getLetter().equals(lastOpposingMove.getEnd().getLetter());
     }
 
@@ -84,6 +79,6 @@ public class EnPassantRule extends PawnPieceRule{
      */
     @Override
     public boolean isRuleApplicable(ChessBoard board, Move move) {
-        return isMoveEnPassantCapture(board, move);
+        return isEnPassantCapture(board, move);
     }
 }
