@@ -14,7 +14,7 @@ public class IsKingCheckmated {
     private ChessGame chessGame;
     private ChessPiece whiteKing;
     private ChessPiece blackKing;
-    private PlayersKingCheckmated checkmateCondtion;
+    private PlayersKingCheckmateCondition checkmateCondtion;
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
@@ -23,7 +23,7 @@ public class IsKingCheckmated {
         blackKing=new KingPiece(Colour.BLACK);
         board=new ChessBoard(); 
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
-        checkmateCondtion=new PlayersKingCheckmated();
+        checkmateCondtion=new PlayersKingCheckmateCondition();
     }
 
     @Test
