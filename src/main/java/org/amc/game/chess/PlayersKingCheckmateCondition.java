@@ -22,7 +22,7 @@ public class PlayersKingCheckmateCondition {
      */
     boolean isCheckMate(Player player, Player opponent, ChessBoard board) {
         return isPlayersKingInCheck(player, opponent, board)
-                        && cantKingMoveOutOfCheck(player, opponent, board)
+                        && isKingNotAbleToMoveOutOfCheck(player, opponent, board)
                         && !canAttackingPieceBeCaptured(player, opponent, board)
                         && !canAttackingPieceBeBlocked(player, opponent, board);
 
@@ -37,33 +37,43 @@ public class PlayersKingCheckmateCondition {
      *            ChessBoard
      * @return Boolean
      */
-    boolean cantKingMoveOutOfCheck(Player player, Player opponent, ChessBoard board) {
+    boolean isKingNotAbleToMoveOutOfCheck(Player player, Player opponent, ChessBoard board) {
+        ChessPieceLocation kingsLocation=findThePlayersKing(player, board);
+        Set<Location> possibleSafeMoveLocations=findAllSafeMoveLocations(board, opponent, kingsLocation);
+        return possibleSafeMoveLocations.isEmpty();
+    }
+
+    private ChessPieceLocation findThePlayersKing(Player player,ChessBoard board){
         Location kingLocation = board.getPlayersKingLocation(player);
-        ChessPiece kingPiece = board.getPieceFromBoardAt(kingLocation);
-        
-        Set<Location> possibleMoveLocations = new KingPiece(player.getColour())
-                        .getPossibleMoveLocations(board, kingLocation);
-        board.removePieceOnBoardAt(kingLocation);
-        
+        return new ChessPieceLocation(board.getPieceFromBoardAt(kingLocation), kingLocation);
+    }
+     
+    private Set<Location> findAllSafeMoveLocations(ChessBoard board,Player opponent,ChessPieceLocation kingsLocation){
+        Set<Location> possibleMoveLocations = getAllTheKingsPossibleMoveLocations(board, kingsLocation);
+        board.removePieceOnBoardAt(kingsLocation.getLocation());
         Set<Location> squaresUnderAttack = new HashSet<>();
         List<ChessPieceLocation> enemyLocations = board.getListOfPlayersPiecesOnTheBoard(opponent);
         
-        for (Location loc : possibleMoveLocations) {
-            for (ChessPieceLocation cpl : enemyLocations) {
-                Move move = new Move(cpl.getLocation(), loc);
-                ChessPiece piece = cpl.getPiece();
+        for (Location location : possibleMoveLocations) {
+            for (ChessPieceLocation enemyPiece : enemyLocations) {
+                Move move = new Move(enemyPiece.getLocation(), location);
+                ChessPiece piece = enemyPiece.getPiece();
                 if (piece.isValidMove(board, move)) {
-                    squaresUnderAttack.add(loc);
+                    squaresUnderAttack.add(location);
                     break;
                 }
             }
         }
         
         possibleMoveLocations.removeAll(squaresUnderAttack);
-        board.putPieceOnBoardAt(kingPiece, kingLocation);
-        return possibleMoveLocations.isEmpty();
+        board.putPieceOnBoardAt(kingsLocation.getPiece(), kingsLocation.getLocation());
+        return possibleMoveLocations;
     }
-
+    
+    private Set<Location> getAllTheKingsPossibleMoveLocations(ChessBoard board,ChessPieceLocation kingsLocation){
+        return ((KingPiece)kingsLocation.getPiece()).getPossibleMoveLocations(board, kingsLocation.getLocation());
+    }
+    
     /**
      * Checks to see if the Player can capture the attacking ChessPiece Only if
      * the capture doesn't lead to the King still being checked
@@ -117,18 +127,15 @@ public class PlayersKingCheckmateCondition {
         Location playersKingLocation = board.getPlayersKingLocation(player);
         List<ChessPieceLocation> myPieces = board.getListOfPlayersPiecesOnTheBoard(player);
         ChessPiece attacker = board.getPieceFromBoardAt(attackingPieceLocation);
-        if (!attacker.canSlide()) {
-            return false;
-        } else {
-            Move move = new Move(attackingPieceLocation, playersKingLocation);
-            Set<Location> blockingSquares = getAllSquaresInAMove(move);
-            for (Location blockingSquare : blockingSquares) {
-                for (ChessPieceLocation cpl : myPieces) {
-                    Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
-                    ChessPiece piece = cpl.getPiece();
-                    if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
-                        return true;
-                    }
+
+        Move move = new Move(attackingPieceLocation, playersKingLocation);
+        Set<Location> blockingSquares = getAllSquaresInAMove(attacker,move);
+        for (Location blockingSquare : blockingSquares) {
+            for (ChessPieceLocation cpl : myPieces) {
+                Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
+                ChessPiece piece = cpl.getPiece();
+                if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
+                    return true;
                 }
             }
         }
@@ -147,18 +154,19 @@ public class PlayersKingCheckmateCondition {
      *            Move
      * @return Set of Locations
      */
-    private Set<Location> getAllSquaresInAMove(Move move) {
+    private Set<Location> getAllSquaresInAMove(ChessPiece piece,Move move) {
         Set<Location> squares = new HashSet<>();
-        int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
-        int positionX = move.getStart().getLetter().getIndex();
-        int positionY = move.getStart().getNumber();
-
-        for (int i = 0; i < distance - 1; i++) {
-            positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
-            positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
-            squares.add(new Location(Coordinate.values()[positionX], positionY));
+        if(piece.canSlide()){
+            int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
+            int positionX = move.getStart().getLetter().getIndex();
+            int positionY = move.getStart().getNumber();
+            
+            for (int i = 0; i < distance - 1; i++) {
+                positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
+                positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+                squares.add(new Location(Coordinate.values()[positionX], positionY));
+            }
         }
-
         return squares;
     }
 

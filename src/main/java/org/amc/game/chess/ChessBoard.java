@@ -231,7 +231,7 @@ public class ChessBoard extends DefaultSubject {
         this.allGameMoves.remove(move);
     }
 
-    public class ChessPieceLocation {
+    public static class ChessPieceLocation {
         private ChessPiece piece;
         private Location location;
 
