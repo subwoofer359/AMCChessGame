@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.assertTrue;
+
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -100,6 +102,11 @@ public class KnightPieceTest implements ChessPieceTest{
     public void testOnBoardIsNotValidMove() {
         // TODO Auto-generated method stub
         
+    }
+    
+    @Test
+    public void testCanSlisde(){
+        assertFalse(new KnightPiece(Colour.BLACK).canSlide());
     }
     
  

@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.assertTrue;
+
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -123,4 +125,8 @@ public class QueenPieceTest implements ChessPieceTest {
 
     }
 
+    @Test
+    public void testCanSlisde(){
+        assertTrue(new QueenPiece(Colour.BLACK).canSlide());
+    }
 }

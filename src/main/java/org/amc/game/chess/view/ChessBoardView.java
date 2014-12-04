@@ -172,6 +172,7 @@ public class ChessBoardView implements Observer {
         }
     }
 
+    
     public static void main(String[] args) {
         ChessBoard board = new ChessBoard();
         board.initialise();

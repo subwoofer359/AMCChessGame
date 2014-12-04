@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.assertTrue;
+
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
@@ -190,5 +192,10 @@ public class PawnPieceTest  {
         
         assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocationOne)));
         assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocationTwo)));
+    }
+    
+    @Test
+    public void testCanSlisde(){
+        assertTrue(new PawnPiece(Colour.BLACK).canSlide());
     }
 }

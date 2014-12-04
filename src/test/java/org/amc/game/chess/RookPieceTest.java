@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.assertTrue;
+
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -126,6 +128,11 @@ public class RookPieceTest implements ChessPieceTest{
             assertFalse(rook.isValidMove(board, new Move(testStartPosition,endPosition)));
         }
         
+    }
+    
+    @Test
+    public void testCanSlisde(){
+        assertTrue(new RookPiece(Colour.BLACK).canSlide());
     }
 
 }

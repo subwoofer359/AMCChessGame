@@ -149,4 +149,9 @@ public class KingPieceTest
 	    
 	    assertTrue(expectedMoveLocations.equals(possibleMoveLocations));
 	}
+	
+	@Test
+	public void testCanSlisde(){
+	    assertTrue(new KingPiece(Colour.BLACK).canSlide());
+	}
 }
