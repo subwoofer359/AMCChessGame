@@ -13,10 +13,11 @@ public class SimpleChessBoardSetupNotationTest {
 
     private static final String setupNotation = "Kd6:Qe6:Bb8:Be8:Ng8:Na6:Ra4:Ph5:"
                     + "ka3:qe1:bh3:nc3:pf4:rb5";
-
+    private ChessBoardFactory chessBoardFactory;
     // private static final String setupNotation="Kd6Qe6";
     @Before
     public void setUp() throws Exception {
+        chessBoardFactory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     }
 
     @After
@@ -31,8 +32,7 @@ public class SimpleChessBoardSetupNotationTest {
 
     @Test
     public void test() throws Exception {
-        SimpleChessBoardSetupNotation notation = new SimpleChessBoardSetupNotation();
-        ChessBoard board = notation.getChessBoard(setupNotation);
+        ChessBoard board = chessBoardFactory.getChessBoard(setupNotation);
         assertTrue(board.getPieceFromBoardAt(new Location(D, 6)) instanceof KingPiece);
         assertTrue(board.getPieceFromBoardAt(new Location(E, 6)) instanceof QueenPiece);
         assertTrue(board.getPieceFromBoardAt(new Location(B, 8)) instanceof BishopPiece);
@@ -51,8 +51,7 @@ public class SimpleChessBoardSetupNotationTest {
 
     @Test(expected = ParseException.class)
     public void testInvalidPattern() throws ParseException {
-        SimpleChessBoardSetupNotation notation = new SimpleChessBoardSetupNotation();
-        notation.getChessBoard("Be3:Me3");
+        chessBoardFactory.getChessBoard("Be3:Me3");
     }
 
 }

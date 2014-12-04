@@ -14,7 +14,7 @@ public class IsKingCheckmated {
     private Player blackPlayer;
     private ChessBoard board;
     private ChessGame chessGame;
-    private SimpleChessBoardSetupNotation chessBoardFactory;
+    private ChessBoardFactory chessBoardFactory;
     private PlayersKingCheckmateCondition checkmateCondtion;
 
     @Before
@@ -24,7 +24,7 @@ public class IsKingCheckmated {
         board = new ChessBoard();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         checkmateCondtion = new PlayersKingCheckmateCondition();
-        chessBoardFactory = new SimpleChessBoardSetupNotation();
+        chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     }
 
     @Test

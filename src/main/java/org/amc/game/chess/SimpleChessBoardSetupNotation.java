@@ -4,6 +4,8 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +17,7 @@ import java.util.regex.Pattern;
  * @author Adrian Mclaughlin
  *
  */
-public class SimpleChessBoardSetupNotation {
+public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
 
     enum ChessPieceNotation {
         /** black king */
@@ -65,25 +67,21 @@ public class SimpleChessBoardSetupNotation {
 
     }
 
-    /**
-     * Creates a new Chessboard which is populated with the ChessPieces at
-     * Locations specified in the input String
-     * 
-     * @param setupNotation
-     *            input string which is parsed
-     * @return ChessBoard
-     * @throws ParseException
-     *             if the input string can't be parsed
+    /* (non-Javadoc)
+     * @see org.amc.game.chess.ChessBoardSetupNotation#getChessPieceLocations(java.lang.String)
      */
-    public ChessBoard getChessBoard(String setupNotation) throws ParseException {
+    @Override
+    public List<ChessPieceLocation> getChessPieceLocations(String setupNotation)
+                    throws ParseException {
         if (isInputValid(setupNotation)) {
-            ChessBoard board = new ChessBoard();
+            List<ChessPieceLocation> pieceLocations = new ArrayList<>();
+
             Matcher matcher = inputPattern.matcher(setupNotation);
             while (matcher.find()) {
                 ChessPieceLocation cpl = parseGroup(matcher.group(1));
-                placeChessPieceOnTheBoard(board, cpl);
+                pieceLocations.add(cpl);
             }
-            return board;
+            return pieceLocations;
         } else {
             throw new ParseException("Not valid setup notation", 0);
         }
@@ -132,9 +130,5 @@ public class SimpleChessBoardSetupNotation {
         String numberStr = locationStr.substring(1, 2);
 
         return new Location(Coordinate.valueOf(coordinateStr), Integer.parseInt(numberStr));
-    }
-
-    private void placeChessPieceOnTheBoard(ChessBoard board, ChessPieceLocation pieceLocation) {
-        board.putPieceOnBoardAt(pieceLocation.getPiece(), pieceLocation.getLocation());
     }
 }
