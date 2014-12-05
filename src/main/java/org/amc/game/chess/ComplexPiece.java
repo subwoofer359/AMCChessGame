@@ -22,8 +22,8 @@ public abstract class ComplexPiece extends SimplePiece {
         int positionY = move.getStart().getNumber();
 
         for (int i = 0; i < distance; i++) {
-            positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
-            positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+            positionX = positionX + 1 * (int) Math.signum(move.getDistanceX());
+            positionY = positionY + 1 * (int) Math.signum(move.getDistanceY());
 
             if (i != distance - 1 && board.getPieceFromBoardAt(positionX, positionY) != null) {
                 return false;

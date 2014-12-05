@@ -49,9 +49,10 @@ public class ChessBoard extends DefaultSubject {
     public final int BOARD_WIDTH = 8;
 
     List<Move> allGameMoves;
-    
+
     /**
      * Represents an non move
+     * 
      * @see EmptyMove
      */
     private static final Move EMPTY_MOVE = new EmptyMove();
@@ -99,13 +100,24 @@ public class ChessBoard extends DefaultSubject {
     }
 
     /**
+     * Maps the Chess file coordinate number to the index of
+     * <code>ChessBoard[][] board</code>
+     * 
+     * @param squareRank
+     * @return
+     */
+    private int mapNumberCoordinate(int squareRank) {
+        return BOARD_WIDTH - squareRank;
+    }
+
+    /**
      * Removes the ChessPiece from the Board The square it occupied is set back
      * to null
      * 
      * @param location
      */
     void removePieceOnBoardAt(Location location) {
-        this.board[location.getLetter().getIndex()][location.getNumber() - 1] = null;
+        this.board[location.getLetter().getIndex()][mapNumberCoordinate(location.getNumber())] = null;
     }
 
     /**
@@ -116,7 +128,7 @@ public class ChessBoard extends DefaultSubject {
      * @param location
      */
     public void putPieceOnBoardAt(ChessPiece piece, Location location) {
-        this.board[location.getLetter().getIndex()][location.getNumber() - 1] = piece;
+        this.board[location.getLetter().getIndex()][mapNumberCoordinate(location.getNumber())] = piece;
     }
 
     /**
@@ -130,7 +142,7 @@ public class ChessBoard extends DefaultSubject {
      *         empty
      */
     ChessPiece getPieceFromBoardAt(int letterCoordinate, int numberCoordinate) {
-        return board[letterCoordinate][numberCoordinate - 1];
+        return board[letterCoordinate][mapNumberCoordinate(numberCoordinate)];
     }
 
     /**
@@ -156,8 +168,6 @@ public class ChessBoard extends DefaultSubject {
             return allGameMoves.get(allGameMoves.size() - 1);
         }
     }
-
-
 
     /**
      * Checks a square to see if it's empty

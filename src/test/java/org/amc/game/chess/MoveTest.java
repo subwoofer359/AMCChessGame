@@ -47,12 +47,12 @@ public class MoveTest {
     
     @Test
     public void testGetDistanceX(){
-        assertEquals(-3,move.getDistanceX().intValue());
+        assertEquals(3,move.getDistanceX().intValue());
     }
     
     @Test
     public void testGetDistanceY(){
-        assertEquals(-1,move.getDistanceY().intValue());
+        assertEquals(1,move.getDistanceY().intValue());
     }
     
     @Test

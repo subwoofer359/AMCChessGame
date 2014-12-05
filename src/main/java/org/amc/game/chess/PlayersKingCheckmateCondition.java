@@ -162,8 +162,8 @@ public class PlayersKingCheckmateCondition {
             int positionY = move.getStart().getNumber();
             
             for (int i = 0; i < distance - 1; i++) {
-                positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
-                positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+                positionX = positionX + 1 * (int) Math.signum(move.getDistanceX());
+                positionY = positionY + 1 * (int) Math.signum(move.getDistanceY());
                 squares.add(new Location(Coordinate.values()[positionX], positionY));
             }
         }

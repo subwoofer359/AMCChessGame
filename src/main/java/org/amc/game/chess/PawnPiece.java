@@ -64,9 +64,9 @@ public class PawnPiece extends SimplePiece {
     private boolean isMovingForward(Move move) {
         int moveInYDirection = move.getDistanceY();
         if (this.getColour().equals(Colour.WHITE)) {
-            return moveInYDirection < 0;
-        } else {
             return moveInYDirection > 0;
+        } else {
+            return moveInYDirection < 0;
         }
     }
 
@@ -101,8 +101,8 @@ public class PawnPiece extends SimplePiece {
     private boolean canMoveTwoSquaresForward(ChessBoard board, Move move) {
         int positionX = move.getStart().getLetter().getIndex();
         int positionY = move.getStart().getNumber();
-        positionX = positionX - 1 * (int) Math.signum(move.getDistanceX());
-        positionY = positionY - 1 * (int) Math.signum(move.getDistanceY());
+        positionX = positionX + 1 * (int) Math.signum(move.getDistanceX());
+        positionY = positionY + 1 * (int) Math.signum(move.getDistanceY());
         return board.getPieceFromBoardAt(positionX, positionY) == null;
     }
 
