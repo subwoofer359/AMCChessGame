@@ -18,6 +18,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+/**
+ * Todo Redesign this test 
+ */
 @Ignore
 public class ChessApplicationTest {
 
@@ -34,7 +38,7 @@ public class ChessApplicationTest {
         board=new ChessBoard();
         game=new ChessApplication(whitePlayer,blackPlayer);
         chessGame=spy(new ChessGame(board, whitePlayer, blackPlayer));
-        doReturn(false).when(chessGame).isPlayersKingInCheck(any(HumanPlayer.class), any(ChessBoard.class));
+        //doReturn(false).when(chessGame).isPlayersKingInCheck(any(HumanPlayer.class), any(ChessBoard.class));
         game.setChessGame(chessGame);
     }
     
