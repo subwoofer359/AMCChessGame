@@ -6,6 +6,10 @@ package org.amc.game.chess;
  *
  */
 public class EnPassantRule extends PawnPieceRule{
+    
+    private ReversibleMove pawnMove;
+    private ChessPiece capturedPawn;
+    private Location capturedPawnLocation;
     /**
      * @see ChessMoveRule#applyRule(ChessBoard, Move)
      */
@@ -14,22 +18,25 @@ public class EnPassantRule extends PawnPieceRule{
         if(isEnPassantCapture(board,move)){
             Location endSquare=move.getEnd();
             ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
-            board.move(move);
+            pawnMove=new ReversibleMove(board, move);
+            pawnMove.move();
             removeCapturedPawnFromTheChessBoard(board, piece, endSquare);
                 
         }
     }
     
     private void removeCapturedPawnFromTheChessBoard(ChessBoard board,ChessPiece piece,Location endSquare){
-        Location capturedPawn;
+        Location capturedPawnLocation;
         if(piece.getColour().equals(Colour.WHITE)){
-            capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
+            capturedPawnLocation=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
             
         }
         else{
-            capturedPawn=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
+            capturedPawnLocation=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
         }
-        board.removePieceOnBoardAt(capturedPawn);
+        this.capturedPawn=board.getPieceFromBoardAt(capturedPawnLocation);
+        this.capturedPawnLocation=capturedPawnLocation;
+        board.removePieceOnBoardAt(capturedPawnLocation);
     }
     
     /**
@@ -39,7 +46,14 @@ public class EnPassantRule extends PawnPieceRule{
      */
     @Override
     public void unapplyRule(ChessBoard board, Move move) {
-        // Can't be undone
+        if(board.getTheLastMove().equals(move)){
+            try{
+                pawnMove.undoMove();
+                board.putPieceOnBoardAt(capturedPawn, capturedPawnLocation);
+            }catch(InvalidMoveException ime){
+                throw new RuntimeException("An exception has occurred after trying to undo an en passant capture move");
+            }
+        }
         
     }
     
