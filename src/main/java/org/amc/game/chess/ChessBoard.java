@@ -176,7 +176,6 @@ public class ChessBoard extends DefaultSubject {
      * @return Boolean true if it's empty
      */
     boolean isEndSquareEmpty(Location location) {
-        System.out.println(location);
         return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber()) == null;
     }
 
