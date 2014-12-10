@@ -198,5 +198,12 @@ public class IsKingCheckmated {
         PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
         assertTrue(pkicc.canAttackingPieceNotBeCaptured());
     }
+    
+    @Test
+    public void testDiscoveryCheckMate() throws ParseException,InvalidMoveException{
+        board = chessBoardFactory.getChessBoard("Ke8:Rd8:Rf8:Pd7:Pf7:ka1:qe1:be2");
+        chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        chessGame.move(whitePlayer, new Move(new Location(E,2),new Location(D,3)));
+    }
 
 }

@@ -18,6 +18,17 @@ public class ChessGame {
     private Player playerTwo;
     List<ChessMoveRule> chessRules;
     private PlayerKingInCheckCondition kingInCheck;
+    private GameState gameState;
+    
+    public enum GameState{
+        RUNNING,
+        STALEMATE,
+        WHITE_IN_CHECK,
+        BLACK_IN_CHECK,
+        WHITE_CHECKMATE,
+        BLACK_CHECKMATE,
+    }
+    
 
     public ChessGame(ChessBoard board, Player playerOne, Player playerTwo) {
         this.board = board;
@@ -29,6 +40,7 @@ public class ChessGame {
         chessRules.add(new EnPassantRule());
         chessRules.add(new CastlingRule());
         chessRules.add(new PawnPromotionRule());
+        this.gameState=GameState.RUNNING;
     }
 
     public Player getCurrentPlayer() {
@@ -70,6 +82,9 @@ public class ChessGame {
         checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, board, piece, move);
+        if(isOpponentsKingInCheck(player,board)){
+           // isOpponentKingInCheckMate(player,board);
+        }
     }
 
     private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
@@ -175,7 +190,20 @@ public class ChessGame {
 
     boolean isPlayersKingInCheck(Player player, ChessBoard board) {
         return kingInCheck.isPlayersKingInCheck(player, getOpposingPlayer(player), board);
+        
     }
+    
+    boolean isOpponentsKingInCheck(Player player, ChessBoard board){
+        Player opponent=getOpposingPlayer(player);
+        boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent,player,board);
+        if(inCheck)
+        {
+            gameState=(opponent.getColour().equals(Colour.WHITE))?GameState.WHITE_IN_CHECK:GameState.BLACK_IN_CHECK;
+        }
+        return inCheck;
+    }
+    
+    
 
     /**
      * Checks to see if a game rule applies to the Player's move Only applies
@@ -200,5 +228,9 @@ public class ChessGame {
 
     void setChessBoard(ChessBoard board) {
         this.board = board;
+    }
+    
+    GameState getGameState(){
+        return this.gameState;
     }
 }
