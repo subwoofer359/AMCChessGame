@@ -12,9 +12,28 @@ public class Location implements Comparable<Location> {
     private Coordinate letter;
     private Integer number;
 
+    /**
+     * Creates a new Location
+     * 
+     * @param letter
+     *            File
+     * @param number
+     *            Rank
+     * @throws java.lang.IllegalArgumentException
+     *             If number is greater than the allowed value set by
+     *             <code>ChessBoard.BOARD_WIDTH</code>
+     */
     public Location(Coordinate letter, Integer number) {
         this.letter = letter;
+        checkNumber(number);
         this.number = number;
+    }
+
+    private void checkNumber(Integer number) {
+        if (number > ChessBoard.BOARD_WIDTH) {
+            throw new IllegalArgumentException(number + " is greater than "
+                            + ChessBoard.BOARD_WIDTH + " which is not allowed");
+        }
     }
 
     /**
@@ -77,8 +96,5 @@ public class Location implements Comparable<Location> {
             return false;
         return true;
     }
-    
-    
-    
-    
+
 }
