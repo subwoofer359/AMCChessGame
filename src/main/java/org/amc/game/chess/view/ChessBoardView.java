@@ -147,8 +147,8 @@ public class ChessBoardView implements Observer {
      * @return a Character representing the ChessPiece
      */
     private Character getChessPieceMapping(ChessPiece piece) {
-        Character[] whiteSymbols = { 'K', 'Q', 'B', 'k', 'R', 'p' };
-        Character[] blackSymbols = { '\u0136', '\u0150', '\u00DF', '\u0138', '\u0158', '\u03F8' };
+        Character[] blackSymbols = { 'K', 'Q', 'B', 'N', 'R', 'P' };
+        Character[] whiteSymbols = { 'k', 'q', 'b', 'n', 'r', 'p' };
         int index = -1;
 
         if (piece.getClass().equals(KingPiece.class)) {
