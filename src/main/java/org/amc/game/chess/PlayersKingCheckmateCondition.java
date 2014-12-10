@@ -32,7 +32,7 @@ public class PlayersKingCheckmateCondition {
      */
     boolean isCheckMate() {
         return isPlayersKingInCheck() && isKingNotAbleToMoveOutOfCheck()
-                        && canAttackingPieceNotBeCaptured() && !canAttackingPieceBeBlocked();
+                        && canAttackingPieceNotBeCaptured() && canAttackingPieceNotBeBlocked();
 
     }
 
@@ -135,11 +135,11 @@ public class PlayersKingCheckmateCondition {
      * @param board
      * @return Boolean true if the attacking ChessPiece can be blocked.
      */
-    boolean canAttackingPieceBeBlocked() {
+    boolean canAttackingPieceNotBeBlocked() {
         Location attackingPieceLocation = null;
         List<ChessPieceLocation> attackingPieces = getAllPiecesAttackingTheKing();
         if (attackingPieces.size() != 1) {
-            return false;
+            return true;
         } else {
             attackingPieceLocation = attackingPieces.get(0).getLocation();
         }
@@ -154,11 +154,11 @@ public class PlayersKingCheckmateCondition {
                 Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
                 ChessPiece piece = cpl.getPiece();
                 if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     boolean isPlayersKingInCheck() {

@@ -130,7 +130,7 @@ public class IsKingCheckmated {
 
         assertFalse(chessGame.isCheckMate(blackPlayer, board));
         PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
-        assertTrue(pkicc.canAttackingPieceBeBlocked());
+        assertFalse(pkicc.canAttackingPieceNotBeBlocked());
     }
 
     @Test
@@ -156,7 +156,7 @@ public class IsKingCheckmated {
         Move move = new Move(new Location(H, 8), new Location(H, 5));
         board.move(move);
         PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
-        assertFalse(pkicc.canAttackingPieceBeBlocked());
+        assertTrue(pkicc.canAttackingPieceNotBeBlocked());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class IsKingCheckmated {
         Move move = new Move(new Location(H, 8), new Location(H, 5));
         board.move(move);
         PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
-        assertTrue(pkicc.canAttackingPieceBeBlocked());
+        assertFalse(pkicc.canAttackingPieceNotBeBlocked());
     }
     
     @Test
