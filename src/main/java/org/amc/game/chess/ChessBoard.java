@@ -46,7 +46,7 @@ public class ChessBoard extends DefaultSubject {
     /**
      * The width of the Chess Board
      */
-    public final int BOARD_WIDTH = 8;
+    public static final int BOARD_WIDTH = 8;
 
     List<Move> allGameMoves;
 
@@ -176,6 +176,7 @@ public class ChessBoard extends DefaultSubject {
      * @return Boolean true if it's empty
      */
     boolean isEndSquareEmpty(Location location) {
+        System.out.println(location);
         return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber()) == null;
     }
 
@@ -256,6 +257,13 @@ public class ChessBoard extends DefaultSubject {
 
         public final Location getLocation() {
             return location;
+        }
+        
+        @Override
+        public String toString(){
+            StringBuilder sb=new StringBuilder(piece.toString());
+            sb.append(location.toString());
+            return sb.toString();
         }
     }
 }
