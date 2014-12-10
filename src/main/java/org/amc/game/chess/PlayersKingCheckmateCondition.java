@@ -155,7 +155,7 @@ public class PlayersKingCheckmateCondition {
                 Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
                 ChessPiece piece = cpl.getPiece();
                 if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
-                    ReversibleMove checkMove = new ReversibleMove(board, move);
+                    ReversibleMove checkMove = new ReversibleMove(board, blockingMove);
                     checkMove.testMove();
                     if (isPlayersKingInCheck()) {
                         undoMove(checkMove);
