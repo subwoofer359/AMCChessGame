@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
+import org.amc.game.chess.view.ChessBoardView;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -160,10 +161,19 @@ public class IsKingCheckmated {
     }
 
     @Test
+    public void testAttackingPieceCanNotBeBlockedDueToCheck() throws ParseException{
+        board = chessBoardFactory.getChessBoard("Ke8:ke1:qe4:bh5:Rg6");
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.canAttackingPieceNotBeBlocked());
+    }
+    
+    @Test
     public void testCanAttackingPieceBeBlocked() throws ParseException {
         board = chessBoardFactory.getChessBoard("qh8:Kh3:Ra4:kf2");
         Move move = new Move(new Location(H, 8), new Location(H, 5));
         board.move(move);
+        ChessBoardView view = new ChessBoardView(board);
+        view.displayTheBoard();
         PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
         assertFalse(pkicc.canAttackingPieceNotBeBlocked());
     }
