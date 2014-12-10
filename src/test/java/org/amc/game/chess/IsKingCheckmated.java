@@ -17,7 +17,6 @@ public class IsKingCheckmated {
     private ChessBoard board;
     private ChessGame chessGame;
     private ChessBoardFactory chessBoardFactory;
-    private PlayersKingCheckmateCondition checkmateCondtion;
 
     @Before
     public void setUp() throws Exception {
@@ -25,7 +24,6 @@ public class IsKingCheckmated {
         blackPlayer = new HumanPlayer("Robin", Colour.BLACK);
         board = new ChessBoard();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-        checkmateCondtion = new PlayersKingCheckmateCondition();
         chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     }
 
@@ -41,18 +39,19 @@ public class IsKingCheckmated {
     @Test
     public void getAllPiecesAttackingTheKingTest() throws ParseException {
         board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:nf6");
-        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition();
-        List<ChessPieceLocation> attackers = pkicc.getAllPiecesAttackingTheKing(blackPlayer,
-                        whitePlayer, board);
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        List<ChessPieceLocation> attackers = pkicc.getAllPiecesAttackingTheKing();
         assertTrue(attackers.size() == 3);
 
         board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:nf6:nd6");
-        attackers = pkicc.getAllPiecesAttackingTheKing(blackPlayer, whitePlayer, board);
+        pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        attackers = pkicc.getAllPiecesAttackingTheKing();
         assertTrue(attackers.size() == 4);
 
         // pawn blocking queen
         board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:pe2:nf6:nd6");
-        attackers = pkicc.getAllPiecesAttackingTheKing(blackPlayer, whitePlayer, board);
+        pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        attackers = pkicc.getAllPiecesAttackingTheKing();
         assertTrue(attackers.size() == 3);
     }
 
@@ -130,7 +129,8 @@ public class IsKingCheckmated {
         board.move(move);
 
         assertFalse(chessGame.isCheckMate(blackPlayer, board));
-        assertTrue(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.canAttackingPieceBeBlocked());
     }
 
     @Test
@@ -138,8 +138,8 @@ public class IsKingCheckmated {
         board = chessBoardFactory.getChessBoard("Kb8:kb6:bb7:be7:Rh6");
         Move move = new Move(new Location(E, 7), new Location(D, 6));
         board.move(move);
-
-        assertTrue(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.canAttackingPieceBeCaptured());
         assertFalse(chessGame.isCheckMate(blackPlayer, board));
     }
 
@@ -155,7 +155,8 @@ public class IsKingCheckmated {
         board = chessBoardFactory.getChessBoard("qh8:Kh3:kf2");
         Move move = new Move(new Location(H, 8), new Location(H, 5));
         board.move(move);
-        assertFalse(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertFalse(pkicc.canAttackingPieceBeBlocked());
     }
 
     @Test
@@ -163,25 +164,29 @@ public class IsKingCheckmated {
         board = chessBoardFactory.getChessBoard("qh8:Kh3:Ra4:kf2");
         Move move = new Move(new Location(H, 8), new Location(H, 5));
         board.move(move);
-        assertTrue(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.canAttackingPieceBeBlocked());
     }
     
     @Test
     public void testTwoAttackingPiecesCanNotBeCaptured() throws ParseException{
         board = chessBoardFactory.getChessBoard("Ke8:bc6:bg6:Ne5");
-        assertFalse(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertFalse(pkicc.canAttackingPieceBeCaptured());
     }
     
     @Test
     public void testTwoAttackingPiecesCanBeCaptured() throws ParseException{
         board = chessBoardFactory.getChessBoard("Ke8:bg6:Ne5");
-        assertTrue(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.canAttackingPieceBeCaptured());
     }
     
     @Test
     public void testTwoAttackingPiecesCanNotBeCapturedDueToCheck() throws ParseException{
         board = chessBoardFactory.getChessBoard("Ke8:bg6:Ne5:qe4");
-        assertFalse(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertFalse(pkicc.canAttackingPieceBeCaptured());
     }
 
 }

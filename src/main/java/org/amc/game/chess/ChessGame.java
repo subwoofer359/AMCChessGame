@@ -18,7 +18,6 @@ public class ChessGame {
     private Player playerTwo;
     List<ChessMoveRule> chessRules;
     private PlayerKingInCheckCondition kingInCheck;
-    private PlayersKingCheckmateCondition checkmate;
 
     public ChessGame(ChessBoard board, Player playerOne, Player playerTwo) {
         this.board = board;
@@ -26,7 +25,6 @@ public class ChessGame {
         this.playerTwo = playerTwo;
         this.currentPlayer = this.playerOne;
         this.kingInCheck = new PlayerKingInCheckCondition();
-        this.checkmate = new PlayersKingCheckmateCondition();
         chessRules = new ArrayList<>();
         chessRules.add(new EnPassantRule());
         chessRules.add(new CastlingRule());
@@ -171,7 +169,8 @@ public class ChessGame {
     }
 
     boolean isCheckMate(Player player, ChessBoard board) {
-        return checkmate.isCheckMate(player, getOpposingPlayer(player), board);
+        PlayersKingCheckmateCondition checkmate=new PlayersKingCheckmateCondition(player, getOpposingPlayer(player), board);
+        return checkmate.isCheckMate();
     }
 
     boolean isPlayersKingInCheck(Player player, ChessBoard board) {
