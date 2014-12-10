@@ -83,7 +83,7 @@ public class ChessGame {
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, board, piece, move);
         if(isOpponentsKingInCheck(player,board)){
-           // isOpponentKingInCheckMate(player,board);
+            isOpponentKingInCheckMate(player);
         }
     }
 
@@ -131,6 +131,8 @@ public class ChessGame {
         if (isPlayersKingInCheck(player, board)) {
             reversible.undoMove();
             throw new InvalidMoveException("King is checked");
+        }else{
+            gameState=GameState.RUNNING;
         }
     }
 
@@ -203,6 +205,16 @@ public class ChessGame {
         return inCheck;
     }
     
+    boolean isOpponentKingInCheckMate(Player player){
+        Player opponent=getOpposingPlayer(player);
+        PlayersKingCheckmateCondition okcc=new PlayersKingCheckmateCondition(opponent, player, board);
+        if(okcc.isCheckMate()){
+            gameState=(opponent.getColour().equals(Colour.WHITE))?GameState.WHITE_CHECKMATE:GameState.BLACK_CHECKMATE;
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 
     /**
