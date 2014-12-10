@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -168,6 +169,26 @@ public class PlayersKingCheckmateCondition {
             }
         }
         return squares;
+    }
+    
+    /**
+     * Find all opponents pieces directly attacking the king
+     * @param player Player
+     * @param opponent Player
+     * @param board ChessBoard
+     * @return List of ChessPieceLocation of attacking pieces
+     */
+    List<ChessPieceLocation> getAllPiecesAttackingTheKing(Player player, Player opponent, ChessBoard board){
+        Location playersKingLocation=board.getPlayersKingLocation(player);
+        List<ChessPieceLocation> enemyPiece = board.getListOfPlayersPiecesOnTheBoard(opponent);
+        List<ChessPieceLocation> attackingPieces=new ArrayList<>();
+        for(ChessPieceLocation cpl:enemyPiece){
+            Move move = new Move(cpl.getLocation(),playersKingLocation);
+            if(cpl.getPiece().isValidMove(board, move)){
+                attackingPieces.add(cpl);
+            }
+        }
+        return attackingPieces;
     }
 
 }

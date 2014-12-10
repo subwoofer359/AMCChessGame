@@ -2,10 +2,12 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.util.List;
 
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
@@ -34,6 +36,24 @@ public class IsKingCheckmated {
         board.move(rookMove);
 
         assertTrue(chessGame.isCheckMate(blackPlayer, board));
+    }
+    
+    @Test
+    public void getAllPiecesAttackingTheKingTest() throws ParseException {
+        board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:nf6");
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition();
+        List<ChessPieceLocation> attackers = pkicc.getAllPiecesAttackingTheKing(blackPlayer,
+                        whitePlayer, board);
+        assertTrue(attackers.size() == 3);
+
+        board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:nf6:nd6");
+        attackers = pkicc.getAllPiecesAttackingTheKing(blackPlayer, whitePlayer, board);
+        assertTrue(attackers.size() == 4);
+
+        // pawn blocking queen
+        board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:pe2:nf6:nd6");
+        attackers = pkicc.getAllPiecesAttackingTheKing(blackPlayer, whitePlayer, board);
+        assertTrue(attackers.size() == 3);
     }
 
     @Test
