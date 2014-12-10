@@ -32,7 +32,7 @@ public class PlayersKingCheckmateCondition {
      */
     boolean isCheckMate() {
         return isPlayersKingInCheck() && isKingNotAbleToMoveOutOfCheck()
-                        && !canAttackingPieceBeCaptured() && !canAttackingPieceBeBlocked();
+                        && canAttackingPieceNotBeCaptured() && !canAttackingPieceBeBlocked();
 
     }
 
@@ -89,11 +89,11 @@ public class PlayersKingCheckmateCondition {
      *            ChessBoard
      * @return Boolean
      */
-    boolean canAttackingPieceBeCaptured() {
+    boolean canAttackingPieceNotBeCaptured() {
         Location attackingPieceLocation = null;
         List<ChessPieceLocation> attackingPieces = getAllPiecesAttackingTheKing();
         if (attackingPieces.size() != 1) {
-            return false;
+            return true;
         } else {
             attackingPieceLocation = attackingPieces.get(0).getLocation();
         }
@@ -111,12 +111,12 @@ public class PlayersKingCheckmateCondition {
 
                 } else {
                     undoMove(checkMove);
-                    return true;
+                    return false;
                 }
 
             }
         }
-        return false;
+        return true;
     }
 
     private void undoMove(ReversibleMove move) {
