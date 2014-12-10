@@ -165,5 +165,23 @@ public class IsKingCheckmated {
         board.move(move);
         assertTrue(checkmateCondtion.canAttackingPieceBeBlocked(blackPlayer, whitePlayer, board));
     }
+    
+    @Test
+    public void testTwoAttackingPiecesCanNotBeCaptured() throws ParseException{
+        board = chessBoardFactory.getChessBoard("Ke8:bc6:bg6:Ne5");
+        assertFalse(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+    }
+    
+    @Test
+    public void testTwoAttackingPiecesCanBeCaptured() throws ParseException{
+        board = chessBoardFactory.getChessBoard("Ke8:bg6:Ne5");
+        assertTrue(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+    }
+    
+    @Test
+    public void testTwoAttackingPiecesCanNotBeCapturedDueToCheck() throws ParseException{
+        board = chessBoardFactory.getChessBoard("Ke8:bg6:Ne5:qe4");
+        assertFalse(checkmateCondtion.canAttackingPieceBeCaptured(blackPlayer, whitePlayer, board));
+    }
 
 }

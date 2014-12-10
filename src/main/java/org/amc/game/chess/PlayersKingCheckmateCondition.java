@@ -86,7 +86,15 @@ public class PlayersKingCheckmateCondition {
      * @return Boolean
      */
     boolean canAttackingPieceBeCaptured(Player player, Player opponent, ChessBoard board) {
-        Location attackingPieceLocation = board.getTheLastMove().getEnd();
+        Location attackingPieceLocation = null;
+        List<ChessPieceLocation> attackingPieces=getAllPiecesAttackingTheKing(player, opponent, board);
+        if(attackingPieces.size()!=1){
+            return false;
+        }else
+        {
+            attackingPieceLocation=attackingPieces.get(0).getLocation();
+        }
+        
         List<ChessPieceLocation> myPieces = board.getListOfPlayersPiecesOnTheBoard(player);
         for (ChessPieceLocation cpl : myPieces) {
             ChessPiece piece = cpl.getPiece();
@@ -95,11 +103,12 @@ public class PlayersKingCheckmateCondition {
                 ReversibleMove checkMove = new ReversibleMove(board, move);
                 checkMove.testMove();
 
-                if (!isPlayersKingInCheck(player, opponent, board)) {
+                if (isPlayersKingInCheck(player, opponent, board)) {
                     undoMove(checkMove);
-                    return true;
+                    
                 } else {
                     undoMove(checkMove);
+                    return true;
                 }
 
             }
@@ -124,7 +133,14 @@ public class PlayersKingCheckmateCondition {
      * @return Boolean true if the attacking ChessPiece can be blocked.
      */
     boolean canAttackingPieceBeBlocked(Player player, Player opponent, ChessBoard board) {
-        Location attackingPieceLocation = board.getTheLastMove().getEnd();
+        Location attackingPieceLocation = null;
+        List<ChessPieceLocation> attackingPieces=getAllPiecesAttackingTheKing(player, opponent, board);
+        if(attackingPieces.size()!=1){
+            return false;
+        }else
+        {
+            attackingPieceLocation=attackingPieces.get(0).getLocation();
+        }
         Location playersKingLocation = board.getPlayersKingLocation(player);
         List<ChessPieceLocation> myPieces = board.getListOfPlayersPiecesOnTheBoard(player);
         ChessPiece attacker = board.getPieceFromBoardAt(attackingPieceLocation);
