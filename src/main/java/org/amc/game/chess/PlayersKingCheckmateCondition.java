@@ -3,13 +3,17 @@ package org.amc.game.chess;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Checks to see if the player is checkmated.
+ * 
+ * @author Adrian Mclaughlin
+ *
+ */
 public class PlayersKingCheckmateCondition {
 
     private PlayerKingInCheckCondition kingIsChecked = new PlayerKingInCheckCondition();
@@ -134,7 +138,7 @@ public class PlayersKingCheckmateCondition {
             move.undoMove();
         } catch (InvalidMoveException ime) {
             throw new RuntimeException(
-                            "In canAttackingPieceBeCaptured method:Chessboard in inconsistent state");
+                            "move couldn't be undone therefore board is in an inconsistent state");
         }
     }
 
