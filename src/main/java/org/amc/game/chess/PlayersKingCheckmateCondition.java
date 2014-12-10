@@ -102,18 +102,14 @@ public class PlayersKingCheckmateCondition {
         if (isThereMoreThanOneAttacker()) {
             return true;
         }
-
         Location attackingPieceLocation = attackingPieces.get(0).getLocation();
         for (ChessPieceLocation cpl : playersPieces) {
             ChessPiece piece = cpl.getPiece();
             Move move = new Move(cpl.getLocation(), attackingPieceLocation);
             if (piece.isValidMove(board, move)) {
-                ReversibleMove checkMove = new ReversibleMove(board, move);
-                checkMove.testMove();
-                if (isPlayersKingInCheck()) {
-                    undoMove(checkMove);
+                if (willPlayerBeInCheck(move)) {
+                    continue;
                 } else {
-                    undoMove(checkMove);
                     return false;
                 }
             }
@@ -121,6 +117,14 @@ public class PlayersKingCheckmateCondition {
         return true;
     }
 
+    private boolean willPlayerBeInCheck(Move move){
+        ReversibleMove checkMove = new ReversibleMove(board, move);
+        checkMove.testMove();
+        boolean playersKingInCheck=isPlayersKingInCheck();
+        undoMove(checkMove);
+        return playersKingInCheck;
+    }
+    
     private boolean isThereMoreThanOneAttacker() {
         return attackingPieces.size() != 1;
     }
@@ -155,12 +159,9 @@ public class PlayersKingCheckmateCondition {
                 Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
                 ChessPiece piece = cpl.getPiece();
                 if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
-                    ReversibleMove checkMove = new ReversibleMove(board, blockingMove);
-                    checkMove.testMove();
-                    if (isPlayersKingInCheck()) {
-                        undoMove(checkMove);
+                    if (willPlayerBeInCheck(blockingMove)) {
+                        continue;
                     } else {
-                        undoMove(checkMove);
                         return false;
                     }
                 }
