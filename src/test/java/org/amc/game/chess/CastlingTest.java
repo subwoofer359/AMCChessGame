@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.amc.game.chess.StartingSquare.WHITE_KING;
+import static org.amc.game.chess.StartingSquare.BLACK_KING;
 import static org.amc.game.chess.StartingSquare.WHITE_ROOK_LEFT;
 import static org.amc.game.chess.StartingSquare.WHITE_ROOK_RIGHT;
 
@@ -14,6 +15,7 @@ import org.junit.Test;
 public class CastlingTest {
     private ChessBoard board;
     private KingPiece whiteKing;
+    private KingPiece blackKing;
     private RookPiece whiteLeftRook;
     private RookPiece whiteRightRook;
     private Location whiteKingStartPosition;
@@ -34,6 +36,7 @@ public class CastlingTest {
         chessGame=new ChessGame(board,whitePlayer,blackPlayer);
         gameRule=new CastlingRule();
         whiteKing=new KingPiece(Colour.WHITE);
+        blackKing=new KingPiece(Colour.BLACK);
         whiteLeftRook=new RookPiece(Colour.WHITE);
         whiteRightRook=new RookPiece(Colour.WHITE);
         whiteKingStartPosition=WHITE_KING.getLocation();
@@ -42,6 +45,7 @@ public class CastlingTest {
         board.putPieceOnBoardAt(whiteKing, whiteKingStartPosition);
         board.putPieceOnBoardAt(whiteRightRook, whiteRightRookStartPosition);
         board.putPieceOnBoardAt(whiteLeftRook, whiteLeftRookStartPosition);
+        board.putPieceOnBoardAt(blackKing, BLACK_KING.getLocation());
     }
 
     @After
