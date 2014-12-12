@@ -52,10 +52,18 @@ public class ChessApplication {
 
             chessGame.changePlayer();
         }
-        if (playerOne.isWinner()) {
-            System.out.println("Player " + playerOne.getName() + " has won");
-        } else {
-            System.out.println("Player " + playerTwo.getName() + " has won");
+        switch (chessGame.getGameState()) {
+        case STALEMATE:
+            System.out.println("Game has ended in a stalemate");
+            break;
+        case BLACK_CHECKMATE:
+            System.out.println(playerOne.getName() + " has won!");
+            break;
+        case WHITE_CHECKMATE:
+            System.out.println(playerTwo.getName() + " has won!");
+            break;
+        default:
+            System.out.println("Game has ended abnormally!!");
         }
     }
 

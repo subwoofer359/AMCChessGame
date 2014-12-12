@@ -111,5 +111,15 @@ public class GameStateTest {
         chessGame.move(whitePlayer, new Move(new Location(B,1),new Location(E,4)));
         assertEquals(GameState.BLACK_IN_CHECK,chessGame.getGameState());
     }
+    
+    @Test
+    public void testForAGameWhichHasEndedInStalemate()throws ParseException,InvalidMoveException{
+        ChessBoard board=factory.getChessBoard("Ke4:Pf6:Pg7:kh5:pf5:ph4");
+        chessGame.setChessBoard(board);
+        ChessBoardView view =new ChessBoardView(board);
+        view.displayTheBoard();
+        chessGame.move(blackPlayer, new Move(new Location(E,4),new Location(F,5)));
+        assertEquals(GameState.STALEMATE,chessGame.getGameState());
+    }
 
 }

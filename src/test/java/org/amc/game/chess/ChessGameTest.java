@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.text.ParseException;
+
 public class ChessGameTest {
 
     private Player whitePlayer;
@@ -16,12 +18,13 @@ public class ChessGameTest {
     private ChessGame chessGame;
     private Location endLocation;
     private Location startLocation;
-    
+    private ChessBoardFactory factory;
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
         blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
         board=new ChessBoard();
+        factory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
@@ -41,38 +44,6 @@ public class ChessGameTest {
         chessGame.changePlayer();
         assertEquals(whitePlayer, chessGame.getCurrentPlayer());
     }
-    
-    @Test
-    public void testPlayerHasTheirKing(){
-        assertFalse(chessGame.isThePlayersKingNotOnTheBoard(whitePlayer));
-    }
-    
-    @Test
-    public void testPlayerDoesNotHaveTheirKing(){
-        board.removePieceOnBoardAt(StartingSquare.BLACK_KING.getLocation());
-        assertFalse(chessGame.isThePlayersKingNotOnTheBoard(whitePlayer));
-        assertTrue(chessGame.isThePlayersKingNotOnTheBoard(blackPlayer));
-    }
-    
-    @Test
-    public void isGameOverOnePlayerLosesTheirKing(){
-        board.initialise();
-        BishopPiece bishop=new BishopPiece(Colour.WHITE);
-        
-        assertFalse(chessGame.isGameOver(whitePlayer, blackPlayer));
-        board.putPieceOnBoardAt(bishop,StartingSquare.BLACK_KING.getLocation());
-        assertTrue(chessGame.isGameOver(whitePlayer, blackPlayer));
-        
-        board.initialise();
-        bishop=new BishopPiece(Colour.BLACK);
-        
-        assertFalse(chessGame.isGameOver(whitePlayer, blackPlayer));
-        board.putPieceOnBoardAt(bishop,StartingSquare.WHITE_KING.getLocation());
-        assertTrue(chessGame.isGameOver(whitePlayer, blackPlayer));
-       
-    }
-    
-
     
     @Test(expected = InvalidMoveException.class)
     public void testMoveWithAnEmptySquare()throws InvalidMoveException {

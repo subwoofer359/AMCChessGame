@@ -84,6 +84,11 @@ public class ChessGame {
         moveThePlayersChessPiece(player, board, piece, move);
         if(isOpponentsKingInCheck(player,board)){
             isOpponentKingInCheckMate(player);
+        }else{
+            PlayerInStalement stalemate=new PlayerInStalement(getOpposingPlayer(player),player, board);
+            if(stalemate.isStalemate()){
+                gameState=GameState.STALEMATE;
+            }
         }
     }
 
@@ -154,35 +159,8 @@ public class ChessGame {
      * @return Boolean
      */
     public boolean isGameOver(Player playerOne, Player playerTwo) {
-        boolean playerOneLostTheirKing = isThePlayersKingNotOnTheBoard(playerOne);
-        boolean playerTwoLostTheirKing = isThePlayersKingNotOnTheBoard(playerTwo);
-        if (playerOneLostTheirKing || isCheckMate(playerOne, board)) {
-            playerTwo.isWinner(true);
-            return true;
-        } else if (playerTwoLostTheirKing || isCheckMate(playerTwo, board)) {
-            playerOne.isWinner(true);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Checks to see if the Player still possesses their King
-     * 
-     * @param player
-     * @return false if they lost their King ChessPiece
-     */
-    boolean isThePlayersKingNotOnTheBoard(Player player) {
-        List<ChessPieceLocation> allPlayersChessPieces = board
-                        .getListOfPlayersPiecesOnTheBoard(player);
-        for (ChessPieceLocation pieceLocation : allPlayersChessPieces) {
-            if (pieceLocation.getPiece().getClass().equals(KingPiece.class)) {
-                return false;
-            }
-        }
-        return true;
-
+        return gameState == GameState.STALEMATE || gameState == GameState.BLACK_CHECKMATE
+                        || gameState == GameState.WHITE_CHECKMATE;
     }
 
     boolean isCheckMate(Player player, ChessBoard board) {
@@ -242,7 +220,7 @@ public class ChessGame {
         this.board = board;
     }
     
-    GameState getGameState(){
+    public GameState getGameState(){
         return this.gameState;
     }
 }
