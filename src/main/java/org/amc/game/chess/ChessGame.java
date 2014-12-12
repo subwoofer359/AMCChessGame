@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import org.amc.game.chess.ChessBoard.ChessPieceLocation;
-
 import java.util.ArrayList;
 import java.util.List;
 

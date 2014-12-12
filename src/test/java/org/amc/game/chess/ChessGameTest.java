@@ -5,10 +5,7 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.text.ParseException;
 
 public class ChessGameTest {
 
@@ -18,13 +15,12 @@ public class ChessGameTest {
     private ChessGame chessGame;
     private Location endLocation;
     private Location startLocation;
-    private ChessBoardFactory factory;
+
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
         blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
         board=new ChessBoard();
-        factory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
