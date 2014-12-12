@@ -98,12 +98,7 @@ abstract class SimplePiece implements ChessPiece {
     }
     
     /**
-     * Find all possible move locations. If the piece isn't on the board the method will 
-     * add the @param Location to the Set which isn't desirable
-     * 
-     * @param board ChessBoard on which the ChessPiece is on
-     * @param location Location of the ChessPiece
-     * @return HashSet of Locations
+     * @see ChessPiece#getPossibleMoveLocations(ChessBoard, Location)
      */
     public Set<Location> getPossibleMoveLocations(ChessBoard board,Location location){
         Set<Location> locations=new HashSet<>();
@@ -111,7 +106,7 @@ abstract class SimplePiece implements ChessPiece {
             for(int i=1;i<=board.BOARD_WIDTH;i++){
                 Location moveLocation=new Location(coord,i);
                 Move move=new Move(location,moveLocation);
-                if(isValidMove(board, move)){
+                if(isValidMove(board, move) && !moveLocation.equals(location)){
                     locations.add(moveLocation);
                 }
             }

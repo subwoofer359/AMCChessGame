@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import java.util.Set;
+
 /**
  * Represents a Chess piece. Responsible for the piece's valid moves
  * 
@@ -42,4 +44,14 @@ public interface ChessPiece {
      * @return Boolean false if it can be lifted over other Chess pieces on the board
      */
     boolean canSlide();
+    
+    /**
+     * Find all possible move locations. If the piece isn't on the board the method will 
+     * add the @param Location to the Set which isn't desirable
+     * 
+     * @param board ChessBoard on which the ChessPiece is on
+     * @param location Location of the ChessPiece
+     * @return HashSet of Locations
+     */
+    Set<Location> getPossibleMoveLocations(ChessBoard board,Location location);
 }
