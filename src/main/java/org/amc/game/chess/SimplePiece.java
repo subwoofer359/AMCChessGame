@@ -13,7 +13,7 @@ import java.util.Set;
  */
 abstract class SimplePiece implements ChessPiece {
     private Colour colour;
-    private Boolean hasMoved = false;
+    private boolean hasMoved = false;
 
     public SimplePiece(Colour colour) {
         this.colour = colour;
@@ -78,7 +78,10 @@ abstract class SimplePiece implements ChessPiece {
         return this.hasMoved;
     }
     
-
+    @Override
+    public void resetMoved(){
+        this.hasMoved=false;
+    }
     
     /**
      * Checks to see if the opposing Player's ChessPiece is in the end Square
@@ -114,6 +117,8 @@ abstract class SimplePiece implements ChessPiece {
         return locations;
     }
     
+    
+    
     @Override
     public String toString(){
         StringBuilder sb=new StringBuilder();
@@ -123,4 +128,5 @@ abstract class SimplePiece implements ChessPiece {
         sb.append(")");
         return sb.toString();
     }
+    
 }

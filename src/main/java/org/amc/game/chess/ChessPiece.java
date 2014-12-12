@@ -38,6 +38,11 @@ public interface ChessPiece {
      */
     boolean hasMoved();
     
+    
+    /**
+     * Resets the flag for the piece has moved
+     */
+    void resetMoved();
     /**
      * The Chess piece can't be lifted off the board when making a move 
      * 

@@ -10,7 +10,9 @@ public class ReversibleMove{
 
     private Move move;
     private ChessBoard board;
-    private ChessPiece piece;
+    private ChessPiece capturedPiece;
+    private boolean moveState;
+    
     public ReversibleMove(ChessBoard board,Move move) {
         this.board=board;
         this.move=move;
@@ -20,7 +22,7 @@ public class ReversibleMove{
      * Make a Chess move
      */
     public void move(){
-        piece=board.getPieceFromBoardAt(move.getEnd());
+        store();
         board.move(this.move);
     }
     
@@ -29,10 +31,15 @@ public class ReversibleMove{
      * Make a Chess move which is not visible
      */
     public void testMove(){
-        piece=board.getPieceFromBoardAt(move.getEnd());
+        store();
         board.quietMove(this.move);
     }
     
+    
+    private void store(){
+        capturedPiece=board.getPieceFromBoardAt(move.getEnd());
+        moveState=board.getPieceFromBoardAt(move.getStart()).hasMoved();
+    }
     /**
      * Undo a move
      * 
@@ -46,8 +53,11 @@ public class ReversibleMove{
         board.quietMove(undoMove);
         board.removeMoveFromMoveList(undoMove);
         board.removeMoveFromMoveList(move);
-        board.putPieceOnBoardAt(piece, move.getEnd());
-        piece=null;
+        if(!moveState){
+            board.getPieceFromBoardAt(move.getStart()).resetMoved();
+        }
+        board.putPieceOnBoardAt(capturedPiece, move.getEnd());
+        capturedPiece=null;
     }
 
     private boolean isNotTheLastMoveMade(Move move){
