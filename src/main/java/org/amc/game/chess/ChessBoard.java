@@ -64,6 +64,31 @@ public class ChessBoard extends DefaultSubject {
         board = new ChessPiece[Coordinate.values().length][BOARD_WIDTH];
         allGameMoves = new ArrayList<>();
     }
+    
+    /**
+     * Create a deep copy of a ChessBoard
+     *  
+     * @param board ChessBoard
+     */
+    public ChessBoard(ChessBoard board) {
+        this();
+        for(Coordinate coord:Coordinate.values()){
+            copyFile(board, coord);
+        }
+    }
+    
+    private void copyFile(ChessBoard board, Coordinate file){
+        for(int i=1;i<=BOARD_WIDTH;i++){
+            ChessPiece piece=board.getPieceFromBoardAt(file.letterIndex, i);
+            storeCopyOfChessPiece(piece, file, i);
+        }
+    }
+    
+    private void storeCopyOfChessPiece(ChessPiece piece,Coordinate file,int rank){
+        if(piece instanceof ChessPiece){
+            this.putPieceOnBoardAt(piece.copy(), new Location(file,rank));
+        }
+    }
 
     /**
      * Sets up the board in it's initial state

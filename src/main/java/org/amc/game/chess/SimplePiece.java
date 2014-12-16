@@ -118,7 +118,9 @@ abstract class SimplePiece implements ChessPiece {
     }
     
     
-    
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString(){
         StringBuilder sb=new StringBuilder();
@@ -128,5 +130,38 @@ abstract class SimplePiece implements ChessPiece {
         sb.append(")");
         return sb.toString();
     }
+
+    /**
+     * @see Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((colour == null) ? 0 : colour.hashCode());
+        result = prime * result + (hasMoved ? 1231 : 1237);
+        return result;
+    }
+
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SimplePiece other = (SimplePiece) obj;
+        if (colour != other.colour)
+            return false;
+        if (hasMoved != other.hasMoved)
+            return false;
+        return true;
+    }
+    
+    
     
 }

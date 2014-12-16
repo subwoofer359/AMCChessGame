@@ -5,22 +5,17 @@ import static org.junit.Assert.*;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ChessBoardTest {
 
     private ChessBoard board;
-    private Player whitePlayer;
-    private Player blackPlayer;
     private Location endLocation;
     private Location startLocation;
 
     @Before
     public void setUp() throws Exception {
         board = new ChessBoard();
-        whitePlayer = new HumanPlayer("Teddy", Colour.WHITE);
-        blackPlayer = new HumanPlayer("Robin", Colour.BLACK);
         startLocation = new Location(ChessBoard.Coordinate.A, 8);
         endLocation = new Location(ChessBoard.Coordinate.B, 7);
     }
@@ -69,5 +64,28 @@ public class ChessBoardTest {
             }
         }
         
+    }
+    
+    /**
+     * Tests the copying constructor of ChessBoard and copy method of ChessPiece
+     */
+    @Test
+    public void CloneConstructorTest(){
+        board.initialise();
+        ChessBoard clone=new ChessBoard(board);       
+        for(Coordinate coord:ChessBoard.Coordinate.values()){
+            for(int i=1;i<=ChessBoard.BOARD_WIDTH;i++){
+                Location location=new Location(coord,i);
+                ChessPiece piece=board.getPieceFromBoardAt(location);
+                ChessPiece clonedPiece=clone.getPieceFromBoardAt(location);
+                if(piece instanceof ChessPiece){
+                    assertFalse(piece==clonedPiece);
+                    assertTrue(piece.equals(clonedPiece));
+                }else{
+                    assertNull(piece);
+                    assertNull(clonedPiece);
+                }
+            }
+        }
     }
 }
