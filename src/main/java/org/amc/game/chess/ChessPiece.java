@@ -59,4 +59,11 @@ public interface ChessPiece {
      * @return HashSet of Locations
      */
     Set<Location> getPossibleMoveLocations(ChessBoard board,Location location);
+    
+    /**
+     * Create a copy of the ChessPiece
+     * 
+     * @return ChessPiece a deep copy of the chessPiece
+     */
+    ChessPiece copy();
 }

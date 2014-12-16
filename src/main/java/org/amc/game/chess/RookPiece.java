@@ -26,4 +26,16 @@ public class RookPiece extends ComplexPiece {
     public boolean canSlide() {
         return true;
     }
+    
+    /**
+     * @see ChessPiece#copy()
+     */
+    @Override
+    public ChessPiece copy() {
+        RookPiece piece=new RookPiece(this.getColour());
+        if(this.hasMoved()){
+            piece.moved();
+        }
+        return piece;
+    }
 }

@@ -24,4 +24,17 @@ public class BishopPiece extends ComplexPiece {
         return true;
     }
 
+    /**
+     * @see ChessPiece#copy()
+     */
+    @Override
+    public ChessPiece copy() {
+        BishopPiece piece=new BishopPiece(this.getColour());
+        if(this.hasMoved()){
+            piece.moved();
+        }
+        return piece;
+    }
+
+    
 }

@@ -44,4 +44,16 @@ public class KingPiece extends SimplePiece {
     public boolean canSlide() {
         return true;
     }
+    
+    /**
+     * @see ChessPiece#copy()
+     */
+    @Override
+    public ChessPiece copy() {
+        KingPiece piece=new KingPiece(this.getColour());
+        if(this.hasMoved()){
+            piece.moved();
+        }
+        return piece;
+    }
 }

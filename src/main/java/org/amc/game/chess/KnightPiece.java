@@ -42,8 +42,23 @@ public class KnightPiece extends SimplePiece {
         }
     }
     
+    /**
+     * @see ChessPiece#canSlide()
+     */
     @Override
     public boolean canSlide() {
         return false;
+    }
+    
+    /**
+     * @see ChessPiece#copy()
+     */
+    @Override
+    public ChessPiece copy() {
+        KnightPiece piece=new KnightPiece(this.getColour());
+        if(this.hasMoved()){
+            piece.moved();
+        }
+        return piece;
     }
 }
