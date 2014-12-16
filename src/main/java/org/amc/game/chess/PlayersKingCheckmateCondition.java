@@ -122,26 +122,15 @@ public class PlayersKingCheckmateCondition {
     }
 
     private boolean willPlayerBeInCheck(Move move){
-        ReversibleMove checkMove = new ReversibleMove(board, move);
-        checkMove.testMove();
-        boolean playersKingInCheck=isPlayersKingInCheck();
-        undoMove(checkMove);
-        return playersKingInCheck;
+        ChessBoard testBoard=new ChessBoard(board);
+        testBoard.move(move);
+        return isPlayersKingInCheck(testBoard);
     }
     
     private boolean isThereMoreThanOneAttacker() {
         return attackingPieces.size() != 1;
     }
-
-    private void undoMove(ReversibleMove move) {
-        try {
-            move.undoMove();
-        } catch (InvalidMoveException ime) {
-            throw new RuntimeException(
-                            "move couldn't be undone therefore board is in an inconsistent state");
-        }
-    }
-
+    
     /**
      * Checks to see if the attacking ChessPiece can be blocked
      * 
@@ -175,6 +164,16 @@ public class PlayersKingCheckmateCondition {
     }
 
     boolean isPlayersKingInCheck() {
+        return this.kingIsChecked.isPlayersKingInCheck(player, opponent, board);
+    }
+    
+    /**
+     * To analyse the ChessBoard configuration for the condition of check 
+     * 
+     * @param board ChessBoard
+     * @return boolean true if Player is in check
+     */
+    boolean isPlayersKingInCheck(ChessBoard board) {
         return this.kingIsChecked.isPlayersKingInCheck(player, opponent, board);
     }
 
