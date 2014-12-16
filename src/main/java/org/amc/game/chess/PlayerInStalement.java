@@ -41,23 +41,16 @@ public class PlayerInStalement {
     }
     
     private boolean willPlayerBeInCheck(Move move){
-        ReversibleMove checkMove = new ReversibleMove(board, move);
-        checkMove.testMove();
-        boolean playersKingInCheck=isPlayersKingInCheck();
-        undoMove(checkMove);
-        return playersKingInCheck;
-    }
-    
-    private void undoMove(ReversibleMove move) {
-        try {
-            move.undoMove();
-        } catch (InvalidMoveException ime) {
-            throw new RuntimeException(
-                            "move couldn't be undone therefore board is in an inconsistent state");
-        }
+        ChessBoard testBoard=new ChessBoard(board);
+        testBoard.move(move);
+        return isPlayersKingInCheck(testBoard);
     }
     
     boolean isPlayersKingInCheck() {
+        return this.inCheck.isPlayersKingInCheck(player, opponent, board);
+    }
+    
+    boolean isPlayersKingInCheck(ChessBoard board) {
         return this.inCheck.isPlayersKingInCheck(player, opponent, board);
     }
 
