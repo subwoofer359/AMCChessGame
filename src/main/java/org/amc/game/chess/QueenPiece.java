@@ -22,19 +22,22 @@ public class QueenPiece extends ComplexPiece {
     boolean validMovement(Move move) {
         return Move.isDiagonalMove(move) || Move.isFileOrRankMove(move);
     }
-    
+
+    /**
+     * @see ChessPiece#canSlide()
+     */
     @Override
     public boolean canSlide() {
         return true;
     }
-    
+
     /**
      * @see ChessPiece#copy()
      */
     @Override
     public ChessPiece copy() {
-        QueenPiece piece=new QueenPiece(this.getColour());
-        if(this.hasMoved()){
+        QueenPiece piece = new QueenPiece(this.getColour());
+        if (this.hasMoved()) {
             piece.moved();
         }
         return piece;

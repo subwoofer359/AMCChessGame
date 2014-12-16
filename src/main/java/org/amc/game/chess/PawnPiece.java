@@ -18,7 +18,7 @@ public class PawnPiece extends SimplePiece {
     public PawnPiece(Colour colour) {
         super(colour);
     }
-    
+
     /**
      * @see SimplePiece#validMovement(Move)
      */
@@ -113,19 +113,22 @@ public class PawnPiece extends SimplePiece {
             return isEndSquareOccupiedByOpponentsPiece(board, move);
         }
     }
-    
+
+    /**
+     * @see ChessPiece#canSlide()
+     */
     @Override
     public boolean canSlide() {
         return true;
     }
-    
+
     /**
      * @see ChessPiece#copy()
      */
     @Override
     public ChessPiece copy() {
-        PawnPiece piece=new PawnPiece(this.getColour());
-        if(this.hasMoved()){
+        PawnPiece piece = new PawnPiece(this.getColour());
+        if (this.hasMoved()) {
             piece.moved();
         }
         return piece;

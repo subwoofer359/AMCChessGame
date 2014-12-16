@@ -14,11 +14,17 @@ public class BishopPiece extends ComplexPiece {
         super(colour);
     }
 
+    /**
+     * @see SimplePiece#validMovement(Move)
+     */
     @Override
     boolean validMovement(Move move) {
         return Move.isDiagonalMove(move);
     }
 
+    /**
+     * @see ChessPiece#canSlide()
+     */
     @Override
     public boolean canSlide() {
         return true;

@@ -22,6 +22,9 @@ public class RookPiece extends ComplexPiece {
         return Move.isFileOrRankMove(move);
     }
     
+    /**
+     * @see ChessPiece#canSlide()
+     */
     @Override
     public boolean canSlide() {
         return true;

@@ -40,6 +40,9 @@ public class KingPiece extends SimplePiece {
                         move.getAbsoluteDistanceY() <= 1;
     }
     
+    /**
+     * @see ChessPiece#canSlide()
+     */
     @Override
     public boolean canSlide() {
         return true;
