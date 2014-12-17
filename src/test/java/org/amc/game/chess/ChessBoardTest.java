@@ -7,14 +7,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.util.List;
+
 public class ChessBoardTest {
 
+    private Player whitePlayer;
+    private Player blackPlayer;
     private ChessBoard board;
     private Location endLocation;
     private Location startLocation;
 
     @Before
     public void setUp() throws Exception {
+        whitePlayer=new HumanPlayer("White Player",Colour.WHITE);
+        blackPlayer=new HumanPlayer("Black Player", Colour.BLACK);
         board = new ChessBoard();
         startLocation = new Location(ChessBoard.Coordinate.A, 8);
         endLocation = new Location(ChessBoard.Coordinate.B, 7);
@@ -71,9 +78,10 @@ public class ChessBoardTest {
      */
     @Test
     public void CloneConstructorTest(){
-        board.initialise();
+        board.initialise();  
         ChessBoard clone=new ChessBoard(board);       
         for(Coordinate coord:ChessBoard.Coordinate.values()){
+            boolean moveToggle=false;
             for(int i=1;i<=ChessBoard.BOARD_WIDTH;i++){
                 Location location=new Location(coord,i);
                 ChessPiece piece=board.getPieceFromBoardAt(location);
@@ -87,5 +95,37 @@ public class ChessBoardTest {
                 }
             }
         }
+        
+        
+    }
+    
+    @Test
+    public void CloneConstuctorMoveListCopyTest(){
+        board.initialise();  
+        ChessBoard clone=new ChessBoard(board);
+        assertTrue(board.getTheLastMove().equals(clone.getTheLastMove()));
+    }
+    
+    @Test
+    public void CloneConstuctorPieceMovedCopyTest(){
+        board.initialise();
+        board.getPieceFromBoardAt(StartingSquare.BLACK_KING.getLocation()).moved();
+        board.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()).moved();
+        ChessBoard clone=new ChessBoard(board);
+        assertTrue(clone.getPieceFromBoardAt(StartingSquare.BLACK_KING.getLocation()).hasMoved());
+        assertTrue(clone.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()).hasMoved());
+        assertFalse(clone.getPieceFromBoardAt(StartingSquare.BLACK_KNIGHT_LEFT.getLocation()).hasMoved());
+        assertFalse(clone.getPieceFromBoardAt(StartingSquare.WHITE_ROOK_LEFT.getLocation()).hasMoved());
+        
+    }
+    
+    @Test
+    public void getListOfPlayersPiecesOnTheBoardTest()throws ParseException{
+        ChessBoardFactory factory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
+        ChessBoard board=factory.getChessBoard("Ke1:ke2:Bf1:nf3:na1:ra2");
+        List<?> blackPieceList=board.getListOfPlayersPiecesOnTheBoard(blackPlayer);
+        List<?> whitePieceList=board.getListOfPlayersPiecesOnTheBoard(whitePlayer);
+        assertTrue(blackPieceList.size()==2);
+        assertTrue(whitePieceList.size()==4);
     }
 }
