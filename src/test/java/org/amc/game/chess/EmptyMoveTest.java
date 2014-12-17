@@ -24,9 +24,9 @@ public class EmptyMoveTest {
         assertEquals(move.getDistanceX().intValue(), 0);
         assertEquals(move.getDistanceY().intValue(), 0);
         assertEquals(move.getStart().getLetter(),ChessBoard.Coordinate.A);
-        assertEquals(move.getStart().getNumber().intValue(),1);
+        assertEquals(move.getStart().getNumber(),1);
         assertEquals(move.getEnd().getLetter(),ChessBoard.Coordinate.A);
-        assertEquals(move.getEnd().getNumber().intValue(),1);
+        assertEquals(move.getEnd().getNumber(),1);
         System.out.println(move.toString());
         
     }

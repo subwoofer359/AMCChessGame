@@ -30,9 +30,9 @@ public class SimpleInputParserTest {
             Location start=move.getStart();
             Location end=move.getEnd();
             assertEquals(start.getLetter().toString(),String.valueOf(input.charAt(0)));
-            assertEquals(start.getNumber().intValue(),Integer.parseInt(String.valueOf(input.charAt(1))));
+            assertEquals(start.getNumber(),Integer.parseInt(String.valueOf(input.charAt(1))));
             assertEquals(end.getLetter().toString(),String.valueOf(input.charAt(2)));
-            assertEquals(end.getNumber().intValue(),Integer.parseInt(String.valueOf(input.charAt(3))));
+            assertEquals(end.getNumber(),Integer.parseInt(String.valueOf(input.charAt(3))));
         }
     }
     

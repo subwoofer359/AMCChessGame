@@ -10,7 +10,7 @@ import org.amc.game.chess.ChessBoard.Coordinate;
  */
 public final class Location implements Comparable<Location> {
     private final Coordinate letter;
-    private final Integer number;
+    private final int number;
 
     /**
      * Creates a new Location
@@ -23,7 +23,7 @@ public final class Location implements Comparable<Location> {
      *             If number is greater than the allowed value set by
      *             <code>ChessBoard.BOARD_WIDTH</code>
      */
-    public Location(Coordinate letter, Integer number) {
+    public Location(Coordinate letter, int number) {
         this.letter = letter;
         checkNumber(number);
         this.number = number;
@@ -46,7 +46,7 @@ public final class Location implements Comparable<Location> {
     /**
      * @return Integer number
      */
-    public Integer getNumber() {
+    public int getNumber() {
         return this.number;
     }
 
@@ -74,7 +74,7 @@ public final class Location implements Comparable<Location> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((letter == null) ? 0 : letter.hashCode());
-        result = prime * result + ((number == null) ? 0 : number.hashCode());
+        result = prime * result + number;
         return result;
     }
 
@@ -89,10 +89,7 @@ public final class Location implements Comparable<Location> {
         Location other = (Location) obj;
         if (letter != other.letter)
             return false;
-        if (number == null) {
-            if (other.number != null)
-                return false;
-        } else if (!number.equals(other.number))
+        if (number != other.number)
             return false;
         return true;
     }

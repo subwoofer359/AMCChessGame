@@ -2,18 +2,14 @@ package org.amc.game.chess.controller;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
-import static org.amc.game.chess.StartingSquare.*;
 
 import org.amc.game.ChessApplication;
-import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.controller.ConsoleController;
-import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -45,59 +41,6 @@ public class ChessApplicationTest {
     @After
     public void tearDown() throws Exception {
     }
- 
-    /**
-     * Todo Need to add an assertion, just calls a line in a catch block in ChessGame.start()
-     */
-    @Test
-    public void testStartThrowsInvalidMoveException(){
-        final String[] winningMoves={"F1E1","F1E2","F8B4","E2D3","B4E1"};
-        setupChessBoardInSimpleTestState();
-        game.setView(new ChessBoardView(board));
-        ConsoleController controller=new ConsoleController(chessGame);
-        controller.setConsole(new MockUserInput(winningMoves));
-        game.setController(controller);
-        game.start();
-        assertFalse(whitePlayer.isWinner());
-        assertTrue(blackPlayer.isWinner());
-    }
-    private void setupChessBoardInSimpleTestState(){
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE),WHITE_BISHOP_LEFT.getLocation());
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), WHITE_KING.getLocation());
-           
-        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_LEFT.getLocation());
-        board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), BLACK_KING.getLocation());
-    
-    }
-    
-    @Test
-    public void testStartPlayerOneWinner(){
-        final String[] winningMoves={"F1B5","C8A6","B5E8"};
-        setupChessBoardInSimpleTestState();
-        game.setView(new ChessBoardView(board));
-        ConsoleController controller=new ConsoleController(chessGame);
-        controller.setConsole(new MockUserInput(winningMoves));
-        game.setController(controller);
-        game.start();
-        assertTrue(whitePlayer.isWinner());
-        assertFalse(blackPlayer.isWinner());
-    }
-       
-    @Test
-    public void testStartPlayerTwoWinner(){
-        final String[] winningMoves={"F1E2","F8B4","E2D3","B4E1"};
-        setupChessBoardInSimpleTestState();
-        game.setView(new ChessBoardView(board));
-        ConsoleController controller=new ConsoleController(chessGame);
-        controller.setConsole(new MockUserInput(winningMoves));
-        game.setController(controller);
-        game.start();
-        assertFalse(whitePlayer.isWinner());
-        assertTrue(blackPlayer.isWinner());
-    }
-    
     
     public static class MockUserInput implements ConsoleController.UserConsole{
 
