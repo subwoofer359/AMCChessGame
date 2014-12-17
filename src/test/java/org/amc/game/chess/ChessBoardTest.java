@@ -1,6 +1,7 @@
 package org.amc.game.chess;
 
 import static org.junit.Assert.*;
+import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.After;
@@ -17,14 +18,16 @@ public class ChessBoardTest {
     private ChessBoard board;
     private Location endLocation;
     private Location startLocation;
+    private ChessBoardFactory factory;
 
     @Before
     public void setUp() throws Exception {
         whitePlayer=new HumanPlayer("White Player",Colour.WHITE);
         blackPlayer=new HumanPlayer("Black Player", Colour.BLACK);
+        factory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         board = new ChessBoard();
-        startLocation = new Location(ChessBoard.Coordinate.A, 8);
-        endLocation = new Location(ChessBoard.Coordinate.B, 7);
+        startLocation = new Location(A, 8);
+        endLocation = new Location(B, 7);
     }
 
     @After
@@ -81,7 +84,6 @@ public class ChessBoardTest {
         board.initialise();  
         ChessBoard clone=new ChessBoard(board);       
         for(Coordinate coord:ChessBoard.Coordinate.values()){
-            boolean moveToggle=false;
             for(int i=1;i<=ChessBoard.BOARD_WIDTH;i++){
                 Location location=new Location(coord,i);
                 ChessPiece piece=board.getPieceFromBoardAt(location);
@@ -121,11 +123,26 @@ public class ChessBoardTest {
     
     @Test
     public void getListOfPlayersPiecesOnTheBoardTest()throws ParseException{
-        ChessBoardFactory factory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         ChessBoard board=factory.getChessBoard("Ke1:ke2:Bf1:nf3:na1:ra2");
         List<?> blackPieceList=board.getListOfPlayersPiecesOnTheBoard(blackPlayer);
         List<?> whitePieceList=board.getListOfPlayersPiecesOnTheBoard(whitePlayer);
         assertTrue(blackPieceList.size()==2);
         assertTrue(whitePieceList.size()==4);
+    }
+    
+    @Test
+    public void getPlayersKingLocationTest()throws ParseException{
+        ChessBoard board=factory.getChessBoard("Ke1:ka1");
+        Location blackKingLocation=board.getPlayersKingLocation(blackPlayer);
+        Location whiteKingLocation=board.getPlayersKingLocation(whitePlayer);
+        
+        assertTrue(new Location(E,1).equals(blackKingLocation));
+        assertTrue(new Location(A,1).equals(whiteKingLocation));
+    }
+    
+    @Test(expected=RuntimeException.class)
+    public void getPlayersKingLocationFailTest()throws ParseException{
+        ChessBoard board=factory.getChessBoard("ka1");
+        Location blackKingLocation=board.getPlayersKingLocation(blackPlayer);
     }
 }
