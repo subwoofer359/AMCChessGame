@@ -78,11 +78,6 @@ abstract class SimplePiece implements ChessPiece {
         return this.hasMoved;
     }
     
-    @Override
-    public void resetMoved(){
-        this.hasMoved=false;
-    }
-    
     /**
      * Checks to see if the opposing Player's ChessPiece is in the end Square
      * @param board
