@@ -20,18 +20,4 @@ public interface Player {
      * @return enum Colour
      */
     Colour getColour();
-
-    /**
-     * The player is the winner
-     * 
-     * @return boolean true if they are
-     */
-    boolean isWinner();
-
-    /**
-     * Sets the Player's win state
-     * 
-     * @param isWinner
-     */
-    void isWinner(boolean isWinner);
 }

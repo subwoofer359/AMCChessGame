@@ -9,7 +9,6 @@ package org.amc.game.chess;
 public class HumanPlayer implements Player {
     private String name;
     private Colour colour;
-    private boolean winner = false;
 
     public HumanPlayer(String name, Colour colour) {
         this.name = name;
@@ -25,15 +24,4 @@ public class HumanPlayer implements Player {
     public Colour getColour() {
         return this.colour;
     }
-
-    @Override
-    public boolean isWinner() {
-        return winner;
-    }
-
-    @Override
-    public void isWinner(boolean isWinner) {
-        this.winner = isWinner;
-    }
-
 }
