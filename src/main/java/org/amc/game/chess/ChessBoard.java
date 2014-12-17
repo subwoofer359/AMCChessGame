@@ -261,17 +261,6 @@ public class ChessBoard extends DefaultSubject {
         throw new RuntimeException("Player's king not found this should not happened");
     }
 
-    /**
-     * Removes a move saved from previous players turns Can throw an exception
-     * if the Move doesn't exist
-     * 
-     * @param move
-     *            Move to be removed
-     */
-    void removeMoveFromMoveList(Move move) {
-        this.allGameMoves.remove(move);
-    }
-
     public static class ChessPieceLocation {
         private ChessPiece piece;
         private Location location;
