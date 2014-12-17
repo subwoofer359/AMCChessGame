@@ -28,14 +28,6 @@ public class PawnPromotionRule extends PawnPieceRule {
     }
 
     /**
-     * Rule can't be unapplied
-     */
-    @Override
-    public void unapplyRule(ChessBoard board, Move move) {
-        // Do nothing
-    }
-
-    /**
      * @see ChessMoveRule#isRuleApplicable(ChessBoard, Move)
      */
     @Override

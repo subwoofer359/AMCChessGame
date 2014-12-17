@@ -75,6 +75,7 @@ public class ChessBoard extends DefaultSubject {
         for(Coordinate coord:Coordinate.values()){
             copyFile(board, coord);
         }
+        copyMoveList(board);
     }
     
     private void copyFile(ChessBoard board, Coordinate file){
@@ -82,12 +83,17 @@ public class ChessBoard extends DefaultSubject {
             ChessPiece piece=board.getPieceFromBoardAt(file.letterIndex, i);
             storeCopyOfChessPiece(piece, file, i);
         }
+        
     }
     
     private void storeCopyOfChessPiece(ChessPiece piece,Coordinate file,int rank){
         if(piece instanceof ChessPiece){
             this.putPieceOnBoardAt(piece.copy(), new Location(file,rank));
         }
+    }
+    
+    private void copyMoveList(ChessBoard board){
+        this.allGameMoves=new ArrayList<>(board.allGameMoves);
     }
 
     /**

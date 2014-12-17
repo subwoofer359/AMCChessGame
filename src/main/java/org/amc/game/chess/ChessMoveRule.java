@@ -15,16 +15,7 @@ public interface ChessMoveRule {
      * @param move Move
      */
     void applyRule(ChessBoard board,Move move);
-    
-    /**
-     * Undo previous rule application
-     * The rule being unapplied must be the last move made
-     * 
-     * @param board ChessBoard
-     * @param move Move
-     */
-    void unapplyRule(ChessBoard board,Move move);
-    
+
     /**
      * Is the rule valid for the move and current chess board configuartion
      * 

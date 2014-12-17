@@ -3,14 +3,14 @@ package org.amc.game.chess;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
 /**
- * Represents a square location on a Chess board
+ * Represents an immutable square location on a Chess board
  * 
  * @author Adrian Mclaughlin
  *
  */
-public class Location implements Comparable<Location> {
-    private Coordinate letter;
-    private Integer number;
+public final class Location implements Comparable<Location> {
+    private final Coordinate letter;
+    private final Integer number;
 
     /**
      * Creates a new Location

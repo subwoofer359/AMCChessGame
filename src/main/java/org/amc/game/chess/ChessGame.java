@@ -129,22 +129,24 @@ public class ChessGame {
     }
 
     private void thenMoveChessPiece(Player player, Move move) throws InvalidMoveException {
-        ReversibleMove reversible = new ReversibleMove(board, move);
-        reversible.move();
-        if (isPlayersKingInCheck(player, board)) {
-            reversible.undoMove();
+        ChessBoard testBoard=new ChessBoard(board);
+        testBoard.move(move);
+        if (isPlayersKingInCheck(player,testBoard)) {
             throw new InvalidMoveException("King is checked");
         }else{
             gameState=GameState.RUNNING;
+            board.move(move);
         }
     }
 
     private void thenApplyGameRule(Player player, Move move) throws InvalidMoveException {
         for (ChessMoveRule rule : chessRules) {
-            rule.applyRule(board, move);
-            if (isPlayersKingInCheck(player, board)) {
-                rule.unapplyRule(board, move);
+            ChessBoard testBoard=new ChessBoard(board);
+            rule.applyRule(testBoard, move);
+            if (isPlayersKingInCheck(player, testBoard)) {
                 throw new InvalidMoveException("King is checked");
+            }else{
+                rule.applyRule(board, move);  
             }
         }
     }

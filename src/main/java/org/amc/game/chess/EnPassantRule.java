@@ -6,10 +6,6 @@ package org.amc.game.chess;
  *
  */
 public class EnPassantRule extends PawnPieceRule{
-    
-    private ReversibleMove pawnMove;
-    private ChessPiece capturedPawn;
-    private Location capturedPawnLocation;
     /**
      * @see ChessMoveRule#applyRule(ChessBoard, Move)
      */
@@ -18,8 +14,7 @@ public class EnPassantRule extends PawnPieceRule{
         if(isEnPassantCapture(board,move)){
             Location endSquare=move.getEnd();
             ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
-            pawnMove=new ReversibleMove(board, move);
-            pawnMove.move();
+            board.move(move);
             removeCapturedPawnFromTheChessBoard(board, piece, endSquare);
                 
         }
@@ -34,27 +29,7 @@ public class EnPassantRule extends PawnPieceRule{
         else{
             capturedPawnLocation=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
         }
-        this.capturedPawn=board.getPieceFromBoardAt(capturedPawnLocation);
-        this.capturedPawnLocation=capturedPawnLocation;
         board.removePieceOnBoardAt(capturedPawnLocation);
-    }
-    
-    /**
-     * En passant move can't be undone
-     * 
-     * @see ChessMoveRule#unapplyRule(ChessBoard, Move)
-     */
-    @Override
-    public void unapplyRule(ChessBoard board, Move move) {
-        if(board.getTheLastMove().equals(move)){
-            try{
-                pawnMove.undoMove();
-                board.putPieceOnBoardAt(capturedPawn, capturedPawnLocation);
-            }catch(InvalidMoveException ime){
-                throw new RuntimeException("An exception has occurred after trying to undo an en passant capture move");
-            }
-        }
-        
     }
     
     /**

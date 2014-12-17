@@ -1,14 +1,14 @@
 package org.amc.game.chess;
 
 /**
- * Represents a move in the game of chess
+ * Represents an immutable move in the game of chess
  * 
  * @author Adrian Mclaughlin
  *
  */
 public class Move {
-    private Location start;
-    private Location end;
+    private final Location start;
+    private final Location end;
 
     public Move(Location start, Location end) {
         this.start = start;
