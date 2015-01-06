@@ -63,4 +63,11 @@ public class IsStalemateTest {
         PlayerInStalement stalementCheck=new PlayerInStalement(whitePlayer, blackPlayer, board);
         assertTrue(stalementCheck.isStalemate());
     }
+    
+    @Test
+    public void testInCheckNotStalemate()throws ParseException{
+        board=chessBoardFactory.getChessBoard("Kf5:kh5:rf1");
+        PlayerInStalement stalementCheck=new PlayerInStalement(blackPlayer, whitePlayer, board);
+        assertFalse(stalementCheck.isStalemate());
+    }
 }
