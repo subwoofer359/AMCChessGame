@@ -28,12 +28,10 @@ public class PlayerInStalement {
             Set<Location> possibleMoveLocations=cpl.getPiece().getPossibleMoveLocations(board, cpl.getLocation());
             for(Location moveLocation:possibleMoveLocations){
                 Move move = new Move(cpl.getLocation(),moveLocation);
-                if(cpl.getPiece().isValidMove(board, move)){
-                    if(willPlayerBeInCheck(move)){
-                        continue;
-                    }else{
-                        return false;
-                    }
+                if(willPlayerBeInCheck(move)){
+                    continue;
+                }else{
+                    return false;
                 }
             }
         }
@@ -44,10 +42,6 @@ public class PlayerInStalement {
         ChessBoard testBoard=new ChessBoard(board);
         testBoard.move(move);
         return isPlayersKingInCheck(testBoard);
-    }
-    
-    boolean isPlayersKingInCheck() {
-        return this.inCheck.isPlayersKingInCheck(player, opponent, board);
     }
     
     boolean isPlayersKingInCheck(ChessBoard board) {
