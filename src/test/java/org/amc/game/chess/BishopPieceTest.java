@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BishopPieceTest implements ChessPieceTest
+public class BishopPieceTest extends ChessPieceTest
 {
 	private ChessBoard board;
 	private Location testStartPosition=new Location(ChessBoard.Coordinate.D,5);
@@ -124,7 +124,11 @@ public class BishopPieceTest implements ChessPieceTest
 		
 		assertFalse(isValid);
 	}
-	
-	
 
+	@Test
+    @Override
+    public void testCanSlide() {
+	    BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        assertTrue(bishop.canSlide());
+    }
 }

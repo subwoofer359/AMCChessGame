@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class KnightPieceTest implements ChessPieceTest{
+public class KnightPieceTest extends ChessPieceTest{
 
     private ChessBoard board;
     private Location testStartPosition=new Location(ChessBoard.Coordinate.D,4);
@@ -105,9 +105,8 @@ public class KnightPieceTest implements ChessPieceTest{
     }
     
     @Test
-    public void testCanSlisde(){
+    @Override
+    public void testCanSlide(){
         assertFalse(new KnightPiece(Colour.BLACK).canSlide());
-    }
-    
- 
+    } 
 }

@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import static org.junit.Assert.assertTrue;
-
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -11,7 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RookPieceTest implements ChessPieceTest{
+public class RookPieceTest extends ChessPieceTest{
     private ChessBoard board;
     private Location testStartPosition=new Location(ChessBoard.Coordinate.D,5);
     
@@ -131,7 +129,7 @@ public class RookPieceTest implements ChessPieceTest{
     }
     
     @Test
-    public void testCanSlisde(){
+    public void testCanSlide(){
         assertTrue(new RookPiece(Colour.BLACK).canSlide());
     }
 

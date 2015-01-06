@@ -1,6 +1,6 @@
 package org.amc.game.chess;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueenPieceTest implements ChessPieceTest {
+public class QueenPieceTest extends ChessPieceTest {
     
     private ChessBoard board;
     private Location testStartPosition = new Location(ChessBoard.Coordinate.D, 5);
@@ -126,7 +126,15 @@ public class QueenPieceTest implements ChessPieceTest {
     }
 
     @Test
-    public void testCanSlisde(){
+    @Override
+    public void testCanSlide(){
         assertTrue(new QueenPiece(Colour.BLACK).canSlide());
     }
+    
+//    @Test
+//    @Override
+//    public void testCopy() {
+//        this.piece = new QueenPiece(Colour.WHITE);
+//        super.testCopy();   
+//    }
 }
