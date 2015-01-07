@@ -205,5 +205,12 @@ public class IsKingCheckmated {
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.move(whitePlayer, new Move(new Location(E,2),new Location(D,3)));
     }
+    
+    @Test
+    public void testIsThereMoreThanOneAttacker()throws ParseException{
+        board = chessBoardFactory.getChessBoard("Ke8:bc6:bg6:Ne5");
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.canAttackingPieceNotBeBlocked());
+    }
 
 }
