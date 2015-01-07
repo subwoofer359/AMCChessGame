@@ -195,7 +195,36 @@ public class PawnPieceTest  {
     }
     
     @Test
-    public void testCanSlisde(){
+    public void testCanSlide(){
         assertTrue(new PawnPiece(Colour.BLACK).canSlide());
     }
+    
+    @Test
+    public void testIsMovingForwardOneSquareOnly(){
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        pawn.moved();
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        Location endLocationOne=new Location(Coordinate.F, 3);
+        assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocationOne)));
+    }
+    
+    @Test
+    public void testMoveBackOneSquare(){
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        pawn.moved();
+        board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
+        Location endLocationOne=new Location(Coordinate.F, 1);
+        assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition,endLocationOne)));
+    }
+    
+    @Test
+    public void testMoveNoSquare(){
+        PawnPiece pawn=new PawnPiece(Colour.WHITE);
+        Location startLocation=new Location(Coordinate.F,3);
+        board.putPieceOnBoardAt(pawn, startLocation);
+        Location endLocationOne=new Location(Coordinate.F, 3);
+        assertFalse(pawn.isValidMove(board, new Move(startLocation,endLocationOne)));
+    }
+    
+    
 }

@@ -40,8 +40,7 @@ public class PawnPiece extends SimplePiece {
     }
 
     private boolean isMovingForwardOneOrTwoSquares(Move move) {
-        return isMovingForward(move) && move.getAbsoluteDistanceY() > 0
-                        && move.getAbsoluteDistanceY() <= 2;
+        return isMovingForward(move) && move.getAbsoluteDistanceY() <= 2;
     }
 
     private boolean isMovingForwardOneSquareOnly(Move move) {
@@ -71,6 +70,11 @@ public class PawnPiece extends SimplePiece {
     }
 
     /**
+     * Checks the Pawn's move
+     * Checks to see if the pawn's move is a move forward
+     * if not it's assumes the move is diagonal and checks for capture
+     * Diagonal move is checked in {@link PawnPiece#isValidMove(ChessBoard, Move)}  
+     * 
      * @see SimplePiece#canMakeMove(ChessBoard, Move)
      */
     @Override
@@ -81,10 +85,8 @@ public class PawnPiece extends SimplePiece {
             } else {
                 return endSquareIsEmpty(board, move);
             }
-        } else if (Move.isDiagonalMove(move)) {
+        } else{
             return canCapture(board, move);
-        } else {
-            return false;
         }
     }
 
