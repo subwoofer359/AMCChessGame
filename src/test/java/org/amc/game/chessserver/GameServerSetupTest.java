@@ -36,7 +36,7 @@ public class GameServerSetupTest {
     public void contextDestroyedTest(){
         gameSetup.contextInitialized(sce);
         String gameMap=ServerConstants.GAME_MAP.toString();
-        ConcurrentHashMap<?, ?> cmap=(ConcurrentHashMap)sce.getServletContext().getAttribute(gameMap);
+        ConcurrentHashMap<?, ?> cmap=(ConcurrentHashMap<?,?>)sce.getServletContext().getAttribute(gameMap);
         assertNotNull(servletContext.getAttribute(gameMap));
         gameSetup.contextDestroyed(sce);
         assertEquals(0,cmap.size());

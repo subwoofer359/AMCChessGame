@@ -16,11 +16,11 @@ public class GameServerSetup  implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ConcurrentHashMap<String,ChessGame> gameMap=new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long,ChessGame> gameMap=new ConcurrentHashMap<>();
         saveHashMap(gameMap, sce.getServletContext());
     }
     
-    private void saveHashMap(Map<String, ChessGame> map,ServletContext context){
+    private void saveHashMap(Map<Long, ChessGame> map,ServletContext context){
         synchronized (context) {
             context.setAttribute(ServerConstants.GAME_MAP.toString(), map);
         }
