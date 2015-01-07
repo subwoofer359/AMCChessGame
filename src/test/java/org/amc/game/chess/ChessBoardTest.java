@@ -126,8 +126,7 @@ public class ChessBoardTest {
         ChessBoard board=factory.getChessBoard("Ke1:ke2:Bf1:nf3:na1:ra2");
         List<?> blackPieceList=board.getListOfPlayersPiecesOnTheBoard(blackPlayer);
         List<?> whitePieceList=board.getListOfPlayersPiecesOnTheBoard(whitePlayer);
-        assertTrue(blackPieceList.size()==2);
-        assertTrue(whitePieceList.size()==4);
+        assertTrue(blackPieceList.size()==2 && whitePieceList.size()==4);
     }
     
     @Test
