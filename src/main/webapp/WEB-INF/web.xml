@@ -17,13 +17,13 @@
 	<!-- Spring controllers -->
 
 	<servlet>
-		<servlet-name>GameServer</servlet-name>
+		<servlet-name>chessgame</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>GameServer</servlet-name>
+		<servlet-name>chessgame</servlet-name>
 		<url-pattern>/app/chessgame/*</url-pattern>
 	</servlet-mapping>
 
@@ -36,10 +36,10 @@
 	</listener>
 	
 	<!-- Spring settings -->
-	<!--<context-param>
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/SpringConfig/</param-value>
-	</context-param>-->
+		<param-value>/WEB-INF/GameServerContext.xml</param-value>
+	</context-param>
 </web-app>
 
 
