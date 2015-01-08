@@ -30,7 +30,7 @@ public class StartPageControllerChessAppPageTest {
         servletContext=new MockServletContext();
         session=new MockHttpSession();
         gameMap =new ConcurrentHashMap<>();
-        servletContext.setAttribute(ServerConstants.GAME_MAP.toString(), gameMap);
+        servletContext.setAttribute(ServerConstants.GAMEMAP.toString(), gameMap);
         controller=new StartPageController();
         whitePlayer=new HumanPlayer("Ted", Colour.WHITE);
     }
@@ -41,9 +41,9 @@ public class StartPageControllerChessAppPageTest {
 
     @Test
     public void test() {
-        ModelAndView mav=controller.chessGameApplication(whitePlayer,servletContext,session);
+        ModelAndView mav=controller.chessGameApplication(session);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.PLAYER.toString());
-        ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAME_MAP.toString());
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAMEMAP.toString());
         ModelAndViewAssert.assertViewName(mav, StartPageController.Views.CHESS_APPLICATION_PAGE.getPageName());
     }
 

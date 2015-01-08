@@ -12,16 +12,17 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.servlet.ServletContext;
+
 
 
 public class StartPageControllerCreateGame {
-    private MockServletContext servletContext;
+    private ServletContext servletContext;
     private MockHttpSession session;
     private ConcurrentMap<Long, ChessGame> gameMap;
     private Player whitePlayer;
@@ -29,10 +30,10 @@ public class StartPageControllerCreateGame {
     
     @Before
     public void setUp() throws Exception {
-        servletContext=new MockServletContext();
         session=new MockHttpSession();
+        servletContext=session.getServletContext();
         gameMap =new ConcurrentHashMap<>();
-        servletContext.setAttribute(ServerConstants.GAME_MAP.toString(), gameMap);
+        servletContext.setAttribute(ServerConstants.GAMEMAP.toString(), gameMap);
         whitePlayer=new HumanPlayer("Ted", Colour.WHITE);
         controller=new StartPageController();
     }
@@ -44,7 +45,7 @@ public class StartPageControllerCreateGame {
     @Test
     public void test() {
         assertSessionAttributeNull();    
-        controller.createGame(servletContext,session, whitePlayer);
+        controller.createGame(session, whitePlayer);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();

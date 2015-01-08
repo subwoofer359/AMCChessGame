@@ -22,7 +22,7 @@ public class GameServerSetup  implements ServletContextListener {
     
     private void saveHashMap(Map<Long, ChessGame> map,ServletContext context){
         synchronized (context) {
-            context.setAttribute(ServerConstants.GAME_MAP.toString(), map);
+            context.setAttribute(ServerConstants.GAMEMAP.toString(), map);
         }
     }
 
@@ -32,9 +32,9 @@ public class GameServerSetup  implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
        ConcurrentHashMap<?, ?> gameMap=(ConcurrentHashMap<?,?>)sce.getServletContext().
-                       getAttribute(ServerConstants.GAME_MAP.toString());
+                       getAttribute(ServerConstants.GAMEMAP.toString());
        gameMap.clear();
-       removeHashMap(sce.getServletContext(), ServerConstants.GAME_MAP.toString());
+       removeHashMap(sce.getServletContext(), ServerConstants.GAMEMAP.toString());
     }
     
     private void removeHashMap(ServletContext context,String attributeName){

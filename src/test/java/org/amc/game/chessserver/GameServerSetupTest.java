@@ -25,7 +25,7 @@ public class GameServerSetupTest {
 
     @Test
     public void contextInitializedTest() {
-        String gameMap=ServerConstants.GAME_MAP.toString();
+        String gameMap=ServerConstants.GAMEMAP.toString();
         assertNull(servletContext.getAttribute(gameMap));
         gameSetup.contextInitialized(sce);
         assertEquals(servletContext.getAttribute(gameMap).getClass(),
@@ -35,7 +35,7 @@ public class GameServerSetupTest {
     @Test
     public void contextDestroyedTest(){
         gameSetup.contextInitialized(sce);
-        String gameMap=ServerConstants.GAME_MAP.toString();
+        String gameMap=ServerConstants.GAMEMAP.toString();
         ConcurrentHashMap<?, ?> cmap=(ConcurrentHashMap<?,?>)sce.getServletContext().getAttribute(gameMap);
         assertNotNull(servletContext.getAttribute(gameMap));
         gameSetup.contextDestroyed(sce);

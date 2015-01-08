@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 public enum ServerConstants {
-    GAME_MAP,
+    GAMEMAP,
     GAME_UUID, 
     PLAYER
 }

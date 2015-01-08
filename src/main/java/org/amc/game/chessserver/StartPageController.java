@@ -2,6 +2,8 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.Colour;
+import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @SessionAttributes("PLAYER")
 public class StartPageController {
     enum Views {
-        CHESS_APPLICATION_PAGE("ChessApplicationPage.jsp");
+        CHESS_APPLICATION_PAGE("ChessApplicationPage");
         private String pageName;
 
         private Views(String pageName) {
@@ -32,21 +34,28 @@ public class StartPageController {
         }
     };
     
+    @RequestMapping("/test")
+    public String test(HttpSession session){
+        Player player=new HumanPlayer("Adrian Mclaughlin",Colour.WHITE);
+        session.setAttribute(ServerConstants.PLAYER.toString(), player);
+        return "forward:/app/chessgame/chessapplication";
+    }
+    
     @RequestMapping("/chessapplication")
-    public ModelAndView chessGameApplication(@ModelAttribute Player player,ServletContext context, HttpSession session){
+    public ModelAndView chessGameApplication(HttpSession session){
         ModelAndView mav=new ModelAndView();
-        mav.getModel().put(ServerConstants.PLAYER.toString(), player);
-        mav.getModel().put(ServerConstants.GAME_MAP.toString(),getGameMap(context));
+        mav.getModel().put(ServerConstants.PLAYER.toString(), session.getAttribute(ServerConstants.PLAYER.toString()));
+        mav.getModel().put(ServerConstants.GAMEMAP.toString(),getGameMap(session.getServletContext()));
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
     }
     
     
     @RequestMapping(value="/createGame")
-    public void createGame(ServletContext context,HttpSession session,Player player){
+    public void createGame(HttpSession session,@ModelAttribute("PLAYER") Player player){
         ChessGame chessGame=new ChessGame(new ChessBoard(),player,null);
         long uuid=UUID.randomUUID().getMostSignificantBits();
-        ConcurrentMap<Long, ChessGame> gameMap=getGameMap(context);
+        ConcurrentMap<Long, ChessGame> gameMap=getGameMap(session.getServletContext());
         gameMap.put(uuid, chessGame);
         session.setAttribute(ServerConstants.GAME_UUID.toString(), uuid);
     }
@@ -59,7 +68,7 @@ public class StartPageController {
     @SuppressWarnings(value = "unchecked")
     private ConcurrentMap<Long, ChessGame> getGameMap(ServletContext context) {
         synchronized (context) {
-            return (ConcurrentMap<Long, ChessGame>) context.getAttribute(ServerConstants.GAME_MAP
+            return (ConcurrentMap<Long, ChessGame>) context.getAttribute(ServerConstants.GAMEMAP
                             .toString());
         }
     }
