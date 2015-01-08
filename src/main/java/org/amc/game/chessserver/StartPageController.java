@@ -4,19 +4,43 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@SessionAttributes("PLAYER")
 public class StartPageController {
+    enum Views {
+        CHESS_APPLICATION_PAGE("ChessApplicationPage.jsp");
+        private String pageName;
+
+        private Views(String pageName) {
+            this.pageName = pageName;
+        }
+
+        public String getPageName() {
+            return this.pageName;
+        }
+    };
+    
+    @RequestMapping("/chessapplication")
+    public ModelAndView chessGameApplication(@ModelAttribute Player player,ServletContext context, HttpSession session){
+        ModelAndView mav=new ModelAndView();
+        mav.getModel().put(ServerConstants.PLAYER.toString(), player);
+        mav.getModel().put(ServerConstants.GAME_MAP.toString(),getGameMap(context));
+        mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
+        return mav;
+    }
+    
     
     @RequestMapping(value="/createGame")
     public void createGame(ServletContext context,HttpSession session,Player player){
