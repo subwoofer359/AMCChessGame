@@ -52,12 +52,13 @@ public class StartPageController {
     
     
     @RequestMapping(value="/createGame")
-    public void createGame(HttpSession session,@ModelAttribute("PLAYER") Player player){
+    public String createGame(HttpSession session,@ModelAttribute("PLAYER") Player player){
         ChessGame chessGame=new ChessGame(new ChessBoard(),player,null);
         long uuid=UUID.randomUUID().getMostSignificantBits();
         ConcurrentMap<Long, ChessGame> gameMap=getGameMap(session.getServletContext());
         gameMap.put(uuid, chessGame);
         session.setAttribute(ServerConstants.GAME_UUID.toString(), uuid);
+        return "redirect:/app/chessgame/test";
     }
     
     @RequestMapping("/joinGame")

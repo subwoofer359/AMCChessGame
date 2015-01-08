@@ -27,7 +27,9 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-2">
-				<button type="button" class="btn btn-primary">Create Game</button>
+			<form method="post">
+				<button formaction="createGame" type="submit" class="btn btn-primary">Create Game</button>
+			</form>
 			</div>
 			<div class="col-xs-offset-6 col-xs-4">
 				<div class="panel panel-primary">
@@ -43,7 +45,8 @@
 							</thead>
 							<tbody>
 							<c:forEach var="game" items='${GAMEMAP}'>
-								<tr><td>${game.key}</td><td>${game.value.currentPlayer.name}</td><td></td></tr>
+								<tr><td>${game.key}</td><td>${game.value.currentPlayer.name}</td><td>${game.value.gameState}</td></tr>
+								
 							</c:forEach>
 							</tbody>
 						</table>
