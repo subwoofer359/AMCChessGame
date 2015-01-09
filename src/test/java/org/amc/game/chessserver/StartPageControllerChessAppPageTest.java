@@ -40,11 +40,19 @@ public class StartPageControllerChessAppPageTest {
     }
 
     @Test
-    public void test() {
+    public void testPlayerAvailable() {
+        session.setAttribute(ServerConstants.PLAYER.toString(), whitePlayer);
         ModelAndView mav=controller.chessGameApplication(session);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.PLAYER.toString());
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAMEMAP.toString());
         ModelAndViewAssert.assertViewName(mav, StartPageController.Views.CHESS_APPLICATION_PAGE.getPageName());
+    }
+    
+    @Test
+    public void testPlayerNotAvailable() {
+        ModelAndView mav=controller.chessGameApplication(session);
+        assertNull(mav.getModel().get(ServerConstants.PLAYER.toString()));
+        ModelAndViewAssert.assertViewName(mav, StartPageController.Views.CREATE_PLAYER_PAGE.getPageName());
     }
 
 }

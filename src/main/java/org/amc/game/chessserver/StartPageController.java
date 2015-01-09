@@ -2,8 +2,6 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.Colour;
-import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,7 +20,8 @@ import javax.servlet.http.HttpSession;
 @SessionAttributes("PLAYER")
 public class StartPageController {
     enum Views {
-        CHESS_APPLICATION_PAGE("ChessApplicationPage");
+        CHESS_APPLICATION_PAGE("ChessApplicationPage"),
+        CREATE_PLAYER_PAGE("CreatePlayer");
         private String pageName;
 
         private Views(String pageName) {
@@ -34,17 +33,15 @@ public class StartPageController {
         }
     };
     
-    @RequestMapping("/test")
-    public String test(HttpSession session){
-        Player player=new HumanPlayer("Adrian Mclaughlin",Colour.WHITE);
-        session.setAttribute(ServerConstants.PLAYER.toString(), player);
-        return "forward:/app/chessgame/chessapplication";
-    }
-    
     @RequestMapping("/chessapplication")
     public ModelAndView chessGameApplication(HttpSession session){
+        Player player=(Player)session.getAttribute(ServerConstants.PLAYER.toString());
         ModelAndView mav=new ModelAndView();
-        mav.getModel().put(ServerConstants.PLAYER.toString(), session.getAttribute(ServerConstants.PLAYER.toString()));
+        if(player==null){
+            mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
+            return mav;
+        }
+        mav.getModel().put(ServerConstants.PLAYER.toString(),player);
         mav.getModel().put(ServerConstants.GAMEMAP.toString(),getGameMap(session.getServletContext()));
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
@@ -58,7 +55,7 @@ public class StartPageController {
         ConcurrentMap<Long, ChessGame> gameMap=getGameMap(session.getServletContext());
         gameMap.put(uuid, chessGame);
         session.setAttribute(ServerConstants.GAME_UUID.toString(), uuid);
-        return "redirect:/app/chessgame/test";
+        return "redirect:/app/chessgame/chessapplication";
     }
     
     @RequestMapping("/joinGame")
