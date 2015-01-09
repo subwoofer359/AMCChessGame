@@ -20,4 +20,11 @@ public interface Player {
      * @return enum Colour
      */
     Colour getColour();
+    
+    /**
+     * Set Colour of Player
+     * 
+     * @param colour Colour
+     */
+    void setColour(Colour colour);
 }

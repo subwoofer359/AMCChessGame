@@ -24,4 +24,9 @@ public class HumanPlayer implements Player {
     public Colour getColour() {
         return this.colour;
     }
+    
+    @Override
+    public void setColour(Colour colour){
+        this.colour=colour;
+    }
 }
