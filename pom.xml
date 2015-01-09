@@ -4,7 +4,6 @@
   <groupId>org.amc</groupId>
   <artifactId>AMCChessGame</artifactId>
   <packaging>war</packaging>
-  <version>0.5</version>
   <name>AMCChessGame</name>
   <url>http://maven.apache.org</url>
   
@@ -150,4 +149,5 @@
   	<system>Jira</system>
   	<url>http://192.168.1.5:8081/</url>
   </issueManagement>
+  <version>2.0alpha</version>
 </project>
