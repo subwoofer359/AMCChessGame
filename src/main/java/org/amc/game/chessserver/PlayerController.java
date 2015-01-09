@@ -24,8 +24,10 @@ public class PlayerController {
         }else{
             Player player=new HumanPlayer(name,Colour.WHITE);        
             mav.getModel().put(ServerConstants.PLAYER.toString(), player);
-            mav.setViewName(StartPageController.Views.CHESS_APPLICATION_PAGE.getPageName());
+            //mav.setViewName(StartPageController.Views.CHESS_APPLICATION_PAGE.getPageName());
+            mav.setViewName("forward:/app/chessgame/chessapplication");
         }
+        
         return mav;
-    } 
+    }
 }

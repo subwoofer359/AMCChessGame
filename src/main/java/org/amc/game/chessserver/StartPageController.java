@@ -3,7 +3,11 @@ package org.amc.game.chessserver;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.HttpSessionRequiredException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,11 +18,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes("PLAYER")
+@SessionAttributes({"PLAYER","GAME_UUID"})
 public class StartPageController {
+    
+    private ServletContext context;
+    
     enum Views {
         CHESS_APPLICATION_PAGE("ChessApplicationPage"),
         CREATE_PLAYER_PAGE("CreatePlayer");
@@ -34,28 +40,27 @@ public class StartPageController {
     };
     
     @RequestMapping("/chessapplication")
-    public ModelAndView chessGameApplication(HttpSession session){
-        Player player=(Player)session.getAttribute(ServerConstants.PLAYER.toString());
+    public ModelAndView chessGameApplication(Model model){
         ModelAndView mav=new ModelAndView();
+        Player player=(Player)model.asMap().get(ServerConstants.PLAYER.toString());
         if(player==null){
             mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
             return mav;
         }
         mav.getModel().put(ServerConstants.PLAYER.toString(),player);
-        mav.getModel().put(ServerConstants.GAMEMAP.toString(),getGameMap(session.getServletContext()));
+        mav.getModel().put(ServerConstants.GAMEMAP.toString(),getGameMap(context));
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
     }
     
-    
     @RequestMapping(value="/createGame")
-    public String createGame(HttpSession session,@ModelAttribute("PLAYER") Player player){
+    public String createGame(Model model ,@ModelAttribute("PLAYER") Player player){
         ChessGame chessGame=new ChessGame(new ChessBoard(),player,null);
         long uuid=UUID.randomUUID().getMostSignificantBits();
-        ConcurrentMap<Long, ChessGame> gameMap=getGameMap(session.getServletContext());
+        ConcurrentMap<Long, ChessGame> gameMap=getGameMap(context);
         gameMap.put(uuid, chessGame);
-        session.setAttribute(ServerConstants.GAME_UUID.toString(), uuid);
-        return "redirect:/app/chessgame/chessapplication";
+        model.addAttribute(ServerConstants.GAME_UUID.toString(), uuid);
+        return "forward:/app/chessgame/chessapplication";
     }
     
     @RequestMapping("/joinGame")
@@ -70,4 +75,21 @@ public class StartPageController {
                             .toString());
         }
     }
+    
+    /**
+     * Intercept HttpSessionRequiredExceptions and cause a redirect to chessGameApplication handler
+     * 
+     * @param hsre HttpSessionRequiredException
+     * @return String redirect url
+     */
+    @ExceptionHandler(HttpSessionRequiredException.class)
+    public String handleMissingSessionAttributes(HttpSessionRequiredException hsre){
+        return "redirect:/app/chessgame/chessapplication";
+    }
+    
+    @Autowired
+    void setServletContext(ServletContext context){
+        this.context=context;
+    }
+    
 }

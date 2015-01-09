@@ -9,33 +9,31 @@ import org.amc.game.chess.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.servlet.ServletContext;
-
-
-
 public class StartPageControllerCreateGame {
-    private ServletContext servletContext;
-    private MockHttpSession session;
+    private MockServletContext servletContext;
+    private Model model;
     private ConcurrentMap<Long, ChessGame> gameMap;
     private Player whitePlayer;
     private StartPageController controller;
     
     @Before
     public void setUp() throws Exception {
-        session=new MockHttpSession();
-        servletContext=session.getServletContext();
+        model=new ExtendedModelMap();
+        servletContext=new MockServletContext();
         gameMap =new ConcurrentHashMap<>();
         servletContext.setAttribute(ServerConstants.GAMEMAP.toString(), gameMap);
         whitePlayer=new HumanPlayer("Ted", Colour.WHITE);
         controller=new StartPageController();
+        controller.setServletContext(servletContext);
     }
 
     @After
@@ -45,18 +43,18 @@ public class StartPageControllerCreateGame {
     @Test
     public void test() {
         assertSessionAttributeNull();    
-        controller.createGame(session, whitePlayer);
+        controller.createGame(model, whitePlayer);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
     }
     
     private void assertSessionAttributeNull(){
-        assertNull(session.getAttribute(ServerConstants.GAME_UUID.toString()));
+        assertNull(model.asMap().get(ServerConstants.GAME_UUID.toString()));
     }
     
     private void assertLongStoreInSessionAttribute(){
-        assertEquals(session.getAttribute(ServerConstants.GAME_UUID.toString()).getClass(),Long.class);
+        assertEquals(model.asMap().get(ServerConstants.GAME_UUID.toString()).getClass(),Long.class);
     }
     
     private void assertGameMapNotEmpty(){
