@@ -45,7 +45,7 @@
 							</thead>
 							<tbody>
 							<c:forEach var="game" items='${GAMEMAP}'>
-								<tr><td>${game.key}</td><td>${game.value.currentPlayer.name}</td><td>${game.value.gameState}</td></tr>
+								<tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td></tr>
 								
 							</c:forEach>
 							</tbody>

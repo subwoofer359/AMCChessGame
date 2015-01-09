@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
 
 public class ServerChessGame {
@@ -17,12 +18,14 @@ public class ServerChessGame {
 
     public ServerChessGame(Player player) {
         this.player=player;
+        this.player.setColour(Colour.WHITE);
         this.currentStatus=status.AWAITING_PLAYER;
     }
     
     public void addOpponent(Player player){
-        chessGame=new ChessGame(new ChessBoard(),this.player,player);
-        if(this.currentStatus.equals(status.FINISHED)){
+        if(!this.currentStatus.equals(status.FINISHED)){
+            player.setColour(Colour.BLACK);
+            chessGame=new ChessGame(new ChessBoard(),this.player,player);
             this.currentStatus=status.IN_PROGRESS;
         }
     }
@@ -38,7 +41,8 @@ public class ServerChessGame {
     public final void setCurrentStatus(status currentStatus) {
         this.currentStatus = currentStatus;
     }
-    
-    
 
+    public final ChessGame getChessGame() {
+        return chessGame;
+    }
 }

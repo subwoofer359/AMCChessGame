@@ -2,7 +2,6 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -21,7 +20,7 @@ import java.util.concurrent.ConcurrentMap;
 public class StartPageControllerCreateGame {
     private MockServletContext servletContext;
     private Model model;
-    private ConcurrentMap<Long, ChessGame> gameMap;
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
     private Player whitePlayer;
     private StartPageController controller;
     
@@ -62,7 +61,7 @@ public class StartPageControllerCreateGame {
     }
     
     private void assertPlayerIsAddedToChessGame(){
-        List<ChessGame> games= new ArrayList<>(gameMap.values());
-        assertTrue(games.get(0).getCurrentPlayer().equals(whitePlayer));
+        List<ServerChessGame> games= new ArrayList<>(gameMap.values());
+        assertTrue(games.get(0).getPlayer().equals(whitePlayer));
     }
 }

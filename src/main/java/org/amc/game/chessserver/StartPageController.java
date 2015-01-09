@@ -1,7 +1,5 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,10 +53,10 @@ public class StartPageController {
     
     @RequestMapping(value="/createGame")
     public String createGame(Model model ,@ModelAttribute("PLAYER") Player player){
-        ChessGame chessGame=new ChessGame(new ChessBoard(),player,null);
+        ServerChessGame serverGame=new ServerChessGame(player);
         long uuid=UUID.randomUUID().getMostSignificantBits();
-        ConcurrentMap<Long, ChessGame> gameMap=getGameMap(context);
-        gameMap.put(uuid, chessGame);
+        ConcurrentMap<Long, ServerChessGame> gameMap=getGameMap(context);
+        gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID.toString(), uuid);
         return "forward:/app/chessgame/chessapplication";
     }
@@ -69,9 +67,9 @@ public class StartPageController {
     }
     
     @SuppressWarnings(value = "unchecked")
-    private ConcurrentMap<Long, ChessGame> getGameMap(ServletContext context) {
+    private ConcurrentMap<Long, ServerChessGame> getGameMap(ServletContext context) {
         synchronized (context) {
-            return (ConcurrentMap<Long, ChessGame>) context.getAttribute(ServerConstants.GAMEMAP
+            return (ConcurrentMap<Long, ServerChessGame>) context.getAttribute(ServerConstants.GAMEMAP
                             .toString());
         }
     }

@@ -1,8 +1,6 @@
 package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
-
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -21,7 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 public class StartPageControllerChessAppPageTest {
     private MockServletContext servletContext;
     private Model model;
-    private ConcurrentMap<Long, ChessGame> gameMap;
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
     private StartPageController controller;
     private Player whitePlayer;
     

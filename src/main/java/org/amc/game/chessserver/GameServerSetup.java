@@ -1,7 +1,5 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.ChessGame;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,11 +14,11 @@ public class GameServerSetup  implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ConcurrentHashMap<Long,ChessGame> gameMap=new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long,ServerChessGame> gameMap=new ConcurrentHashMap<>();
         saveHashMap(gameMap, sce.getServletContext());
     }
     
-    private void saveHashMap(Map<Long, ChessGame> map,ServletContext context){
+    private void saveHashMap(Map<Long, ServerChessGame> map,ServletContext context){
         synchronized (context) {
             context.setAttribute(ServerConstants.GAMEMAP.toString(), map);
         }
