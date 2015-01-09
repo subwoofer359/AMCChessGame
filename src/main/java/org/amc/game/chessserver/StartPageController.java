@@ -60,12 +60,7 @@ public class StartPageController {
         model.addAttribute(ServerConstants.GAME_UUID.toString(), uuid);
         return "forward:/app/chessgame/chessapplication";
     }
-    
-    @RequestMapping("/joinGame")
-    public void joinGame(Player player,@RequestParam long gameUUID){
-        
-    }
-    
+
     @SuppressWarnings(value = "unchecked")
     private ConcurrentMap<Long, ServerChessGame> getGameMap(ServletContext context) {
         synchronized (context) {
