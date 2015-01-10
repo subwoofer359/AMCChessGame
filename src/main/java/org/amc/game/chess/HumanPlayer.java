@@ -29,4 +29,9 @@ public class HumanPlayer implements Player {
     public void setColour(Colour colour){
         this.colour=colour;
     }
+    
+    @Override
+    public String toString(){
+        return name;
+    }
 }
