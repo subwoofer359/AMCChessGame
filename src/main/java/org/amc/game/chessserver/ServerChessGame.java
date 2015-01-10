@@ -15,6 +15,7 @@ public class ServerChessGame {
     private ChessGame chessGame=null;
     private status currentStatus;
     private Player player;
+    private Player opponent;
 
     public ServerChessGame(Player player) {
         this.player=player;
@@ -25,6 +26,7 @@ public class ServerChessGame {
     public void addOpponent(Player player){
         if(!this.currentStatus.equals(status.FINISHED)){
             player.setColour(Colour.BLACK);
+            this.opponent=player;
             chessGame=new ChessGame(new ChessBoard(),this.player,player);
             this.currentStatus=status.IN_PROGRESS;
         }
@@ -44,5 +46,9 @@ public class ServerChessGame {
 
     public final ChessGame getChessGame() {
         return chessGame;
+    }
+    
+    public final Player getOpponent(){
+        return opponent;
     }
 }
