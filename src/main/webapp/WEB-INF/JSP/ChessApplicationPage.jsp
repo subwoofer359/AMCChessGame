@@ -31,6 +31,7 @@
 				<button formaction="createGame" type="submit" class="btn btn-primary">Create Game</button>
 			</form>
 			</div>
+			<form method="post">
 			<div class="col-xs-offset-6 col-xs-4">
 				<div class="panel panel-primary">
 					<div class="panel-heading">Available Chess Games</div>
@@ -41,18 +42,23 @@
 									<th>Game</th>
 									<th>Player</th>
 									<th>Status</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 							<c:forEach var="game" items='${GAMEMAP}'>
-								<tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td></tr>
+								<tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td>
+								<td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
+								</tr>
 								
 							</c:forEach>
 							</tbody>
 						</table>
+						<button type="submit" formaction="joinGame" class="btn btn-primary">Join Game</button>
 					</div>
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 </body>
