@@ -27,26 +27,40 @@ public class ServerJoinChessGameController {
                     @ModelAttribute("GAMEMAP") ConcurrentMap<Long, ServerChessGame> gameMap,
                     @ModelAttribute("PLAYER") Player player, @RequestParam long gameUUID) {
         ServerChessGame chessGame = gameMap.get(gameUUID);
-        return addPlayerToGame(chessGame, player, gameUUID);
-    }
-
-    private ModelAndView addPlayerToGame(ServerChessGame chessGame, Player player, long gameUUID) {
         ModelAndView mav = new ModelAndView();
-        if (notInAwaitingPlayerState(chessGame)) {
-            setErrorPageAndMessage(mav, "Can't join chess game");
-        } else if (isPlayerJoiningOwnGame(chessGame, player)) {
-            setErrorPageAndMessage(mav, "Player can't join a game they started");
+        if (canPlayerJoinGame(chessGame, player)) {
+            addPlayerToGame(chessGame, player);
+            setupModelForChessGameScreen(mav, gameUUID);
         } else {
-            chessGame.addOpponent(player);
-            mav.getModel().put("GAME_UUID", gameUUID);
-            logger.info(String.format("Chess Game(%d): has been started", gameUUID));
-            mav.setViewName("chessGamePortal");
+            setModelErrorMessage(chessGame, player, mav);
         }
         return mav;
     }
 
-    private boolean notInAwaitingPlayerState(ServerChessGame chessGame) {
-        return !chessGame.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER);
+    private boolean canPlayerJoinGame(ServerChessGame chessGame, Player player) {
+        return inAwaitingPlayerState(chessGame) && !isPlayerJoiningOwnGame(chessGame, player);
+    }
+
+    private void addPlayerToGame(ServerChessGame chessGame, Player player) {
+        chessGame.addOpponent(player);
+    }
+
+    private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
+        mav.getModel().put("GAME_UUID", gameUUID);
+        logger.info(String.format("Chess Game(%d): has been started", gameUUID));
+        mav.setViewName("chessGamePortal");
+    }
+
+    private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {
+        if (!inAwaitingPlayerState(chessGame)) {
+            setErrorPageAndMessage(mav, "Can't join chess game");
+        } else if (isPlayerJoiningOwnGame(chessGame, player)) {
+            setErrorPageAndMessage(mav, "Player can't join a game they started");
+        }
+    }
+
+    private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
+        return chessGame.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER);
     }
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
