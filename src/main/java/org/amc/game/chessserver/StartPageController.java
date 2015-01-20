@@ -1,5 +1,7 @@
 package org.amc.game.chessserver;
 
+
+import org.apache.log4j.Logger;
 import org.amc.game.chess.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @SessionAttributes({"PLAYER","GAME_UUID"})
@@ -34,23 +37,16 @@ public class StartPageController {
     };
     
     private Map<Long, ServerChessGame> gameMap;
+    private static final Logger logger = Logger.getLogger(StartPageController.class);
     
     @RequestMapping("/chessapplication")
-    public ModelAndView chessGameApplication(Model model){
+    public ModelAndView chessGameApplication(HttpSession session){
         ModelAndView mav=new ModelAndView();
-        
-        System.out.println("******************"+model.containsAttribute("PLAYER")+"***************");
-        for(String key:model.asMap().keySet()){
-            System.out.println(">>>>>>>"+key);
-        }
-        
-        Player player=(Player)model.asMap().get(ServerConstants.PLAYER.toString());
+        Player player=(Player)session.getAttribute("PLAYER");
         if(player==null){
-            System.out.println("==================Player is Null===================");
             mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
             return mav;
         }
-        mav.getModel().put(ServerConstants.PLAYER.toString(),player);
         mav.getModel().put(ServerConstants.GAMEMAP.toString(),gameMap);
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
@@ -80,5 +76,4 @@ public class StartPageController {
     public void setGameMap(Map<Long, ServerChessGame> gameMap){
         this.gameMap=gameMap;
     }
-    
 }
