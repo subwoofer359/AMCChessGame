@@ -69,6 +69,7 @@ public class StartPageController {
      */
     @ExceptionHandler(HttpSessionRequiredException.class)
     public String handleMissingSessionAttributes(HttpSessionRequiredException hsre){
+        logger.error("HttpSessionRequiredException:"+hsre.getMessage());
         return "redirect:/app/chessgame/chessapplication";
     }
     

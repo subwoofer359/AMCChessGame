@@ -3,6 +3,10 @@ package org.amc.game.chessserver;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.web.HttpSessionRequiredException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+
 import javax.annotation.Resource;
 @Controller
 @SessionAttributes({ "GAME_UUID", "PLAYER" })
@@ -71,6 +76,27 @@ public class ServerJoinChessGameController {
     @Resource(name="gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap){
         this.gameMap=gameMap;
+    }
+    
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ModelAndView handleMissingRequestParameter(MissingServletRequestParameterException be){
+        ModelAndView mav=new ModelAndView();
+        logger.error("MissingServletRequestParameterException:"+be.getMessage());
+        mav.getModel().put("ERRORS","Missing GAME Id");
+        mav.setViewName("redirect:/app/chessgame/chessapplication");
+        return mav;
+    }
+    
+    /**
+     * Intercept HttpSessionRequiredExceptions and cause a redirect to chessGameApplication handler
+     * 
+     * @param hsre HttpSessionRequiredException
+     * @return String redirect url
+     */
+    @ExceptionHandler(HttpSessionRequiredException.class)
+    public String handleMissingSessionAttributes(HttpSessionRequiredException hsre){
+        logger.error("HttpSessionRequiredException:"+hsre.getMessage());
+        return "redirect:/app/chessgame/chessapplication";
     }
     
 }
