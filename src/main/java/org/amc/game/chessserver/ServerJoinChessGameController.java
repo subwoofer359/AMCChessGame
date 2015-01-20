@@ -2,7 +2,6 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-
 import javax.annotation.Resource;
 @Controller
 @SessionAttributes({ "GAME_UUID", "PLAYER" })
