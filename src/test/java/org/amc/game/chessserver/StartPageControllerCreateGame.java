@@ -8,7 +8,6 @@ import org.amc.game.chess.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
@@ -18,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class StartPageControllerCreateGame {
-    private MockServletContext servletContext;
     private Model model;
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private Player whitePlayer;
@@ -27,12 +25,10 @@ public class StartPageControllerCreateGame {
     @Before
     public void setUp() throws Exception {
         model=new ExtendedModelMap();
-        servletContext=new MockServletContext();
         gameMap =new ConcurrentHashMap<>();
-        servletContext.setAttribute(ServerConstants.GAMEMAP.toString(), gameMap);
         whitePlayer=new HumanPlayer("Ted", Colour.WHITE);
         controller=new StartPageController();
-        controller.setServletContext(servletContext);
+        controller.setGameMap(gameMap);
     }
 
     @After

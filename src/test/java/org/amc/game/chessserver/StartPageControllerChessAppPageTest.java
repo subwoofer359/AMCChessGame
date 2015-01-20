@@ -7,7 +7,6 @@ import org.amc.game.chess.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -17,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class StartPageControllerChessAppPageTest {
-    private MockServletContext servletContext;
     private Model model;
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private StartPageController controller;
@@ -26,12 +24,10 @@ public class StartPageControllerChessAppPageTest {
     
     @Before
     public void setUp() throws Exception {
-        servletContext=new MockServletContext();
         model=new ExtendedModelMap();
         gameMap =new ConcurrentHashMap<>();
-        servletContext.setAttribute(ServerConstants.GAMEMAP.toString(), gameMap);
         controller=new StartPageController();
-        controller.setServletContext(servletContext);
+        controller.setGameMap(gameMap);
         whitePlayer=new HumanPlayer("Ted", Colour.WHITE);
     }
 

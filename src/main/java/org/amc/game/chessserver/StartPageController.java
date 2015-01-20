@@ -1,27 +1,23 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.Player;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 
-import javax.servlet.ServletContext;
+import javax.annotation.Resource;
 
 @Controller
 @SessionAttributes({"PLAYER","GAME_UUID"})
 public class StartPageController {
-    
-    private ServletContext context;
     
     enum Views {
         CHESS_APPLICATION_PAGE("ChessApplicationPage"),
@@ -37,16 +33,25 @@ public class StartPageController {
         }
     };
     
+    private Map<Long, ServerChessGame> gameMap;
+    
     @RequestMapping("/chessapplication")
     public ModelAndView chessGameApplication(Model model){
         ModelAndView mav=new ModelAndView();
+        
+        System.out.println("******************"+model.containsAttribute("PLAYER")+"***************");
+        for(String key:model.asMap().keySet()){
+            System.out.println(">>>>>>>"+key);
+        }
+        
         Player player=(Player)model.asMap().get(ServerConstants.PLAYER.toString());
         if(player==null){
+            System.out.println("==================Player is Null===================");
             mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
             return mav;
         }
         mav.getModel().put(ServerConstants.PLAYER.toString(),player);
-        mav.getModel().put(ServerConstants.GAMEMAP.toString(),getGameMap(context));
+        mav.getModel().put(ServerConstants.GAMEMAP.toString(),gameMap);
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
     }
@@ -55,18 +60,9 @@ public class StartPageController {
     public String createGame(Model model ,@ModelAttribute("PLAYER") Player player){
         ServerChessGame serverGame=new ServerChessGame(player);
         long uuid=UUID.randomUUID().getMostSignificantBits();
-        ConcurrentMap<Long, ServerChessGame> gameMap=getGameMap(context);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID.toString(), uuid);
         return "forward:/app/chessgame/chessapplication";
-    }
-
-    @SuppressWarnings(value = "unchecked")
-    private ConcurrentMap<Long, ServerChessGame> getGameMap(ServletContext context) {
-        synchronized (context) {
-            return (ConcurrentMap<Long, ServerChessGame>) context.getAttribute(ServerConstants.GAMEMAP
-                            .toString());
-        }
     }
     
     /**
@@ -80,9 +76,9 @@ public class StartPageController {
         return "redirect:/app/chessgame/chessapplication";
     }
     
-    @Autowired
-    void setServletContext(ServletContext context){
-        this.context=context;
+    @Resource(name="gameMap")
+    public void setGameMap(Map<Long, ServerChessGame> gameMap){
+        this.gameMap=gameMap;
     }
     
 }

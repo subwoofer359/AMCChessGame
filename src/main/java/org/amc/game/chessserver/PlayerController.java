@@ -26,7 +26,6 @@ public class PlayerController {
             mav.getModel().put(ServerConstants.PLAYER.toString(), player);
             mav.setViewName("forward:/app/chessgame/chessapplication");
         }
-        
         return mav;
     }
 }

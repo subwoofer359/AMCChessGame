@@ -11,20 +11,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.servlet.ServletContext;
-
+import javax.annotation.Resource;
 @Controller
 @SessionAttributes({ "GAME_UUID", "PLAYER" })
 @RequestMapping("/joinGame")
 public class ServerJoinChessGameController {
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
-    private ServletContext context;
-
+    private Map<Long, ServerChessGame> gameMap;
+    
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(
-                    @ModelAttribute("GAMEMAP") ConcurrentMap<Long, ServerChessGame> gameMap,
                     @ModelAttribute("PLAYER") Player player, @RequestParam long gameUUID) {
         ServerChessGame chessGame = gameMap.get(gameUUID);
         ModelAndView mav = new ModelAndView();
@@ -71,18 +70,10 @@ public class ServerJoinChessGameController {
         mav.setViewName("forward:/app/chessgame/chessapplication");
         mav.getModel().put("ERRORS", errorMessage);
     }
-
-    @Autowired
-    void setServletContext(ServletContext context) {
-        this.context = context;
+    
+    @Resource(name="gameMap")
+    public void setGameMap(Map<Long, ServerChessGame> gameMap){
+        this.gameMap=gameMap;
     }
-
-    @ModelAttribute("GAMEMAP")
-    @SuppressWarnings(value = "unchecked")
-    private ConcurrentMap<Long, ServerChessGame> getGameMap() {
-        synchronized (context) {
-            return (ConcurrentMap<Long, ServerChessGame>) context
-                            .getAttribute(ServerConstants.GAMEMAP.toString());
-        }
-    }
+    
 }
