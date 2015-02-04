@@ -73,11 +73,20 @@ public class ServerJoinChessGameController {
         mav.getModel().put("ERRORS", errorMessage);
     }
     
+    /**
+     * Dependency Injection of Map containing current ChessGames
+     * @param gameMap Map<Log,ServerChessGame>
+     */
     @Resource(name="gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap){
         this.gameMap=gameMap;
     }
     
+    /**
+     * Handles Exception raised when the required parameters are missing form the html response
+     * @param be MissingServletRequestParameterException
+     * @return ModelAndView redirect main page
+     */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ModelAndView handleMissingRequestParameter(MissingServletRequestParameterException be){
         ModelAndView mav=new ModelAndView();
