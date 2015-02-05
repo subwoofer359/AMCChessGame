@@ -62,6 +62,9 @@ public class PawnIsPromotedTest {
         ChessGame chessGame=new ChessGame(board, whitePlayer, blackPlayer);
         ChessBoardView view=new ChessBoardView(board);
         board.putPieceOnBoardAt(piece, move.getStart());
+        if(piece.getColour().equals(Colour.BLACK)){
+            chessGame.changePlayer();
+        }
         chessGame.move(piece.getColour().equals(Colour.WHITE)?whitePlayer:blackPlayer, move);
         ChessPiece piece=board.getPieceFromBoardAt(move.getEnd());
         assertNotNull(piece);

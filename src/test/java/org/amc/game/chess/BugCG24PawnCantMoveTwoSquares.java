@@ -30,6 +30,7 @@ public class BugCG24PawnCantMoveTwoSquares {
     public void test() throws InvalidMoveException{
         Move firstMove =new Move(new Location(H,2),new Location(H,4));
         game.move(whitePlayer, firstMove);
+        game.changePlayer();
         Move secondMoveThatFails =new Move(new Location(A,7),new Location(A,5));
         game.move(blackPlayer, secondMoveThatFails);
     }

@@ -76,6 +76,7 @@ public class ChessGame{
      *             if not a valid movement
      */
     public void move(Player player, Move move) throws InvalidMoveException {
+        isPlayersTurn(player);
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
@@ -90,6 +91,13 @@ public class ChessGame{
         }
     }
 
+    private void isPlayersTurn(Player player) throws InvalidMoveException{
+        if(!getCurrentPlayer().equals(player)){
+            throw new InvalidMoveException("Not Player's turn");
+        }
+    }
+    
+    
     private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
                     throws InvalidMoveException {
         if (piece == null) {
