@@ -9,7 +9,7 @@ import java.util.List;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessGame {
+public class ChessGame{
     private ChessBoard board;
     private Player currentPlayer;
     private Player playerOne;
@@ -218,6 +218,14 @@ public class ChessGame {
 
     void setChessBoard(ChessBoard board) {
         this.board = board;
+    }
+    
+    /**
+     * To be used by sub classes only
+     * @return ChessBoard
+     */
+    ChessBoard getChessBoard(){
+        return this.board;
     }
     
     public GameState getGameState(){
