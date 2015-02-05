@@ -88,4 +88,15 @@ public class ChessGameTest {
         board.putPieceOnBoardAt(rook, rookStartPosition);
         chessGame.move(whitePlayer, move);
     }
+    
+    /**
+     * JIRA CG-33 Player can make a move out of turn
+     * @throws InvalidMoveException
+     */
+    @Test(expected=InvalidMoveException.class)
+    public void notPlayersTurn()throws InvalidMoveException{
+        Move move=new Move(StartingSquare.BLACK_KING.getLocation(),new Location(E, 7));
+        chessGame.move(blackPlayer, move);
+        assertEquals(whitePlayer,chessGame.getCurrentPlayer());
+    }
 }

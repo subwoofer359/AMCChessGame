@@ -41,7 +41,7 @@ public class ServerChessGame {
      * @param player Player
      */
     public void addOpponent(Player player){
-        if(!this.currentStatus.equals(status.FINISHED)){
+        if(this.currentStatus.equals(status.AWAITING_PLAYER)){
             player.setColour(Colour.BLACK);
             this.opponent=player;
             ChessBoard board=new ChessBoard();
