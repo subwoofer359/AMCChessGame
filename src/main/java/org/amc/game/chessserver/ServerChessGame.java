@@ -40,7 +40,7 @@ public class ServerChessGame {
      * Only valid if ServerChessGame is in AWAITING_PLAYER state, no exception is thrown if not in that state
      * @param player Player
      */
-    public void addOpponent(Player player){
+    public synchronized void addOpponent(Player player){
         if(this.currentStatus.equals(status.AWAITING_PLAYER)){
             player.setColour(Colour.BLACK);
             this.opponent=player;
@@ -72,7 +72,7 @@ public class ServerChessGame {
      * Set the ServerGame's status
      * @param currentStatus
      */
-    public final void setCurrentStatus(status currentStatus) {
+    public synchronized final void setCurrentStatus(status currentStatus) {
         this.currentStatus = currentStatus;
     }
 
