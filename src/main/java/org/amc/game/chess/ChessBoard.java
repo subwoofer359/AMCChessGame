@@ -111,7 +111,7 @@ public class ChessBoard extends DefaultSubject {
      */
     public void move(Move move) {
         quietMove(move);
-        this.notifyObservers(null);
+        this.notifyObservers(new ChessBoard(this));
     }
 
     /**
