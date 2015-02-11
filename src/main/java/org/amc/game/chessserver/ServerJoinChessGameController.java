@@ -25,11 +25,11 @@ import javax.annotation.Resource;
 @SessionAttributes({ "GAME_UUID", "PLAYER" })
 @RequestMapping("/joinGame")
 public class ServerJoinChessGameController {
-    
+
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
-    
+
     private Map<Long, ServerChessGame> gameMap;
-    
+
     @Autowired
     private SimpMessagingTemplate template;
 
@@ -70,11 +70,11 @@ public class ServerJoinChessGameController {
         }
     }
 
-    private void addView(ServerChessGame chessGame){
-        WebTextChessView view =new WebTextChessView(
-                        (ObservableChessGame)chessGame.getChessGame(),template);
+    private void addView(ServerChessGame chessGame) {
+        WebTextChessView view = new WebTextChessView(
+                        (ObservableChessGame) chessGame.getChessGame(), template);
     }
-    
+
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
         return chessGame.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER);
     }
