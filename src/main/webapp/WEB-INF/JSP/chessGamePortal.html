@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- delete later -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- delete later{end} -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.2/interact.min.js"></script>
+<script>
+interact('.draggable')
+  .draggable({
+    snap:{
+        targets: [ 
+            interact.createSnapGrid({ x:63.4,y:63.4 })
+        ],
+        range: Infinity,
+        elementOrigin: {x:0,y:0}
+    },
+    // enable inertial throwing
+    inertia: true,
+    // keep the element within the area of it's parent
+    restrict: {
+      restriction: 'parent',
+      endOnly: true,
+      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    },
+
+    // call this function on every dragmove event
+    onmove: function (event) {
+      var target = event.target,
+          // keep the dragged position in the data-x/data-y attributes
+          x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+          y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+      // translate the element
+      target.style.webkitTransform =
+      target.style.transform =
+        'translate(' + x + 'px, ' + y + 'px)';
+
+      // update the posiion attributes
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    },
+    // call this function on every dragend event
+    onend: function (event) {
+      var textEl = event.target.querySelector('p');
+
+      textEl && (textEl.textContent =
+        'moved a distance of '
+        + (Math.sqrt(event.dx * event.dx +
+                     event.dy * event.dy)|0) + 'px');
+    }
+  });
+ 
+interact('.dropzone').dropzone({
+    accept: '#rook',
+    overlap: 0,
+    ondropactivate: function (event) {
+    // add active dropzone feedback
+    event.target.classList.add('drop-active');
+  },
+  ondragenter: function (event) {
+    var draggableElement = event.relatedTarget,
+        dropzoneElement = event.target;
+
+    // feedback the possibility of a drop
+    dropzoneElement.classList.add('drop-target');
+    draggableElement.classList.add('can-drop');
+    draggableElement.textContent = 'Dragged in';
+  },
+  ondragleave: function (event) {
+    // remove the drop feedback style
+    event.target.classList.remove('drop-target');
+    event.relatedTarget.classList.remove('can-drop');
+    event.relatedTarget.textContent = 'Dragged out';
+  },
+  ondrop: function (event) {
+    event.relatedTarget.textContent = 'Dropped';
+  },
+  ondropdeactivate: function (event) {
+    // remove active dropzone feedback
+    event.target.classList.remove('drop-active');
+    event.target.classList.remove('drop-target');
+  }
+});
+
+</script>
+
+<title>Chess Game</title>
+<style>
+#header{
+    width:100%;
+    padding-bottom: 70px;
+}
+#title{
+    border-style: solid;
+    text-align: center;
+    border-radius: 33px;
+    background-color: #428bca;
+    color: white;
+}
+.container{
+    width: 100%;
+}
+#playerBlock legend{
+    background-color: #428bca;
+    border-radius: 10px 10px;
+    padding-left: 20px;
+    color: white;
+}
+#playerBlock span{
+   padding-left: 20px;
+}
+    
+#gameInfo{
+    height: 62vh;
+}
+    
+#gameInfo>div{
+    height: inherit;
+}
+#gameInfoPanel{
+    overflow: auto;
+}
+#chessboard {
+    background-image: url(../../img/ChessBoard.svg);
+    width: 509px;
+    height: 509px;
+    margin-left: auto;
+    margin-right: auto;
+    background-repeat: no-repeat;
+    border-style: solid;
+}
+    
+.chesspiece{
+    height: 62px;
+    width: 62px;
+    margin-right: -3px;
+}
+</style>
+</head>
+<body>
+<div id="header" class="container">
+ <div class="row">
+  <div id="title" class="col-xs-4">
+    <h1>Chess Game</h1>
+  </div>
+  <div id="playerBlock" class="col-xs-8">
+      <fieldset id="player" class="col-xs-6"><legend>Player</legend><span>Adrian McLaughlin</span></fieldset>
+      <fieldset id="opponent" class="col-xs-6"><legend>Opponent</legend><span>Chris Dalton</span></fieldset>
+  </div>
+ </div>
+</div>
+    
+<div class="container">
+    <div class="row">
+        <div id="gameInfo" class="col-xs-3">
+        <div  class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">Game information</h1>
+            </div>
+            <div id="gameInfoPanel" class="panel-body"></div>
+        </div>
+        </div>
+        <div id="chessboard-surround" class="col-xs-7">
+            <div id="chessboard" class="dropzone">
+            <img id="rook" class="chesspiece draggable drag-drop" src="../../img/WhiteRook2.svg" alt=""/>
+            <img id="rook2" class="chesspiece draggable drag-drop" src="../../img/WhiteRook2.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+            <img class="chesspiece draggable drag-drop" src="../../img/WhitePawn.svg" alt=""/>
+           
+            </div>
+        </div>
+            
+        <div id="buttonsPanel" class="col-xs-2">
+            <div class="btn-group-vertical">
+             <button id="messageBtn" class="btn btn-primary btn-lg btn-block">Message</button>
+             <button id="saveBtn" class="btn btn-primary btn-lg btn-block">Save</button>
+             <button id="quitBtn" class="btn btn-primary btn-lg btn-block">Quit</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-3 col-xs-7">
+            <textarea id="commandController"></textarea>
+        </div>
+        <div class="col-xs-2">
+            <button id="commandCommit" class="btn btn-primary btn-lg btn-block">Send</button>
+        </div>
+    </div>
+</div>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>    
+</body>
+
+
+</html>
