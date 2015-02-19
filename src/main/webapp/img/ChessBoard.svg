@@ -30,6 +30,9 @@
  type="text/javascript"
  id="script5">
 <![CDATA[
+var sourceId="";
+var destId="";
+var startOfMove=true;
 interact('.draggable')
   .draggable({
     // enable inertial throwing
@@ -62,13 +65,13 @@ interact('.draggable')
     // call this function on every dragend event
   });
 
+
 interact('.dropzone').dropzone({
     accept: '.chesspiece',
     overlap: 0.1,
     ondropactivate: function (event) {
     // add active dropzone feedback
     event.target.classList.add('drop-active');
-    console.log(event);
   },
   ondragenter: function (event) {
     var draggableElement = event.relatedTarget,
@@ -83,8 +86,15 @@ interact('.dropzone').dropzone({
     // remove the drop feedback style
     event.target.classList.remove('drop-target');
     event.relatedTarget.classList.remove('can-drop');
+    if(startOfMove){
+	console.log("Source:"+event.target.id);
+	startOfMove=false;
+    }
   },
   ondrop: function (event) {
+	destId=event.target.id;
+	console.log("destination:"+destId);
+	startOfMove=true;
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
@@ -196,6 +206,7 @@ interact('.dropzone').dropzone({
 <rect
  style="fill:#000000;fill-opacity:1;stroke:none"
  id="H8"
+ class="dropzone"
  width="62.468605"
  height="62.468605"
  x="438.52982"
