@@ -69,11 +69,11 @@ function createChessBoard(chessboardJSON) {
         switch(json[location]){
                 case "p":
                 console.log("Create pawn");
-                $("#layer1").append(chesspieces.pawn("test-"+location,location));
+                $("#layer1").append(chesspieces.pawn("test-"+location,location,chesspieces.colour.white));
                 break;
                 case 'r':
                 console.log("Create rook");
-                $("#layer1").append(chesspieces.rook("test-"+location,location));
+                $("#layer1").append(chesspieces.rook("test-"+location,location,chesspieces.colour.black));
                 break;
         }
     }
