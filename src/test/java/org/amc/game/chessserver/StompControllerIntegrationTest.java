@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -25,8 +25,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -148,17 +147,13 @@ public class StompControllerIntegrationTest {
             registry.enableSimpleBroker("/queue/", "/topic/");
             registry.setApplicationDestinationPrefixes("/app");
         }
-    }
-    
-    @EnableWebMvc
-    @Configuration
-    @ComponentScan(basePackages="org.amc.game.chessserver")
-    public class webConfig extends WebMvcConfigurerAdapter{
+
         @Override
-        public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-            converters.add(new MoveConverter());
-            super.configureMessageConverters(converters);
+        public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
+            messageConverters.add(new MoveConverter());
+            return super.configureMessageConverters(messageConverters);
         }
+        
+        
     }
-    
 }
