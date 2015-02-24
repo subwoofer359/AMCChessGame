@@ -13,12 +13,23 @@
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 		</jsp-property-group>
 	</jsp-config>
-
+	
+	<!-- Spring settings -->
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/GameServerContext.xml</param-value>
+	</context-param>
+	
 	<!-- Spring controllers -->
 
 	<servlet>
 		<servlet-name>chessgame</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/chessgame-servlet.xml</param-value>
+        </init-param>
 		<load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 	</servlet>
@@ -32,11 +43,25 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
-	<!-- Spring settings -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/GameServerContext.xml</param-value>
-	</context-param>
+	<security-role><role-name>adrian</role-name></security-role>
+	<security-role><role-name>sarah</role-name></security-role>
+    
+    <security-constraint>
+    	<web-resource-collection>
+    		<web-resource-name>application</web-resource-name>
+    		<url-pattern>/app/*</url-pattern>
+    	</web-resource-collection>
+    	<auth-constraint>
+    		<role-name>adrian</role-name>
+    		<role-name>sarah</role-name>
+    	</auth-constraint>
+    </security-constraint>
+    
+    <login-config>
+    	<auth-method>BASIC</auth-method>
+    	<realm-name>WebSocket</realm-name>
+    </login-config>
+
 </web-app>
 
 
