@@ -52,5 +52,16 @@ public class ServerChessGameTest {
         assertEquals(ServerChessGame.status.FINISHED,game.getCurrentStatus());
         assertEquals(Colour.WHITE,opponent.getColour());
     }
+    
+    @Test
+    public void testAddOpponentToInProgressGame(){
+        ServerChessGame game=new ServerChessGame(player);
+        game.setCurrentStatus(ServerChessGame.status.IN_PROGRESS);
+        game.addOpponent(opponent);
+        assertEquals(game.getPlayer(),player);
+        assertNull(game.getChessGame());
+        assertEquals(ServerChessGame.status.IN_PROGRESS,game.getCurrentStatus());
+        assertEquals(Colour.WHITE,opponent.getColour());
+    }
 
 }
