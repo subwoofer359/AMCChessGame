@@ -55,6 +55,7 @@
 							</tbody>
 						</table>
 						<button type="submit" formaction="joinGame" class="btn btn-primary">Join Game</button>
+						<button type="submit" formaction="enterGame" class="btn btn-primary">Enter Game</button>
 					</div>
 				</div>
 			</div>
