@@ -16,7 +16,8 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="org.amc"/>
+    <context:component-scan base-package="org.amc.game.chessserver"/>
+    <mvc:annotation-driven />
     
     <bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
