@@ -16,20 +16,31 @@
            http://www.springframework.org/schema/mvc/spring-mvc.xsd
            http://www.springframework.org/schema/websocket 
            http://www.springframework.org/schema/websocket/spring-websocket.xsd">
-           
-	<context:annotation-config />
-
-	<bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
+	
+	<context:component-scan base-package="org.amc.game."/>
+    <mvc:annotation-driven />
+	<!-- WebSocket Configuration -->
+	<websocket:message-broker application-destination-prefix="/app">
+        <websocket:stomp-endpoint path="/chessgame">
+        	<websocket:handshake-interceptors>
+        		<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+        	</websocket:handshake-interceptors>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/queue, /topic"/>
+        <!-- <websocket:message-converters register-defaults="true">
+			<bean class="org.amc.game.chessserver.MoveConverter"/>
+		</websocket:message-converters> -->
+    </websocket:message-broker>
+    
+    
+    <!-- Application beans -->
+    <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
 	</bean>
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
-	
-	<bean class="org.amc.game.chessserver.StompController"/>
-	<!-- WebSocket Configuration -->
-	<websocket:message-broker application-destination-prefix="/app">
-        <websocket:stomp-endpoint path="/chessgame">
-        </websocket:stomp-endpoint>
-        <websocket:simple-broker prefix="/queue, /topic"/>
-    </websocket:message-broker>
+
+	<!-- 
+	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
+	 -->
 </beans>
