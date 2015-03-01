@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-
 import org.apache.log4j.Logger;
 import org.amc.game.chess.Player;
 import org.springframework.stereotype.Controller;
@@ -19,12 +18,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes({"PLAYER","GAME_UUID"})
+@SessionAttributes({ "PLAYER", "GAME_UUID" })
 public class StartPageController {
-    
+
     enum Views {
-        CHESS_APPLICATION_PAGE("ChessApplicationPage"),
-        CREATE_PLAYER_PAGE("CreatePlayer");
+        CHESS_APPLICATION_PAGE("ChessApplicationPage"), CREATE_PLAYER_PAGE("CreatePlayer");
         private String pageName;
 
         private Views(String pageName) {
@@ -35,46 +33,48 @@ public class StartPageController {
             return this.pageName;
         }
     };
-    
+
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
-    
+
     @RequestMapping("/chessapplication")
-    public ModelAndView chessGameApplication(HttpSession session){
-        ModelAndView mav=new ModelAndView();
-        Player player=(Player)session.getAttribute("PLAYER");
-        if(player==null){
+    public ModelAndView chessGameApplication(HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        Player player = (Player) session.getAttribute("PLAYER");
+        if (player == null) {
             mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
             return mav;
         }
-        mav.getModel().put(ServerConstants.GAMEMAP.toString(),gameMap);
+        mav.getModel().put(ServerConstants.GAMEMAP.toString(), gameMap);
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
     }
-    
-    @RequestMapping(value="/createGame")
-    public String createGame(Model model ,@ModelAttribute("PLAYER") Player player){
-        ServerChessGame serverGame=new ServerChessGame(player);
-        long uuid=UUID.randomUUID().getMostSignificantBits();
+
+    @RequestMapping(value = "/createGame")
+    public String createGame(Model model, @ModelAttribute("PLAYER") Player player) {
+        ServerChessGame serverGame = new ServerChessGame(player);
+        long uuid = UUID.randomUUID().getMostSignificantBits();
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID.toString(), uuid);
         return "forward:/app/chessgame/chessapplication";
     }
-    
+
     /**
-     * Intercept HttpSessionRequiredExceptions and cause a redirect to chessGameApplication handler
+     * Intercept HttpSessionRequiredExceptions and cause a redirect to
+     * chessGameApplication handler
      * 
-     * @param hsre HttpSessionRequiredException
+     * @param hsre
+     *            HttpSessionRequiredException
      * @return String redirect url
      */
     @ExceptionHandler(HttpSessionRequiredException.class)
-    public String handleMissingSessionAttributes(HttpSessionRequiredException hsre){
-        logger.error("HttpSessionRequiredException:"+hsre.getMessage());
+    public String handleMissingSessionAttributes(HttpSessionRequiredException hsre) {
+        logger.error("HttpSessionRequiredException:" + hsre.getMessage());
         return "redirect:/app/chessgame/chessapplication";
     }
-    
-    @Resource(name="gameMap")
-    public void setGameMap(Map<Long, ServerChessGame> gameMap){
-        this.gameMap=gameMap;
+
+    @Resource(name = "gameMap")
+    public void setGameMap(Map<Long, ServerChessGame> gameMap) {
+        this.gameMap = gameMap;
     }
 }

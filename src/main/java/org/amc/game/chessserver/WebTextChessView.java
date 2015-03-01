@@ -8,6 +8,12 @@ import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+/**
+ * Converts ChessGameTextView into a STOMP message to be sent to the user
+ * 
+ * @author Adrian Mclaughlin
+ * @deprecated
+ */
 public class WebTextChessView implements Observer {
 
     private SimpMessagingTemplate template;

@@ -12,8 +12,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Represents a ChessGame Application resident in a Spring container
+ * 
  * @author Adrian Mclaughlin
- *
+ * @version 1.0
  */
 public class ServerChessGame {
     public enum status{

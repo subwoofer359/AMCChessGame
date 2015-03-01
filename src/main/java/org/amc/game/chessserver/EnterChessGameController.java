@@ -15,47 +15,47 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-
 @Controller
 @SessionAttributes({ "GAME_UUID", "PLAYER" })
 @RequestMapping("/enterGame")
 public class EnterChessGameController {
+
     private static final Logger logger = Logger.getLogger(EnterChessGameController.class);
+
     private Map<Long, ServerChessGame> gameMap;
 
-    
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
                     @RequestParam long gameUUID) {
         ModelAndView mav = new ModelAndView();
         ServerChessGame chessGame = gameMap.get(gameUUID);
-        
-        if(canPlayerEnterGame(chessGame, player)){
+
+        if (canPlayerEnterGame(chessGame, player)) {
             setupModelForChessGameScreen(mav, gameUUID);
-        }else {
+        } else {
             setModelErrorMessage(chessGame, player, mav);
         }
         return mav;
     }
-    
-    private boolean canPlayerEnterGame(ServerChessGame chessGame, Player player){
+
+    private boolean canPlayerEnterGame(ServerChessGame chessGame, Player player) {
         return inProgressState(chessGame) && isPlayerJoiningOwnGame(chessGame, player);
     }
-    
-    public boolean inProgressState(ServerChessGame chessGame){
+
+    public boolean inProgressState(ServerChessGame chessGame) {
         return chessGame.getCurrentStatus().equals(status.IN_PROGRESS);
     }
-    
+
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
         return player.equals(chessGame.getPlayer());
     }
-    
+
     private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
         mav.getModel().put("GAME_UUID", gameUUID);
         logger.info(String.format("Chess Game(%d): has been Entered", gameUUID));
         mav.setViewName("chessGamePortal");
     }
-    
+
     private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {
         if (!inProgressState(chessGame)) {
             setErrorPageAndMessage(mav, "Can't enter chess game");
@@ -63,12 +63,12 @@ public class EnterChessGameController {
             setErrorPageAndMessage(mav, "Player can't enter a game they didn't started");
         }
     }
-    
+
     private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
         mav.setViewName("forward:/app/chessgame/chessapplication");
         mav.getModel().put("ERRORS", errorMessage);
     }
-    
+
     /**
      * Dependency Injection of Map containing current ChessGames
      * 

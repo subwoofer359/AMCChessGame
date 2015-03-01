@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
 /**
- * Handles WebSocket Subscriptions
+ * Handles a WebSocket message received for a move in a chess game
  * 
  * @author Adrian Mclaughlin
  *
@@ -41,11 +41,11 @@ public class StompController {
         convertor.setAsText(moveString);
         logger.debug(convertor.getValue());
         Move move = (Move) convertor.getValue();
-        
+
         Player player = (Player) wsSession.get("PLAYER");
 
-        logger.debug("PLAYER:"+player);
-        
+        logger.debug("PLAYER:" + player);
+
         ServerChessGame game = gameMap.get(gameUUID);
         String message = "";
         if (game.getCurrentStatus().equals(ServerChessGame.status.IN_PROGRESS)) {
