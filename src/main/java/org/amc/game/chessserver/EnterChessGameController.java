@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame.status;
 import org.apache.log4j.Logger;

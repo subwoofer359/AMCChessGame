@@ -6,10 +6,7 @@ import org.amc.game.chess.view.ChessGameTextView;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 public class WebTextChessView implements Observer {
 
