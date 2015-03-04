@@ -28,6 +28,8 @@
     
 }
 
+/* Basic settings */    
+
 html {
 	font-size:62.5%;
 	height:100%;
@@ -55,9 +57,7 @@ body {
     background-repeat: no-repeat;
 }
  
-#main{
-   
-}
+/* Side bar */
 #sidebar-left {
     background: linear-gradient(to right,#428bca,#adc5d9);
     opacity: 0.8;
@@ -82,6 +82,8 @@ body {
     height: 20px;
 }
 
+/* Information box */
+    
 #description {
     
     border-style:ridge;
@@ -111,6 +113,13 @@ body {
     padding-top:5px;
     
 }
+
+#introduction{
+    display: none;
+}
+    
+/* Title banner */
+    
 #title{
     font-size: 4em;
     background-color: #2886d5;
@@ -134,12 +143,7 @@ body {
     min-width: 700px;
 }
 
-
-#introduction{
-    display: none;
-}
-
-
+/* play button */
     
 #play-button{
     position: absolute;
@@ -176,8 +180,10 @@ body {
     font-size: 2em;
     
 }
+    
 /* Side menu */
-#menu {
+
+    #menu {
     margin-top:70px;
     font-family: "Raleway";
     font-size: 2em;
@@ -204,16 +210,18 @@ body {
     text-decoration: none;
 }
 
+/* Handle different screen sizes */
+    
 @media (min-width:360px) and (max-width:768px){
     #title {
         min-width: 768px;
-        min-width: 600px;
+        min-width: 360px;
         font-size: 3em;
     }
     
     #title strong {
         max-width: 580px;
-        min-width: 580px;
+        min-width: 360px;
     }
     
     #play-button {
