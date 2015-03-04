@@ -6,6 +6,10 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>ChessGame Server</display-name>
 
+	<welcome-file-list>
+	<welcome-file>ChessHomePage.html</welcome-file>
+	</welcome-file-list>
+
 	<!-- JavaServer Pages configuration -->
 	<jsp-config>
 		<jsp-property-group>
