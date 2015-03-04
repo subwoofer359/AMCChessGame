@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Chess Application Home Page</title>
+    
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+<!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<style>
+@import url(../../css/Reset.css);
+@import url(http://fonts.googleapis.com/css?family=Indie+Flower|Raleway);
+@import url(http://fonts.googleapis.com/css?family=Orbitron:700);
+* {
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+    
+}
+
+html {
+	font-size:62.5%;
+	height:100%;
+}
+
+h2 {
+    font-family: "Raleway";
+    font-size: 2em;
+    font-weight: bold;
+}
+
+p {
+    font-family: "Raleway";
+    font-size: medium;
+    font-weight: normal;
+    line-height: 1.5em;
+}
+
+body {
+	font-family:"Raleway",serif;
+	font-weight:normal;
+    background-color: #c3d3e1;
+    background-image: url(../../img/1700128.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+ 
+#main{
+   
+}
+#sidebar-left {
+    background: linear-gradient(to right,#428bca,#adc5d9);
+    opacity: 0.8;
+    width: 150px;
+    height: 822px;
+}
+    
+#chess-icon {
+    background-color: #2a78ba;
+    margin-top: 20px;
+    width:110px;
+    height: 110px;
+    margin-left:auto;
+    margin-right: auto;
+    display: block;
+    border-style: dashed;
+    border-color: black;
+    border-radius: 30px 0px 30px 0px;
+    padding:10px;
+    box-shadow: 5px 5px 8px black;
+}
+    
+.padding {
+    height: 20px;
+}
+
+#description {
+    
+    border-style:ridge;
+    border-width: 2px;
+    padding:15px;
+    background-color: white;
+    box-shadow: 5px 5px 8px #2a78ba;
+    opacity: 0.7;
+}
+    
+#description p {
+    font-weight: 400;
+    color: #000000;
+}
+    
+.header {
+    border-width: 2px;
+    min-width: 170px;
+    background-color: #2886d5;
+    box-shadow: 5px 5px 8px #2a78ba;
+}
+.header h2 {
+    position: relative;
+    text-indent: 10px;
+    line-height: 1.5em;
+    padding-bottom: 5px;
+    padding-top:5px;
+    
+}
+#title{
+    font-size: 4em;
+    background-color: #2886d5;
+    opacity: 0.7;
+    box-shadow: 5px 5px 8px #000000;
+    padding-top: 12px;
+    border-radius: 5px;
+    min-width: 700px;
+}
+
+#title strong{
+    font-family: "Orbitron";
+    font-weight: bold;
+    font-size: 2em;
+    padding-left: 120px;
+    padding-top: 10px;
+    display: block;
+    min-width: 700px;
+}
+</style>
+</head>
+<body>
+
+<div id="main" class="container-fluid">
+<div class="row">
+<div id="sidebar-left" class="col-xs-2">
+        <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
+            <img src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
+        </a>
+    </div>
+<div id="contents" class="col-xs-10">
+<div class="row">       
+    <div class="row padding"></div>
+    <div id="title" class="col-xs-offset-2 col-xs-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+</div>
+<div class="row">
+<div class="padding col-xs-10"></div>
+    <div class="header col-xs-offset-1 col-xs-2"><h2 class="">Introduction</h2></div><div class="col-xs-10"></div>
+    <div id="description" class="col-xs-offset-1 col-xs-8">
+    
+    <p>
+        This chess game has been developed using the MVC (model-view-controller) design pattern. The chess game model is located on a server. The view in the game uses HTML5, SVG, CSS and JavaScript to render the chessboard to the player. The controller uses messages sent from the player over a websocket connection to make moves in the chess game. The updated view is then sent to both players over the websocket connection.
+ 
+The chess game model is written in Java and is stored on an Apache Tomcat server. The server code uses the Spring framework to create http request and websocket(STOMP) controllers.
+ 
+On the client side, the stomp.js library is used to send websocket(STOMP) message to the server and to receive push updates. The interact.js library is used to allow chess pieces to be moved on the chessboard view by the player.
+    </p>
+    </div><!-- description -->
+    </div><!--row: introduction -->
+    </div><!-- contents div -->
+    </div><!-- Top row -->
+</div> <!-- Container -->
+
+ <!-- Include all compiled plugins (below), or include individual files as needed -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</body>
+</html>
