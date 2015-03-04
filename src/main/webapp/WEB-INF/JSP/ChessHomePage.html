@@ -132,6 +132,46 @@ body {
     display: block;
     min-width: 700px;
 }
+    
+#introduction{
+    display: none;
+}
+
+
+    
+#play-button{
+    position: absolute;
+    display: block;
+    top:50%;
+    left:45%;
+    height:70px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 30px 0px 30px 0px;
+    padding:5px 10px 0px 5px;
+    background-color: #2886d5;
+    opacity: 0.8;
+}
+
+#play-button a{
+    display: inline-block;
+}
+
+#play-button img{
+    height: 50px;
+    
+    
+}
+
+#play-button p{
+    color: black;
+    display: inline-block;
+    position: relative;
+    top:-14px;
+    font-family: "Orbitron";
+    font-size: 2em;
+    
+}
 </style>
 </head>
 <body>
@@ -148,7 +188,8 @@ body {
     <div class="row padding"></div>
     <div id="title" class="col-xs-offset-2 col-xs-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
 </div>
-<div class="row">
+
+<div id="introduction" class="row">
 <div class="padding col-xs-10"></div>
     <div class="header col-xs-offset-1 col-xs-2"><h2 class="">Introduction</h2></div><div class="col-xs-10"></div>
     <div id="description" class="col-xs-offset-1 col-xs-8">
@@ -163,6 +204,15 @@ On the client side, the stomp.js library is used to send websocket(STOMP) messag
     </div><!-- description -->
     </div><!--row: introduction -->
     </div><!-- contents div -->
+    <div class="row">
+        <a id="play-button">
+                <img src="https://openclipart.org/download/18657/portablejim-Chess-tile-Rook-1.svg" />
+                <p>Play Game</p>
+                <img src="https://openclipart.org/download/18643/portablejim-Chess-tile-Knight-2.svg" />
+        </a>
+            
+    </div>
+
     </div><!-- Top row -->
 </div> <!-- Container -->
 
