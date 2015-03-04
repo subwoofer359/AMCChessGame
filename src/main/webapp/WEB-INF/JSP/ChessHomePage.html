@@ -132,7 +132,7 @@ body {
     display: block;
     min-width: 700px;
 }
-    
+
 #introduction{
     display: none;
 }
@@ -145,6 +145,7 @@ body {
     top:50%;
     left:45%;
     height:70px;
+    width:400px
     border-style: solid;
     border-width: 2px;
     border-radius: 30px 0px 30px 0px;
@@ -178,7 +179,7 @@ body {
 
 <div id="main" class="container-fluid">
 <div class="row">
-<div id="sidebar-left" class="col-xs-2">
+<div id="sidebar-left" class="col-sm-2 hidden-sm hidden-xs">
         <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
             <img src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
         </a>
@@ -186,7 +187,9 @@ body {
 <div id="contents" class="col-xs-10">
 <div class="row">       
     <div class="row padding"></div>
-    <div id="title" class="col-xs-offset-2 col-xs-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+    <div class="col-sm-2 hidden-xs"></div>
+    <div id="title" class="col-xs-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+    <div class="clearfix"></div>
 </div>
 
 <div id="introduction" class="row">
