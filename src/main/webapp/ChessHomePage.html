@@ -19,7 +19,7 @@
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <style>
-@import url(../../css/Reset.css);
+@import url(css/Reset.css);
 @import url(http://fonts.googleapis.com/css?family=Indie+Flower|Raleway);
 @import url(http://fonts.googleapis.com/css?family=Orbitron:700);
 * {
@@ -50,7 +50,7 @@ body {
 	font-family:"Raleway",serif;
 	font-weight:normal;
     background-color: #c3d3e1;
-    background-image: url(../../img/1700128.jpg);
+    background-image: url(img/1700128.jpg);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -73,8 +73,6 @@ body {
     margin-left:auto;
     margin-right: auto;
     display: block;
-    border-style: dashed;
-    border-color: black;
     border-radius: 30px 0px 30px 0px;
     padding:10px;
     box-shadow: 5px 5px 8px black;
@@ -119,7 +117,9 @@ body {
     opacity: 0.7;
     box-shadow: 5px 5px 8px #000000;
     padding-top: 12px;
+    padding-right: 15px;
     border-radius: 5px;
+    max-width: 700px;
     min-width: 700px;
 }
 
@@ -127,11 +127,13 @@ body {
     font-family: "Orbitron";
     font-weight: bold;
     font-size: 2em;
-    padding-left: 120px;
+    padding-left: 100px;
     padding-top: 10px;
     display: block;
+    max-width: 700px;
     min-width: 700px;
 }
+
 
 #introduction{
     display: none;
@@ -145,12 +147,13 @@ body {
     top:50%;
     left:45%;
     height:70px;
-    width:400px
+    width:250px;
     border-style: solid;
     border-width: 2px;
     border-radius: 30px 0px 30px 0px;
     padding:5px 10px 0px 5px;
     background-color: #2886d5;
+    box-shadow: 5px 5px 8px black;
     opacity: 0.8;
 }
 
@@ -173,6 +176,68 @@ body {
     font-size: 2em;
     
 }
+/* Side menu */
+#menu {
+    margin-top:70px;
+    font-family: "Raleway";
+    font-size: 2em;
+    line-height: 1.5em;
+    text-align: left;
+    color: black;
+    background-color: #2886d5;
+    box-shadow: 5px 5px 8px black;
+    border-radius: 10px;
+}
+
+#menu li {
+
+    padding:4px;
+    
+    
+}
+#menu a {
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+#menu a:hover,#menu a: {
+    text-decoration: none;
+}
+
+@media (min-width:360px) and (max-width:768px){
+    #title {
+        min-width: 768px;
+        min-width: 600px;
+        font-size: 3em;
+    }
+    
+    #title strong {
+        max-width: 580px;
+        min-width: 580px;
+    }
+    
+    #play-button {
+        left:30%;
+    }
+}
+    
+@media (max-width:360px){
+    #title {
+        min-width: 360px;
+        min-width: 360px;
+        font-size: 3em;
+    }
+    
+    #title strong {
+        max-width: 340px;
+        min-width: 340px;
+        padding-left: 50px;
+    }
+    
+    #play-button {
+        left:15%;
+    }
+}
 </style>
 </head>
 <body>
@@ -183,12 +248,20 @@ body {
         <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
             <img src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
         </a>
+    
+        <div id="menu">
+        <ul>
+            <li><a href="#">HomePage</a></li>
+            <li><a href="#">Description</a></li>
+            <li><a href="#">Gallery</a></li>
+        </ul>
+        </div>
     </div>
 <div id="contents" class="col-xs-10">
 <div class="row">       
     <div class="row padding"></div>
     <div class="col-sm-2 hidden-xs"></div>
-    <div id="title" class="col-xs-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+    <div id="title" class="col-xs-8 col-md-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
     <div class="clearfix"></div>
 </div>
 
@@ -207,14 +280,12 @@ On the client side, the stomp.js library is used to send websocket(STOMP) messag
     </div><!-- description -->
     </div><!--row: introduction -->
     </div><!-- contents div -->
-    <div class="row">
-        <a id="play-button">
-                <img src="https://openclipart.org/download/18657/portablejim-Chess-tile-Rook-1.svg" />
-                <p>Play Game</p>
-                <img src="https://openclipart.org/download/18643/portablejim-Chess-tile-Knight-2.svg" />
-        </a>
-            
-    </div>
+    <a id="play-button">
+        <img src="https://openclipart.org/download/18657/portablejim-Chess-tile-Rook-1.svg" />
+        <p>Play Game</p>
+        <img src="https://openclipart.org/download/18643/portablejim-Chess-tile-Knight-2.svg" />
+    </a>
+
 
     </div><!-- Top row -->
 </div> <!-- Container -->
