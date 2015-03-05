@@ -25,25 +25,14 @@ body {
     background-image: url(img/1700128.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    
 }
 
 #main{
     height:100%;
 }
     
-#chess-icon {
-    background-color: #2a78ba;
-    margin-top: 20px;
-    width:110px;
-    height: 110px;
-    margin-left:auto;
-    margin-right: auto;
-    display: block;
-    border-radius: 30px 0px 30px 0px;
-    padding:10px;
-    box-shadow: 5px 5px 8px black;
-}
-    
+ 
 .padding {
     height: 20px;
 }
@@ -82,7 +71,10 @@ body {
 }
 
 #introduction{
+    position:absolute;
     display: none;
+    top:1000px;
+    left:8%;
 }
     
 /* Title banner */
@@ -148,34 +140,7 @@ body {
     
 }
     
-/* Side menu */
 
-#menu {
-    margin-top:70px;
-    font-family: "Raleway";
-    font-size: 2em;
-    line-height: 1.5em;
-    text-align: left;
-    color: black;
-    background-color: #2886d5;
-    box-shadow: 5px 5px 8px black;
-    border-radius: 10px;
-}
-
-#menu li {
-
-    padding:4px;
-    
-    
-}
-#menu a {
-    display: block;
-    text-decoration: none;
-    color: black;
-}
-#menu a:hover,#menu a: {
-    text-decoration: none;
-}
 
 /* Handle different screen sizes */
     
@@ -231,39 +196,75 @@ nav a:hover{
 }
 /* animation */
 
-    
-@keyframes slideIn {
-    from { bottom:0; left: 0;}
-    to { bottom:500px;left:200px; }
+.dropButton {
+    -webkit-animation: buttonOut 1s;
+    -webkit-animation-fill-mode: forwards;
 }
-@-webkit-keyframes slideIn {
-    from { bottom:0; left: 0;}
-    to { bottom:500px;left:200px; }
+    
+.raiseButton {
+    -webkit-animation: buttonIn 1s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-delay: 1s;
+    
+}
+
+.raiseDiv {
+    -webkit-animation: slideIn 3s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-delay: 1s;
 }
  
-@keyframes buttonOut {
-    0% { left: 45%; top:50%; }
-    99% { left: 45%; top:100%; }
-    100% {display:none;}
+.dropDiv {
+    -webkit-animation: slideOut 3s;
+    -webkit-animation-fill-mode: forwards;
+}
+    
+@-webkit-keyframes slideIn {
+    0% { top:100%;}
+    100% { top:20%;}
+}
+
+@-webkit-keyframes slideOut {
+    0% { top:20%;}
+    100% { top:100%;}
 }
     
 @-webkit-keyframes buttonOut {
-    0% { left: 45%; top:50%; }
-    99% { left: 45%; top:100%; }
-    100% {display:none;}
+    0% { top:50%; }
+    100% { top:100%;}   
+}
+    
+@-webkit-keyframes buttonIn {
+    0% { top:100%; }
+    100% { top:50%;}   
 }
 </style>
 <script src="js/sidebar.js"></script>
 <script>
 $(document).ready(function(){
     $('.description').click(function(){
-        $('#introduction').css("animation","slideIn 5s");
-        $('#introduction').css("-webkit-animation","slideIn 5s");
-        $('#play-button').css("-webkit-animation-fill-mode","forwards");
-        $('#play-button').css("animation-fill-mode","forwards");
-        $('#play-button').css("animation","buttonOut 1s");
+        $('#introduction').addClass("raiseDiv");
+        $('#introduction').removeClass("dropDiv");
         $('#introduction').css("display","block");
-                           });
+        $('#play-button').addClass("dropButton");
+        $('#play-button').removeClass("raiseButton");
+    });
+    
+    $('.play-game').click(function(){
+        var windowHeightInPx=$( window ).height()+'px', playButton=$('#play-button'),introduction=$('#introduction');
+        if(playButton.css("top") == windowHeightInPx){
+            playButton.css("top","100%");
+            playButton.addClass("raiseButton");
+            playButton.removeClass("dropButton");
+        }
+        console.log(introduction.css("top"));
+        if(introduction.css("top") !== windowHeightInPx){
+            introduction.addClass("dropDiv");
+            introduction.removeClass("raiseDiv");
+        }
+        
+        
+    });
 });
 </script>
 </head>
@@ -285,6 +286,7 @@ $(document).ready(function(){
             <ul class="nav navbar-nav">
                 <li><a href="http://adrianmclaughlin.ie">HomePage</a></li>
                 <li><a href="#" class="description">Description</a></li>
+                <li><a href="#" >Play Game</a></li>
                 <li><a href="#">Gallery</a></li>
             </ul>
         </div>
@@ -297,10 +299,11 @@ $(document).ready(function(){
             <img alt="Queen" src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
         </a>
     
-        <div id="menu">
+        <div class="side-menu">
         <ul>
             <li><a href="http://adrianmclaughlin.ie">HomePage</a></li>
             <li><a class="description" href="#">Description</a></li>
+            <li><a class="play-game" href="#" >Play Game</a></li>
             <li><a href="#">Gallery</a></li>
         </ul>
         </div>
@@ -327,7 +330,9 @@ $(document).ready(function(){
     <div class="padding col-xs-10"></div>
     <div class="header col-xs-offset-1 col-xs-2"><h2 class="">Introduction</h2></div><div class="col-xs-10"></div>
     <div id="description" class="col-xs-offset-1 col-xs-8">    
-        <p>Fill in text
+        <p>The animation-fill-mode property specifies what styles will apply for the element when the animation is not playing (when it is finished, or when it has a "delay").
+
+By default, CSS animations will not affect the element you are animating until the first keyframe is "played", and then stops affecting it once the last keyframe has completed. The animation-fill-mode property can override this behavior.
         </p>
     </div><!-- description -->
 </div><!--row: introduction -->
