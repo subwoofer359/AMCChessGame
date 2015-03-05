@@ -1,10 +1,12 @@
 @CHARSET "UTF-8";
 /**
  * @author Adrian Mclaughlin
- * @date   26/08/2014
+ * @date   04/03/2015
  * @version 2
  */
 
+@import url(Reset.css);
+@import url(http://fonts.googleapis.com/css?family=Orbitron:700);
 @import url(http://fonts.googleapis.com/css?family=Indie+Flower|Raleway);
 
 @viewport {width:device-width;}
@@ -14,179 +16,35 @@
 	box-sizing:border-box;
 }
 
-html{
+html {
 	font-size:62.5%;
 	height:100%;
 }
 
-body{
-	background-color: rgba(222,164,184,1);
+h2 {
+    font-family: "Raleway";
+    font-size: 2em;
+    font-weight: bold;
+}
+
+p {
+    font-family: "Raleway";
+    font-size: medium;
+    font-weight: normal;
+    line-height: 1.5em;
+}
+
+body {
 	font-family:"Raleway",serif;
 	font-weight:normal;
+    background-color: #c3d3e1;
+    height: 100%;
 }
 
-h1{
-	font-family:"Indie Flower",San-serif;
-	font-weight:normal;
-	font-size:4em;
+/* Side bar */
+.sidebar-left {
+    background: linear-gradient(to right,#428bca,#adc5d9);
+    opacity: 0.8;
+    width: 150px;
+    height:100%;
 }
-
-h2{
-	font-family:"Indie Flower",San-serif;
-	font-weight:normal;
-	font-size:3em;
-
-}
-
-body{
-	background-color: rgba(222,164,184,1);
-	background-image: url(../images/cakes/wedding/PinkFlowersWeddingCake_tn.jpg);
-	font-family: "Raleway",serif;
-	font-weight: normal;
-	height: 100%;
-
-
-}
-
-#titlebar{
-		/* background-color: rgba(201,82,82,1);*/
-		/* background-color: rgba(202,64,236,1); */
-		background: radial-gradient(rgb(255,82,146), rgb(201,82,82));
-		width: 100%;
-		height: 105px;
-		line-height: 7em;
-		overflow: hidden;
-	}
-#titlebar p{
-	font-family:"Indie Flower";
-	text-indent: 1em;
-	padding-top: 0px;
-	color: antiquewhite;
-	text-shadow: 4px 4px 5px #9f0c0c;
-	
-}
-/* Resize the title text */	
-@media(min-width:768px){
-	#titlebar p{
-		font-family:"Indie Flower";
-		font-size: 5em;
-		text-indent: 1em;
-		padding-top: 0px;
-		color: antiquewhite;
-	
-	}
-	
-}
-@media(min-width:614px) and (max-width:768px){
-	#titlebar p{
-		font-size: 4em;
-	}
-}
-
-@media(min-width:460px) and (max-width:614px){
-	#titlebar p{
-	font-size: 3em;
-
-	}
-}
-@media(max-width:460px){
-	#titlebar p{
-	font-size: 2.3em;
-	}
-}
-
-#titlebar strong{
-	font-style: italic;
-	font-size: 1.5em;
-}
-
-#profile-picture{
-	/*background-image: url(images/ProfilePicture_1.jpg);*/
-	box-shadow: 7px 7px 5px #888888;
-	width: 15%;
-	margin-left: 16px;
-	margin-right: 15px; /* To push the text to the right */
-	border-style: double;
-	padding: 2px;
-	float:left;
-}
-
-#main-frame{
-	background-color:white;
-	border-style: solid;
-	padding: 0;
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 55px 55px 0 0 ;
-	overflow: hidden;
-	opacity: 0.9;
-	/* height: 100%; */
-}
-
-.navbar-default{
-	font-family: "Indie Flower";
-	font-size: 1.4em;
-	font-weight: bold;
-}
-
-a span.glyphicon{
-	vertical-align: top;
-}
-
-.dropdown-menu{
-	font-family: "Raleway",serif; 
-}
-.navbar-form .form-group{
-	margin-bottom:3px;	
-}
-
-.item{
-    /*background: #333;    */
-    /* background:rgba(201,82,82,1); */
-    background: linear-gradient(rgb(255,82,146), rgb(201,82,82));
-    text-align: center;
-    height: 190px !important;
-}
-#myslideshow{
-	clear:both;
-}
-
-.carousel{
-    margin-top: 9px;
-}
-.carousel-inner img{
-	margin-right:10px;
-	width:180px;
-	height:190px;
-	padding:8px;
-	padding-top:15px;
-	padding-bottom: 15px;
-	border-radius:50px;
-}
-.carousel h2{
-    margin: 0;     
-    color: #666;
-    padding-top: 90px;
-    font-size: 52px;
-    font-family: "trebuchet ms", sans-serif;    
-}
-#twitter-feed{
-	box-shadow: 7px 7px 5px #888888;
-	float: right;
-	width: 350px;
-	border-style: double;
-	padding: 3px;
-	margin-left: 10px;
-	margin-right: 10px;
-}
-#copyright{
-	padding-left: 30px;
-}
-
-#description{
-	font-size: 1.5em;
-	padding-left: 10px;
-}
-
-
-

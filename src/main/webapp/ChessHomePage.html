@@ -19,54 +19,15 @@
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <style>
-@import url(css/Reset.css);
-@import url(http://fonts.googleapis.com/css?family=Indie+Flower|Raleway);
-@import url(http://fonts.googleapis.com/css?family=Orbitron:700);
-* {
-	-moz-box-sizing:border-box;
-	box-sizing:border-box;
-    
-}
-
-/* Basic settings */    
-
-html {
-	font-size:62.5%;
-	height:100%;
-}
-
-h2 {
-    font-family: "Raleway";
-    font-size: 2em;
-    font-weight: bold;
-}
-
-p {
-    font-family: "Raleway";
-    font-size: medium;
-    font-weight: normal;
-    line-height: 1.5em;
-}
+@import url(css/General.css);    
 
 body {
-	font-family:"Raleway",serif;
-	font-weight:normal;
-    background-color: #c3d3e1;
     background-image: url(img/1700128.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100%;
 }
 
 #main{
-    height:100%;
-}
-
-/* Side bar */
-#sidebar-left {
-    background: linear-gradient(to right,#428bca,#adc5d9);
-    opacity: 0.8;
-    width: 150px;
     height:100%;
 }
     
@@ -292,24 +253,9 @@ nav a:hover{
     100% {display:none;}
 }
 </style>
-
+<script src="js/sidebar.js"></script>
 <script>
 $(document).ready(function(){
-    
-    /**
-     * Makes the Sidebar the same same size as the window
-     */
-    (function(){
-        var sidebarLeft=$('#sidebar-left');
-        sidebarLeft.css("height",window.innerHeight);
-        $(window).resize(function(){
-            var windowHeight=$( window ).height();
-            console.log(windowHeight);
-            sidebarLeft.css("height",windowHeight);
-        });
-    })();
-    
-
     $('.description').click(function(){
         $('#introduction').css("animation","slideIn 5s");
         $('#introduction').css("-webkit-animation","slideIn 5s");
@@ -346,7 +292,7 @@ $(document).ready(function(){
 </nav>
 <div id="main" class="container-fluid">
 <div class="row">
-    <div id="sidebar-left" class="col-sm-2 hidden-sm hidden-xs">
+    <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
         <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
             <img src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
         </a>
@@ -381,11 +327,7 @@ $(document).ready(function(){
     <div class="padding col-xs-10"></div>
     <div class="header col-xs-offset-1 col-xs-2"><h2 class="">Introduction</h2></div><div class="col-xs-10"></div>
     <div id="description" class="col-xs-offset-1 col-xs-8">    
-        <p>This chess game has been developed using the MVC (model-view-controller) design pattern. The chess game model is located on  a server. The view in the game uses HTML5, SVG, CSS and JavaScript to render the chessboard to the player. The controller uses messages sent from the player over a websocket connection to make moves in the chess game. The updated view is then sent to both players over the websocket connection.
-                
-The chess game model is written in Java and is stored on an Apache Tomcat server. The server code uses the Spring framework to create http request and websocket(STOMP) controllers.
- 
-On the client side, the stomp.js library is used to send websocket(STOMP) message to the server and to receive push updates. The interact.js library is used to allow chess pieces to be moved on the chessboard view by the player.
+        <p>Fill in text
         </p>
     </div><!-- description -->
 </div><!--row: introduction -->
