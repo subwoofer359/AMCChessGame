@@ -55,14 +55,19 @@ body {
     background-image: url(img/1700128.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    height: 100%;
 }
- 
+
+#main{
+    height:100%;
+}
+
 /* Side bar */
 #sidebar-left {
     background: linear-gradient(to right,#428bca,#adc5d9);
     opacity: 0.8;
     width: 150px;
-    height: 822px;
+    height:100%;
 }
     
 #chess-icon {
@@ -105,6 +110,7 @@ body {
     background-color: #2886d5;
     box-shadow: 5px 5px 8px #2a78ba;
 }
+    
 .header h2 {
     position: relative;
     text-indent: 10px;
@@ -172,9 +178,9 @@ body {
 }
 
 #play-button p{
+    position: relative;
     color: black;
     display: inline-block;
-    position: relative;
     top:-14px;
     font-family: "Orbitron";
     font-size: 2em;
@@ -183,7 +189,7 @@ body {
     
 /* Side menu */
 
-    #menu {
+#menu {
     margin-top:70px;
     font-family: "Raleway";
     font-size: 2em;
@@ -214,14 +220,14 @@ body {
     
 @media (min-width:360px) and (max-width:768px){
     #title {
-        min-width: 768px;
-        min-width: 360px;
+        max-width: 768px;
+        min-width: 580px;
         font-size: 3em;
     }
     
     #title strong {
         max-width: 580px;
-        min-width: 360px;
+        min-width: 580px;
     }
     
     #play-button {
@@ -231,7 +237,7 @@ body {
     
 @media (max-width:360px){
     #title {
-        min-width: 360px;
+        max-width: 360px;
         min-width: 360px;
         font-size: 3em;
     }
@@ -246,59 +252,145 @@ body {
         left:15%;
     }
 }
+    
+/* NavBar */
+
+nav div {
+    background-color: #2886d5;
+}
+
+nav a,nav a:link{
+    font-size: 2em;
+    color:black;
+}
+    
+nav a:hover{
+    text-decoration: none;
+    color:black;
+}
+/* animation */
+
+    
+@keyframes slideIn {
+    from { bottom:0; left: 0;}
+    to { bottom:500px;left:200px; }
+}
+@-webkit-keyframes slideIn {
+    from { bottom:0; left: 0;}
+    to { bottom:500px;left:200px; }
+}
+ 
+@keyframes buttonOut {
+    0% { left: 45%; top:50%; }
+    99% { left: 45%; top:100%; }
+    100% {display:none;}
+}
+    
+@-webkit-keyframes buttonOut {
+    0% { left: 45%; top:50%; }
+    99% { left: 45%; top:100%; }
+    100% {display:none;}
+}
 </style>
+
+<script>
+$(document).ready(function(){
+    
+    /**
+     * Makes the Sidebar the same same size as the window
+     */
+    (function(){
+        var sidebarLeft=$('#sidebar-left');
+        sidebarLeft.css("height",window.innerHeight);
+        $(window).resize(function(){
+            var windowHeight=$( window ).height();
+            console.log(windowHeight);
+            sidebarLeft.css("height",windowHeight);
+        });
+    })();
+    
+
+    $('.description').click(function(){
+        $('#introduction').css("animation","slideIn 5s");
+        $('#introduction').css("-webkit-animation","slideIn 5s");
+        $('#play-button').css("-webkit-animation-fill-mode","forwards");
+        $('#play-button').css("animation-fill-mode","forwards");
+        $('#play-button').css("animation","buttonOut 1s");
+        $('#introduction').css("display","block");
+                           });
+});
+</script>
 </head>
 <body>
-
+<nav role="navigation" class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand"></a>
+        </div>
+        <!-- Collection of nav links and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="http://adrianmclaughlin.ie">HomePage</a></li>
+                <li><a href="#" class="description">Description</a></li>
+                <li><a href="#">Gallery</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div id="main" class="container-fluid">
 <div class="row">
-<div id="sidebar-left" class="col-sm-2 hidden-sm hidden-xs">
+    <div id="sidebar-left" class="col-sm-2 hidden-sm hidden-xs">
         <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
             <img src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
         </a>
     
         <div id="menu">
         <ul>
-            <li><a href="#">HomePage</a></li>
-            <li><a href="#">Description</a></li>
+            <li><a href="http://adrianmclaughlin.ie">HomePage</a></li>
+            <li><a class="description" href="#">Description</a></li>
             <li><a href="#">Gallery</a></li>
         </ul>
         </div>
     </div>
-<div id="contents" class="col-xs-10">
-<div class="row">       
-    <div class="row padding"></div>
-    <div class="col-sm-2 hidden-xs"></div>
-    <div id="title" class="col-xs-8 col-md-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
-    <div class="clearfix"></div>
-</div>
+    
+    <div id="contents" class="col-xs-10">
+        <div class="row">       
+            <div class="row padding"></div>
+            <div class="col-sm-2 hidden-xs"></div>
+            <div id="title" class="col-xs-8 col-md-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+            <div class="clearfix"></div>
+        </div>
+    </div><!-- contents div -->
+    </div><!-- Top row -->
+</div> <!-- Container -->
+    
+<a id="play-button">
+    <img src="https://openclipart.org/download/18657/portablejim-Chess-tile-Rook-1.svg" />
+    <p>Play Game</p>
+    <img src="https://openclipart.org/download/18643/portablejim-Chess-tile-Knight-2.svg" />
+</a>
 
 <div id="introduction" class="row">
-<div class="padding col-xs-10"></div>
+    <div class="padding col-xs-10"></div>
     <div class="header col-xs-offset-1 col-xs-2"><h2 class="">Introduction</h2></div><div class="col-xs-10"></div>
-    <div id="description" class="col-xs-offset-1 col-xs-8">
-    
-    <p>
-        This chess game has been developed using the MVC (model-view-controller) design pattern. The chess game model is located on a server. The view in the game uses HTML5, SVG, CSS and JavaScript to render the chessboard to the player. The controller uses messages sent from the player over a websocket connection to make moves in the chess game. The updated view is then sent to both players over the websocket connection.
- 
+    <div id="description" class="col-xs-offset-1 col-xs-8">    
+        <p>This chess game has been developed using the MVC (model-view-controller) design pattern. The chess game model is located on  a server. The view in the game uses HTML5, SVG, CSS and JavaScript to render the chessboard to the player. The controller uses messages sent from the player over a websocket connection to make moves in the chess game. The updated view is then sent to both players over the websocket connection.
+                
 The chess game model is written in Java and is stored on an Apache Tomcat server. The server code uses the Spring framework to create http request and websocket(STOMP) controllers.
  
 On the client side, the stomp.js library is used to send websocket(STOMP) message to the server and to receive push updates. The interact.js library is used to allow chess pieces to be moved on the chessboard view by the player.
-    </p>
+        </p>
     </div><!-- description -->
-    </div><!--row: introduction -->
-    </div><!-- contents div -->
-    <a id="play-button">
-        <img src="https://openclipart.org/download/18657/portablejim-Chess-tile-Rook-1.svg" />
-        <p>Play Game</p>
-        <img src="https://openclipart.org/download/18643/portablejim-Chess-tile-Knight-2.svg" />
-    </a>
+</div><!--row: introduction -->
 
-
-    </div><!-- Top row -->
-</div> <!-- Container -->
-
- <!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>
 </html>
