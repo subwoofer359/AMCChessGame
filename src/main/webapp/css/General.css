@@ -42,6 +42,9 @@ body {
     overflow: hidden;
 }
 
+
+.full-height { height: 100%; }
+
 /* Side bar */
 .sidebar-left {
     background: linear-gradient(to right,#428bca,#adc5d9);
