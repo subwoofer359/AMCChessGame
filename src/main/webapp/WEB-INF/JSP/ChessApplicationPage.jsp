@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,6 +67,12 @@
         font-size:1.8em;
     }
     
+    .side-menu button{
+        padding: 0;
+        background-color: #2886d5;
+        border: none;
+    }
+    
     .games-table {
         font-size: 1.5em;
         color: black;
@@ -103,14 +111,18 @@
             </a>    
             <div class="side-menu">
             <ul>
-                <li><a href="http://adrianmclaughlin.ie">Create Game</a></li>
+                <li>
+                    <form method="post">
+                        <button formaction="createGame" type="submit">Create Game</button>
+			         </form>
+                </li>
                 <li><a class="description" href="#">Join Game</a></li>
                 <li><a class="description" href="#">Delete Game</a></li>
                 <li><a class="play-game" href="#" >Log out</a></li>
             </ul>
             </div>
         </div><!-- sidebar-left -->
-        <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">Adrian McLaughlin</span></div>
+        <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
         
         <div class="col-xs-5">
             <div id="your-games-table" class="games-table">
@@ -124,22 +136,13 @@
 				</tr>
 				</thead>
                 <tbody>
-                    <tr><td>93934939</td><td>Christine ChristineChristineChristineChristine</td><td>In Progress</td><td><input type="checkbox" value="93934939"/></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td><input type="checkbox" value="93934939"/></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah Moorman</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah MopManny</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td><input type="checkbox" value="93934939"/></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
+                    <c:forEach var="game" items='${GAMEMAP}'>
+                        <c:if test="${PLAYER.name eq game.value.player.name}">
+				            <tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td>
+						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
+						    </tr>		
+                        </c:if>
+				    </c:forEach>
                 </tbody>
             </table>
             </div>
@@ -156,8 +159,13 @@
 				</tr>
 				</thead>
                 <tbody>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
+                    <c:forEach var="game" items='${GAMEMAP}'>
+                        <c:if test="${PLAYER.name ne game.value.player.name}">
+				            <tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td>
+						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
+						    </tr>		
+                        </c:if>
+				    </c:forEach>
                 </tbody>
             </table>
             </div>
