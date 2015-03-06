@@ -39,6 +39,7 @@ body {
 	font-weight:normal;
     background-color: #c3d3e1;
     height: 100%;
+    overflow: hidden;
 }
 
 /* Side bar */
@@ -47,4 +48,45 @@ body {
     opacity: 0.8;
     width: 150px;
     height:100%;
+}
+
+/* Chess Icon */
+#chess-icon {
+    background-color: #2a78ba;
+    margin-top: 20px;
+    width:110px;
+    height: 110px;
+    margin-left:auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 30px 0px 30px 0px;
+    padding:10px;
+    box-shadow: 5px 5px 8px black;
+}
+
+/* Side menu */
+
+.side-menu {
+    margin-top:70px;
+    font-family: "Raleway";
+    font-size: 2em;
+    line-height: 1.5em;
+    text-align: left;
+    color: black;
+    background-color: #2886d5;
+    box-shadow: 5px 5px 8px black;
+    border-radius: 10px;
+}
+
+.side-menu li {
+
+    padding:4px;
+}
+.side-menu a {
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+.side-menu a:hover,.side-menu a: {
+    text-decoration: none;
 }

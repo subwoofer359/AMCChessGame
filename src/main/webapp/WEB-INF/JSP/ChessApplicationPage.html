@@ -18,8 +18,17 @@
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script src="js/sidebar.js"></script>
+ <script src="../../js/selectTableRow.js"></script>
 <style>
     @import url(../../css/General.css);
+    @import url(../../css/selectTableRow.css);
+    
+    body {
+        background-image: url(../../img/1700128.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
     .full-height { height: 100%; }
     .player-name {
         font-family: "Raleway";
@@ -52,20 +61,34 @@
         box-shadow: 5px 5px 8px #000000;
     }
     
+    .side-menu{
+        font-size:1.8em;
+    }
+    
     .games-table {
         font-size: 1.5em;
         margin-top:100px;
-        border-style: dashed;
-        border-width: 1px;
+        //border-style: dashed;
+        //border-width: 1px;
         height: 70vh;
         overflow: auto;
     }
     
     .games-table th{
         font-family: "Orbitron";
+        background-color: #2886d5;
+    }
+    
+    .games-table tbody tr {
+        background-color: antiquewhite;
+    }
+    
+    /* Hide checkboxes in the tables */
+    .games-table tr td:last-of-type,tr th:last-of-type {
+        display: none;
     }
 </style>
-<script src="js/sidebar.js"></script>
+
 </head>
 <body>
 <div class="container-fluid full-height">
@@ -77,7 +100,7 @@
             <div class="side-menu">
             <ul>
                 <li><a href="http://adrianmclaughlin.ie">Create Game</a></li>
-                <li><a class="description" href="#">Delete Game(s)</a></li>
+                <li><a class="description" href="#">Delete Game</a></li>
                 <li><a class="play-game" href="#" >Log out</a></li>
             </ul>
             </div>
@@ -96,22 +119,22 @@
 				</tr>
 				</thead>
                 <tbody>
-                    <tr><td>93934939</td><td>Christine ChristineChristineChristineChristine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93934939</td><td>Christine ChristineChristineChristineChristine</td><td>In Progress</td><td><input type="checkbox" value="93934939"/></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td><input type="checkbox" value="93934939"/></td></tr>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah Moorman</td><td>Waiting for player</td><td></td></tr>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah MopManny</td><td>Waiting for player</td><td></td></tr>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
-                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td><input type="checkbox" value="93934939"/></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
                 </tbody>
             </table>
             </div>
@@ -129,7 +152,7 @@
 				</thead>
                 <tbody>
                     <tr><td>93934939</td><td>Christine</td><td>In Progress</td><td></td></tr>
-                    <tr><td>93939299</td><td>Sarah O'Neill</td><td>Waiting for player</td><td></td></tr>
+                    <tr><td>93939299</td><td>Sarah Mopman</td><td>Waiting for player</td><td></td></tr>
                 </tbody>
             </table>
             </div>
