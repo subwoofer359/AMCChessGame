@@ -100,10 +100,35 @@
         display: none;
     }
 </style>
-
+<script>
+$(document).ready(function(){
+    /**
+    $("#side-menu-form").submit(function(event){
+        console.log(event);
+        
+    });
+*/
+    $(".join-button").click(function(event){
+        var selectedRow=$("tr.selected");
+        if(selectedRow.length === 0 ){
+            event.preventDefault();
+            return;
+        }
+        var parentElements=selectedRow.parents("div.games-table");
+        if(parentElements[0].id === "your-games-table") {
+            $(".join-button").attr("formaction","enterGame");
+        } else if (parentElements[0].id === "other-games-table") {
+            $(".join-button").attr("formaction","joinGame");
+        } else {
+            event.preventDefault();
+        }
+    });
+});    
+</script>
 </head>
 <body>
 <div class="container-fluid full-height">
+    <form id="side-menu-form" method="post">
     <div class="row full-height">
         <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
             <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
@@ -111,12 +136,11 @@
             </a>    
             <div class="side-menu">
             <ul>
+                
                 <li>
-                    <form method="post">
-                        <button formaction="createGame" type="submit">Create Game</button>
-			         </form>
+                    <button formaction="createGame" type="submit">Create Game</button> 
                 </li>
-                <li><a class="description" href="#">Join Game</a></li>
+                <li><button class="join-button" type="submit">Join Game</button></li>
                 <li><a class="description" href="#">Delete Game</a></li>
                 <li><a class="play-game" href="#" >Log out</a></li>
             </ul>
@@ -148,7 +172,7 @@
             </div>
         </div>
         <div class="col-xs-5">
-            <div class="games-table">
+            <div id="other-games-table" class="games-table">
             <table class="table table-bordered table-striped">
                 <thead>
 				<tr>
@@ -171,6 +195,7 @@
             </div>
         </div>
     </div><!-- row#1 -->
+    </form>
 </div> <!-- container -->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
