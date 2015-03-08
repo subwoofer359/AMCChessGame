@@ -20,8 +20,8 @@
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
- <script src="js/sidebar.js"></script>
- <script src="../../js/selectTableRow.js"></script>
+ <script src="${pageContext.request.contextPath}/js/sidebar.js"></script>
+ <script src="${pageContext.request.contextPath}/js/selectTableRow.js"></script>
 <style>
     @import url(../../css/General.css);
     @import url(../../css/selectTableRow.css);
@@ -38,7 +38,6 @@
         margin-top:60px;
         overflow:hidden;
         height:50px;
-        line-height: 50px;
         padding-bottom:60px;
         min-width: 470px;
     }
@@ -48,19 +47,21 @@
         border-style: double;
         border-width: 1px;
         background-color: antiquewhite;
-        padding:16px 30px 12px 15px;
+        padding:14px 30px 10px 15px;
         border-radius: 15px 0px 0px 15px;
         background-color: #2886d5;    
         box-shadow: 5px 5px 8px #000000;
     }
     
     .player-name .name {
+        display: inline-block;
         border-style: double;
         border-left-style: none;
         border-width: 1px;
         padding:12px 30px 12px 15px;
         background-color: #ffffff;
         box-shadow: 5px 5px 8px #000000;
+        min-width: 400px;
     }
     
     .side-menu{
