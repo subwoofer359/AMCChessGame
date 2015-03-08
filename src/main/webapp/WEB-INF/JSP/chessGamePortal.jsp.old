@@ -1,120 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- delete later -->
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-<!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!-- delete later{end} -->
+<%@ include file="/BootStrapHeader.jsp" %>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.3/interact.min.js"></script>
-<script src="../../js/chesspieces.js"></script>
-<script src="../../js/chessboard.js"></script>
-<title>Chess Game</title>
-<style>
-    @import url(../../css/General.css);
-    #header{
-        width:100%;
-        padding-bottom: 70px;
-    }
-    
-    #title{
-        border-style: solid;
-        text-align: center;
-        border-radius: 33px;
-        background-color: #428bca;
-        color: white;
-    }
-    
-    .container{
-        width: 100%;
-    }
-    
-    #playerBlock legend{
-        background-color: #428bca;
-        border-radius: 10px 10px;
-        padding-left: 20px;
-        color: white;
-    }
-    
-    #playerBlock span{
-        padding-left: 20px;
-    }
-    
-    #game-info{
-        height: 52vh;
-    }
-    
-    #game-info>div{
-        height: inherit;
-    }
-    
-    #gameInfoPanel{
-        overflow: auto;
-    }
-    
-    #messages {
-        margin-top: 20px;
-        height: 20vh;
-    }
-    
-    #messages>div{
-        height: inherit;
-    }
-        
-    
-    #chessboard .inner {
-        margin-top: 10%;
-    }
-/** 
-  *   Player's Name boxes 
-  *   Duplicate in ChessAplicationPage.html
-  *   Todo remove
-  */    
-     .player-name {
-        font-family: "Raleway";
-        font-size: 2em;
-        margin-top:60px;
-        margin-bottom: 30px;
-        overflow:hidden;
-        height:50px;
-        line-height: 50px;
-        padding-bottom:60px;
-        min-width: 470px;
-    }
-    
-    .player-name .title {
-        font-family: "Orbitron";
-        border-style: double;
-        border-width: 1px;
-        background-color: antiquewhite;
-        padding:16px 30px 12px 15px;
-        border-radius: 15px 0px 0px 15px;
-        background-color: #2886d5;    
-        box-shadow: 5px 5px 8px #000000;
-    }
-    
-    .player-name .name {
-        border-style: double;
-        border-left-style: none;
-        border-width: 1px;
-        padding:12px 30px 12px 15px;
-        background-color: #ffffff;
-        box-shadow: 5px 5px 8px #000000;
-    }
-    
-</style>
 <script>
+
 $(document).ready(function(){
-var sourceId="";
-var destId="";
-var startOfMove=true;
-interact('.draggable')
-  .draggable({
+    
+    
+   
+	var socket=new WebSocket("ws://192.168.1.6:8080/AMCChessGame/app/chessgame/chessgame");
+	var stompClient=Stomp.over(socket);
+	var subid='234';
+	stompClient.connect({},
+	        function(frame){
+	    	stompClient.subscribe("/user/queue/updates",
+	    	        function(message){
+	    	    			$('#gameInfoPanel').text(message)},
+	    	    			{id:subid}
+	    	);
+	    	
+	    	stompClient.subscribe("/topic/updates",
+    	        function(message){
+    	    			$('#gameInfoPanel').text(message)},
+    	    			{id:subid}
+    		); 	
+	        
+            $("#commandCommit").click(function(){
+                var move=$("#commandController").val();
+                console.log("MOVE:"+move);
+                stompClient.send("/app/move/${GAME_UUID}",{priority: 9},move);
+                $("#commandController").val("");
+            });
+	    	
+        
+    var sourceId="";
+    var destId="";
+    var startOfMove=true;
+     
+    /**
+      * validate move is a valid move before submission
+      *To be implemented
+      */
+    function validMove(move){
+        var regex=/\w\d\-\w\d/;
+        return regex.test(move);
+    }
+    
+    interact('.draggable').draggable({
     // enable inertial throwing
     inertia: true,
     // keep the element within the area of it's parent
@@ -145,7 +81,6 @@ interact('.draggable')
     // call this function on every dragend event
   });
 
-
 interact('.dropzone').dropzone({
     accept: '.chesspiece',
     overlap: 0.1,
@@ -163,18 +98,26 @@ interact('.dropzone').dropzone({
 
   },
   ondragleave: function (event) {
+      console.log("Entered ondragleave");
     // remove the drop feedback style
     event.target.classList.remove('drop-target');
     event.relatedTarget.classList.remove('can-drop');
     if(startOfMove){
-	console.log("Source:"+event.target.id);
-	startOfMove=false;
+        sourceId=event.target.id;
+	   console.log("Source:"+sourceId);
+	   startOfMove=false;
     }
   },
   ondrop: function (event) {
 	destId=event.target.id;
 	console.log("destination:"+destId);
 	startOfMove=true;
+    var move=sourceId+"-"+destId;
+    console.log("MOVE:"+move);
+      if(validMove(move)){
+        stompClient.send("/app/move/${GAME_UUID}",{priority: 9},move);
+        $('#chessboard').css("pointer-events","none");
+      }
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
@@ -182,57 +125,80 @@ interact('.dropzone').dropzone({
     event.target.classList.remove('drop-target');
   }
 });
-    
-    
-	var socket=new WebSocket("ws://192.168.1.6:8080/AMCChessGame/app/chessgame/chessgame");
-	var stompClient=Stomp.over(socket);
-	var subid='234';
-	stompClient.connect({},
-	        function(frame){
-	    	stompClient.subscribe("/user/queue/updates",
-	    	        function(message){
-	    	    			$('#gameInfoPanel').text(message)},
-	    	    			{id:subid}
-	    	);
 	    	
-	    	stompClient.subscribe("/topic/updates",
-    	        function(message){
-    	    			$('#gameInfoPanel').text(message)},
-    	    			{id:subid}
-    		); 	
-	        
-            $("#commandCommit").click(function(){
-                var move=$("#commandController").val();
-                console.log("MOVE:"+move);
-                stompClient.send("/app/move/${GAME_UUID}",{priority: 9},move);
-                $("#commandController").val("");
-            });
-	    	
-	});	    	
+	});
 });
 </script>
+<title>Chess Game</title>
+<style>
+#header{
+    width:100%;
+    padding-bottom: 70px;
+}
+#title{
+    border-style: solid;
+    text-align: center;
+    border-radius: 33px;
+    background-color: #428bca;
+    color: white;
+}
+.container{
+    width: 100%;
+}
+#playerBlock legend{
+    background-color: #428bca;
+    border-radius: 10px 10px;
+    padding-left: 20px;
+    color: white;
+}
+#playerBlock span{
+   padding-left: 20px;
+}
+    
+#gameInfo{
+    height: 62vh;
+}
+    
+#gameInfo>div{
+    height: inherit;
+}
+#gameInfoPanel{
+    overflow: auto;
+}
+#chessboard img{
+    display:block;
+    margin: auto;
+}
+
+textarea{
+    width: 100%;
+}
+</style>
 </head>
 <body>
-    <div class="container-fluid full-height">
-    <div class="row full-height">
-        <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
-            <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
-                <img alt="Queen" src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
-            </a>    
-            <div class="side-menu">
-            <ul>
-                <li><a href="http://adrianmclaughlin.ie">Message</a></li>
-                <li><a class="description" href="#">Save</a></li>
-                <li><a class="description" href="#">Quit</a></li>
-            </ul>
+<div id="header" class="container">
+ <div class="row">
+  <div id="title" class="col-xs-4">
+    <h1>Chess Game</h1>
+  </div>
+  <div id="playerBlock" class="col-xs-8">
+      <fieldset id="player" class="col-xs-6"><legend>Player</legend><span>Adrian McLaughlin</span></fieldset>
+      <fieldset id="opponent" class="col-xs-6"><legend>Opponent</legend><span>Chris Dalton</span></fieldset>
+  </div>
+ </div>
+</div>
+    
+<div class="container">
+    <div class="row">
+        <div id="gameInfo" class="col-xs-3">
+        <div  class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">Game information</h1>
             </div>
-        </div><!-- sidebar-left -->
-        <div class="player-name col-sm-10 col-xs-12">
-            <div class="col-sm-5"><span class="title">Player:</span><span class="name">Adrian McLaughlin</span></div>
-            <div class="col-sm-5"><span class="title">Opponent:</span><span class="name">Adrian McLaughlin</span></div>
+            <div id="gameInfoPanel" class="panel-body"></div>
         </div>
-        <div id="chessboard" class="col-sm-6 col-xs-8">
-            <div class="inner col-xs-offset-1 col-xs-11">
+        </div>
+        <div id="chessboard" class="col-xs-7">
         <svg
  xmlns:dc="http://purl.org/dc/elements/1.1/"
  xmlns:cc="http://creativecommons.org/ns#"
@@ -1156,28 +1122,26 @@ interact('.dropzone').dropzone({
 </g>
 </g>
 </svg>
-        </div><!-- col-xs-11 -->
-    </div>
-        <div class="side-panel-right col-sm-4 col-xs-4">
-            <div id="game-info" class="col-xs-12">
-                <div  class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Game information</h1>
-                    </div>
-                    <div id="gameInfoPanel" class="panel-body"></div>
-                </div>
-            </div>
-            <div id="messages" class="col-xs-12">
-                <div  class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Messages</h1>
-                    </div>
-                <div id="messagePanel" class="panel-body"></div>
-            </div>
+
+        </div>
+        <div id="buttonsPanel" class="col-xs-2">
+            <div class="btn-group-vertical">
+             <button id="messageBtn" class="btn btn-primary btn-lg btn-block">Message</button>
+             <button id="saveBtn" class="btn btn-primary btn-lg btn-block">Save</button>
+             <button id="quitBtn" class="btn btn-primary btn-lg btn-block">Quit</button>
             </div>
         </div>
-        
     </div>
-  </div>
+     <div class="row">
+        <div class="col-xs-offset-3 col-xs-7">
+            <textarea id="commandController"></textarea>
+        </div>
+        <div class="col-xs-2">
+            <button id="commandCommit" class="btn btn-primary btn-lg btn-block">Send</button>
+        </div>
+    </div>
+</div>
+    
 </body>
+<%@ include file="/BootStrapFooter.jsp" %>
 </html>
