@@ -70,7 +70,7 @@ public class ServerJoinChessGameController {
     }
 
     private void addView(ServerChessGame chessGame) {
-        WebTextChessView view = new WebTextChessView(
+        new JsonChessBoardView(
                         (ObservableChessGame) chessGame.getChessGame(), template);
     }
 
