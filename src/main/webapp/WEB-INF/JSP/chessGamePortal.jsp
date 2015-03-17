@@ -163,13 +163,13 @@ interact('.dropzone').dropzone({
 
   },
   ondragleave: function (event) {
-    // remove the drop feedback style
+    console.log("ondragleave event fired");
     event.target.classList.remove('drop-target');
     event.relatedTarget.classList.remove('can-drop');
     if(startOfMove){
-	console.log("Source:"+event.target.id);
-    sourceId=event.target.id;
-	startOfMove=false;
+	   console.log("Source:"+event.target.id);
+       sourceId=event.target.id;
+	   startOfMove=false;
     }
   },
   ondrop: function (event) {
@@ -202,8 +202,7 @@ interact('.dropzone').dropzone({
     	        function(message){
     	    			$('#gameInfoPanel').text(message);
                         createChessBoard(message.body);
-                },
-    	    			{id:subid}
+                },{id:subid}
     		); 		    	
 	});	    	
 });
