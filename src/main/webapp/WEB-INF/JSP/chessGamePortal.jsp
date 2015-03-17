@@ -200,17 +200,11 @@ interact('.dropzone').dropzone({
 	    	
 	    	stompClient.subscribe("/topic/updates",
     	        function(message){
-    	    			$('#gameInfoPanel').text(message)},
+    	    			$('#gameInfoPanel').text(message);
+                        createChessBoard(message.body);
+                },
     	    			{id:subid}
-    		); 	
-	        
-            $("#commandCommit").click(function(){
-                var move=$("#commandController").val();
-                console.log("MOVE:"+move);
-                stompClient.send("/app/move/${GAME_UUID}",{priority: 9},move);
-                $("#commandController").val("");
-            });
-	    	
+    		); 		    	
 	});	    	
 });
 </script>
@@ -234,7 +228,7 @@ interact('.dropzone').dropzone({
             <div class="col-sm-5"><span class="title">Player:</span><span class="name">Adrian McLaughlin</span></div>
             <div class="col-sm-5"><span class="title">Opponent:</span><span class="name">Adrian McLaughlin</span></div>
         </div>
-        <div id="chessboard" class="col-sm-6 col-xs-8">
+        <div id="chessboard-surround" class="col-sm-6 col-xs-8">
             <div class="inner col-xs-offset-1 col-xs-11">
         <svg
  xmlns:dc="http://purl.org/dc/elements/1.1/"
