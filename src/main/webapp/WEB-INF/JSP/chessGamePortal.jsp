@@ -168,6 +168,7 @@ interact('.dropzone').dropzone({
     event.relatedTarget.classList.remove('can-drop');
     if(startOfMove){
 	console.log("Source:"+event.target.id);
+    sourceId=event.target.id;
 	startOfMove=false;
     }
   },
@@ -175,6 +176,8 @@ interact('.dropzone').dropzone({
 	destId=event.target.id;
 	console.log("destination:"+destId);
 	startOfMove=true;
+    var move=sourceId+"-"+destId;
+    stompClient.send("/app/move/${GAME_UUID}",{priority: 9},move);
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
