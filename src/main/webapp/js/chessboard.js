@@ -103,10 +103,16 @@ function createChessBoard(chessboardJSON) {
                 board.append(chesspieces.bishop("test-" + location, location, chesspieces.colour.white));
                 break;
 
+            case 'N':
+                board.append(chesspieces.knight("knight-" + location, location, chesspieces.colour.black));
+                break;
+                
+            case 'n':
+                board.append(chesspieces.knight("knight-" + location, location, chesspieces.colour.white));
+                break;
             }
         }
     }
-    console.log(chessBoardSVG.html());
     chessBoardSVG.html(chessBoardSVG.html());
 
 }
