@@ -57,6 +57,7 @@ public class ServerJoinChessGameController {
 
     private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
         mav.getModel().put("GAME_UUID", gameUUID);
+        mav.getModel().put("GAME",gameMap.get(gameUUID));
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
         mav.setViewName("chessGamePortal");
     }

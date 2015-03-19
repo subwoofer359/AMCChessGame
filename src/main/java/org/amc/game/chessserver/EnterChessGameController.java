@@ -52,6 +52,7 @@ public class EnterChessGameController {
 
     private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
         mav.getModel().put("GAME_UUID", gameUUID);
+        mav.getModel().put("GAME",gameMap.get(gameUUID));
         logger.info(String.format("Chess Game(%d): has been Entered", gameUUID));
         mav.setViewName("chessGamePortal");
     }
