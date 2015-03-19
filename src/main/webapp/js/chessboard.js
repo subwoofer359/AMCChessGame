@@ -118,6 +118,14 @@ function createChessBoard(chessboardJSON) {
             case 'q':
                 board.append(chesspieces.queen("queen-" + location, location, chesspieces.colour.white));
                 break;
+
+            case 'K':
+                board.append(chesspieces.king("king-" + location, location, chesspieces.colour.black));
+                break;
+
+            case 'k':
+                board.append(chesspieces.king("king-" + location, location, chesspieces.colour.white));
+                break;
             }
         }
     }
