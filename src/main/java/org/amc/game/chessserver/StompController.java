@@ -1,8 +1,11 @@
 package org.amc.game.chessserver;
 
+import com.google.gson.Gson;
+
 import org.amc.game.chess.InvalidMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.JsonChessBoardView.JsonChessBoard;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -15,6 +18,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
 /**
@@ -64,6 +68,19 @@ public class StompController {
         return message;
     }
 
+
+    @MessageMapping("/get/{gameUUID}")
+    @SendToUser(value = "/queue/updates", broadcast = false)
+    public String getChessBoard(Principal user,
+                    @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
+                    @DestinationVariable long gameUUID, @Payload String message) {
+        ServerChessGame serverGame = gameMap.get(gameUUID);
+        Gson gson = new Gson();
+        JsonChessBoard jcb=new JsonChessBoard(serverGame.getChessGame());
+        logger.debug(wsSession.get("PLAYER")+" requested update for game:"+gameUUID);
+        return gson.toJson(jcb);
+    }
+    
     @Resource(name = "gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap) {
         this.gameMap = gameMap;

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.ObservableChessGame;
@@ -71,12 +72,17 @@ public class JsonChessBoardView implements Observer {
 
         private Map<String, String> squares;
 
+        
+        public JsonChessBoard(){
+            squares = new HashMap<>();
+        }
+        
         /**
          * Stores the coordinates of squares containing chesspieces in the Map squares 
          * @param board
          */
         public JsonChessBoard(ChessBoard board) {
-            squares = new HashMap<>();
+            this();
             for (int rank = 1; rank <= ChessBoard.BOARD_WIDTH; rank++) {
                 for (Coordinate file : Coordinate.values()) {
                     ChessPiece piece = board.getPieceFromBoardAt(new Location(file, rank));
@@ -87,6 +93,11 @@ public class JsonChessBoardView implements Observer {
                 }
             }
         }
+        
+        public JsonChessBoard(ChessGame chessGame){
+            this(chessGame.getChessBoard());
+        }
+       
 
         Map<String, String> getSquares() {
             return squares;
