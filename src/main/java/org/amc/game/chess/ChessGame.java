@@ -229,10 +229,10 @@ public class ChessGame{
     }
     
     /**
-     * To be used by sub classes only
+     * Returns the ChessBoard
      * @return ChessBoard
      */
-    ChessBoard getChessBoard(){
+    public ChessBoard getChessBoard(){
         return this.board;
     }
     
