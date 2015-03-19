@@ -106,9 +106,17 @@ function createChessBoard(chessboardJSON) {
             case 'N':
                 board.append(chesspieces.knight("knight-" + location, location, chesspieces.colour.black));
                 break;
-                
+
             case 'n':
                 board.append(chesspieces.knight("knight-" + location, location, chesspieces.colour.white));
+                break;
+
+            case 'Q':
+                board.append(chesspieces.queen("queen-" + location, location, chesspieces.colour.black));
+                break;
+
+            case 'q':
+                board.append(chesspieces.queen("queen-" + location, location, chesspieces.colour.white));
                 break;
             }
         }
