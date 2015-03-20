@@ -128,8 +128,32 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+<form id="side-menu-form" method="post">
+<nav role="navigation" class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm">
+ <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand"></a>
+        </div>
+        <!-- Collection of nav links and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><button formaction="createGame" type="submit" class="btn btn-default btn-block btn-lg">Create Game</button></li>
+                <li><button type="submit" class="join-button btn btn-default btn-block btn-lg ">Join Game</button></li>
+                <li><button type="submit" class="btn btn-default btn-block btn-lg">Delete Game</button></li>
+                <li><button type="submit" class="btn btn-default btn-block btn-lg">Log out</button></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container-fluid full-height">
-    <form id="side-menu-form" method="post">
+   
     <div class="row full-height">
         <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
             <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
@@ -137,10 +161,7 @@ $(document).ready(function(){
             </a>    
             <div class="side-menu">
             <ul>
-                
-                <li>
-                    <button formaction="createGame" type="submit">Create Game</button> 
-                </li>
+                <li><button formaction="createGame" type="submit">Create Game</button></li>
                 <li><button class="join-button" type="submit">Join Game</button></li>
                 <li><a class="description" href="#">Delete Game</a></li>
                 <li><a class="play-game" href="#" >Log out</a></li>
@@ -196,8 +217,9 @@ $(document).ready(function(){
             </div>
         </div>
     </div><!-- row#1 -->
-    </form>
-</div> <!-- container -->
+    
+        </div> <!-- container -->
+</form>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>
