@@ -121,16 +121,17 @@ public class ServerChessGame extends DefaultSubject {
         case STALEMATE:
             logger.info("Game has ended in a stalemate");
             break;
-
-        case BLACK_CHECKMATE:
+            
+        case WHITE_CHECKMATE:
             logger.info(opponent.getName() + " has won!");
             setCurrentStatus(status.FINISHED);
             break;
-
-        case WHITE_CHECKMATE:
+            
+        case BLACK_CHECKMATE:
             logger.info(player.getName() + " has won!");
             setCurrentStatus(status.FINISHED);
             break;
+            
         default:
         }
     }
