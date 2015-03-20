@@ -46,9 +46,9 @@ public class ChessGame{
     }
 
     /**
-     * Returns the Player who is waiting for their tuen
+     * Returns the Player who is waiting for their turn
      * 
-     * @return
+     * @return Player
      */
     Player getOpposingPlayer(Player player) {
         return player == playerOne ? playerTwo : playerOne;
