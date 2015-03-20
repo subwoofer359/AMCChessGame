@@ -14,6 +14,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.3/interact.min.js"></script>
 <script src="../../js/chesspieces.js"></script>
 <script src="../../js/chessboard.js"></script>
+<script src="../../js/player.js"></script>
 <title>Chess Game</title>
 <style>
     @import url(../../css/General.css);
@@ -82,30 +83,46 @@
         margin-bottom: 30px;
         overflow:hidden;
         height:50px;
-        line-height: 50px;
         padding-bottom:60px;
         min-width: 470px;
     }
     
     .player-name .title {
+        display: inline-block;
         font-family: "Orbitron";
         border-style: double;
         border-width: 1px;
         background-color: antiquewhite;
-        padding:16px 30px 12px 15px;
+        padding:10px 30px 12px 15px;
         border-radius: 15px 0px 0px 15px;
         background-color: #2886d5;    
         box-shadow: 5px 5px 8px #000000;
     }
     
     .player-name .name {
+        display: inline-block;
         border-style: double;
         border-left-style: none;
         border-width: 1px;
-        padding:12px 30px 12px 15px;
+        padding:8px 30px 14px 15px;
         background-color: #ffffff;
         box-shadow: 5px 5px 8px #000000;
+        min-width: 298px;
     }
+    
+    .player-name-holder {
+        min-width: 488px;
+    }
+    
+    .player-name-highlight{
+        background-color: green!important;
+    }
+    
+    .drop-target{
+        fill:red!important;
+    }
+    
+    
     
 </style>
 <script>
@@ -163,7 +180,6 @@ interact('.dropzone').dropzone({
 
   },
   ondragleave: function (event) {
-    console.log("ondragleave event fired");
     event.target.classList.remove('drop-target');
     event.relatedTarget.classList.remove('can-drop');
     if(startOfMove){
@@ -201,6 +217,7 @@ interact('.dropzone').dropzone({
     	        function(message){
     	    			$('#gameInfoPanel').text(message);
                         createChessBoard(message.body);
+                        updatePlayer(message.body);
                 },{id:subid});
         
             stompClient.send("/app/get/${GAME_UUID}", {priority: 9},"Get ChessBoard");
@@ -224,8 +241,8 @@ interact('.dropzone').dropzone({
             </div>
         </div><!-- sidebar-left -->
         <div class="player-name col-sm-10 col-xs-12">
-            <div class="col-sm-5"><span class="title">Player:</span><span class="name">Adrian McLaughlin</span></div>
-            <div class="col-sm-5"><span class="title">Opponent:</span><span class="name">Adrian McLaughlin</span></div>
+            <div id="white-player" class="player-name-holder col-sm-5"><span class="title">Player:</span><span class="name">${GAME.player}</span></div>
+            <div id="black-player" class="player-name-holder col-sm-5"><span class="title">Opponent:</span><span class="name">${GAME.opponent}</span></div>
         </div>
         <div id="chessboard-surround" class="col-sm-6 col-xs-8">
             <div class="inner col-xs-offset-1 col-xs-11">
