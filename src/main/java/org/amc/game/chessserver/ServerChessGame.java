@@ -124,6 +124,7 @@ public class ServerChessGame extends DefaultSubject {
 
         case BLACK_CHECKMATE:
             logger.info(opponent.getName() + " has won!");
+            setCurrentStatus(status.FINISHED);
             break;
 
         case WHITE_CHECKMATE:
