@@ -1,8 +1,6 @@
 package org.amc.game.chessserver;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -17,16 +15,17 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
+import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.InvalidMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.ObservableChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -44,7 +43,8 @@ import java.lang.reflect.Type;
  */
 public class JsonChessBoardViewTest {
 
-    private ObservableChessGame chessGame;
+    private ServerChessGame serverGame;
+    private ChessGame chessGame;
     private ChessBoard board;
     private static ChessBoardFactory chBoardFactory;
     private Player whitePlayer;
@@ -62,11 +62,18 @@ public class JsonChessBoardViewTest {
         whitePlayer = new HumanPlayer("White Player", Colour.WHITE);
         blackPlayer = new HumanPlayer("Black Player", Colour.BLACK);
         board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
-        chessGame = new ObservableChessGame(board, whitePlayer, blackPlayer);
+        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         template = mock(SimpMessagingTemplate.class);
+        
+        serverGame = new ServerChessGame(whitePlayer);
+        serverGame.addOpponent(blackPlayer);
+        serverGame.chessGame=chessGame;
+        
         gson = new GsonBuilder();
         gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
-        new JsonChessGameView(chessGame, template);
+        
+        new JsonChessGameView(serverGame, template);
+        
     }
 
     @After
@@ -82,7 +89,7 @@ public class JsonChessBoardViewTest {
      */
     @Test
     public void test() throws InvalidMoveException {
-        chessGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
+        serverGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
         verify(template).convertAndSend(anyString(), argument.capture());
 

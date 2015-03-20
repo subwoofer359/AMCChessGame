@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.ObservableChessGame;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +70,7 @@ public class ServerJoinChessGameController {
     }
 
     private void addView(ServerChessGame chessGame) {
-        new JsonChessGameView(
-                        (ObservableChessGame) chessGame.getChessGame(), template);
+        new JsonChessGameView(chessGame, template);
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {

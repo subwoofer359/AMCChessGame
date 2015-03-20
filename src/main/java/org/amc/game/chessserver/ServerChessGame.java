@@ -5,9 +5,9 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.InvalidMoveException;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.ObservableChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
+import org.amc.util.DefaultSubject;
 import org.apache.log4j.Logger;
 
 /**
@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * @author Adrian Mclaughlin
  * @version 1.0
  */
-public class ServerChessGame {
+public class ServerChessGame extends DefaultSubject {
     public enum status{
         IN_PROGRESS,
         AWAITING_PLAYER,
@@ -25,7 +25,7 @@ public class ServerChessGame {
 
     private static final Logger logger = Logger.getLogger(ServerChessGame.class);
     
-    private ChessGame chessGame=null;
+    ChessGame chessGame=null;
     private status currentStatus;
     private Player player;
     private Player opponent;
@@ -47,7 +47,7 @@ public class ServerChessGame {
             this.opponent=player;
             ChessBoard board=new ChessBoard();
             SetupChessBoard.setUpChessBoardToDefault(board);
-            chessGame=new ObservableChessGame(board,this.player,player);
+            chessGame=new ChessGame(board,this.player,player);
             this.currentStatus=status.IN_PROGRESS;
         }
     }
@@ -107,6 +107,7 @@ public class ServerChessGame {
                 chessGame.move(player, move);
                 chessGame.changePlayer();
             }
+            notifyObservers(this.chessGame);
             checkGameStatus();
         }
     }

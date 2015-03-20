@@ -1,7 +1,6 @@
 package org.amc.game.chessserver;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.ObservableChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.view.ChessGameTextView;
 import org.junit.Before;
@@ -75,7 +74,7 @@ public class StompControllerIntegrationTest {
         Map<Long, ServerChessGame> gameMap=(Map<Long, ServerChessGame>)wac.getBean("gameMap");
         scg=new ServerChessGame(whitePlayer);
         scg.addOpponent(blackPlayer);
-        ChessGameTextView view =new ChessGameTextView((ObservableChessGame)scg.getChessGame());
+        ChessGameTextView view =new ChessGameTextView(scg);
         gameMap.put(gameUUID, scg);
     }
     

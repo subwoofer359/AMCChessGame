@@ -7,7 +7,6 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
-import org.amc.game.chess.ObservableChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.util.Observer;
@@ -42,7 +41,7 @@ public class JsonChessGameView implements Observer {
      * @param chessGame to Observe
      * @param template Stomp message template
      */
-    public JsonChessGameView(ObservableChessGame chessGame, SimpMessagingTemplate template) {
+    public JsonChessGameView(ServerChessGame chessGame, SimpMessagingTemplate template) {
         this.template = template;
         chessGame.attachObserver(this);
     }
