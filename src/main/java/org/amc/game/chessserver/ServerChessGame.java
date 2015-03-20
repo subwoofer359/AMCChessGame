@@ -115,17 +115,21 @@ public class ServerChessGame {
      * Checks to see if the game is finished and sets it's status accordingly
      * No check for chessGame being null
      */
-    private void checkGameStatus(){
+    private void checkGameStatus() {
         switch (chessGame.getGameState()) {
         case STALEMATE:
             logger.info("Game has ended in a stalemate");
+            break;
+
         case BLACK_CHECKMATE:
             logger.info(opponent.getName() + " has won!");
+            break;
+
         case WHITE_CHECKMATE:
             logger.info(player.getName() + " has won!");
             setCurrentStatus(status.FINISHED);
             break;
         default:
-    }
+        }
     }
 }

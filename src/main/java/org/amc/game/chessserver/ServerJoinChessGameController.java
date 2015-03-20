@@ -71,7 +71,7 @@ public class ServerJoinChessGameController {
     }
 
     private void addView(ServerChessGame chessGame) {
-        new JsonChessBoardView(
+        new JsonChessGameView(
                         (ObservableChessGame) chessGame.getChessGame(), template);
     }
 

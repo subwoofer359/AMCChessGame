@@ -1,6 +1,13 @@
 package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -19,13 +26,15 @@ import org.amc.game.chess.ObservableChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
-import org.amc.game.chessserver.JsonChessBoardView.JsonChessBoard;
+import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+import java.lang.reflect.Type;
 
 /**
  * Test Case for JsonChessBoardView
@@ -41,7 +50,7 @@ public class JsonChessBoardViewTest {
     private Player whitePlayer;
     private Player blackPlayer;
     private SimpMessagingTemplate template;
-    private Gson gson;
+    private GsonBuilder gson;
 
     @BeforeClass
     public static void setupFactory() {
@@ -55,8 +64,9 @@ public class JsonChessBoardViewTest {
         board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
         chessGame = new ObservableChessGame(board, whitePlayer, blackPlayer);
         template = mock(SimpMessagingTemplate.class);
-        gson = new Gson();
-        new JsonChessBoardView(chessGame, template);
+        gson = new GsonBuilder();
+        gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
+        new JsonChessGameView(chessGame, template);
     }
 
     @After
@@ -65,8 +75,8 @@ public class JsonChessBoardViewTest {
 
     /**
      * Moves piece on chessboard to trigger an update to JsonChessBoardView
-     * Compares both the ChessBoard configuration to the JSON representation
-     * for correctness.
+     * Compares both the ChessBoard configuration to the JSON representation for
+     * correctness.
      * 
      * @throws InvalidMoveException
      */
@@ -76,12 +86,14 @@ public class JsonChessBoardViewTest {
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
         verify(template).convertAndSend(anyString(), argument.capture());
 
-        JsonChessBoard jBoard = gson.fromJson(argument.getValue(), JsonChessBoard.class);
+        JsonChessGame jBoard = gson.create().fromJson(argument.getValue(), JsonChessGame.class);
 
         compareChessBoardAndJsonBoard(jBoard);
+
+        compareChessGamePlayerAndJsonPlayer(jBoard);
     }
 
-    private void compareChessBoardAndJsonBoard(JsonChessBoard jBoard) {
+    private void compareChessBoardAndJsonBoard(JsonChessGame jBoard) {
         for (String squareName : jBoard.getSquares().keySet()) {
             String file = squareName.substring(0, 1);
             String rank = squareName.substring(1, 2);
@@ -90,6 +102,12 @@ public class JsonChessBoardViewTest {
 
             assertEquals(expectedChessSymbol, actualChessSymbol);
         }
+    }
+
+    private void compareChessGamePlayerAndJsonPlayer(JsonChessGame game) {
+        assertEquals(this.chessGame.getCurrentPlayer().getName(), game.getCurrentPlayer().getName());
+        assertEquals(this.chessGame.getCurrentPlayer().getColour(), game.getCurrentPlayer()
+                        .getColour());
     }
 
     private String getChessPieceSymbol(String file, String rank) {
@@ -101,4 +119,21 @@ public class JsonChessBoardViewTest {
         return new Location(Coordinate.valueOf(file), Integer.parseInt(rank));
     }
 
+    /**
+     * GSON Deserialiser required to deserialise Player objects
+     * 
+     * @author Adrian Mclaughlin
+     *
+     */
+    private class PlayerDeserializer implements JsonDeserializer<Player> {
+
+        @Override
+        public Player deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
+                        throws JsonParseException {
+            JsonObject object = arg0.getAsJsonObject();
+            return new HumanPlayer(object.get("name").getAsString(), Colour.valueOf(object.get(
+                            "colour").getAsString()));
+        }
+
+    }
 }

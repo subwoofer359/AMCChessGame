@@ -8,6 +8,7 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.ObservableChessGame;
+import org.amc.game.chess.Player;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
@@ -17,9 +18,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonChessBoardView implements Observer {
+public class JsonChessGameView implements Observer {
 
-    private static final Logger logger = Logger.getLogger(JsonChessBoardView.class);
+    private static final Logger logger = Logger.getLogger(JsonChessGameView.class);
 
     /** 
      * Google gson object to convert to JSON 
@@ -41,7 +42,7 @@ public class JsonChessBoardView implements Observer {
      * @param chessGame to Observe
      * @param template Stomp message template
      */
-    public JsonChessBoardView(ObservableChessGame chessGame, SimpMessagingTemplate template) {
+    public JsonChessGameView(ObservableChessGame chessGame, SimpMessagingTemplate template) {
         this.template = template;
         chessGame.attachObserver(this);
     }
@@ -54,26 +55,26 @@ public class JsonChessBoardView implements Observer {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessBoard) {
-            String jsonBoard = gson.toJson(new JsonChessBoard((ChessBoard) message));
+        if (message instanceof ChessGame) {
+            String jsonBoard = gson.toJson(new JsonChessGame((ChessGame) message));
             this.template.convertAndSend(MESSAGE_DESTINATION, jsonBoard);
             logger.debug("Message sent to" + MESSAGE_DESTINATION);
         } else {
             // Ignore update notification
         }
     }
-
+    
     /**
      * Helper class for creating JSON representation of a ChessBoard
      * @author Adrian Mclaughlin
      *
      */
-    static class JsonChessBoard {
+    static class JsonChessGame {
 
         private Map<String, String> squares;
-
-        
-        public JsonChessBoard(){
+        private Player currentPlayer;
+       
+        private JsonChessGame(){
             squares = new HashMap<>();
         }
         
@@ -81,8 +82,8 @@ public class JsonChessBoardView implements Observer {
          * Stores the coordinates of squares containing chesspieces in the Map squares 
          * @param board
          */
-        public JsonChessBoard(ChessBoard board) {
-            this();
+        private void convertChessBoard(ChessBoard board) {
+            
             for (int rank = 1; rank <= ChessBoard.BOARD_WIDTH; rank++) {
                 for (Coordinate file : Coordinate.values()) {
                     ChessPiece piece = board.getPieceFromBoardAt(new Location(file, rank));
@@ -94,13 +95,19 @@ public class JsonChessBoardView implements Observer {
             }
         }
         
-        public JsonChessBoard(ChessGame chessGame){
-            this(chessGame.getChessBoard());
+        public JsonChessGame(ChessGame chessGame){
+            this();
+            convertChessBoard(chessGame.getChessBoard());
+            currentPlayer=chessGame.getCurrentPlayer();
         }
        
 
         Map<String, String> getSquares() {
             return squares;
+        }
+        
+        Player getCurrentPlayer(){
+            return this.currentPlayer;
         }
     }
 }

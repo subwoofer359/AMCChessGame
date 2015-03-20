@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import org.amc.game.chess.InvalidMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.JsonChessBoardView.JsonChessBoard;
+import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -76,7 +76,7 @@ public class StompController {
                     @DestinationVariable long gameUUID, @Payload String message) {
         ServerChessGame serverGame = gameMap.get(gameUUID);
         Gson gson = new Gson();
-        JsonChessBoard jcb=new JsonChessBoard(serverGame.getChessGame());
+        JsonChessGame jcb=new JsonChessGame(serverGame.getChessGame());
         logger.debug(wsSession.get("PLAYER")+" requested update for game:"+gameUUID);
         return gson.toJson(jcb);
     }
