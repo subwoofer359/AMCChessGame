@@ -98,6 +98,7 @@ public class Move {
      * @return boolean
      */
     public static boolean isDiagonalMove(Move move) {
-        return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY());
+        return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY())
+                        && move.getAbsoluteDistanceX() > 0;
     }
 }

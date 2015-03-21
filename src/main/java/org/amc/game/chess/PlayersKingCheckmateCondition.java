@@ -36,6 +36,11 @@ public class PlayersKingCheckmateCondition {
         this.playersPieces = board.getListOfPlayersPiecesOnTheBoard(player);
     }
 
+    private ChessPieceLocation findThePlayersKing() {
+        Location kingLocation = board.getPlayersKingLocation(player);
+        return new ChessPieceLocation(board.getPieceFromBoardAt(kingLocation), kingLocation);
+    }
+    
     /**
      * Checks to see if the player's king is checkmated.
      * 
@@ -48,7 +53,10 @@ public class PlayersKingCheckmateCondition {
     boolean isCheckMate() {
         return isPlayersKingInCheck() && isKingNotAbleToMoveOutOfCheck()
                         && canAttackingPieceNotBeCaptured() && canAttackingPieceNotBeBlocked();
-
+    }
+    
+    boolean isPlayersKingInCheck() {
+        return this.kingIsChecked.isPlayersKingInCheck(player, opponent, board);
     }
 
     /**
@@ -61,29 +69,15 @@ public class PlayersKingCheckmateCondition {
         return possibleSafeMoveLocations.isEmpty();
     }
 
-    private ChessPieceLocation findThePlayersKing() {
-        Location kingLocation = board.getPlayersKingLocation(player);
-        return new ChessPieceLocation(board.getPieceFromBoardAt(kingLocation), kingLocation);
-    }
+    
 
     private Set<Location> findAllSafeMoveLocations(ChessPieceLocation kingsLocation) {
         Set<Location> possibleMoveLocations = getAllTheKingsPossibleMoveLocations(kingsLocation);
-        board.removePieceOnBoardAt(kingsLocation.getLocation());
-        Set<Location> squaresUnderAttack = new HashSet<>();
-
-        for (Location location : possibleMoveLocations) {
-            for (ChessPieceLocation enemyPiece : enemyLocations) {
-                Move move = new Move(enemyPiece.getLocation(), location);
-                ChessPiece piece = enemyPiece.getPiece();
-                if (piece.isValidMove(board, move)) {
-                    squaresUnderAttack.add(location);
-                    break;
-                }
-            }
-        }
+        removeKingFromTheBoard(kingsLocation);
+        Set<Location> squaresUnderAttack = getSquaresUnderAttack(possibleMoveLocations);
 
         possibleMoveLocations.removeAll(squaresUnderAttack);
-        board.putPieceOnBoardAt(kingsLocation.getPiece(), kingsLocation.getLocation());
+        replaceKingOnTheBoard(kingsLocation);
         return possibleMoveLocations;
     }
 
@@ -91,7 +85,36 @@ public class PlayersKingCheckmateCondition {
         return ((KingPiece) kingsLocation.getPiece()).getPossibleMoveLocations(board,
                         kingsLocation.getLocation());
     }
-
+    
+    private void removeKingFromTheBoard(ChessPieceLocation kingsLocation){
+        board.removePieceOnBoardAt(kingsLocation.getLocation());
+    }
+    
+    private Set<Location> getSquaresUnderAttack(Set<Location> possibleMoveLocations) {
+        Set<Location> squaresUnderAttack = new HashSet<>();
+        for (Location location : possibleMoveLocations) {
+            for (ChessPieceLocation enemyPiece : enemyLocations) {
+                Move move = new Move(enemyPiece.getLocation(), location);
+                ChessPiece piece = enemyPiece.getPiece();
+                
+                ChessPiece occupyPiece = board.getPieceFromBoardAt(location);
+                board.removePieceOnBoardAt(location);
+                
+                if (piece.isValidMove(board, move)) {
+                    squaresUnderAttack.add(location);
+                    board.putPieceOnBoardAt(occupyPiece, location);
+                    break;
+                }
+                board.putPieceOnBoardAt(occupyPiece, location);
+            }
+        }
+        return squaresUnderAttack;
+    }
+    
+    private void replaceKingOnTheBoard(ChessPieceLocation kingsLocation){
+        board.putPieceOnBoardAt(kingsLocation.getPiece(), kingsLocation.getLocation());
+    }
+    
     /**
      * Checks to see if the Player can capture the attacking ChessPiece Only if
      * the capture doesn't lead to the King still being checked
@@ -130,7 +153,7 @@ public class PlayersKingCheckmateCondition {
     private boolean isThereMoreThanOneAttacker() {
         return attackingPieces.size() != 1;
     }
-    
+
     /**
      * Checks to see if the attacking ChessPiece can be blocked
      * 
@@ -161,10 +184,6 @@ public class PlayersKingCheckmateCondition {
             }
         }
         return true;
-    }
-
-    boolean isPlayersKingInCheck() {
-        return this.kingIsChecked.isPlayersKingInCheck(player, opponent, board);
     }
     
     /**
