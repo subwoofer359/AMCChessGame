@@ -1,4 +1,4 @@
-package org.amc.game.chess;
+package org.amc.game.chessserver;
 
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
@@ -22,17 +22,20 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 /**
  * Bug Jira CG-42: Chess game didn't end when checkmate was achieved
  * 
- * Test ChessGame for ChessGame.GameState.BLACK_CHECKMATE
+ * Test ServerChessGame for ServerChessGame.status.FINISHED
  * 
  * @author Adrian Mclaughlin
  *
  */
-public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
+public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
 
     private ChessGame chessGame;
+    private ServerChessGame serverChessGame;
     private ChessBoard board;
     private Player whitePlayer;
     private Player blackPlayer;
@@ -49,8 +52,10 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
         blackPlayer=new HumanPlayer("Black Player", Colour.BLACK);
         board=boardFactory.getChessBoard("ra8:nc8:rc6:pd3:pb2:pe2:pf2:ph2:nb1:ke1:Pf7:Pg6:Ph6:Ka5:Pc3");
         new ChessBoardView(board);
+        serverChessGame = new ServerChessGame(whitePlayer);
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.setChessBoard(board);
+        serverChessGame.chessGame=chessGame;
     }
 
     @After
@@ -60,9 +65,8 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
     @Test
     public void test() throws InvalidMoveException {
         Move move =new Move(new Location(C,6), new Location(B,6));
-        chessGame.move(whitePlayer, move);
-        assertTrue(chessGame.isCheckMate(blackPlayer, board));
-        assertTrue(chessGame.getGameState() == ChessGame.GameState.BLACK_CHECKMATE);
+        serverChessGame.move(whitePlayer, move);
+        assertTrue(serverChessGame.getCurrentStatus() == ServerChessGame.status.FINISHED);
     }
 
 }
