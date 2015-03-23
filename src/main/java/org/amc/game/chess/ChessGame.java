@@ -224,7 +224,11 @@ public class ChessGame{
         this.chessRules = rules;
     }
 
-    void setChessBoard(ChessBoard board) {
+    /**
+     * Sets the ChessBoard the chess game uses
+     * @param board ChessBoard a configured chess board
+     */
+    public void setChessBoard(ChessBoard board) {
         this.board = board;
     }
     
