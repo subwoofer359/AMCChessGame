@@ -208,17 +208,34 @@ interact('.dropzone').dropzone({
 	var subid='234';
 	stompClient.connect({},
 	        function(frame){
+            var oldChessBoard = {}, errorString = /Error/;
+        
+            function updateChessBoard(chessBoardJson) {
+                createChessBoard(chessBoardJson);
+                oldChessBoard = chessBoardJson;
+                updatePlayer(chessBoardJson);
+            }
+        
 	    	stompClient.subscribe("/user/queue/updates",
 	    	        function(message){
 	    	    			$('#gameInfoPanel').text(message);
-            },{id:subid});
+                            if(errorString.test(message.body)) {
+                                if(oldChessBoard !== undefined || oldChessBoard !== {}) {
+                                    createChessBoard(oldChessBoard);
+                                }
+                            } else {
+                                updateChessBoard(message.body);
+                            }
+            });
 	    	
 	    	stompClient.subscribe("/topic/updates",
     	        function(message){
     	    			$('#gameInfoPanel').text(message);
-                        createChessBoard(message.body);
-                        updatePlayer(message.body);
-                },{id:subid});
+                    
+                        if(!errorString.test(message.body)) {
+                            updateChessBoard(message.body);
+                        }
+                });
         
             stompClient.send("/app/get/${GAME_UUID}", {priority: 9},"Get ChessBoard");
 	});	    	
