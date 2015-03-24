@@ -14,15 +14,12 @@ import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
-import org.amc.game.chess.ChessGame.GameState;
 import org.amc.game.chess.view.ChessBoardView;
 import org.amc.game.chessserver.ServerChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.lang.reflect.Field;
 
 /**
  * Bug Jira CG-42: Chess game didn't end when checkmate was achieved
