@@ -19,7 +19,7 @@ public class LocationTest {
 
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void test() {
-        Location location = new Location(Coordinate.D, 9);
+        new Location(Coordinate.D, 9);
     }
 
 }

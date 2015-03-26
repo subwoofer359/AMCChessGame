@@ -60,7 +60,7 @@ public class PawnIsPromotedTest {
         Player whitePlayer=new HumanPlayer("Test1", Colour.WHITE);
         Player blackPlayer=new HumanPlayer("Test2", Colour.BLACK);
         ChessGame chessGame=new ChessGame(board, whitePlayer, blackPlayer);
-        ChessBoardView view=new ChessBoardView(board);
+        new ChessBoardView(board);
         board.putPieceOnBoardAt(piece, move.getStart());
         if(piece.getColour().equals(Colour.BLACK)){
             chessGame.changePlayer();

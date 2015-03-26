@@ -74,7 +74,7 @@ public class StompControllerIntegrationTest {
         Map<Long, ServerChessGame> gameMap=(Map<Long, ServerChessGame>)wac.getBean("gameMap");
         scg=new ServerChessGame(whitePlayer);
         scg.addOpponent(blackPlayer);
-        ChessGameTextView view =new ChessGameTextView(scg);
+        new ChessGameTextView(scg);
         gameMap.put(gameUUID, scg);
     }
     

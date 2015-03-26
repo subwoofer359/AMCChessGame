@@ -38,7 +38,7 @@ public class BugCG23TestCase {
                         + "pc3:"
                         + "pd2:pe2:pf2:ph2:"
                         + "ra1:nb1:bc1:ke1:bf1:ng1:Bh1");
-        ChessBoardView view =new ChessBoardView(board);
+        new ChessBoardView(board);
         ChessGame game=new ChessGame(board, whitePlayer, blackPlayer);
         Move move = new Move(new Location(C,6),new Location(B,7));
         game.move(whitePlayer, move);

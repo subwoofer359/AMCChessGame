@@ -56,7 +56,7 @@ public class ServerChessGame extends DefaultSubject {
      * Get current status of the ServerChessGame
      * @return status enum
      */
-    public final status getCurrentStatus() {
+    public synchronized final status getCurrentStatus() {
         return currentStatus;
     }
 
