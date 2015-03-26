@@ -49,7 +49,7 @@ public class ChessGameMoveTest {
     }
 
     @Test
-    public void testMoveNotInCheckNoSpecialMove() throws InvalidMoveException {
+    public void testMoveNotInCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
@@ -66,7 +66,7 @@ public class ChessGameMoveTest {
     }
     
     @Test
-    public void testMoveAfterCheckNoSpecialMove() throws InvalidMoveException {
+    public void testMoveAfterCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
@@ -82,8 +82,8 @@ public class ChessGameMoveTest {
         verify(board, times(1)).move(move);
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testMoveIntoCheckNoSpecialMove() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testMoveIntoCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
@@ -100,7 +100,7 @@ public class ChessGameMoveTest {
     }
     
     @Test
-    public void testMoveIntoCheckFromCheckNoSpecialMove() throws InvalidMoveException {
+    public void testMoveIntoCheckFromCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
@@ -110,8 +110,8 @@ public class ChessGameMoveTest {
 
         try{
             spyChessGame.move(whitePlayer, move);
-        }catch(InvalidMoveException ie){
-            assertTrue(ie instanceof InvalidMoveException);
+        }catch(IllegalMoveException ie){
+            assertTrue(ie instanceof IllegalMoveException);
         }
 
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
@@ -120,8 +120,8 @@ public class ChessGameMoveTest {
         verify(board, times(1)).move(move);
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testInValidMoveIntoCheckFromCheckNoSpecialMove() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testInValidMoveIntoCheckFromCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
         when(chessPiece.isValidMove(board, move)).thenReturn(false);
@@ -133,7 +133,7 @@ public class ChessGameMoveTest {
     }
     
     @Test
-    public void testMoveNotCheckSpecialMove() throws InvalidMoveException {
+    public void testMoveNotCheckSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
         
         when(chessPiece.isValidMove(board, move)).thenReturn(true);

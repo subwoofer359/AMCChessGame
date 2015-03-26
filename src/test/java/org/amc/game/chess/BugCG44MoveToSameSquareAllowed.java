@@ -129,36 +129,36 @@ public class BugCG44MoveToSameSquareAllowed {
         assertFalse(rook.isValidMove(board, moves.get("whiteRook")));
     }
 
-    @Test(expected=InvalidMoveException.class)
-    public void testKingNoneMoveInChessGame() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testKingNoneMoveInChessGame() throws IllegalMoveException {
         chessGame.move(whitePlayer, moves.get("whiteKing"));
         chessGame.changePlayer();
         chessGame.move(blackPlayer, moves.get("blackKing"));
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testQueenNoneMoveInChessGame() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testQueenNoneMoveInChessGame() throws IllegalMoveException {
         chessGame.move(whitePlayer, moves.get("whiteQueen"));
         chessGame.changePlayer();
         chessGame.move(blackPlayer, moves.get("blackQueen"));
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testBishopNoneMoveInChessGame() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testBishopNoneMoveInChessGame() throws IllegalMoveException {
         chessGame.move(whitePlayer, moves.get("whiteBishop"));
         chessGame.changePlayer();
         chessGame.move(blackPlayer, moves.get("blackBishop"));
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testKnightNoneMoveInChessGame() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testKnightNoneMoveInChessGame() throws IllegalMoveException {
         chessGame.move(whitePlayer, moves.get("whiteKnight"));
         chessGame.changePlayer();
         chessGame.move(blackPlayer, moves.get("blackKnight"));
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testPawnNoneMoveInChessGame() throws InvalidMoveException {
+    @Test(expected=IllegalMoveException.class)
+    public void testPawnNoneMoveInChessGame() throws IllegalMoveException {
         chessGame.move(whitePlayer, moves.get("whitePawn"));
         chessGame.changePlayer();
         chessGame.move(blackPlayer, moves.get("blackPawn"));

@@ -41,20 +41,20 @@ public class ChessGameTest {
         assertEquals(whitePlayer, chessGame.getCurrentPlayer());
     }
     
-    @Test(expected = InvalidMoveException.class)
-    public void testMoveWithAnEmptySquare()throws InvalidMoveException {
+    @Test(expected = IllegalMoveException.class)
+    public void testMoveWithAnEmptySquare()throws IllegalMoveException {
         chessGame.move(whitePlayer, new Move(startLocation, endLocation));
     }
     
-    @Test(expected = InvalidMoveException.class)
-    public void testPlayerCantMoveOtherPlayersPiece() throws InvalidMoveException {
+    @Test(expected = IllegalMoveException.class)
+    public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
         BishopPiece bishop = new BishopPiece(Colour.WHITE);
         board.putPieceOnBoardAt(bishop, startLocation);
         chessGame.move(blackPlayer, new Move(startLocation, new Location(B, 7)));
     }
     
     @Test
-    public void testPlayerCanMoveTheirOwnPiece() throws InvalidMoveException {
+    public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
         BishopPiece bishop = new BishopPiece(Colour.WHITE);
         board.putPieceOnBoardAt(bishop, startLocation);
         chessGame.move(whitePlayer, new Move(startLocation, endLocation));
@@ -81,7 +81,7 @@ public class ChessGameTest {
     }
     
     @Test
-    public void gameRuleApplied() throws InvalidMoveException{
+    public void gameRuleApplied() throws IllegalMoveException{
         RookPiece rook = new RookPiece(Colour.WHITE);
         Location rookStartPosition = new Location(H,1);
         Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(F,1));
@@ -91,10 +91,10 @@ public class ChessGameTest {
     
     /**
      * JIRA CG-33 Player can make a move out of turn
-     * @throws InvalidMoveException
+     * @throws IllegalMoveException
      */
-    @Test(expected=InvalidMoveException.class)
-    public void notPlayersTurn()throws InvalidMoveException{
+    @Test(expected=IllegalMoveException.class)
+    public void notPlayersTurn()throws IllegalMoveException{
         Move move=new Move(StartingSquare.BLACK_KING.getLocation(),new Location(E, 7));
         chessGame.move(blackPlayer, move);
         assertEquals(whitePlayer,chessGame.getCurrentPlayer());

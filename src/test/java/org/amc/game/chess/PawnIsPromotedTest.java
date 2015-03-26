@@ -56,7 +56,7 @@ public class PawnIsPromotedTest {
     }
     
     @Test
-    public void testChessGamePawnPromotion()throws InvalidMoveException{
+    public void testChessGamePawnPromotion()throws IllegalMoveException{
         Player whitePlayer=new HumanPlayer("Test1", Colour.WHITE);
         Player blackPlayer=new HumanPlayer("Test2", Colour.BLACK);
         ChessGame chessGame=new ChessGame(board, whitePlayer, blackPlayer);

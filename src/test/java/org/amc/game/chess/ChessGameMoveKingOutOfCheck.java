@@ -50,7 +50,7 @@ public class ChessGameMoveKingOutOfCheck {
     }
     
     @Test
-    public void kingMovesOutOfCheckTest() throws InvalidMoveException{
+    public void kingMovesOutOfCheckTest() throws IllegalMoveException{
         ChessPiece kingPiece=board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
         assertEquals(kingPiece,board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));

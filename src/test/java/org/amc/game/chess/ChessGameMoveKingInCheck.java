@@ -46,8 +46,8 @@ public class ChessGameMoveKingInCheck {
     }
     
     
-    @Test(expected=InvalidMoveException.class)
-    public void test() throws InvalidMoveException{
+    @Test(expected=IllegalMoveException.class)
+    public void test() throws IllegalMoveException{
         ChessPiece piece=board.getPieceFromBoardAt(defendingChessPieceMove.getEnd());
         ChessPiece kingPiece=board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
@@ -55,8 +55,8 @@ public class ChessGameMoveKingInCheck {
         assertEquals(kingPiece,board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
     }
     
-    @Test(expected=InvalidMoveException.class)
-    public void testCaptureIntoCheck() throws InvalidMoveException{
+    @Test(expected=IllegalMoveException.class)
+    public void testCaptureIntoCheck() throws IllegalMoveException{
         ChessPiece pawn=new PawnPiece(Colour.BLACK);
         board.putPieceOnBoardAt(pawn, defendingChessPieceMove.getEnd());
         ChessPiece kingPiece=board.getPieceFromBoardAt(defendingChessPieceMove.getStart());

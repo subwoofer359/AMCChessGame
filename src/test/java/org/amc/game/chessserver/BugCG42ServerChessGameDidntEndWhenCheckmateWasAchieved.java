@@ -9,7 +9,7 @@ import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
@@ -60,7 +60,7 @@ public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
     }
 
     @Test
-    public void test() throws InvalidMoveException {
+    public void test() throws IllegalMoveException {
         Move move =new Move(new Location(C,6), new Location(B,6));
         serverChessGame.move(whitePlayer, move);
         assertTrue(serverChessGame.getCurrentStatus() == ServerChessGame.status.FINISHED);

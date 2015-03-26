@@ -18,7 +18,7 @@ import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
@@ -87,10 +87,10 @@ public class JsonChessBoardViewTest {
      * Compares both the ChessBoard configuration to the JSON representation for
      * correctness.
      * 
-     * @throws InvalidMoveException
+     * @throws IllegalMoveException
      */
     @Test
-    public void test() throws InvalidMoveException {
+    public void test() throws IllegalMoveException {
         serverGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
         

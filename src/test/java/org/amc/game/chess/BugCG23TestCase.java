@@ -28,7 +28,7 @@ public class BugCG23TestCase {
     }
 
     @Test
-    public void test() throws ParseException,InvalidMoveException{
+    public void test() throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard(
                         "Ra8:Nb8:Qd8:Ke8:Bf8:Ng8:Rh8:"
                         + "Pa7:Pb7:Pe7:Pf7:Pg7:"

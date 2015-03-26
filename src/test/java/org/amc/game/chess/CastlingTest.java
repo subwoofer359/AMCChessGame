@@ -126,7 +126,7 @@ public class CastlingTest {
     }
     
     @Test
-    public void testRightRookMovesToCastlePosition() throws InvalidMoveException{
+    public void testRightRookMovesToCastlePosition() throws IllegalMoveException{
         Move whiteKingCastleMove=new Move(whiteKingStartPosition, castlingKingRightLocation);
         chessGame.move(whitePlayer, whiteKingCastleMove);
         ChessPiece piece=board.getPieceFromBoardAt(new Location(F,1));
@@ -134,7 +134,7 @@ public class CastlingTest {
     }
     
     @Test
-    public void testLeftRookMovesToCastlePosition() throws InvalidMoveException{
+    public void testLeftRookMovesToCastlePosition() throws IllegalMoveException{
         Move whiteKingCastleMove=new Move(whiteKingStartPosition, castlingKingLeftLocation);
         chessGame.move(whitePlayer, whiteKingCastleMove);
         ChessPiece piece=board.getPieceFromBoardAt(new Location(D,1));
@@ -142,7 +142,7 @@ public class CastlingTest {
     }
     
     @Test
-    public void testKingMovesLefttoCastlePosition() throws InvalidMoveException{
+    public void testKingMovesLefttoCastlePosition() throws IllegalMoveException{
         Move whiteKingCastleMove=new Move(whiteKingStartPosition, castlingKingRightLocation);
         chessGame.move(whitePlayer, whiteKingCastleMove);
         ChessPiece piece=board.getPieceFromBoardAt(castlingKingRightLocation);
@@ -150,7 +150,7 @@ public class CastlingTest {
     }
     
     @Test
-    public void testKingMovesRighttoCastlePosition() throws InvalidMoveException{
+    public void testKingMovesRighttoCastlePosition() throws IllegalMoveException{
         Move whiteKingCastleMove=new Move(whiteKingStartPosition, castlingKingLeftLocation);
         chessGame.move(whitePlayer, whiteKingCastleMove);
         ChessPiece piece=board.getPieceFromBoardAt(castlingKingLeftLocation);

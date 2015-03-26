@@ -3,7 +3,7 @@ package org.amc.game.chessserver;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
@@ -99,9 +99,9 @@ public class ServerChessGame extends DefaultSubject {
      * 
      * @param player Player who's is making the move
      * @param move Move to be made
-     * @throws InvalidMoveException if Move is illegal
+     * @throws IllegalMoveException if Move is illegal
      */
-    public final void move(Player player,Move move) throws InvalidMoveException{
+    public final void move(Player player,Move move) throws IllegalMoveException{
         if(chessGame!=null){
             synchronized(chessGame){
                 chessGame.move(player, move);

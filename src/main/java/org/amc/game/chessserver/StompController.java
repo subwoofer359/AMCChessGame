@@ -2,7 +2,7 @@ package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
 
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
@@ -64,7 +64,7 @@ public class StompController {
         if (game.getCurrentStatus().equals(ServerChessGame.status.IN_PROGRESS)) {
             try {
                 game.move(player, move);
-            } catch (InvalidMoveException e) {
+            } catch (IllegalMoveException e) {
                 message = "Error:" + e.getMessage();
             }
         } else if (game.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER)) {

@@ -1,7 +1,7 @@
 package org.amc.game.chess.controller;
 
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.SimpleInputParser;
 
@@ -41,13 +41,13 @@ public class ConsoleController implements Controller {
     /**
      * @see Controller#takeTurn()
      */
-    public void takeTurn() throws InvalidMoveException {
+    public void takeTurn() throws IllegalMoveException {
         String input = console.readLine("Player(%s) move:", chessGame.getCurrentPlayer().getName());
         try {
             Move move = getInputParser().parseMoveString(input);
             chessGame.move(chessGame.getCurrentPlayer(), move);
         } catch (ParseException pe) {
-            throw new InvalidMoveException(pe);
+            throw new IllegalMoveException(pe);
         }
     }
 

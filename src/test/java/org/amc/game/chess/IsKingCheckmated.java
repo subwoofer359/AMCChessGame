@@ -200,7 +200,7 @@ public class IsKingCheckmated {
     }
     
     @Test
-    public void testDiscoveryCheckMate() throws ParseException,InvalidMoveException{
+    public void testDiscoveryCheckMate() throws ParseException,IllegalMoveException{
         board = chessBoardFactory.getChessBoard("Ke8:Rd8:Rf8:Pd7:Pf7:ka1:qe1:be2");
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.move(whitePlayer, new Move(new Location(E,2),new Location(D,3)));

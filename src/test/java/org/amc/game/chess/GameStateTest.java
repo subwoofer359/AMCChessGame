@@ -37,7 +37,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void whiteInCheckTest()throws ParseException,InvalidMoveException{
+    public void whiteInCheckTest()throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("Kd7:Qe6:ke1");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -48,7 +48,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void blackInCheckTest()throws ParseException,InvalidMoveException{
+    public void blackInCheckTest()throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("kd1:qe1:Ke8");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -58,7 +58,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void blackInCheckmateTest() throws ParseException,InvalidMoveException{
+    public void blackInCheckmateTest() throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("kd1:qe1:Ke8:Rd8:Rf8:Pd7:Pf7");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -68,7 +68,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void whiteInCheckmateTest() throws ParseException,InvalidMoveException{
+    public void whiteInCheckmateTest() throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("Kd8:Qe8:ke1:rd1:rf1:pd2:pf2");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -79,7 +79,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void blackMovesOutOfCheckTest()throws ParseException,InvalidMoveException{
+    public void blackMovesOutOfCheckTest()throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("kd1:qe1:Ke8");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -92,7 +92,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void whiteMovesOutOfCheckTest()throws ParseException,InvalidMoveException{
+    public void whiteMovesOutOfCheckTest()throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("Kd7:Qe6:ke1");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -106,7 +106,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void changeFromWhiteToBlackCheck()throws ParseException,InvalidMoveException{
+    public void changeFromWhiteToBlackCheck()throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("Ka8:ke1:Qe8:bb1");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);
@@ -120,7 +120,7 @@ public class GameStateTest {
     }
     
     @Test
-    public void testForAGameWhichHasEndedInStalemate()throws ParseException,InvalidMoveException{
+    public void testForAGameWhichHasEndedInStalemate()throws ParseException,IllegalMoveException{
         ChessBoard board=factory.getChessBoard("Ke4:Pf6:Pg7:kh5:pf5:ph4");
         chessGame.setChessBoard(board);
         ChessBoardView view =new ChessBoardView(board);

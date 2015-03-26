@@ -72,10 +72,10 @@ public class ChessGame{
      *            Player making the move
      * @param move
      *            Move
-     * @throws InvalidMoveException
+     * @throws IllegalMoveException
      *             if not a valid movement
      */
-    public void move(Player player, Move move) throws InvalidMoveException {
+    public void move(Player player, Move move) throws IllegalMoveException {
         isPlayersTurn(player);
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         checkChessPieceExistsOnSquare(piece, move);
@@ -91,24 +91,24 @@ public class ChessGame{
         }
     }
 
-    private void isPlayersTurn(Player player) throws InvalidMoveException{
+    private void isPlayersTurn(Player player) throws IllegalMoveException{
         if(!getCurrentPlayer().equals(player)){
-            throw new InvalidMoveException("Not Player's turn");
+            throw new IllegalMoveException("Not Player's turn");
         }
     }
     
     
     private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
-                    throws InvalidMoveException {
+                    throws IllegalMoveException {
         if (piece == null) {
-            throw new InvalidMoveException("No piece at " + move.getStart());
+            throw new IllegalMoveException("No piece at " + move.getStart());
         }
     }
 
     private void checkItsthePlayersPiece(Player player, ChessPiece piece)
-                    throws InvalidMoveException {
+                    throws IllegalMoveException {
         if (notPlayersChessPiece(player, piece)) {
-            throw new InvalidMoveException("Player can only move their own pieces");
+            throw new IllegalMoveException("Player can only move their own pieces");
         }
     }
 
@@ -117,7 +117,7 @@ public class ChessGame{
     }
 
     private void moveThePlayersChessPiece(Player player, ChessBoard board, ChessPiece piece,
-                    Move move) throws InvalidMoveException {
+                    Move move) throws IllegalMoveException {
         if (isPlayersKingInCheck(player, board)) {
             doNormalMove(player, piece, move);
         } else if (doesAGameRuleApply(board, move)) {
@@ -128,31 +128,31 @@ public class ChessGame{
     }
 
     private void doNormalMove(Player player, ChessPiece piece, Move move)
-                    throws InvalidMoveException {
+                    throws IllegalMoveException {
         if (piece.isValidMove(board, move)) {
             thenMoveChessPiece(player, move);
         } else {
-            throw new InvalidMoveException("Not a valid move");
+            throw new IllegalMoveException("Not a valid move");
         }
     }
 
-    private void thenMoveChessPiece(Player player, Move move) throws InvalidMoveException {
+    private void thenMoveChessPiece(Player player, Move move) throws IllegalMoveException {
         ChessBoard testBoard=new ChessBoard(board);
         testBoard.move(move);
         if (isPlayersKingInCheck(player,testBoard)) {
-            throw new InvalidMoveException("King is checked");
+            throw new IllegalMoveException("King is checked");
         }else{
             gameState=GameState.RUNNING;
             board.move(move);
         }
     }
 
-    private void thenApplyGameRule(Player player, Move move) throws InvalidMoveException {
+    private void thenApplyGameRule(Player player, Move move) throws IllegalMoveException {
         for (ChessMoveRule rule : chessRules) {
             ChessBoard testBoard=new ChessBoard(board);
             rule.applyRule(testBoard, move);
             if (isPlayersKingInCheck(player, testBoard)) {
-                throw new InvalidMoveException("King is checked");
+                throw new IllegalMoveException("King is checked");
             }else{
                 rule.applyRule(board, move);  
             }

@@ -1,6 +1,6 @@
 package org.amc.game.chess.controller;
 
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 
 /**
  * Defines a Controller for the Chess game
@@ -25,7 +25,7 @@ public interface Controller {
     /**
      * Take a turn in the game
      * 
-     * @throws InvalidMoveException
+     * @throws IllegalMoveException
      */
-    void takeTurn() throws InvalidMoveException;
+    void takeTurn() throws IllegalMoveException;
 }

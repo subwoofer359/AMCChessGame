@@ -7,15 +7,15 @@ package org.amc.game.chess;
  * @author Adrian McLaughlin
  */
 
-public class InvalidMoveException extends Exception {
+public class IllegalMoveException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public InvalidMoveException(String message) {
+    public IllegalMoveException(String message) {
         super(message);
 
     }
 
-    public InvalidMoveException(Throwable cause) {
+    public IllegalMoveException(Throwable cause) {
         super(cause);
 
     }

@@ -8,7 +8,7 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Player;
@@ -47,7 +47,7 @@ public class ConsoleControllerTest {
     }
 
     @Test
-    public void testTakeTurn()throws InvalidMoveException{
+    public void testTakeTurn()throws IllegalMoveException{
         ConsoleController controller=new ConsoleController(game);
         MockUserInput userInput=new MockUserInput();
         userInput.setOutput("A1B2");
@@ -59,8 +59,8 @@ public class ConsoleControllerTest {
     }
     
     @SuppressWarnings("unchecked")
-    @Test(expected=InvalidMoveException.class)
-    public void testTakeTurnThrowsException()throws InvalidMoveException,ParseException{
+    @Test(expected=IllegalMoveException.class)
+    public void testTakeTurnThrowsException()throws IllegalMoveException,ParseException{
         InputParser parser=mock(InputParser.class);
         when(parser.parseMoveString(anyString())).thenThrow(ParseException.class);
         ConsoleController controller=new ConsoleController(game);

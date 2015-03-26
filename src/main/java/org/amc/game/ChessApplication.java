@@ -1,7 +1,7 @@
 package org.amc.game;
 
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.InvalidMoveException;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.controller.Controller;
 import org.amc.game.chess.view.ChessBoardView;
@@ -44,7 +44,7 @@ public class ChessApplication {
         START: while (!chessGame.isGameOver(playerOne, playerTwo)) {
             try {
                 controller.takeTurn();
-            } catch (InvalidMoveException ime) {
+            } catch (IllegalMoveException ime) {
                 System.out.println(ime.getMessage());
                 view.displayTheBoard();
                 continue START;
