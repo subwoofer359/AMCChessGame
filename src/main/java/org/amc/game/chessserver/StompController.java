@@ -7,14 +7,17 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -33,10 +36,17 @@ public class StompController {
     private static final Logger logger = Logger.getLogger(StompController.class);
 
     private Map<Long, ServerChessGame> gameMap;
+    
+    /** 
+     * STOMP messaging object to send stomp message to objects
+     */
+    @Autowired
+    private SimpMessagingTemplate template;
+    
 
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
-    public String registerMove(Principal user,
+    public void registerMove(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String moveString) {
 
@@ -65,7 +75,20 @@ public class StompController {
             message = String.format("Error:Move on game(%d) which has finished", gameUUID);
         }
         logger.error(message);
-        return message;
+        String type = null;
+        if(message.equals("")){
+            type = "UPDATE";
+        } else {
+            type = "ERROR";
+        }
+        
+        template.convertAndSendToUser(user.getName(), "/queue/updates", message,getHeaders(type));
+    }
+    
+    private Map<String,Object> getHeaders(String type){
+        Map<String,Object> headers = new HashMap<String, Object>();
+        headers.put("TYPE", type);
+        return headers;
     }
 
 

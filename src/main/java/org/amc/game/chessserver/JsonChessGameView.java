@@ -56,11 +56,17 @@ public class JsonChessGameView implements Observer {
     public void update(Subject subject, Object message) {
         if (message instanceof ChessGame) {
             String jsonBoard = gson.toJson(new JsonChessGame((ChessGame) message));
-            this.template.convertAndSend(MESSAGE_DESTINATION, jsonBoard);
+            this.template.convertAndSend(MESSAGE_DESTINATION, jsonBoard, getDefaultHeaders());
             logger.debug("Message sent to" + MESSAGE_DESTINATION);
         } else {
             // Ignore update notification
         }
+    }
+    
+    private Map<String,Object> getDefaultHeaders(){
+        Map<String,Object> headers = new HashMap<String, Object>();
+        headers.put("TYPE", "UPDATE");
+        return headers;
     }
     
     /**
