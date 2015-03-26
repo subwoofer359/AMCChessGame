@@ -40,10 +40,9 @@ public class StompController {
     /** 
      * STOMP messaging object to send stomp message to objects
      */
-    @Autowired
-    private SimpMessagingTemplate template;
-    
 
+    private SimpMessagingTemplate template;
+   
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
     public void registerMove(Principal user,
@@ -75,19 +74,15 @@ public class StompController {
             message = String.format("Error:Move on game(%d) which has finished", gameUUID);
         }
         logger.error(message);
-        String type = null;
-        if(message.equals("")){
-            type = "UPDATE";
-        } else {
-            type = "ERROR";
-        }
+        
+        MessageType type = (message.equals(""))? MessageType.INFO: MessageType.ERROR;
         
         template.convertAndSendToUser(user.getName(), "/queue/updates", message,getHeaders(type));
     }
     
-    private Map<String,Object> getHeaders(String type){
+    private Map<String,Object> getHeaders(MessageType type){
         Map<String,Object> headers = new HashMap<String, Object>();
-        headers.put("TYPE", type);
+        headers.put(StompConstants.MESSAGE_HEADER_TYPE.getValue(), type);
         return headers;
     }
 
@@ -109,4 +104,15 @@ public class StompController {
         this.gameMap = gameMap;
     }
 
+    /**
+     * For adding a {@link SimpMessagingTemplate} object to be used for send STOMP messages
+     * 
+     * @param template SimpMessagingTemplate
+     */
+    @Autowired
+    public void setTemplate(SimpMessagingTemplate template) {
+        this.template = template;
+    }
+
+   
 }

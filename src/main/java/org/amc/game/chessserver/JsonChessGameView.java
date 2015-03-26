@@ -65,7 +65,7 @@ public class JsonChessGameView implements Observer {
     
     private Map<String,Object> getDefaultHeaders(){
         Map<String,Object> headers = new HashMap<String, Object>();
-        headers.put("TYPE", "UPDATE");
+        headers.put(StompConstants.MESSAGE_HEADER_TYPE.getValue(), MessageType.UPDATE);
         return headers;
     }
     

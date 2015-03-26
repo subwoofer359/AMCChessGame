@@ -25,7 +25,6 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -34,6 +33,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 /**
  * Test Case for JsonChessBoardView
@@ -51,6 +51,7 @@ public class JsonChessBoardViewTest {
     private Player blackPlayer;
     private SimpMessagingTemplate template;
     private GsonBuilder gson;
+    private ArgumentCaptor<Map> headersArgument;
 
     @BeforeClass
     public static void setupFactory() {
@@ -64,6 +65,7 @@ public class JsonChessBoardViewTest {
         board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         template = mock(SimpMessagingTemplate.class);
+        headersArgument = ArgumentCaptor.forClass(Map.class);
         
         serverGame = new ServerChessGame(whitePlayer);
         serverGame.addOpponent(blackPlayer);
@@ -91,13 +93,17 @@ public class JsonChessBoardViewTest {
     public void test() throws InvalidMoveException {
         serverGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
-        verify(template).convertAndSend(anyString(), argument.capture());
+        
+        
+        verify(template).convertAndSend(anyString(), argument.capture(), headersArgument.capture());
 
         JsonChessGame jBoard = gson.create().fromJson(argument.getValue(), JsonChessGame.class);
 
         compareChessBoardAndJsonBoard(jBoard);
 
         compareChessGamePlayerAndJsonPlayer(jBoard);
+        
+        checkForUpdateMessageHeader();
     }
 
     private void compareChessBoardAndJsonBoard(JsonChessGame jBoard) {
@@ -126,6 +132,10 @@ public class JsonChessBoardViewTest {
         return new Location(Coordinate.valueOf(file), Integer.parseInt(rank));
     }
 
+    private void checkForUpdateMessageHeader(){
+        assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompConstants.MESSAGE_HEADER_TYPE.getValue()));
+    }
+    
     /**
      * GSON Deserialiser required to deserialise Player objects
      * 
@@ -141,6 +151,6 @@ public class JsonChessBoardViewTest {
             return new HumanPlayer(object.get("name").getAsString(), Colour.valueOf(object.get(
                             "colour").getAsString()));
         }
-
     }
+
 }
