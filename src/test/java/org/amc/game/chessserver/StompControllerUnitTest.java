@@ -129,5 +129,17 @@ public class StompControllerUnitTest {
                         payoadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE.getValue()));
     }
+    
+    /**
+     * JIRA http://192.168.1.5:8081/browse/CG-49
+     */
+    @Test
+    public void testUnParsableMove()
+    {
+        scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        String move = "-A3";
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
+    }
 
 }
