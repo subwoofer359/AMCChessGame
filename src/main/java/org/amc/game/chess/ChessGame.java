@@ -12,8 +12,8 @@ import java.util.List;
 public class ChessGame{
     private ChessBoard board;
     private Player currentPlayer;
-    private Player playerOne;
-    private Player playerTwo;
+    private Player whitePlayer;
+    private Player blackPlayer;
     List<ChessMoveRule> chessRules;
     private PlayerKingInCheckCondition kingInCheck;
     private GameState gameState;
@@ -28,11 +28,11 @@ public class ChessGame{
     }
     
 
-    public ChessGame(ChessBoard board, Player playerOne, Player playerTwo) {
+    public ChessGame(ChessBoard board, Player playerWhite, Player playerBlack) {
         this.board = board;
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
-        this.currentPlayer = this.playerOne;
+        this.whitePlayer = playerWhite;
+        this.blackPlayer = playerBlack;
+        this.currentPlayer = this.whitePlayer;
         this.kingInCheck = new PlayerKingInCheckCondition();
         chessRules = new ArrayList<>();
         chessRules.add(new EnPassantRule());
@@ -51,17 +51,17 @@ public class ChessGame{
      * @return Player
      */
     Player getOpposingPlayer(Player player) {
-        return player == playerOne ? playerTwo : playerOne;
+        return player == whitePlayer ? blackPlayer : whitePlayer;
     }
 
     /**
      * Changes the current player
      */
     public void changePlayer() {
-        if (currentPlayer.equals(playerOne)) {
-            currentPlayer = playerTwo;
+        if (currentPlayer.equals(whitePlayer)) {
+            currentPlayer = blackPlayer;
         } else {
-            currentPlayer = playerOne;
+            currentPlayer = whitePlayer;
         }
     }
 
@@ -162,11 +162,9 @@ public class ChessGame{
     /**
      * Checks to see if the game has reached it's completion
      * 
-     * @param playerOne
-     * @param playerTwo
      * @return Boolean
      */
-    public boolean isGameOver(Player playerOne, Player playerTwo) {
+    public boolean isGameOver() {
         return gameState == GameState.STALEMATE || gameState == GameState.BLACK_CHECKMATE
                         || gameState == GameState.WHITE_CHECKMATE;
     }

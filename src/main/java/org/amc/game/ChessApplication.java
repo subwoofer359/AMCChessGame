@@ -41,7 +41,7 @@ public class ChessApplication {
      */
     public void start() {
         view.displayTheBoard();
-        START: while (!chessGame.isGameOver(playerOne, playerTwo)) {
+        START: while (!chessGame.isGameOver()) {
             try {
                 controller.takeTurn();
             } catch (IllegalMoveException ime) {
