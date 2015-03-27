@@ -89,14 +89,15 @@ public class StompController {
 
     @MessageMapping("/get/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
-    public String getChessBoard(Principal user,
+    public void getChessBoard(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
         ServerChessGame serverGame = gameMap.get(gameUUID);
         Gson gson = new Gson();
         JsonChessGame jcb=new JsonChessGame(serverGame.getChessGame());
         logger.debug(wsSession.get("PLAYER")+" requested update for game:"+gameUUID);
-        return gson.toJson(jcb);
+        template.convertAndSendToUser(user.getName(), "/queue/updates", 
+                        gson.toJson(jcb),getHeaders(MessageType.UPDATE));
     }
     
     @Resource(name = "gameMap")

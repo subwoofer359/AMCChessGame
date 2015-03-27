@@ -208,7 +208,7 @@ interact('.dropzone').dropzone({
 	var subid='234';
 	stompClient.connect({},
 	        function(frame){
-            var oldChessBoard = {}, errorString = /Error/;
+            var oldChessBoard = {};
         
             function updateChessBoard(chessBoardJson) {
                 createChessBoard(chessBoardJson);
@@ -219,20 +219,28 @@ interact('.dropzone').dropzone({
 	    	stompClient.subscribe("/user/queue/updates",
 	    	        function(message){
 	    	    			$('#gameInfoPanel').text(message);
-                            if(errorString.test(message.body)) {
+                            console.log("message:" + message.headers.TYPE);
+                            if(message.headers.TYPE === "ERROR") {
                                 if(oldChessBoard !== undefined || oldChessBoard !== {}) {
                                     createChessBoard(oldChessBoard);
                                 }
-                            } else {
+                            } else if(message.headers.TYPE === "UPDATE") {
                                 updateChessBoard(message.body);
                             }
             });
 	    	
 	    	stompClient.subscribe("/topic/updates",
     	        function(message){
-    	    			$('#gameInfoPanel').text(message);
-                    
-                        if(!errorString.test(message.body)) {
+                        console.log("message:" + message.headers.TYPE);    
+                
+                        $('#gameInfoPanel').text(message.body);
+                        if(message.headers.TYPE === "ERROR") {
+                            updateChessBoard(message.body);    
+                        } else if(message.headers.TYPE === "STATUS"){
+                            console.log("STATUS:"+message.body);
+                        } else if(message.headers.TYPE === "INFO"){
+                            console.log("INFO:"+message.body);
+                        } else if(message.headers.TYPE === "UPDATE") {
                             updateChessBoard(message.body);
                         }
                 });

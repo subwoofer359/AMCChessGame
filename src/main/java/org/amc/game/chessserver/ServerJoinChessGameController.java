@@ -40,6 +40,7 @@ public class ServerJoinChessGameController {
             addPlayerToGame(chessGame, player);
             setupModelForChessGameScreen(mav, gameUUID);
             addView(chessGame);
+            addGameListener(chessGame);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
@@ -71,6 +72,10 @@ public class ServerJoinChessGameController {
 
     private void addView(ServerChessGame chessGame) {
         new JsonChessGameView(chessGame, template);
+    }
+    
+    private void addGameListener(ServerChessGame chessGame){
+        new GameStateListener(chessGame, template);
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {

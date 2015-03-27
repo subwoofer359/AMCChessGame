@@ -7,6 +7,7 @@ package org.amc.game.chessserver;
  */
 public enum MessageType {
     UPDATE,
+    STATUS,
     INFO,
     ERROR
 }

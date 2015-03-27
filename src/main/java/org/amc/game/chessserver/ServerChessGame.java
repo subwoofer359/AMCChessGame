@@ -118,21 +118,23 @@ public class ServerChessGame extends DefaultSubject {
      */
     private void checkGameStatus() {
         switch (chessGame.getGameState()) {
-        case STALEMATE:
-            logger.info("Game has ended in a stalemate");
+        case RUNNING:
             break;
             
         case WHITE_CHECKMATE:
-            logger.info(opponent.getName() + " has won!");
+        case BLACK_CHECKMATE:
+        case STALEMATE:
             setCurrentStatus(status.FINISHED);
+            notifyObservers(chessGame.getGameState());
             break;
             
-        case BLACK_CHECKMATE:
-            logger.info(player.getName() + " has won!");
-            setCurrentStatus(status.FINISHED);
+        case BLACK_IN_CHECK:
+        case WHITE_IN_CHECK:
+            notifyObservers(chessGame.getGameState());
             break;
             
         default:
+            break;
         }
     }
 }
