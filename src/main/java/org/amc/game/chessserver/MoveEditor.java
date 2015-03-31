@@ -21,7 +21,7 @@ public class MoveEditor extends PropertyEditorSupport {
     
     String regex = "\\w\\d-\\w\\d";
 
-    String errorMsg="Malformed move received( %s )";
+    String errorMsg="Malformed move received ( %s )";
     
     /**
      * @see PropertyEditorSupport#setAsText(String)
