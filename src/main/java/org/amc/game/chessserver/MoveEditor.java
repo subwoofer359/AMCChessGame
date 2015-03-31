@@ -1,9 +1,9 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.amc.game.chess.EmptyMove;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
+import org.apache.log4j.Logger;
 
 import java.beans.PropertyEditorSupport;
 import java.util.regex.Pattern;
@@ -17,10 +17,15 @@ import java.util.regex.Pattern;
  */
 public class MoveEditor extends PropertyEditorSupport {
     
+    private static final Logger logger = Logger.getLogger(MoveEditor.class);
+    
     String regex = "\\w\\d-\\w\\d";
 
+    String errorMsg="Malformed move received( %s )";
+    
     /**
      * @see PropertyEditorSupport#setAsText(String)
+     * @throws MalformedMoveException when the given string can't be converted to a Move object
      */
     @Override
     public void setAsText(String text) {
@@ -31,7 +36,8 @@ public class MoveEditor extends PropertyEditorSupport {
                         Coordinate.valueOf(locations[1].substring(0, 1)),
                         Integer.parseInt(locations[1].substring(1, 2)))));
         } else {
-            setValue(new EmptyMove());
+            logger.error(String.format(errorMsg, text));
+            throw new MalformedMoveException(String.format(errorMsg, text));
         }
     }
 

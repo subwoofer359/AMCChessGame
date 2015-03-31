@@ -50,10 +50,7 @@ public class StompController {
                     @DestinationVariable long gameUUID, @Payload String moveString) {
 
         logger.debug(String.format("USER(%s)'s move received for game:%d", user.getName(), gameUUID));
-        MoveEditor convertor = new MoveEditor();
-        convertor.setAsText(moveString);
-        logger.debug(convertor.getValue());
-        Move move = (Move) convertor.getValue();
+        
 
         Player player = (Player) wsSession.get("PLAYER");
 
@@ -63,9 +60,15 @@ public class StompController {
         String message = "";
         if (game.getCurrentStatus().equals(ServerChessGame.status.IN_PROGRESS)) {
             try {
+                MoveEditor convertor = new MoveEditor();
+                convertor.setAsText(moveString);
+                logger.debug(convertor.getValue());
+                Move move = (Move) convertor.getValue();
                 game.move(player, move);
             } catch (IllegalMoveException e) {
                 message = "Error:" + e.getMessage();
+            } catch (MalformedMoveException mme) {
+                message ="Error:"+mme.getMessage();
             }
         } else if (game.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER)) {
             message = String.format("Error:Move on game(%d) which hasn't got two players", gameUUID);
