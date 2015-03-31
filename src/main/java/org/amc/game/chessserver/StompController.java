@@ -42,6 +42,10 @@ public class StompController {
      */
 
     private SimpMessagingTemplate template;
+    
+    private static final String ERROR_MSG_NOT_ENOUGH_PLAYERS="Error:Move on game(%d) which hasn't got two players";
+    
+    private static final String ERROR_MSG_GAME_OVER="Error:Move on game(%d) which has finished";
    
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
@@ -51,35 +55,57 @@ public class StompController {
 
         logger.debug(String.format("USER(%s)'s move received for game:%d", user.getName(), gameUUID));
         
-
         Player player = (Player) wsSession.get("PLAYER");
 
         logger.debug("PLAYER:" + player);
 
         ServerChessGame game = gameMap.get(gameUUID);
+        
         String message = "";
+        
         if (game.getCurrentStatus().equals(ServerChessGame.status.IN_PROGRESS)) {
-            try {
-                MoveEditor convertor = new MoveEditor();
-                convertor.setAsText(moveString);
-                logger.debug(convertor.getValue());
-                Move move = (Move) convertor.getValue();
-                game.move(player, move);
-            } catch (IllegalMoveException e) {
-                message = "Error:" + e.getMessage();
-            } catch (MalformedMoveException mme) {
-                message ="Error:"+mme.getMessage();
-            }
+            message = moveChessPiece(game, player, moveString);
         } else if (game.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER)) {
-            message = String.format("Error:Move on game(%d) which hasn't got two players", gameUUID);
+            message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
 
         } else if (game.getCurrentStatus().equals(ServerChessGame.status.FINISHED)) {
-            message = String.format("Error:Move on game(%d) which has finished", gameUUID);
+            message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
         }
+        
         logger.error(message);
         
-        MessageType type = (message.equals(""))? MessageType.INFO: MessageType.ERROR;
+        sendMessageToUser(user, message);
+    }
+    
+    private String moveChessPiece(ServerChessGame game, Player player, String moveString){
+        String message = "";
         
+        try {
+            game.move(player, getMoveFromString(moveString));
+        } catch (IllegalMoveException e) {
+            message = "Error:" + e.getMessage();
+        } catch (MalformedMoveException mme) {
+            message ="Error:"+mme.getMessage();
+        }
+        
+        return message;
+    }
+    
+    private Move getMoveFromString(String moveString){
+        MoveEditor convertor = new MoveEditor();
+        convertor.setAsText(moveString);
+        logger.debug(convertor.getValue());
+        return (Move) convertor.getValue();
+    }
+    
+    /**
+     * Sends a reply to the user
+     * 
+     * @param user User to receive message
+     * @param message containing either an error message or information update
+     */
+    private void sendMessageToUser(Principal user, String message){
+        MessageType type = (message.equals(""))? MessageType.INFO: MessageType.ERROR;
         template.convertAndSendToUser(user.getName(), "/queue/updates", message,getHeaders(type));
     }
     
