@@ -127,11 +127,18 @@
 </style>
 <script>
 $(document).ready(function(){
-var sourceId = "";
-var destId = "";
-var startOfMove = true;
-var playerColour = "${PLAYER.colour}";
-var gameInfoPanel=$('#gameInfoPanel');
+var sourceId = "",
+    destId = "",
+    startOfMove = true,
+    playerColour = "${PLAYER.colour}",
+    gameInfoPanel=$('#gameInfoPanel'),
+    GAME_STATUS = {
+            WHITE_CHECKMATE : "WHITE_CHECKMATE",
+            BLACK_CHECKMATE : "BLACK_CHECKMATE",
+            STALEMATE : "STALEMATE",
+            WHITE_IN_CHECK : "WHITE_IN_CHECK",
+            BLACK_IN_CHECK : "BLACK_IN_CHECK"
+    };
     
 interact('.draggable')
   .draggable({
@@ -233,7 +240,7 @@ interact('.dropzone').dropzone({
                             }
             });
 	    	
-	    	stompClient.subscribe("/topic/updates",
+            stompClient.subscribe("/topic/updates",
     	        function(message){
                         console.log("message:" + message.body);
                         if(message.headers.TYPE === "ERROR") {
@@ -241,19 +248,19 @@ interact('.dropzone').dropzone({
                         } else if(message.headers.TYPE === "STATUS") {
                             gameInfoPanel.text(message.body);
                             switch(message.body) {
-                            case "WHITE_CHECKMATE":
+                            case GAME_STATUS.WHITE_CHECKMATE:
                                     alert("${GAME.opponent.name} has won the game");
                                     break;
-                            case "BLACK_CHECKMATE":
+                            case GAME_STATUS.BLACK_CHECKMATE:
                                     alert("${GAME.player.name} has won the game");
                                     break;
-                            case "STALEMATE":
+                            case GAME_STATUS.STALEMATE:
                                     alert("Game has ended in a draw");
                                     break;
-                            case "WHITE_IN_CHECK":
+                            case GAME_STATUS.WHITE_IN_CHECK:
                                     gameInfoPanel.text("${GAME.player.name}'s king is in check");
                                     break;
-                            case "BLACK_IN_CHECK":
+                            case GAME_STATUS.BLACK_IN_CHECK:
                                     gameInfoPanel.text("${GAME.opponent.name}'s king is in check");
                                     break;
                             default:
