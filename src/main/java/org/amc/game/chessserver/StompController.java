@@ -67,14 +67,14 @@ public class StompController {
             message = moveChessPiece(game, player, moveString);
         } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
             message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
-
         } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.FINISHED)) {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
         }
 
         logger.error(message);
 
-        sendMessageToUser(user, message);
+        MessageType type = message.equals("") ? MessageType.INFO : MessageType.ERROR;
+        sendMessageToUser(user, message, type);
     }
 
     private String moveChessPiece(ServerChessGame game, Player player, String moveString) {
@@ -106,8 +106,7 @@ public class StompController {
      * @param message
      *            containing either an error message or information update
      */
-    private void sendMessageToUser(Principal user, String message) {
-        MessageType type = message.equals("") ? MessageType.INFO : MessageType.ERROR;
+    private void sendMessageToUser(Principal user, String message, MessageType type) {
         template.convertAndSendToUser(user.getName(), "/queue/updates", message, getHeaders(type));
     }
 
@@ -126,8 +125,7 @@ public class StompController {
         Gson gson = new Gson();
         JsonChessGame jcb = new JsonChessGame(serverGame.getChessGame());
         logger.debug(wsSession.get("PLAYER") + " requested update for game:" + gameUUID);
-        template.convertAndSendToUser(user.getName(), "/queue/updates", gson.toJson(jcb),
-                        getHeaders(MessageType.UPDATE));
+        sendMessageToUser(user, gson.toJson(jcb), MessageType.UPDATE);
     }
 
     @Resource(name = "gameMap")
