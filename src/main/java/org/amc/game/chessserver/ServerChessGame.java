@@ -8,8 +8,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
 import org.amc.util.DefaultSubject;
-import org.apache.log4j.Logger;
-
+ 
 /**
  * Represents a ChessGame Application resident in a Spring container
  * 
@@ -17,23 +16,21 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 public class ServerChessGame extends DefaultSubject {
-    public enum status{
+    public enum ServerGameStatus{
         IN_PROGRESS,
         AWAITING_PLAYER,
         FINISHED
     }
-
-    private static final Logger logger = Logger.getLogger(ServerChessGame.class);
     
     ChessGame chessGame=null;
-    private status currentStatus;
+    private ServerGameStatus currentStatus;
     private Player player;
     private Player opponent;
 
     public ServerChessGame(Player player) {
         this.player=player;
         this.player.setColour(Colour.WHITE);
-        this.currentStatus=status.AWAITING_PLAYER;
+        this.currentStatus=ServerGameStatus.AWAITING_PLAYER;
     }
     
     /**
@@ -42,13 +39,13 @@ public class ServerChessGame extends DefaultSubject {
      * @param player Player
      */
     public synchronized void addOpponent(Player player){
-        if(this.currentStatus.equals(status.AWAITING_PLAYER)){
+        if(this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)){
             player.setColour(Colour.BLACK);
             this.opponent=player;
             ChessBoard board=new ChessBoard();
             SetupChessBoard.setUpChessBoardToDefault(board);
             chessGame=new ChessGame(board,this.player,player);
-            this.currentStatus=status.IN_PROGRESS;
+            this.currentStatus=ServerGameStatus.IN_PROGRESS;
         }
     }
 
@@ -56,7 +53,7 @@ public class ServerChessGame extends DefaultSubject {
      * Get current status of the ServerChessGame
      * @return status enum
      */
-    public synchronized final status getCurrentStatus() {
+    public synchronized final ServerGameStatus getCurrentStatus() {
         return currentStatus;
     }
 
@@ -73,7 +70,7 @@ public class ServerChessGame extends DefaultSubject {
      * Set the ServerGame's status
      * @param currentStatus
      */
-    public synchronized final void setCurrentStatus(status currentStatus) {
+    public synchronized final void setCurrentStatus(ServerGameStatus currentStatus) {
         this.currentStatus = currentStatus;
     }
 
@@ -124,7 +121,7 @@ public class ServerChessGame extends DefaultSubject {
         case WHITE_CHECKMATE:
         case BLACK_CHECKMATE:
         case STALEMATE:
-            setCurrentStatus(status.FINISHED);
+            setCurrentStatus(ServerGameStatus.FINISHED);
             notifyObservers(chessGame.getGameState());
             break;
             

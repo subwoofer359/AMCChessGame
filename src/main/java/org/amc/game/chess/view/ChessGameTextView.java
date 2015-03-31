@@ -22,8 +22,6 @@ public class ChessGameTextView implements Observer {
     public void update(Subject subject, Object message) {
         if (message instanceof ChessBoard) {
             displayTheBoard((ChessBoard) message);
-        } else {
-            // Ignore update notification
         }
     }
 

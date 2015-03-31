@@ -41,10 +41,7 @@ public class GameStateListener implements Observer {
             GameState gameState = (GameState) message;
             this.template.convertAndSend(MESSAGE_DESTINATION, gameState, getDefaultHeaders());
             logger.debug("Message sent to" + MESSAGE_DESTINATION);
-            logGameState(gameState);
-            
-        } else {
-            // Ignore update notification
+            logGameState(gameState);   
         }
     }
     
@@ -67,6 +64,7 @@ public class GameStateListener implements Observer {
             
         case STALEMATE:
             logger.info("Game has ended in a draw");
+            break;
             
         default:
             break;

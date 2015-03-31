@@ -17,7 +17,7 @@ public interface ChessBoardSetupNotation {
      * @throws ParseException
      *             if the input string can't be parsed
      */
-    public List<ChessPieceLocation> getChessPieceLocations(String setupNotation)
+    List<ChessPieceLocation> getChessPieceLocations(String setupNotation)
                     throws ParseException;
 
 }

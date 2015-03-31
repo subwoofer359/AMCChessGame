@@ -63,12 +63,12 @@ public class StompController {
 
         String message = "";
 
-        if (game.getCurrentStatus().equals(ServerChessGame.status.IN_PROGRESS)) {
+        if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
             message = moveChessPiece(game, player, moveString);
-        } else if (game.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER)) {
+        } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
             message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
 
-        } else if (game.getCurrentStatus().equals(ServerChessGame.status.FINISHED)) {
+        } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.FINISHED)) {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
         }
 
@@ -107,7 +107,7 @@ public class StompController {
      *            containing either an error message or information update
      */
     private void sendMessageToUser(Principal user, String message) {
-        MessageType type = (message.equals("")) ? MessageType.INFO : MessageType.ERROR;
+        MessageType type = message.equals("") ? MessageType.INFO : MessageType.ERROR;
         template.convertAndSendToUser(user.getName(), "/queue/updates", message, getHeaders(type));
     }
 

@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame.status;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,7 +43,7 @@ public class EnterChessGameController {
     }
 
     public boolean inProgressState(ServerChessGame chessGame) {
-        return chessGame.getCurrentStatus().equals(status.IN_PROGRESS);
+        return chessGame.getCurrentStatus().equals(ServerGameStatus.IN_PROGRESS);
     }
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {

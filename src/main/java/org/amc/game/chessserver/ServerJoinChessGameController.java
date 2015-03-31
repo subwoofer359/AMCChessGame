@@ -79,7 +79,7 @@ public class ServerJoinChessGameController {
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
-        return chessGame.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER);
+        return chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
     }
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {

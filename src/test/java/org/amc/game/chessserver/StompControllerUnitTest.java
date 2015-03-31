@@ -121,7 +121,7 @@ public class StompControllerUnitTest {
     @Test
     public void testChessGameFinished() {
         scg.addOpponent(blackPlayer);
-        scg.setCurrentStatus(ServerChessGame.status.FINISHED);
+        scg.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCall();

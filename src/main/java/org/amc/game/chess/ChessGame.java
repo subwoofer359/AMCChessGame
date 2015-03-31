@@ -179,23 +179,25 @@ public class ChessGame{
         
     }
     
-    boolean isOpponentsKingInCheck(Player player, ChessBoard board){
-        Player opponent=getOpposingPlayer(player);
-        boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent,player,board);
-        if(inCheck)
-        {
-            gameState=(opponent.getColour().equals(Colour.WHITE))?GameState.WHITE_IN_CHECK:GameState.BLACK_IN_CHECK;
+    boolean isOpponentsKingInCheck(Player player, ChessBoard board) {
+        Player opponent = getOpposingPlayer(player);
+        boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent, player, board);
+        if (inCheck) {
+            gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_IN_CHECK
+                            : GameState.BLACK_IN_CHECK;
         }
         return inCheck;
     }
     
-    boolean isOpponentKingInCheckMate(Player player){
-        Player opponent=getOpposingPlayer(player);
-        PlayersKingCheckmateCondition okcc=new PlayersKingCheckmateCondition(opponent, player, board);
-        if(okcc.isCheckMate()){
-            gameState=(opponent.getColour().equals(Colour.WHITE))?GameState.WHITE_CHECKMATE:GameState.BLACK_CHECKMATE;
+    boolean isOpponentKingInCheckMate(Player player) {
+        Player opponent = getOpposingPlayer(player);
+        PlayersKingCheckmateCondition okcc = new PlayersKingCheckmateCondition(opponent, player,
+                        board);
+        if (okcc.isCheckMate()) {
+            gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_CHECKMATE
+                            : GameState.BLACK_CHECKMATE;
             return true;
-        }else{
+        } else {
             return false;
         }
     }

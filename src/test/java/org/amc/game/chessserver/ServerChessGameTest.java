@@ -28,7 +28,7 @@ public class ServerChessGameTest {
         ServerChessGame game=new ServerChessGame(player);
         assertEquals(game.getPlayer(),player);
         assertNull(game.getChessGame());
-        assertEquals(ServerChessGame.status.AWAITING_PLAYER,game.getCurrentStatus());
+        assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER,game.getCurrentStatus());
         assertEquals(Colour.WHITE,player.getColour());
     }
     
@@ -38,29 +38,29 @@ public class ServerChessGameTest {
         game.addOpponent(opponent);
         assertEquals(game.getPlayer(),player);
         assertNotNull(game.getChessGame());
-        assertEquals(ServerChessGame.status.IN_PROGRESS,game.getCurrentStatus());
+        assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS,game.getCurrentStatus());
         assertEquals(Colour.BLACK,opponent.getColour());
     }
     
     @Test
     public void testAddOpponentToFinishedGame(){
         ServerChessGame game=new ServerChessGame(player);
-        game.setCurrentStatus(ServerChessGame.status.FINISHED);
+        game.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         game.addOpponent(opponent);
         assertEquals(game.getPlayer(),player);
         assertNull(game.getChessGame());
-        assertEquals(ServerChessGame.status.FINISHED,game.getCurrentStatus());
+        assertEquals(ServerChessGame.ServerGameStatus.FINISHED,game.getCurrentStatus());
         assertEquals(Colour.WHITE,opponent.getColour());
     }
     
     @Test
     public void testAddOpponentToInProgressGame(){
         ServerChessGame game=new ServerChessGame(player);
-        game.setCurrentStatus(ServerChessGame.status.IN_PROGRESS);
+        game.setCurrentStatus(ServerChessGame.ServerGameStatus.IN_PROGRESS);
         game.addOpponent(opponent);
         assertEquals(game.getPlayer(),player);
         assertNull(game.getChessGame());
-        assertEquals(ServerChessGame.status.IN_PROGRESS,game.getCurrentStatus());
+        assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS,game.getCurrentStatus());
         assertEquals(Colour.WHITE,opponent.getColour());
     }
 

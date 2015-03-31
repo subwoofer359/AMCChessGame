@@ -58,8 +58,6 @@ public class JsonChessGameView implements Observer {
             String jsonBoard = gson.toJson(new JsonChessGame((ChessGame) message));
             this.template.convertAndSend(MESSAGE_DESTINATION, jsonBoard, getDefaultHeaders());
             logger.debug("Message sent to" + MESSAGE_DESTINATION);
-        } else {
-            // Ignore update notification
         }
     }
     

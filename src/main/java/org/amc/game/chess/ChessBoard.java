@@ -87,7 +87,7 @@ public class ChessBoard extends DefaultSubject {
     }
     
     private void storeCopyOfChessPiece(ChessPiece piece,Coordinate file,int rank){
-        if(piece instanceof ChessPiece){
+        if(piece != null){
             this.putPieceOnBoardAt(piece.copy(), new Location(file,rank));
         }
     }
