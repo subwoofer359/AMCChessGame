@@ -131,6 +131,8 @@ var sourceId = "";
 var destId = "";
 var startOfMove = true;
 var playerColour = "${PLAYER.colour}";
+var gameMessages;
+    
 interact('.draggable')
   .draggable({
     // enable inertial throwing
@@ -238,9 +240,22 @@ interact('.dropzone').dropzone({
                         if(message.headers.TYPE === "ERROR") {
                             updateChessBoard(message.body);    
                         } else if(message.headers.TYPE === "STATUS"){
-                            console.log("STATUS:"+message.body);
+                            switch(message.body) {
+                            case "WHITE_CHECKMATE":
+                                    alert("${GAME.opponent.name} has won the game");
+                                    break;
+                            case "BLACK_CHECKMATE":
+                                    alert("${GAME.player.name} has won the game");
+                                    break;
+                            case "STALEMATE":
+                                    alert("Game has ended in a draw");
+                                    break;
+                            default:
+                                    console.log("STATUS:" + message.body);
+                                    break;
+                            }
                         } else if(message.headers.TYPE === "INFO"){
-                            console.log("INFO:"+message.body);
+                            console.log("INFO:" + message.body);
                         } else if(message.headers.TYPE === "UPDATE") {
                             updateChessBoard(playerColour, message.body);
                         }
