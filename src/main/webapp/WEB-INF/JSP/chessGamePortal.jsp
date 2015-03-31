@@ -131,7 +131,7 @@ var sourceId = "";
 var destId = "";
 var startOfMove = true;
 var playerColour = "${PLAYER.colour}";
-var gameMessages;
+var gameInfoPanel=$('#gameInfoPanel');
     
 interact('.draggable')
   .draggable({
@@ -221,25 +221,25 @@ interact('.dropzone').dropzone({
         
 	    	stompClient.subscribe("/user/queue/updates",
 	    	        function(message){
-	    	    			$('#gameInfoPanel').text(message);
-                            console.log("message:" + message.headers.TYPE);
                             if(message.headers.TYPE === "ERROR") {
+                                gameInfoPanel.text(message.body);
                                 if(oldChessBoard !== undefined || oldChessBoard !== {}) {
                                     createChessBoard(playerColour, oldChessBoard);
                                 }
                             } else if(message.headers.TYPE === "UPDATE") {
                                 updateChessBoard(playerColour, message.body);
+                            } else if(message.headers.TYPE === "INFO") {
+                                gameInfoPanel.text(message.body);
                             }
             });
 	    	
 	    	stompClient.subscribe("/topic/updates",
     	        function(message){
-                        console.log("message:" + message.headers.TYPE);    
-                
-                        $('#gameInfoPanel').text(message.body);
+                        console.log("message:" + message.body);
                         if(message.headers.TYPE === "ERROR") {
                             updateChessBoard(message.body);    
-                        } else if(message.headers.TYPE === "STATUS"){
+                        } else if(message.headers.TYPE === "STATUS") {
+                            gameInfoPanel.text(message.body);
                             switch(message.body) {
                             case "WHITE_CHECKMATE":
                                     alert("${GAME.opponent.name} has won the game");
@@ -250,12 +250,18 @@ interact('.dropzone').dropzone({
                             case "STALEMATE":
                                     alert("Game has ended in a draw");
                                     break;
+                            case "WHITE_IN_CHECK":
+                                    gameInfoPanel.text("${GAME.player.name}'s king is in check");
+                                    break;
+                            case "BLACK_IN_CHECK":
+                                    gameInfoPanel.text("${GAME.opponent.name}'s king is in check");
+                                    break;
                             default:
-                                    console.log("STATUS:" + message.body);
                                     break;
                             }
                         } else if(message.headers.TYPE === "INFO"){
                             console.log("INFO:" + message.body);
+                            gameInfoPanel.text(message.body);
                         } else if(message.headers.TYPE === "UPDATE") {
                             updateChessBoard(playerColour, message.body);
                         }
