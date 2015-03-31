@@ -4,7 +4,7 @@
  * @author Adrian McLaughlin
  */
 
-"use strict";
+
 
 var letterCoordinates = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ];
 
@@ -22,6 +22,7 @@ var blackSquareColour = '#000000';
  * @returns SVG element
  */
 function createBlankChessBoardSVG() {
+    "use strict";
     var svgDocument = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
         svgNS = svgDocument.namespaceURI,
         layer = document.createElementNS(svgNS, 'g'),
@@ -36,7 +37,7 @@ function createBlankChessBoardSVG() {
     svgDocument.setAttribute('width', '500px');
     layer.setAttribute('id', 'layer1');
 
-    for (i = boardWidth; i > 0; i--) {
+    for (i = boardWidth; i > 0; i -= 1) {
         x = 0;
         for (letter in letterCoordinates) {
             if (letterCoordinates.hasOwnProperty(letter)) {
@@ -67,12 +68,16 @@ function createBlankChessBoardSVG() {
     return svgDocument;
 }
 
-function createChessBoard(chessboardJSON) {
+function createChessBoard(playerColour, chessboardJSON) {
+    "use strict";
     var json = $.parseJSON(chessboardJSON),
         board,
         chessBoardSVG = $("#chessboard-surround"),
-        location;
+        location,
+        chesspieces;
     console.log("parsed JSON");
+
+    chesspieces = new ChessPieces(playerColour);
 
     chessBoardSVG.html(createBlankChessBoardSVG());
     board = $("#layer1");

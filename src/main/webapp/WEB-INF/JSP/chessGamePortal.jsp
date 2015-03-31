@@ -127,9 +127,10 @@
 </style>
 <script>
 $(document).ready(function(){
-var sourceId="";
-var destId="";
-var startOfMove=true;
+var sourceId = "";
+var destId = "";
+var startOfMove = true;
+var playerColour = "${PLAYER.colour}";
 interact('.draggable')
   .draggable({
     // enable inertial throwing
@@ -210,8 +211,8 @@ interact('.dropzone').dropzone({
 	        function(frame){
             var oldChessBoard = {};
         
-            function updateChessBoard(chessBoardJson) {
-                createChessBoard(chessBoardJson);
+            function updateChessBoard(playerColour, chessBoardJson) {
+                createChessBoard(playerColour, chessBoardJson);
                 oldChessBoard = chessBoardJson;
                 updatePlayer(chessBoardJson);
             }
@@ -222,10 +223,10 @@ interact('.dropzone').dropzone({
                             console.log("message:" + message.headers.TYPE);
                             if(message.headers.TYPE === "ERROR") {
                                 if(oldChessBoard !== undefined || oldChessBoard !== {}) {
-                                    createChessBoard(oldChessBoard);
+                                    createChessBoard(playerColour, oldChessBoard);
                                 }
                             } else if(message.headers.TYPE === "UPDATE") {
-                                updateChessBoard(message.body);
+                                updateChessBoard(playerColour, message.body);
                             }
             });
 	    	
@@ -241,7 +242,7 @@ interact('.dropzone').dropzone({
                         } else if(message.headers.TYPE === "INFO"){
                             console.log("INFO:"+message.body);
                         } else if(message.headers.TYPE === "UPDATE") {
-                            updateChessBoard(message.body);
+                            updateChessBoard(playerColour, message.body);
                         }
                 });
         
