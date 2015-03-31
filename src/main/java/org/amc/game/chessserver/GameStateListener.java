@@ -39,7 +39,7 @@ public class GameStateListener implements Observer {
     public void update(Subject subject, Object message) {
         if (message instanceof ChessGame.GameState) {
             GameState gameState = (GameState) message;
-            this.template.convertAndSend(MESSAGE_DESTINATION, gameState, getDefaultHeaders());
+            this.template.convertAndSend(MESSAGE_DESTINATION, gameState.toString(), getDefaultHeaders());
             logger.debug("Message sent to" + MESSAGE_DESTINATION);
             logGameState(gameState);   
         }
