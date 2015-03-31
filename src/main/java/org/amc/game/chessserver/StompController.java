@@ -36,17 +36,17 @@ public class StompController {
     private static final Logger logger = Logger.getLogger(StompController.class);
 
     private Map<Long, ServerChessGame> gameMap;
-    
-    /** 
+
+    /**
      * STOMP messaging object to send stomp message to objects
      */
 
     private SimpMessagingTemplate template;
-    
-    private static final String ERROR_MSG_NOT_ENOUGH_PLAYERS="Error:Move on game(%d) which hasn't got two players";
-    
-    private static final String ERROR_MSG_GAME_OVER="Error:Move on game(%d) which has finished";
-   
+
+    private static final String ERROR_MSG_NOT_ENOUGH_PLAYERS = "Error:Move on game(%d) which hasn't got two players";
+
+    private static final String ERROR_MSG_GAME_OVER = "Error:Move on game(%d) which has finished";
+
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
     public void registerMove(Principal user,
@@ -54,15 +54,15 @@ public class StompController {
                     @DestinationVariable long gameUUID, @Payload String moveString) {
 
         logger.debug(String.format("USER(%s)'s move received for game:%d", user.getName(), gameUUID));
-        
+
         Player player = (Player) wsSession.get("PLAYER");
 
         logger.debug("PLAYER:" + player);
 
         ServerChessGame game = gameMap.get(gameUUID);
-        
+
         String message = "";
-        
+
         if (game.getCurrentStatus().equals(ServerChessGame.status.IN_PROGRESS)) {
             message = moveChessPiece(game, player, moveString);
         } else if (game.getCurrentStatus().equals(ServerChessGame.status.AWAITING_PLAYER)) {
@@ -71,50 +71,51 @@ public class StompController {
         } else if (game.getCurrentStatus().equals(ServerChessGame.status.FINISHED)) {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
         }
-        
+
         logger.error(message);
-        
+
         sendMessageToUser(user, message);
     }
-    
-    private String moveChessPiece(ServerChessGame game, Player player, String moveString){
+
+    private String moveChessPiece(ServerChessGame game, Player player, String moveString) {
         String message = "";
-        
+
         try {
             game.move(player, getMoveFromString(moveString));
         } catch (IllegalMoveException e) {
             message = "Error:" + e.getMessage();
         } catch (MalformedMoveException mme) {
-            message ="Error:"+mme.getMessage();
+            message = "Error:" + mme.getMessage();
         }
-        
+
         return message;
     }
-    
-    private Move getMoveFromString(String moveString){
+
+    private Move getMoveFromString(String moveString) {
         MoveEditor convertor = new MoveEditor();
         convertor.setAsText(moveString);
         logger.debug(convertor.getValue());
         return (Move) convertor.getValue();
     }
-    
+
     /**
      * Sends a reply to the user
      * 
-     * @param user User to receive message
-     * @param message containing either an error message or information update
+     * @param user
+     *            User to receive message
+     * @param message
+     *            containing either an error message or information update
      */
-    private void sendMessageToUser(Principal user, String message){
-        MessageType type = (message.equals(""))? MessageType.INFO: MessageType.ERROR;
-        template.convertAndSendToUser(user.getName(), "/queue/updates", message,getHeaders(type));
+    private void sendMessageToUser(Principal user, String message) {
+        MessageType type = (message.equals("")) ? MessageType.INFO : MessageType.ERROR;
+        template.convertAndSendToUser(user.getName(), "/queue/updates", message, getHeaders(type));
     }
-    
-    private Map<String,Object> getHeaders(MessageType type){
-        Map<String,Object> headers = new HashMap<String, Object>();
+
+    private Map<String, Object> getHeaders(MessageType type) {
+        Map<String, Object> headers = new HashMap<String, Object>();
         headers.put(StompConstants.MESSAGE_HEADER_TYPE.getValue(), type);
         return headers;
     }
-
 
     @MessageMapping("/get/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
@@ -123,26 +124,27 @@ public class StompController {
                     @DestinationVariable long gameUUID, @Payload String message) {
         ServerChessGame serverGame = gameMap.get(gameUUID);
         Gson gson = new Gson();
-        JsonChessGame jcb=new JsonChessGame(serverGame.getChessGame());
-        logger.debug(wsSession.get("PLAYER")+" requested update for game:"+gameUUID);
-        template.convertAndSendToUser(user.getName(), "/queue/updates", 
-                        gson.toJson(jcb),getHeaders(MessageType.UPDATE));
+        JsonChessGame jcb = new JsonChessGame(serverGame.getChessGame());
+        logger.debug(wsSession.get("PLAYER") + " requested update for game:" + gameUUID);
+        template.convertAndSendToUser(user.getName(), "/queue/updates", gson.toJson(jcb),
+                        getHeaders(MessageType.UPDATE));
     }
-    
+
     @Resource(name = "gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 
     /**
-     * For adding a {@link SimpMessagingTemplate} object to be used for send STOMP messages
+     * For adding a {@link SimpMessagingTemplate} object to be used for send
+     * STOMP messages
      * 
-     * @param template SimpMessagingTemplate
+     * @param template
+     *            SimpMessagingTemplate
      */
     @Autowired
     public void setTemplate(SimpMessagingTemplate template) {
         this.template = template;
     }
 
-   
 }
