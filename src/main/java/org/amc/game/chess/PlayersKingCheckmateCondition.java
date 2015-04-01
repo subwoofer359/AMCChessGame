@@ -90,25 +90,32 @@ public class PlayersKingCheckmateCondition {
         board.removePieceOnBoardAt(kingsLocation.getLocation());
     }
     
+    /**
+     * Find Squares that are under attack by other Player Can use
+     * ChessPiece.isValidMove(ChessBoard, Move) on all pieces except PawnPiece.
+     * Must use PawnPiece.validMovement(Move) due to the Pawn special capturing
+     * move
+     * 
+     * @param possibleMoveLocations Set of Squares to be checked
+     * @return Set of Squares that can be attacked
+     */
     private Set<Location> getSquaresUnderAttack(Set<Location> possibleMoveLocations) {
         Set<Location> squaresUnderAttack = new HashSet<>();
         for (Location location : possibleMoveLocations) {
             for (ChessPieceLocation enemyPiece : enemyLocations) {
                 Move move = new Move(enemyPiece.getLocation(), location);
                 ChessPiece piece = enemyPiece.getPiece();
-                
+
                 ChessPiece occupyPiece = board.getPieceFromBoardAt(location);
                 board.removePieceOnBoardAt(location);
-                
-                if (piece.isValidMove(board, move)) {
-                    squaresUnderAttack.add(location);
-                    board.putPieceOnBoardAt(occupyPiece, location);
-                    break;
-                } else if(piece instanceof PawnPiece && ((PawnPiece)piece).validMovement(move)){
+
+                if (piece.isValidMove(board, move) || piece instanceof PawnPiece
+                                && ((PawnPiece) piece).validMovement(move)) {
                     squaresUnderAttack.add(location);
                     board.putPieceOnBoardAt(occupyPiece, location);
                     break;
                 }
+
                 board.putPieceOnBoardAt(occupyPiece, location);
             }
         }
