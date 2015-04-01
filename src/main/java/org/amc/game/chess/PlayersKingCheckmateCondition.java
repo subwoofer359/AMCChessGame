@@ -104,6 +104,10 @@ public class PlayersKingCheckmateCondition {
                     squaresUnderAttack.add(location);
                     board.putPieceOnBoardAt(occupyPiece, location);
                     break;
+                } else if(piece instanceof PawnPiece && ((PawnPiece)piece).validMovement(move)){
+                    squaresUnderAttack.add(location);
+                    board.putPieceOnBoardAt(occupyPiece, location);
+                    break;
                 }
                 board.putPieceOnBoardAt(occupyPiece, location);
             }

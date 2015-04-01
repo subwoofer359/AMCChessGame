@@ -212,5 +212,12 @@ public class IsKingCheckmated {
         PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
         assertTrue(pkicc.canAttackingPieceNotBeBlocked());
     }
-
+    
+    @Test
+    public void testCG52PawnCheckMate() throws ParseException {
+        board = chessBoardFactory.getChessBoard("kc1:nc8:qc7:pb6:re1:Kd8");
+        PlayersKingCheckmateCondition pkicc = new PlayersKingCheckmateCondition(blackPlayer,whitePlayer,board);
+        assertTrue(pkicc.isKingNotAbleToMoveOutOfCheck());
+    }
+    
 }
