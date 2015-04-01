@@ -9,7 +9,11 @@
 	<welcome-file-list>
 	<welcome-file>ChessHomePage.html</welcome-file>
 	</welcome-file-list>
-
+	
+	<session-config>
+		<session-timeout>360</session-timeout>
+	</session-config>
+	
 	<!-- JavaServer Pages configuration -->
 	<jsp-config>
 		<jsp-property-group>
@@ -41,7 +45,7 @@
 		<servlet-name>chessgame</servlet-name>
 		<url-pattern>/app/chessgame/*</url-pattern>
 	</servlet-mapping>
-
+	
 	<!-- My listener Classes -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -66,6 +70,19 @@
     	<realm-name>WebSocket</realm-name>
     </login-config>
 
+		<!-- MyFilters -->
+	<filter>
+		<filter-name>NoCacheFilter</filter-name>
+		<filter-class>org.amc.game.chessserver.NoCacheFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>NoCacheFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	
 </web-app>
 
 
