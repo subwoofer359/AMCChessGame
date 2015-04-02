@@ -47,12 +47,16 @@ public class EnterChessGameController {
     }
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
+        logger.info(player + " equals " + chessGame.getPlayer());
         return player.equals(chessGame.getPlayer());
     }
 
     private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
         mav.getModel().put("GAME_UUID", gameUUID);
-        mav.getModel().put("GAME",gameMap.get(gameUUID));
+        ServerChessGame serverGame = gameMap.get(gameUUID); 
+        mav.getModel().put("GAME", serverGame);
+        mav.getModel().put("CHESSPLAYER",serverGame.getPlayer());
+        
         logger.info(String.format("Chess Game(%d): has been Entered", gameUUID));
         mav.setViewName("chessGamePortal");
     }
@@ -68,6 +72,7 @@ public class EnterChessGameController {
     private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
         mav.setViewName("forward:/app/chessgame/chessapplication");
         mav.getModel().put("ERRORS", errorMessage);
+        logger.error(errorMessage);
     }
 
     /**

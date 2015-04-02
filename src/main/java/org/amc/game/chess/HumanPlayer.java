@@ -37,7 +37,7 @@ public class HumanPlayer implements Player {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (getClass().equals(Player.class.getClass()))
             return false;
         Player other = (Player) obj;
         if (name == null) {

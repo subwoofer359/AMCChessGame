@@ -71,7 +71,6 @@ public class ServerChessGame extends DefaultSubject {
     public final ChessGamePlayer getPlayer() {
         return player;
     }
-
     
     /**
      * Set the ServerGame's status

@@ -109,7 +109,7 @@ $(document).ready(function(){
         
     });
 */
-    var playerName = "${PLAYER.name}";
+    var playerName = '<c:out value="${PLAYER.name}"/>';
     
     $(".join-button").click(function(event){
         var selectedRow=$("tr.selected");
@@ -140,12 +140,12 @@ $(document).ready(function(){
                 if(data.hasOwnProperty(gameUUID)){
                     console.log(gameUUID);
                     tempEntry = '<tr><td>' + gameUUID + '</td><td>' +
-                        data[gameUUID].player.name +
-                        '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.name: "") +
+                        data[gameUUID].player.player.name +
+                        '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.player.name: "") +
                         '</td><td>' + data[gameUUID].currentStatus +
                         '</td><td><input type="checkbox" name="gameUUID" value="' +
                         gameUUID + '"></td></tr>';
-                    if(playerName === data[gameUUID].player.name) {
+                    if(playerName === data[gameUUID].player.player.name) {
                         yourEntry += tempEntry;
                     } else {
                         otherEntry +=tempEntry;

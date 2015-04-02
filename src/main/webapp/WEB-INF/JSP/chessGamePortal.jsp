@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,7 +132,7 @@ $(document).ready(function(){
 var sourceId = "",
     destId = "",
     startOfMove = true,
-    playerColour = "${PLAYER.colour}",
+    playerColour = '<c:out value="${CHESSPLAYER.colour}"/>',
     gameInfoPanel=$('#gameInfoPanel'),
     GAME_STATUS = {
             WHITE_CHECKMATE : "WHITE_CHECKMATE",
@@ -294,8 +296,8 @@ interact('.dropzone').dropzone({
             </div>
         </div><!-- sidebar-left -->
         <div class="player-name col-sm-10 col-xs-12">
-            <div id="white-player" class="player-name-holder col-sm-5"><span class="title">Player:</span><span class="name">${GAME.player}</span></div>
-            <div id="black-player" class="player-name-holder col-sm-5"><span class="title">Opponent:</span><span class="name">${GAME.opponent}</span></div>
+            <div id="white-player" class="player-name-holder col-sm-5"><span class="title">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
+            <div id="black-player" class="player-name-holder col-sm-5"><span class="title">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>
         <div id="chessboard-surround" class="col-sm-6 col-xs-8">
             <div class="inner col-xs-offset-1 col-xs-11">
