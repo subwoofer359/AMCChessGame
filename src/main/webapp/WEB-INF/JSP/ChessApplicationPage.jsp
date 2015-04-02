@@ -127,6 +127,10 @@ $(document).ready(function(){
         }
     });
     
+    /**
+     * Long polling for Table updates
+     *
+     */
     setInterval(function(){
         $.post("getGameMap",function(data){
             var yourEntry = "",
