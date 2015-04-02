@@ -301,7 +301,7 @@ interact('.dropzone').dropzone({
             <div class="inner col-xs-offset-1 col-xs-11">
         </div><!-- col-xs-11 -->
     </div>
-        <div class="side-panel-right col-sm-4 col-xs-4">
+        <div class="side-panel-right col-sm-4 hidden-xs hidden-sm">
             <div id="game-info" class="col-xs-12">
                 <div  class="panel panel-primary">
                     <div class="panel-heading">
