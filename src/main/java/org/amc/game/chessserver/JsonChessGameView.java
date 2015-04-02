@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
-import org.amc.game.chess.Player;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
@@ -71,8 +71,7 @@ public class JsonChessGameView implements Observer {
     static class JsonChessGame {
 
         private Map<String, String> squares;
-        private Player currentPlayer;
-        private Player opponent;
+        private ChessGamePlayer currentPlayer;
        
         private JsonChessGame(){
             squares = new HashMap<>();
@@ -95,12 +94,10 @@ public class JsonChessGameView implements Observer {
             }
         }
         
-        public JsonChessGame(ChessGame chessGame){
+        public JsonChessGame(ChessGame chessGame) {
             this();
             convertChessBoard(chessGame.getChessBoard());
             currentPlayer = chessGame.getCurrentPlayer();
-            opponent = chessGame.getCurrentPlayer().equals(chessGame.getWhitePlayer()) ? chessGame
-                            .getWhitePlayer() : chessGame.getBlackPlayer();
         }
        
 
@@ -108,12 +105,9 @@ public class JsonChessGameView implements Observer {
             return squares;
         }
         
-        Player getCurrentPlayer(){
+        ChessGamePlayer getCurrentPlayer(){
             return this.currentPlayer;
         }
         
-        Player getOpponent(){
-            return this.opponent;
-        }
     }
 }

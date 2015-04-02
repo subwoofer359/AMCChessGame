@@ -21,8 +21,8 @@ public class BugCG44MoveToSameSquareAllowed {
 
     private ChessGame chessGame;
     private ChessBoard board;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     private static Map<String,Move> moves;
     private static ChessBoardFactory boardFactory;
     
@@ -47,8 +47,8 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Before
     public void setUp() throws Exception {
-        whitePlayer=new HumanPlayer("White Player",Colour.WHITE);
-        blackPlayer=new HumanPlayer("Black Player", Colour.BLACK);
+        whitePlayer=new ChessGamePlayer(new HumanPlayer("White Player"),Colour.WHITE);
+        blackPlayer=new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board=boardFactory.getChessBoard("Ka8:Nb8:Bc8:Rd8:Qe8:Pf8:ka1:nb1:bc1:rd1:qe1:pf1");
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
     }

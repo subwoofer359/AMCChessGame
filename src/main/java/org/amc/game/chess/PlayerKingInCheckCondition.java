@@ -11,7 +11,7 @@ public class PlayerKingInCheckCondition {
      * @param board ChessBoard current ChessBoard
      * @return Boolean true if the opponent can capture the Player's king on the next turn
      */
-    public boolean isPlayersKingInCheck(Player player,Player opponent,ChessBoard board){
+    public boolean isPlayersKingInCheck(ChessGamePlayer player,ChessGamePlayer opponent,ChessBoard board){
         Location playersKingLocation=board.getPlayersKingLocation(player);
         List<ChessPieceLocation> listOfEnemysPieces=board.getListOfPlayersPiecesOnTheBoard(opponent);
         for(ChessPieceLocation pieceLocation:listOfEnemysPieces){

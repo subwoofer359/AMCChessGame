@@ -217,7 +217,7 @@ public class ChessBoard extends DefaultSubject {
      *            Player
      * @return List
      */
-    List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(Player player) {
+    List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(ChessGamePlayer player) {
         List<ChessPieceLocation> listOfPieces = new ArrayList<>();
         for (Coordinate letterIndex : Coordinate.values()) {
             searchFileForChessPieces(player, letterIndex, listOfPieces);
@@ -225,7 +225,7 @@ public class ChessBoard extends DefaultSubject {
         return listOfPieces;
     }
 
-    private void searchFileForChessPieces(Player player, Coordinate file,
+    private void searchFileForChessPieces(ChessGamePlayer player, Coordinate file,
                     List<ChessPieceLocation> listOfPieces) {
         for (int i = 1; i <= BOARD_WIDTH; i++) {
             ChessPiece piece = getPieceFromBoardAt(file.getIndex(), i);
@@ -235,9 +235,11 @@ public class ChessBoard extends DefaultSubject {
         }
     }
 
-    private boolean isPlayersChessPiece(Player player, ChessPiece piece) {
+    private boolean isPlayersChessPiece(ChessGamePlayer player, ChessPiece piece) {
         return piece != null && piece.getColour().equals(player.getColour());
     }
+    
+ 
 
     /**
      * Returns the Location of the square where the Player's King is located
@@ -248,7 +250,7 @@ public class ChessBoard extends DefaultSubject {
      * @throws RuntimeException
      *             if no King is found
      */
-    Location getPlayersKingLocation(Player player) {
+    Location getPlayersKingLocation(ChessGamePlayer player) {
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
                 ChessPiece piece = getPieceFromBoardAt(letterIndex.getIndex(), i);

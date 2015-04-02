@@ -25,14 +25,14 @@ public class CastlingTest {
     private Location whiteRightRookStartPosition;
     private ChessGame chessGame;
     private CastlingRule gameRule;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     
     @Before
     public void setUp() throws Exception {
         board=new ChessBoard();
-        whitePlayer=new HumanPlayer("White Player",Colour.WHITE);
-        blackPlayer=new HumanPlayer("Black Player", Colour.BLACK);
+        whitePlayer=new ChessGamePlayer(new HumanPlayer("White Player"),Colour.WHITE);
+        blackPlayer=new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         chessGame=new ChessGame(board,whitePlayer,blackPlayer);
         gameRule=new CastlingRule();
         whiteKing=new KingPiece(Colour.WHITE);

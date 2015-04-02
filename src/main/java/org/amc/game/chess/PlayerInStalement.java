@@ -7,12 +7,12 @@ import java.util.Set;
 
 public class PlayerInStalement {
     
-    private Player player;
-    private Player opponent;
+    private ChessGamePlayer player;
+    private ChessGamePlayer opponent;
     private ChessBoard board;
     private PlayerKingInCheckCondition inCheck;
     
-    public PlayerInStalement(Player player,Player opponent,ChessBoard board) {
+    public PlayerInStalement(ChessGamePlayer player,ChessGamePlayer opponent,ChessBoard board) {
         inCheck=new PlayerKingInCheckCondition();
         this.player=player;
         this.opponent=opponent;

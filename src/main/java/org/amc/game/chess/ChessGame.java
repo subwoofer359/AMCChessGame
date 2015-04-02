@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class ChessGame{
     private ChessBoard board;
-    private Player currentPlayer;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer currentPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     List<ChessMoveRule> chessRules;
     private PlayerKingInCheckCondition kingInCheck;
     private GameState gameState;
@@ -28,7 +28,7 @@ public class ChessGame{
     }
     
 
-    public ChessGame(ChessBoard board, Player playerWhite, Player playerBlack) {
+    public ChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack) {
         this.board = board;
         this.whitePlayer = playerWhite;
         this.blackPlayer = playerBlack;
@@ -41,16 +41,14 @@ public class ChessGame{
         this.gameState=GameState.RUNNING;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
+    
 
     /**
      * Returns the Player who is waiting for their turn
      * 
      * @return Player
      */
-    Player getOpposingPlayer(Player player) {
+    ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
         return player == whitePlayer ? blackPlayer : whitePlayer;
     }
 
@@ -75,7 +73,7 @@ public class ChessGame{
      * @throws IllegalMoveException
      *             if not a valid movement
      */
-    public void move(Player player, Move move) throws IllegalMoveException {
+    public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
         isPlayersTurn(player);
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         checkChessPieceExistsOnSquare(piece, move);
@@ -105,18 +103,18 @@ public class ChessGame{
         }
     }
 
-    private void checkItsthePlayersPiece(Player player, ChessPiece piece)
+    private void checkItsthePlayersPiece(ChessGamePlayer player, ChessPiece piece)
                     throws IllegalMoveException {
         if (notPlayersChessPiece(player, piece)) {
             throw new IllegalMoveException("Player can only move their own pieces");
         }
     }
 
-    private boolean notPlayersChessPiece(Player player, ChessPiece piece) {
+    private boolean notPlayersChessPiece(ChessGamePlayer player, ChessPiece piece) {
         return player.getColour() != piece.getColour();
     }
 
-    private void moveThePlayersChessPiece(Player player, ChessBoard board, ChessPiece piece,
+    private void moveThePlayersChessPiece(ChessGamePlayer player, ChessBoard board, ChessPiece piece,
                     Move move) throws IllegalMoveException {
         if (isPlayersKingInCheck(player, board)) {
             doNormalMove(player, piece, move);
@@ -127,7 +125,7 @@ public class ChessGame{
         }
     }
 
-    private void doNormalMove(Player player, ChessPiece piece, Move move)
+    private void doNormalMove(ChessGamePlayer player, ChessPiece piece, Move move)
                     throws IllegalMoveException {
         if (piece.isValidMove(board, move)) {
             thenMoveChessPiece(player, move);
@@ -136,7 +134,7 @@ public class ChessGame{
         }
     }
 
-    private void thenMoveChessPiece(Player player, Move move) throws IllegalMoveException {
+    private void thenMoveChessPiece(ChessGamePlayer player, Move move) throws IllegalMoveException {
         ChessBoard testBoard=new ChessBoard(board);
         testBoard.move(move);
         if (isPlayersKingInCheck(player,testBoard)) {
@@ -147,7 +145,7 @@ public class ChessGame{
         }
     }
 
-    private void thenApplyGameRule(Player player, Move move) throws IllegalMoveException {
+    private void thenApplyGameRule(ChessGamePlayer player, Move move) throws IllegalMoveException {
         for (ChessMoveRule rule : chessRules) {
             ChessBoard testBoard=new ChessBoard(board);
             rule.applyRule(testBoard, move);
@@ -169,18 +167,18 @@ public class ChessGame{
                         || gameState == GameState.WHITE_CHECKMATE;
     }
 
-    boolean isCheckMate(Player player, ChessBoard board) {
+    boolean isCheckMate(ChessGamePlayer player, ChessBoard board) {
         PlayersKingCheckmateCondition checkmate=new PlayersKingCheckmateCondition(player, getOpposingPlayer(player), board);
         return checkmate.isCheckMate();
     }
 
-    boolean isPlayersKingInCheck(Player player, ChessBoard board) {
+    boolean isPlayersKingInCheck(ChessGamePlayer player, ChessBoard board) {
         return kingInCheck.isPlayersKingInCheck(player, getOpposingPlayer(player), board);
         
     }
     
-    boolean isOpponentsKingInCheck(Player player, ChessBoard board) {
-        Player opponent = getOpposingPlayer(player);
+    boolean isOpponentsKingInCheck(ChessGamePlayer player, ChessBoard board) {
+        ChessGamePlayer opponent = getOpposingPlayer(player);
         boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent, player, board);
         if (inCheck) {
             gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_IN_CHECK
@@ -189,8 +187,8 @@ public class ChessGame{
         return inCheck;
     }
     
-    boolean isOpponentKingInCheckMate(Player player) {
-        Player opponent = getOpposingPlayer(player);
+    boolean isOpponentKingInCheckMate(ChessGamePlayer player) {
+        ChessGamePlayer opponent = getOpposingPlayer(player);
         PlayersKingCheckmateCondition okcc = new PlayersKingCheckmateCondition(opponent, player,
                         board);
         if (okcc.isCheckMate()) {
@@ -243,12 +241,16 @@ public class ChessGame{
     public GameState getGameState(){
         return this.gameState;
     }
+    
+    public final ChessGamePlayer getCurrentPlayer() {
+        return currentPlayer;
+    }
 
-    public final Player getWhitePlayer() {
+    public final ChessGamePlayer getWhitePlayer() {
         return whitePlayer;
     }
 
-    public final Player getBlackPlayer() {
+    public final ChessGamePlayer getBlackPlayer() {
         return blackPlayer;
     }
     

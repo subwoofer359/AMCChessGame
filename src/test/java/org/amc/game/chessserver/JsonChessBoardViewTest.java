@@ -16,6 +16,7 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
@@ -47,8 +48,8 @@ public class JsonChessBoardViewTest {
     private ChessGame chessGame;
     private ChessBoard board;
     private static ChessBoardFactory chBoardFactory;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     private SimpMessagingTemplate template;
     private GsonBuilder gson;
     private ArgumentCaptor<Map> headersArgument;
@@ -60,8 +61,8 @@ public class JsonChessBoardViewTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new HumanPlayer("White Player", Colour.WHITE);
-        blackPlayer = new HumanPlayer("Black Player", Colour.BLACK);
+        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         template = mock(SimpMessagingTemplate.class);
@@ -121,7 +122,6 @@ public class JsonChessBoardViewTest {
         assertEquals(this.chessGame.getCurrentPlayer().getName(), game.getCurrentPlayer().getName());
         assertEquals(this.chessGame.getCurrentPlayer().getColour(), game.getCurrentPlayer()
                         .getColour());
-        assertEquals(this.chessGame.getBlackPlayer().getName(), game.getOpponent().getName());
     }
 
     private String getChessPieceSymbol(String file, String rank) {
@@ -149,8 +149,7 @@ public class JsonChessBoardViewTest {
         public Player deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
                         throws JsonParseException {
             JsonObject object = arg0.getAsJsonObject();
-            return new HumanPlayer(object.get("name").getAsString(), Colour.valueOf(object.get(
-                            "colour").getAsString()));
+            return new HumanPlayer(object.get("name").getAsString());
         }
     }
 

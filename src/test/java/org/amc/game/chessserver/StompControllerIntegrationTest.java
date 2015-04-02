@@ -1,4 +1,6 @@
 package org.amc.game.chessserver;
+
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -42,81 +44,88 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration("/StompControllerTest.xml")
 @Ignore
 public class StompControllerIntegrationTest {
-    private static final String SESSION_ID="0";
-    
-    private static final String SUBSCRIPTION_ID="0";
-    
-    private static final String SESSION_ATTRIBUTE="PLAYER";
-    
-    private static final String MESSAGE_DESTINATION="/app/move/";
-    
-    @Autowired private WebApplicationContext wac;
-    
-    @Autowired private AbstractSubscribableChannel clientInboundChannel;
+    private static final String SESSION_ID = "0";
 
-    @Autowired private AbstractSubscribableChannel clientOutboundChannel;
+    private static final String SUBSCRIPTION_ID = "0";
 
-    @Autowired private AbstractSubscribableChannel brokerChannel; 
-    
+    private static final String SESSION_ATTRIBUTE = "PLAYER";
+
+    private static final String MESSAGE_DESTINATION = "/app/move/";
+
+    @Autowired
+    private WebApplicationContext wac;
+
+    @Autowired
+    private AbstractSubscribableChannel clientInboundChannel;
+
+    @Autowired
+    private AbstractSubscribableChannel clientOutboundChannel;
+
+    @Autowired
+    private AbstractSubscribableChannel brokerChannel;
+
     private MockMvc mockMvc;
-    
-    private Player whitePlayer=new HumanPlayer("Stephen", Colour.WHITE);
-    
-    private Player blackPlayer=new HumanPlayer("Chris", Colour.BLACK);
-    
-    private long gameUUID=1234L;
-    
+
+    private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"),
+                    Colour.WHITE);
+
+    private ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Chris"),
+                    Colour.BLACK);
+
+    private long gameUUID = 1234L;
+
     private ServerChessGame scg;
-    
+
     @Before
-    public void setup(){
-        this.mockMvc=MockMvcBuilders.webAppContextSetup(wac).build();
-        Map<Long, ServerChessGame> gameMap=(Map<Long, ServerChessGame>)wac.getBean("gameMap");
-        scg=new ServerChessGame(whitePlayer);
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        Map<Long, ServerChessGame> gameMap = (Map<Long, ServerChessGame>) wac.getBean("gameMap");
+        scg = new ServerChessGame(whitePlayer);
         scg.addOpponent(blackPlayer);
         new ChessGameTextView(scg);
         gameMap.put(gameUUID, scg);
     }
-    
+
     @Test
-    public void testMove() throws Exception{
-         subscribe();
-         move(whitePlayer,"A2-A3");
-         move(blackPlayer,"A7-A6");
-         move(whitePlayer,"B1-C3");
-         move(blackPlayer,"E7-E6");
+    public void testMove() throws Exception {
+        subscribe();
+        move(whitePlayer, "A2-A3");
+        move(blackPlayer, "A7-A6");
+        move(whitePlayer, "B1-C3");
+        move(blackPlayer, "E7-E6");
     }
-    
-    private void move(Player player,String moveString) throws Exception{
+
+    private void move(Player player, String moveString) throws Exception {
         StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.SEND);
         headers.setSubscriptionId(SUBSCRIPTION_ID);
-        headers.setDestination(MESSAGE_DESTINATION+gameUUID);
+        headers.setDestination(MESSAGE_DESTINATION + gameUUID);
         headers.setSessionId(SESSION_ID);
         headers.setUser(getTestPrincipal());
-        Map<String,Object> sessionAttributes=new HashMap<String, Object>();
+        Map<String, Object> sessionAttributes = new HashMap<String, Object>();
         sessionAttributes.put(SESSION_ATTRIBUTE, player);
         headers.setSessionAttributes(sessionAttributes);
-        Message<byte[]> message = MessageBuilder.createMessage(moveString.getBytes(), headers.getMessageHeaders());
+        Message<byte[]> message = MessageBuilder.createMessage(moveString.getBytes(),
+                        headers.getMessageHeaders());
         this.clientInboundChannel.send(message);
         Thread.sleep(2000);
     }
-    
-    
-    private void subscribe(){
+
+    private void subscribe() {
         StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.SUBSCRIBE);
         headers.setSubscriptionId("0");
         headers.setDestination("/user/queue/updates");
         headers.setSessionId("0");
         headers.setUser(getTestPrincipal());
         headers.setSessionAttributes(new HashMap<String, Object>());
-        Message<byte[]> message = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
+        Message<byte[]> message = MessageBuilder.createMessage(new byte[0],
+                        headers.getMessageHeaders());
 
         this.clientInboundChannel.send(message);
     }
-    
-    private Principal getTestPrincipal(){
-        Principal p=new Principal() {
-            
+
+    private Principal getTestPrincipal() {
+        Principal p = new Principal() {
+
             @Override
             public String getName() {
                 return "Adrian";
@@ -124,12 +133,10 @@ public class StompControllerIntegrationTest {
         };
         return p;
     }
-    
+
     @Configuration
     @EnableScheduling
-    @ComponentScan(
-            basePackages="org.amc.game.chessserver"
-    )
+    @ComponentScan(basePackages = "org.amc.game.chessserver")
     @EnableWebSocketMessageBroker
     static class TestWebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
@@ -152,7 +159,6 @@ public class StompControllerIntegrationTest {
             messageConverters.add(new MoveConverter());
             return super.configureMessageConverters(messageConverters);
         }
-        
-        
+
     }
 }

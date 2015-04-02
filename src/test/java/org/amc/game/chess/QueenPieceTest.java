@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueenPieceTest extends ChessPieceTest {
-    
+
     private ChessBoard board;
     private Location testStartPosition = new Location(ChessBoard.Coordinate.D, 5);
 
@@ -127,14 +127,14 @@ public class QueenPieceTest extends ChessPieceTest {
 
     @Test
     @Override
-    public void testCanSlide(){
+    public void testCanSlide() {
         assertTrue(new QueenPiece(Colour.BLACK).canSlide());
     }
-    
-//    @Test
-//    @Override
-//    public void testCopy() {
-//        this.piece = new QueenPiece(Colour.WHITE);
-//        super.testCopy();   
-//    }
+
+    // @Test
+    // @Override
+    // public void testCopy() {
+    // this.piece = new QueenPiece(Colour.WHITE);
+    // super.testCopy();
+    // }
 }

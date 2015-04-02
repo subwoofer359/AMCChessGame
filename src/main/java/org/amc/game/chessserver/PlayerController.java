@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,7 @@ public class PlayerController {
             mav.setViewName(StartPageController.Views.CREATE_PLAYER_PAGE.getPageName());
             mav.getModel().put("ERRORS", "Player's name to short");
         } else {
-            Player player = new HumanPlayer(name, Colour.WHITE);
+            Player player = new HumanPlayer(name);
             mav.getModel().put(ServerConstants.PLAYER.toString(), player);
             mav.setViewName("forward:/app/chessgame/chessapplication");
         }

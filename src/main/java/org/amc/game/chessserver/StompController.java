@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
 
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
@@ -81,7 +82,8 @@ public class StompController {
         String message = "";
 
         try {
-            game.move(player, getMoveFromString(moveString));
+            ChessGamePlayer gamePlayer = game.getPlayer().equals(player) ? game.getPlayer() : game.getOpponent();
+            game.move(gamePlayer, getMoveFromString(moveString));
         } catch (IllegalMoveException e) {
             message = "Error:" + e.getMessage();
         } catch (MalformedMoveException mme) {
