@@ -109,6 +109,11 @@ $(document).ready(function(){
         
     });
 */
+    /**
+     * Called to add listeners to the static tables
+     */
+    addTableRowListener();
+    
     var playerName = "${PLAYER.name}";
     
     $(".join-button").click(function(event){
