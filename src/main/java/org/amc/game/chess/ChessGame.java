@@ -243,4 +243,14 @@ public class ChessGame{
     public GameState getGameState(){
         return this.gameState;
     }
+
+    public final Player getWhitePlayer() {
+        return whitePlayer;
+    }
+
+    public final Player getBlackPlayer() {
+        return blackPlayer;
+    }
+    
+    
 }

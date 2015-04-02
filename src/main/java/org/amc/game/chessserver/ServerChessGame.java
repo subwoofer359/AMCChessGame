@@ -8,6 +8,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
 import org.amc.util.DefaultSubject;
+import org.apache.log4j.Logger;
  
 /**
  * Represents a ChessGame Application resident in a Spring container
@@ -21,6 +22,8 @@ public class ServerChessGame extends DefaultSubject {
         AWAITING_PLAYER,
         FINISHED
     }
+    
+    private static final Logger logger = Logger.getLogger(ServerChessGame.class);
     
     ChessGame chessGame=null;
     private ServerGameStatus currentStatus;
@@ -36,16 +39,20 @@ public class ServerChessGame extends DefaultSubject {
     /**
      * Adds player to the black side of the chess game
      * Only valid if ServerChessGame is in AWAITING_PLAYER state, no exception is thrown if not in that state
-     * @param player Player
+     * @param opponent Player
      */
-    public synchronized void addOpponent(Player player){
+    public synchronized void addOpponent(Player opponent){
         if(this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)){
-            player.setColour(Colour.BLACK);
-            this.opponent=player;
-            ChessBoard board=new ChessBoard();
-            SetupChessBoard.setUpChessBoardToDefault(board);
-            chessGame=new ChessGame(board,this.player,player);
-            this.currentStatus=ServerGameStatus.IN_PROGRESS;
+            if(this.player.equals(opponent)){
+                logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));;
+            } else {
+                opponent.setColour(Colour.BLACK);
+                this.opponent=opponent;
+                ChessBoard board=new ChessBoard();
+                SetupChessBoard.setUpChessBoardToDefault(board);
+                chessGame=new ChessGame(board,this.player,opponent);
+                this.currentStatus=ServerGameStatus.IN_PROGRESS;
+            }
         }
     }
 

@@ -139,7 +139,12 @@ $(document).ready(function(){
             for(var gameUUID in data){
                 if(data.hasOwnProperty(gameUUID)){
                     console.log(gameUUID);
-                    tempEntry = '<tr><td>' + gameUUID + '</td><td>' + data[gameUUID].player.name + '</td><td>' + data[gameUUID].currentStatus + '</td><td><input type="checkbox" name="gameUUID" value="' + gameUUID + '"></td></tr>';
+                    tempEntry = '<tr><td>' + gameUUID + '</td><td>' +
+                        data[gameUUID].player.name +
+                        '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.name: "") +
+                        '</td><td>' + data[gameUUID].currentStatus +
+                        '</td><td><input type="checkbox" name="gameUUID" value="' +
+                        gameUUID + '"></td></tr>';
                     if(playerName === data[gameUUID].player.name) {
                         yourEntry += tempEntry;
                     } else {
@@ -205,6 +210,7 @@ $(document).ready(function(){
 				<tr>
 					<th>Game</th>
 					<th>Player</th>
+                    <th>Opponent</th>
 					<th>Status</th>
 					<th></th>
 				</tr>
@@ -212,7 +218,7 @@ $(document).ready(function(){
                 <tbody>
                     <c:forEach var="game" items='${GAMEMAP}'>
                         <c:if test="${PLAYER.name eq game.value.player.name}">
-				            <tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td>
+				            <tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.opponent.name}</td><td>${game.value.currentStatus}</td>
 						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
 						    </tr>		
                         </c:if>
@@ -228,6 +234,7 @@ $(document).ready(function(){
 				<tr>
 					<th>Game</th>
 					<th>Player</th>
+                    <th>Opponent</th>
 					<th>Status</th>
 					<th></th>
 				</tr>
@@ -235,7 +242,7 @@ $(document).ready(function(){
                 <tbody>
                     <c:forEach var="game" items='${GAMEMAP}'>
                         <c:if test="${PLAYER.name ne game.value.player.name}">
-				            <tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.currentStatus}</td>
+				            <tr><td>${game.key}</td><td>${game.value.player.name}</td><td>${game.value.opponent.name}</td><td>${game.value.currentStatus}</td>
 						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
 						    </tr>		
                         </c:if>

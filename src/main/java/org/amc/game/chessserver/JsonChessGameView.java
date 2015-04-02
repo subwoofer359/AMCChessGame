@@ -72,6 +72,7 @@ public class JsonChessGameView implements Observer {
 
         private Map<String, String> squares;
         private Player currentPlayer;
+        private Player opponent;
        
         private JsonChessGame(){
             squares = new HashMap<>();
@@ -97,7 +98,9 @@ public class JsonChessGameView implements Observer {
         public JsonChessGame(ChessGame chessGame){
             this();
             convertChessBoard(chessGame.getChessBoard());
-            currentPlayer=chessGame.getCurrentPlayer();
+            currentPlayer = chessGame.getCurrentPlayer();
+            opponent = chessGame.getCurrentPlayer().equals(chessGame.getWhitePlayer()) ? chessGame
+                            .getWhitePlayer() : chessGame.getBlackPlayer();
         }
        
 
@@ -107,6 +110,10 @@ public class JsonChessGameView implements Observer {
         
         Player getCurrentPlayer(){
             return this.currentPlayer;
+        }
+        
+        Player getOpponent(){
+            return this.opponent;
         }
     }
 }

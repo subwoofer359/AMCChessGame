@@ -121,6 +121,7 @@ public class JsonChessBoardViewTest {
         assertEquals(this.chessGame.getCurrentPlayer().getName(), game.getCurrentPlayer().getName());
         assertEquals(this.chessGame.getCurrentPlayer().getColour(), game.getCurrentPlayer()
                         .getColour());
+        assertEquals(this.chessGame.getBlackPlayer().getName(), game.getOpponent().getName());
     }
 
     private String getChessPieceSymbol(String file, String rank) {
