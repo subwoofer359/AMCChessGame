@@ -4,8 +4,7 @@
  *
  * @param {Object} element DOM Element
  */
-$(document).ready(function () {
-    "use strict";
+function addTableRowListener() {
     $(".games-table tbody tr").click(function () {
         $(".games-table tbody tr").each(function () {
             $(this).removeClass("selected");
@@ -14,4 +13,5 @@ $(document).ready(function () {
         $(this).addClass("selected");
         $(this).find(":checkbox").prop("checked",true);
     });
-});
+}
+    

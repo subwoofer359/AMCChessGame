@@ -212,8 +212,7 @@ interact('.dropzone').dropzone({
   }
 });
     
-    
-	var socket=new WebSocket("ws://192.168.1.6:8080/AMCChessGame/app/chessgame/chessgame");
+    var socket=new WebSocket("ws://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.request.contextPath}/app/chessgame/chessgame");
 	var stompClient=Stomp.over(socket);
 	var subid='234';
 	stompClient.connect({},

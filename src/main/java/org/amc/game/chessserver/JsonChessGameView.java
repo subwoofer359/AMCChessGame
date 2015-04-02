@@ -22,11 +22,6 @@ public class JsonChessGameView implements Observer {
     private static final Logger logger = Logger.getLogger(JsonChessGameView.class);
 
     /** 
-     * Google gson object to convert to JSON 
-     */
-    private final Gson gson = new Gson();
-
-    /** 
      * STOMP messaging object to send stomp message to objects
      */
     private SimpMessagingTemplate template;
@@ -55,6 +50,7 @@ public class JsonChessGameView implements Observer {
     @Override
     public void update(Subject subject, Object message) {
         if (message instanceof ChessGame) {
+            final Gson gson = new Gson();
             String jsonBoard = gson.toJson(new JsonChessGame((ChessGame) message));
             this.template.convertAndSend(MESSAGE_DESTINATION, jsonBoard, getDefaultHeaders());
             logger.debug("Message sent to" + MESSAGE_DESTINATION);
