@@ -42,6 +42,8 @@ public class StartPageControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "chessGamePortal");
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "GAME_UUID");
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, "GAME");
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, "CHESSPLAYER");
         ServerChessGame chessGame = gameMap.get(gameUUID);
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
         assertEquals(chessGame.getOpponent(), blackPlayer);
@@ -66,6 +68,7 @@ public class StartPageControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "chessGamePortal");
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "GAME_UUID");
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, "GAME");
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "CHESSPLAYER");
 
     }
