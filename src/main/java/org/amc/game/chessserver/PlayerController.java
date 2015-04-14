@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 @SessionAttributes("PLAYER")
 public class PlayerController {
 
+    
+    static final String FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
     /**
      * Processes the create Player request from the user.
      * 
@@ -31,11 +33,11 @@ public class PlayerController {
         ModelAndView mav = new ModelAndView();
         if (name.length() < 5) {
             mav.setViewName(StartPageController.Views.CREATE_PLAYER_PAGE.getPageName());
-            mav.getModel().put("ERRORS", "Player's name to short");
+            mav.getModel().put(ServerConstants.ERRORS, "Player's name to short");
         } else {
             Player player = new HumanPlayer(name);
-            mav.getModel().put(ServerConstants.PLAYER.toString(), player);
-            mav.setViewName("forward:/app/chessgame/chessapplication");
+            mav.getModel().put(ServerConstants.PLAYER, player);
+            mav.setViewName(FORWARD_PAGE);
         }
         return mav;
     }

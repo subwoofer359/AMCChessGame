@@ -36,16 +36,18 @@ public class StartPageController {
 
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
+    static final String FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
+    static final String REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
 
     @RequestMapping("/chessapplication")
     public ModelAndView chessGameApplication(HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        Player player = (Player) session.getAttribute("PLAYER");
+        Player player = (Player) session.getAttribute(ServerConstants.PLAYER);
         if (player == null) {
             mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
             return mav;
         }
-        mav.getModel().put(ServerConstants.GAMEMAP.toString(), gameMap);
+        mav.getModel().put(ServerConstants.GAMEMAP, gameMap);
         mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
         return mav;
     }
@@ -55,8 +57,8 @@ public class StartPageController {
         ServerChessGame serverGame = new ServerChessGame(player);
         long uuid = UUID.randomUUID().getMostSignificantBits();
         gameMap.put(uuid, serverGame);
-        model.addAttribute(ServerConstants.GAME_UUID.toString(), uuid);
-        return "forward:/app/chessgame/chessapplication";
+        model.addAttribute(ServerConstants.GAME_UUID, uuid);
+        return FORWARD_PAGE;
     }
 
     /**
@@ -70,7 +72,7 @@ public class StartPageController {
     @ExceptionHandler(HttpSessionRequiredException.class)
     public String handleMissingSessionAttributes(HttpSessionRequiredException hsre) {
         logger.error("HttpSessionRequiredException:" + hsre.getMessage());
-        return "redirect:/app/chessgame/chessapplication";
+        return REDIRECT_PAGE;
     }
 
     @Resource(name = "gameMap")
