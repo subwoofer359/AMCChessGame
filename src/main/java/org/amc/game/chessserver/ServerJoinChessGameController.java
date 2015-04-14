@@ -31,7 +31,7 @@ public class ServerJoinChessGameController {
 
     @Autowired
     private SimpMessagingTemplate template;
-    
+
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
     static final String ERROR_GAMEOVER = "Chess game is over";
@@ -44,24 +44,23 @@ public class ServerJoinChessGameController {
                     @RequestParam long gameUUID) {
         ServerChessGame chessGame = gameMap.get(gameUUID);
         ModelAndView mav = new ModelAndView();
-        if(isPlayerJoiningOwnGame(chessGame, player)) {
-            enterChessGame(mav ,chessGame, player, gameUUID); 
-        } else
-        {
+        if (isPlayerJoiningOwnGame(chessGame, player)) {
+            enterChessGame(mav, chessGame, player, gameUUID);
+        } else {
             joinChessGame(mav, chessGame, player, gameUUID);
         }
         return mav;
     }
-    
-    
-    private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player, long gameUUID){
-        if(canPlayerEnterGame(chessGame, player)){
+
+    private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
+                    long gameUUID) {
+        if (canPlayerEnterGame(chessGame, player)) {
             setupModelForChessGameScreen(mav, gameUUID);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
     }
-    
+
     private boolean canPlayerEnterGame(ServerChessGame chessGame, Player player) {
         return inProgressState(chessGame);
     }
@@ -69,8 +68,9 @@ public class ServerJoinChessGameController {
     public boolean inProgressState(ServerChessGame chessGame) {
         return chessGame.getCurrentStatus().equals(ServerGameStatus.IN_PROGRESS);
     }
-    
-    private void joinChessGame(ModelAndView mav, ServerChessGame chessGame, Player player, long gameUUID) {
+
+    private void joinChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
+                    long gameUUID) {
         if (canPlayerJoinGame(chessGame, player)) {
             if (inAwaitingPlayerState(chessGame)) {
                 addPlayerToGame(chessGame, player);
@@ -82,7 +82,7 @@ public class ServerJoinChessGameController {
             setModelErrorMessage(chessGame, player, mav);
         }
     }
-    
+
     private boolean canPlayerJoinGame(ServerChessGame chessGame, Player player) {
         return (inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player));
     }
@@ -101,42 +101,42 @@ public class ServerJoinChessGameController {
     }
 
     private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {
-       if(isPlayerJoiningOwnGame(chessGame, player)) {
-           setErrorPageAndMessage(mav, ERROR_GAME_HAS_NO_OPPONENT);
-       } else {
-           if(isGameInFinishedState(chessGame)){
-               setErrorPageAndMessage(mav, ERROR_GAMEOVER);
-           } else
-           {
-               setErrorPageAndMessage(mav, ERROR_PLAYER_NOT_OPPONENT);
-           }
-       }
+        if (isPlayerJoiningOwnGame(chessGame, player)) {
+            setErrorPageAndMessage(mav, ERROR_GAME_HAS_NO_OPPONENT);
+        } else {
+            if (isGameInFinishedState(chessGame)) {
+                setErrorPageAndMessage(mav, ERROR_GAMEOVER);
+            } else {
+                setErrorPageAndMessage(mav, ERROR_PLAYER_NOT_OPPONENT);
+            }
+        }
     }
-    
+
     private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
         mav.setViewName(ERROR_FORWARD_PAGE);
         mav.getModel().put(ServerConstants.ERRORS, errorMessage);
         logger.error(errorMessage);
     }
-    
-    private boolean isGameInFinishedState(ServerChessGame chessGame){
+
+    private boolean isGameInFinishedState(ServerChessGame chessGame) {
         return ServerChessGame.ServerGameStatus.FINISHED.equals(chessGame.getCurrentStatus());
     }
 
     private void addView(ServerChessGame chessGame) {
         new JsonChessGameView(chessGame, template);
     }
-    
-    private void addGameListener(ServerChessGame chessGame){
+
+    private void addGameListener(ServerChessGame chessGame) {
         new GameStateListener(chessGame, template);
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
-        return chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+        return chessGame.getCurrentStatus()
+                        .equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
     }
-    
+
     private boolean joiningCurrentGame(ServerChessGame chessGame, Player player) {
-        if(chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
+        if (chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
             return player.equals(chessGame.getOpponent());
         } else {
             return false;
