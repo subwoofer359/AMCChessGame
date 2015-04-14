@@ -122,15 +122,10 @@ $(document).ready(function(){
         if(selectedRow.length === 0 ){
             event.preventDefault();
             return;
-        }
-        var parentElements=selectedRow.parents("div.games-table");
-        if(parentElements[0].id === "your-games-table") {
-            $(".join-button").attr("formaction","enterGame");
-        } else if (parentElements[0].id === "other-games-table") {
-            $(".join-button").attr("formaction","joinGame");
         } else {
-            event.preventDefault();
+            $(".join-button").attr("formaction","joinGame");   
         }
+        
     });
     
     /**

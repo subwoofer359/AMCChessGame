@@ -73,6 +73,15 @@ public class ServerChessGame extends DefaultSubject {
     }
     
     /**
+     * Return ChessGamePlayer with the same ID as Player
+     * @param player
+     * @return ChessGamePlayer represents Player
+     */
+    public final ChessGamePlayer getPlayer(Player player) {
+        return this.player.equals(player)? this.player : this.opponent; 
+    }
+    
+    /**
      * Set the ServerGame's status
      * @param currentStatus
      */

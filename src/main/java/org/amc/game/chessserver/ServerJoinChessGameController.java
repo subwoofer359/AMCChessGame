@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
@@ -52,10 +53,14 @@ public class ServerJoinChessGameController {
         return mav;
     }
 
+    private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
+        return player.equals(chessGame.getPlayer());
+    }
+    
     private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
                     long gameUUID) {
         if (canPlayerEnterGame(chessGame, player)) {
-            setupModelForChessGameScreen(mav, gameUUID);
+            setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
@@ -77,7 +82,7 @@ public class ServerJoinChessGameController {
                 addView(chessGame);
                 addGameListener(chessGame);
             }
-            setupModelForChessGameScreen(mav, gameUUID);
+            setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
@@ -91,11 +96,11 @@ public class ServerJoinChessGameController {
         chessGame.addOpponent(player);
     }
 
-    private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
+    private void setupModelForChessGameScreen(ModelAndView mav, ChessGamePlayer player, long gameUUID) {
         mav.getModel().put(ServerConstants.GAME_UUID, gameUUID);
         ServerChessGame serverGame = gameMap.get(gameUUID);
         mav.getModel().put(ServerConstants.GAME, serverGame);
-        mav.getModel().put(ServerConstants.CHESSPLAYER, serverGame.getOpponent());
+        mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
         mav.setViewName(CHESS_PAGE);
     }
@@ -142,11 +147,6 @@ public class ServerJoinChessGameController {
             return false;
         }
     }
-
-    private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
-        return player.equals(chessGame.getPlayer());
-    }
-
     /**
      * Dependency Injection of Map containing current ChessGames
      * 

@@ -2,9 +2,8 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;
@@ -18,8 +17,8 @@ import java.util.concurrent.ConcurrentMap;
 public class StartPageControllerJoinGameTest {
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private ServerJoinChessGameController controller;
-    private ChessGamePlayer whitePlayer;
-    private ChessGamePlayer blackPlayer;
+    private Player whitePlayer;
+    private Player blackPlayer;
     private long gameUUID = 1234L;
 
     @Before
@@ -27,8 +26,8 @@ public class StartPageControllerJoinGameTest {
         gameMap = new ConcurrentHashMap<>();
         controller = new ServerJoinChessGameController();
         controller.setGameMap(gameMap);
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Chris"), Colour.WHITE);
+        whitePlayer = new HumanPlayer("Ted");
+        blackPlayer = new HumanPlayer("Chris");
         ServerChessGame chessGame = new ServerChessGame(whitePlayer);
         gameMap.put(gameUUID, chessGame);
     }
@@ -40,11 +39,11 @@ public class StartPageControllerJoinGameTest {
     @Test
     public void test() {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
-        ModelAndViewAssert.assertViewName(mav, "chessGamePortal");
-        assertModelAndViewAttributesOnSuccess(mav);
         ServerChessGame chessGame = gameMap.get(gameUUID);
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
+        assertEquals(chessGame.getPlayer(), whitePlayer);
         assertEquals(chessGame.getOpponent(), blackPlayer);
+        assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
     }
 
     @Test
@@ -52,6 +51,7 @@ public class StartPageControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(whitePlayer, gameUUID);
         ServerChessGame chessGame = gameMap.get(gameUUID);
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, chessGame.getCurrentStatus());
+        assertNull(chessGame.getOpponent());
         assertModelAndViewAttributesOnFail(mav,
                         ServerJoinChessGameController.ERROR_GAME_HAS_NO_OPPONENT);
     }
@@ -64,7 +64,7 @@ public class StartPageControllerJoinGameTest {
         assertTrue(chessGame.getOpponent().equals(blackPlayer));
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "chessGamePortal");
-        assertModelAndViewAttributesOnSuccess(mav);
+        assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
 
     }
 
@@ -111,15 +111,15 @@ public class StartPageControllerJoinGameTest {
         assertTrue(chessGame.getOpponent().equals(blackPlayer));
         assertTrue(chessGame.getPlayer().equals(whitePlayer));
         ModelAndView mav = controller.joinGame(whitePlayer, gameUUID);
-        assertModelAndViewAttributesOnSuccess(mav);
+        assertModelAndViewAttributesOnSuccess(mav, whitePlayer);
 
     }
 
-    private void assertModelAndViewAttributesOnSuccess(ModelAndView mav) {
+    private void assertModelAndViewAttributesOnSuccess(ModelAndView mav, Player player) {
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.CHESS_PAGE);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAME_UUID);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAME);
-        ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.CHESSPLAYER);
+        ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.CHESSPLAYER, player);
     }
 
     private void assertModelAndViewAttributesOnFail(ModelAndView mav, String errorMessage) {
