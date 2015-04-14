@@ -56,6 +56,7 @@ public class StartPageControllerJoinGameTest {
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "ERRORS");
         ServerChessGame chessGame = gameMap.get(gameUUID);
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, chessGame.getCurrentStatus());
+        ModelAndViewAssert.assertModelAttributeValue(mav, "ERRORS", ServerJoinChessGameController.ERROR_GAME_HAS_NO_OPPONENT);
     }
 
     @Test
@@ -83,6 +84,7 @@ public class StartPageControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "forward:/app/chessgame/chessapplication");
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "ERRORS");
+        ModelAndViewAssert.assertModelAttributeValue(mav, "ERRORS", ServerJoinChessGameController.ERROR_PLAYER_NOT_OPPONENT);
 
     }
     
@@ -97,6 +99,7 @@ public class StartPageControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "forward:/app/chessgame/chessapplication");
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "ERRORS");
+        ModelAndViewAssert.assertModelAttributeValue(mav, "ERRORS", ServerJoinChessGameController.ERROR_GAMEOVER);
     }
     
     @Test
@@ -110,6 +113,23 @@ public class StartPageControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "forward:/app/chessgame/chessapplication");
         ModelAndViewAssert.assertModelAttributeAvailable(mav, "ERRORS");
+        ModelAndViewAssert.assertModelAttributeValue(mav, "ERRORS", ServerJoinChessGameController.ERROR_GAMEOVER);
     }
 
+    
+    @Test
+    public void testPlayerJoinsOwnGameAlreadyInProgress() {
+        ServerChessGame chessGame = gameMap.get(gameUUID);
+        chessGame.addOpponent(blackPlayer);
+        assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS,
+                        chessGame.getCurrentStatus());
+        assertTrue(chessGame.getOpponent().equals(blackPlayer));
+        assertTrue(chessGame.getPlayer().equals(whitePlayer));
+        ModelAndView mav = controller.joinGame(whitePlayer, gameUUID);
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, "GAME_UUID");
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, "GAME");
+        ModelAndViewAssert.assertModelAttributeAvailable(mav, "CHESSPLAYER");
+        
+
+    }
 }

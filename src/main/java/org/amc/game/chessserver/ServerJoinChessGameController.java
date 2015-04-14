@@ -1,6 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,14 +31,45 @@ public class ServerJoinChessGameController {
 
     @Autowired
     private SimpMessagingTemplate template;
+    
+    static final String ERROR_GAME_HAS_NO_OPPONENT="Game has no opponent assigned";
+    static final String ERROR_PLAYER_NOT_OPPONENT="Player is not playing this chess game";
+    static final String ERROR_GAMEOVER="Chess game is over";
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
                     @RequestParam long gameUUID) {
         ServerChessGame chessGame = gameMap.get(gameUUID);
         ModelAndView mav = new ModelAndView();
+        if(isPlayerJoiningOwnGame(chessGame, player)) {
+            enterChessGame(mav ,chessGame, player, gameUUID); 
+        } else
+        {
+            joinChessGame(mav, chessGame, player, gameUUID);
+        }
+        return mav;
+    }
+    
+    
+    private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player, long gameUUID){
+        if(canPlayerEnterGame(chessGame, player)){
+            setupModelForChessGameScreen(mav, gameUUID);
+        } else {
+            setModelErrorMessage(chessGame, player, mav);
+        }
+    }
+    
+    private boolean canPlayerEnterGame(ServerChessGame chessGame, Player player) {
+        return inProgressState(chessGame);
+    }
+
+    public boolean inProgressState(ServerChessGame chessGame) {
+        return chessGame.getCurrentStatus().equals(ServerGameStatus.IN_PROGRESS);
+    }
+    
+    private void joinChessGame(ModelAndView mav, ServerChessGame chessGame, Player player, long gameUUID) {
         if (canPlayerJoinGame(chessGame, player)) {
-            if(inAwaitingPlayerState(chessGame)){
+            if (inAwaitingPlayerState(chessGame)) {
                 addPlayerToGame(chessGame, player);
                 addView(chessGame);
                 addGameListener(chessGame);
@@ -46,12 +78,10 @@ public class ServerJoinChessGameController {
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
-        return mav;
     }
-
+    
     private boolean canPlayerJoinGame(ServerChessGame chessGame, Player player) {
-        return (inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player)) && 
-                        !isPlayerJoiningOwnGame(chessGame, player);
+        return (inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player));
     }
 
     private void addPlayerToGame(ServerChessGame chessGame, Player player) {
@@ -68,11 +98,26 @@ public class ServerJoinChessGameController {
     }
 
     private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {
-        if (!inAwaitingPlayerState(chessGame)) {
-            setErrorPageAndMessage(mav, "Can't join chess game");
-        } else if (isPlayerJoiningOwnGame(chessGame, player)) {
-            setErrorPageAndMessage(mav, "Player can't join a game they started");
-        }
+       if(isPlayerJoiningOwnGame(chessGame, player)) {
+           setErrorPageAndMessage(mav, ERROR_GAME_HAS_NO_OPPONENT);
+       } else {
+           if(isGameInFinishedState(chessGame)){
+               setErrorPageAndMessage(mav, ERROR_GAMEOVER);
+           } else
+           {
+               setErrorPageAndMessage(mav, ERROR_PLAYER_NOT_OPPONENT);
+           }
+       }
+    }
+    
+    private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
+        mav.setViewName("forward:/app/chessgame/chessapplication");
+        mav.getModel().put("ERRORS", errorMessage);
+        logger.error(errorMessage);
+    }
+    
+    private boolean isGameInFinishedState(ServerChessGame chessGame){
+        return ServerChessGame.ServerGameStatus.FINISHED.equals(chessGame.getCurrentStatus());
     }
 
     private void addView(ServerChessGame chessGame) {
@@ -97,12 +142,6 @@ public class ServerJoinChessGameController {
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
         return player.equals(chessGame.getPlayer());
-    }
-
-    private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
-        mav.setViewName("forward:/app/chessgame/chessapplication");
-        mav.getModel().put("ERRORS", errorMessage);
-        logger.error(errorMessage);
     }
 
     /**
