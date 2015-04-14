@@ -134,7 +134,7 @@ public class JsonChessBoardViewTest {
     }
 
     private void checkForUpdateMessageHeader(){
-        assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompConstants.MESSAGE_HEADER_TYPE.getValue()));
+        assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompConstants.MESSAGE_HEADER_TYPE));
     }
     
     /**

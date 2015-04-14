@@ -5,15 +5,6 @@ package org.amc.game.chessserver;
  * @author Adrian Mclaughlin
  *
  */
-public enum StompConstants {
-    MESSAGE_HEADER_TYPE("TYPE");
-    
-    private String value;
-    private StompConstants(String value){
-        this.value = value;
-    }
-    
-    public String getValue(){
-        return value;
-    }
+public class StompConstants {
+    public static final String MESSAGE_HEADER_TYPE="TYPE";
 }

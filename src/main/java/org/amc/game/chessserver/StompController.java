@@ -115,7 +115,7 @@ public class StompController {
 
     private Map<String, Object> getHeaders(MessageType type) {
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put(StompConstants.MESSAGE_HEADER_TYPE.getValue(), type);
+        headers.put(StompConstants.MESSAGE_HEADER_TYPE, type);
         return headers;
     }
 

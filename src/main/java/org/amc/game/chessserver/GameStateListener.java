@@ -47,7 +47,7 @@ public class GameStateListener implements Observer {
     
     private Map<String,Object> getDefaultHeaders(){
         Map<String,Object> headers = new HashMap<String, Object>();
-        headers.put(StompConstants.MESSAGE_HEADER_TYPE.getValue(), MessageType.STATUS);
+        headers.put(StompConstants.MESSAGE_HEADER_TYPE, MessageType.STATUS);
         return headers;
     }
     

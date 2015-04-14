@@ -75,7 +75,7 @@ public class StompControllerUnitTest {
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCall();
         assertEquals("", payoadArgument.getValue());
-        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE.getValue()));
+        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @SuppressWarnings("unchecked")
@@ -93,7 +93,7 @@ public class StompControllerUnitTest {
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCall();
         assertEquals("Error:Not a valid move", payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE.getValue()));
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class StompControllerUnitTest {
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCall();
         assertEquals("Error:Not Player's turn", payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE.getValue()));
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class StompControllerUnitTest {
         verifySimpMessagingTemplateCall();
         assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
                         payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE.getValue()));
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class StompControllerUnitTest {
         verifySimpMessagingTemplateCall();
         assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
                         payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE.getValue()));
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
     
     /**
