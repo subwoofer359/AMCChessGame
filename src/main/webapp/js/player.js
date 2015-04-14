@@ -2,7 +2,7 @@ function updatePlayer(message) {
     "use strict";
     var jsonPlayer, name, colour, whitePlayerName, whiteNameHolder, blackNameHolder;
     jsonPlayer = $.parseJSON(message).currentPlayer;
-    name = jsonPlayer.name;
+    name = jsonPlayer.player.name;
     colour = jsonPlayer.colour;
     console.log(name + " " + colour);
 

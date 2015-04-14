@@ -17,15 +17,15 @@ import java.util.Set;
 public class PlayersKingCheckmateCondition {
 
     private PlayerKingInCheckCondition kingIsChecked = new PlayerKingInCheckCondition();
-    private Player player;
-    private Player opponent;
+    private ChessGamePlayer player;
+    private ChessGamePlayer opponent;
     private ChessBoard board;
     private ChessPieceLocation playersKingLocation;
     private List<ChessPieceLocation> enemyLocations;
     private List<ChessPieceLocation> attackingPieces;
     private List<ChessPieceLocation> playersPieces;
 
-    public PlayersKingCheckmateCondition(Player player, Player opponent, ChessBoard board) {
+    public PlayersKingCheckmateCondition(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
         this.player = player;
         this.opponent = opponent;
         this.board = board;

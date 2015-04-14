@@ -4,6 +4,7 @@ import org.amc.game.ChessApplication;
 import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -11,7 +12,6 @@ import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
-import org.amc.game.chess.Player;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
 import org.amc.game.chess.ChessBoard.Coordinate;
@@ -176,8 +176,8 @@ public class ChessBoardView implements Observer {
     public static void main(String[] args) {
         ChessBoard board = new ChessBoard();
         board.initialise();
-        Player playerOne = new HumanPlayer("Stephen", Colour.WHITE);
-        Player playerTwo = new HumanPlayer("Chris", Colour.BLACK);
+        ChessGamePlayer playerOne = new ChessGamePlayer(new HumanPlayer("Stephen"),Colour.WHITE);
+        ChessGamePlayer playerTwo = new ChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
         ChessGame chessGame=new ChessGame(board, playerOne, playerTwo);
         ConsoleController controller = new ConsoleController(chessGame);
         ChessBoardView view = new ChessBoardView(board);

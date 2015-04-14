@@ -57,7 +57,9 @@ public class ServerJoinChessGameController {
 
     private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
         mav.getModel().put("GAME_UUID", gameUUID);
-        mav.getModel().put("GAME",gameMap.get(gameUUID));
+        ServerChessGame serverGame = gameMap.get(gameUUID);
+        mav.getModel().put("GAME", serverGame);
+        mav.getModel().put("CHESSPLAYER", serverGame.getOpponent());
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
         mav.setViewName("chessGamePortal");
     }
@@ -89,6 +91,7 @@ public class ServerJoinChessGameController {
     private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
         mav.setViewName("forward:/app/chessgame/chessapplication");
         mav.getModel().put("ERRORS", errorMessage);
+        logger.error(errorMessage);
     }
 
     /**

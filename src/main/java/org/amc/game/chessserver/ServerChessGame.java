@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
@@ -27,12 +28,11 @@ public class ServerChessGame extends DefaultSubject {
     
     ChessGame chessGame=null;
     private ServerGameStatus currentStatus;
-    private Player player;
-    private Player opponent;
+    private ChessGamePlayer player;
+    private ChessGamePlayer opponent;
 
     public ServerChessGame(Player player) {
-        this.player=player;
-        this.player.setColour(Colour.WHITE);
+        this.player=new ChessGamePlayer(player,Colour.WHITE);
         this.currentStatus=ServerGameStatus.AWAITING_PLAYER;
     }
     
@@ -46,11 +46,11 @@ public class ServerChessGame extends DefaultSubject {
             if(this.player.equals(opponent)){
                 logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));;
             } else {
-                opponent.setColour(Colour.BLACK);
-                this.opponent=opponent;
+                
+                this.opponent=new ChessGamePlayer(opponent,Colour.BLACK);
                 ChessBoard board=new ChessBoard();
                 SetupChessBoard.setUpChessBoardToDefault(board);
-                chessGame=new ChessGame(board,this.player,opponent);
+                chessGame=new ChessGame(board,this.player,this.opponent);
                 this.currentStatus=ServerGameStatus.IN_PROGRESS;
             }
         }
@@ -68,10 +68,9 @@ public class ServerChessGame extends DefaultSubject {
      * Get the player who created the game
      * @return Player
      */
-    public final Player getPlayer() {
+    public final ChessGamePlayer getPlayer() {
         return player;
     }
-
     
     /**
      * Set the ServerGame's status
@@ -92,7 +91,7 @@ public class ServerChessGame extends DefaultSubject {
     /**
      * @return Player opposing player 
      */
-    public final Player getOpponent(){
+    public final ChessGamePlayer getOpponent(){
         return opponent;
     }
     
@@ -105,7 +104,7 @@ public class ServerChessGame extends DefaultSubject {
      * @param move Move to be made
      * @throws IllegalMoveException if Move is illegal
      */
-    public final void move(Player player,Move move) throws IllegalMoveException{
+    public final void move(ChessGamePlayer player,Move move) throws IllegalMoveException{
         if(chessGame!=null){
             synchronized(chessGame){
                 chessGame.move(player, move);

@@ -2,9 +2,9 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,14 +19,14 @@ import java.util.concurrent.ConcurrentMap;
 public class StartPageControllerCreateGame {
     private Model model;
     private ConcurrentMap<Long, ServerChessGame> gameMap;
-    private Player whitePlayer;
+    private ChessGamePlayer whitePlayer;
     private StartPageController controller;
     
     @Before
     public void setUp() throws Exception {
         model=new ExtendedModelMap();
         gameMap =new ConcurrentHashMap<>();
-        whitePlayer=new HumanPlayer("Ted", Colour.WHITE);
+        whitePlayer=new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         controller=new StartPageController();
         controller.setGameMap(gameMap);
     }

@@ -12,7 +12,6 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
@@ -32,22 +31,23 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
 
     private ChessGame chessGame;
     private ChessBoard board;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     private static ChessBoardFactory boardFactory;
-    
+
     @BeforeClass
-    public static void setUpFactory(){
-        boardFactory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
+    public static void setUpFactory() {
+        boardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     }
-    
+
     @Before
     public void setUp() throws Exception {
-        whitePlayer=new HumanPlayer("White Player",Colour.WHITE);
-        blackPlayer=new HumanPlayer("Black Player", Colour.BLACK);
-        board=boardFactory.getChessBoard("ra8:nc8:rc6:pd3:pb2:pe2:pf2:ph2:nb1:ke1:Pf7:Pg6:Ph6:Ka5:Pc3");
+        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        board = boardFactory
+                        .getChessBoard("ra8:nc8:rc6:pd3:pb2:pe2:pf2:ph2:nb1:ke1:Pf7:Pg6:Ph6:Ka5:Pc3");
         new ChessBoardView(board);
-        chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.setChessBoard(board);
     }
 
@@ -57,7 +57,7 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
 
     @Test
     public void test() throws IllegalMoveException {
-        Move move =new Move(new Location(C,6), new Location(B,6));
+        Move move = new Move(new Location(C, 6), new Location(B, 6));
         chessGame.move(whitePlayer, move);
         assertTrue(chessGame.isCheckMate(blackPlayer, board));
         assertTrue(chessGame.getGameState() == ChessGame.GameState.BLACK_CHECKMATE);

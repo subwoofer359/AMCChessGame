@@ -13,18 +13,4 @@ public interface Player {
      * @return String
      */
     String getName();
-
-    /**
-     * Colour of the Player
-     * 
-     * @return enum Colour
-     */
-    Colour getColour();
-    
-    /**
-     * Set Colour of Player
-     * 
-     * @param colour Colour
-     */
-    void setColour(Colour colour);
 }

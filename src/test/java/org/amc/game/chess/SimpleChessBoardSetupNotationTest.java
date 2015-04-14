@@ -14,10 +14,11 @@ public class SimpleChessBoardSetupNotationTest {
     private static final String setupNotation = "Kd6:Qe6:Bb8:Be8:Ng8:Na6:Ra4:Ph5:"
                     + "ka3:qe1:bh3:nc3:pf4:rb5";
     private ChessBoardFactory chessBoardFactory;
+
     // private static final String setupNotation="Kd6Qe6";
     @Before
     public void setUp() throws Exception {
-        chessBoardFactory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
+        chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     }
 
     @After

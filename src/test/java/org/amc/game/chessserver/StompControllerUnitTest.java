@@ -3,9 +3,9 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -21,9 +21,9 @@ public class StompControllerUnitTest {
 
     private StompController controller;
 
-    private Player whitePlayer = new HumanPlayer("Stephen", Colour.WHITE);
+    private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
-    private Player blackPlayer = new HumanPlayer("Chris", Colour.BLACK);
+    private ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
 
     private long gameUUID = 1234L;
 

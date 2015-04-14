@@ -13,8 +13,8 @@ import java.util.List;
 
 @Ignore
 public class ChessGameMoveTest {
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     private ChessPiece chessPiece;
     private ChessMoveRule mockRule;
     private ChessBoard board;
@@ -23,20 +23,20 @@ public class ChessGameMoveTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new HumanPlayer("Teddy", Colour.WHITE);
-        blackPlayer = new HumanPlayer("Robin", Colour.BLACK);
-        
+        whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
+        blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
+
         move = mock(Move.class);
         board = mock(ChessBoard.class);
-        
+
         chessPiece = mock(ChessPiece.class);
         when(chessPiece.getColour()).thenReturn(Colour.WHITE);
-      
+
         when(board.getPieceFromBoardAt(any(Location.class))).thenReturn(chessPiece);
         when(board.getTheLastMove()).thenReturn(move);
-        
+
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-        
+
         mockRule = mock(ChessMoveRule.class);
         List<ChessMoveRule> rules = new ArrayList<>();
         rules.add(mockRule);
@@ -51,7 +51,7 @@ public class ChessGameMoveTest {
     @Test
     public void testMoveNotInCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
-        
+
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(false).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
         doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
@@ -64,11 +64,11 @@ public class ChessGameMoveTest {
         verify(chessPiece, times(1)).isValidMove(board, move);
 
     }
-    
+
     @Test
     public void testMoveAfterCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
-        
+
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(true).doReturn(false).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
         doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
@@ -81,36 +81,36 @@ public class ChessGameMoveTest {
         verify(chessPiece, times(1)).isValidMove(board, move);
         verify(board, times(1)).move(move);
     }
-    
-    @Test(expected=IllegalMoveException.class)
+
+    @Test(expected = IllegalMoveException.class)
     public void testMoveIntoCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
-        
+
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(false).doReturn(true).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
         doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
                         any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
-        
+
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
         verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
         verify(board, times(0)).move(move);
     }
-    
+
     @Test
     public void testMoveIntoCheckFromCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
-        
+
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(true).doReturn(true).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
         doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
                         any(Move.class));
 
-        try{
+        try {
             spyChessGame.move(whitePlayer, move);
-        }catch(IllegalMoveException ie){
+        } catch (IllegalMoveException ie) {
             assertTrue(ie instanceof IllegalMoveException);
         }
 
@@ -119,27 +119,27 @@ public class ChessGameMoveTest {
         verify(chessPiece, times(1)).isValidMove(board, move);
         verify(board, times(1)).move(move);
     }
-    
-    @Test(expected=IllegalMoveException.class)
+
+    @Test(expected = IllegalMoveException.class)
     public void testInValidMoveIntoCheckFromCheckNoSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
-        
+
         when(chessPiece.isValidMove(board, move)).thenReturn(false);
         doReturn(true).doReturn(true).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
         doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
                         any(Move.class));
-        
+
         spyChessGame.move(whitePlayer, move);
     }
-    
+
     @Test
     public void testMoveNotCheckSpecialMove() throws IllegalMoveException {
         ChessGame spyChessGame = spy(chessGame);
-        
+
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(false).doReturn(false).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
-        doReturn(true).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
-                        any(Move.class));
+        doReturn(true).when(spyChessGame)
+                        .doesAGameRuleApply(any(ChessBoard.class), any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
 

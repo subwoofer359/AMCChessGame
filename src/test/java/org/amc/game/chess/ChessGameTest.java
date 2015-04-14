@@ -9,8 +9,8 @@ import org.junit.Test;
 
 public class ChessGameTest {
 
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     private ChessBoard board;
     private ChessGame chessGame;
     private Location endLocation;
@@ -18,12 +18,14 @@ public class ChessGameTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer=new HumanPlayer("Teddy", Colour.WHITE);
-        blackPlayer=new HumanPlayer("Robin", Colour.BLACK);
-        board=new ChessBoard();
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
-        chessGame=new ChessGame(board, whitePlayer, blackPlayer);
+        whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
+        blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
+        board = new ChessBoard();
+        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
+                        StartingSquare.WHITE_KING.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+                        StartingSquare.BLACK_KING.getLocation());
+        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         startLocation = new Location(A, 8);
         endLocation = new Location(B, 7);
     }
@@ -40,19 +42,19 @@ public class ChessGameTest {
         chessGame.changePlayer();
         assertEquals(whitePlayer, chessGame.getCurrentPlayer());
     }
-    
+
     @Test(expected = IllegalMoveException.class)
-    public void testMoveWithAnEmptySquare()throws IllegalMoveException {
+    public void testMoveWithAnEmptySquare() throws IllegalMoveException {
         chessGame.move(whitePlayer, new Move(startLocation, endLocation));
     }
-    
+
     @Test(expected = IllegalMoveException.class)
     public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
         BishopPiece bishop = new BishopPiece(Colour.WHITE);
         board.putPieceOnBoardAt(bishop, startLocation);
         chessGame.move(blackPlayer, new Move(startLocation, new Location(B, 7)));
     }
-    
+
     @Test
     public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
         BishopPiece bishop = new BishopPiece(Colour.WHITE);
@@ -61,42 +63,43 @@ public class ChessGameTest {
         assertEquals(bishop, board.getPieceFromBoardAt(endLocation));
         assertNull(board.getPieceFromBoardAt(startLocation));
     }
-    
+
     @Test
-    public void doesGameRuleApply(){
+    public void doesGameRuleApply() {
         RookPiece rook = new RookPiece(Colour.WHITE);
-        Location rookStartPosition = new Location(H,1);
-        Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(G,1));
+        Location rookStartPosition = new Location(H, 1);
+        Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(G, 1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         assertTrue(chessGame.doesAGameRuleApply(board, move));
     }
-    
+
     @Test
-    public void doesNotGameRuleApply(){
+    public void doesNotGameRuleApply() {
         RookPiece rook = new RookPiece(Colour.WHITE);
-        Location rookStartPosition = new Location(H,1);
-        Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(F,1));
+        Location rookStartPosition = new Location(H, 1);
+        Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         assertFalse(chessGame.doesAGameRuleApply(board, move));
     }
-    
+
     @Test
-    public void gameRuleApplied() throws IllegalMoveException{
+    public void gameRuleApplied() throws IllegalMoveException {
         RookPiece rook = new RookPiece(Colour.WHITE);
-        Location rookStartPosition = new Location(H,1);
-        Move move=new Move(StartingSquare.WHITE_KING.getLocation(),new Location(F,1));
+        Location rookStartPosition = new Location(H, 1);
+        Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         chessGame.move(whitePlayer, move);
     }
-    
+
     /**
      * JIRA CG-33 Player can make a move out of turn
+     * 
      * @throws IllegalMoveException
      */
-    @Test(expected=IllegalMoveException.class)
-    public void notPlayersTurn()throws IllegalMoveException{
-        Move move=new Move(StartingSquare.BLACK_KING.getLocation(),new Location(E, 7));
+    @Test(expected = IllegalMoveException.class)
+    public void notPlayersTurn() throws IllegalMoveException {
+        Move move = new Move(StartingSquare.BLACK_KING.getLocation(), new Location(E, 7));
         chessGame.move(blackPlayer, move);
-        assertEquals(whitePlayer,chessGame.getCurrentPlayer());
+        assertEquals(whitePlayer, chessGame.getCurrentPlayer());
     }
 }

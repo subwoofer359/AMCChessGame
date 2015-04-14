@@ -15,61 +15,63 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class ChessGameCastlingKingInCheck {
-    private static Player whitePlayer = new HumanPlayer("Teddy", Colour.WHITE);
-    private static Player blackPlayer = new HumanPlayer("Robin", Colour.BLACK);
-    private Player currentPlayer;
+    private static ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"),
+                    Colour.WHITE);
+    private static ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"),
+                    Colour.BLACK);
+    private ChessGamePlayer currentPlayer;
     private ChessPiece attackingPiece;
     private Move defendingChessPieceMove;
     private ChessBoard board;
     private ChessGame chessGame;
     private ChessPiece kingPiece;
     private ChessPiece rookPiece;
-    private ChessBoardView view;
-    
-    public ChessGameCastlingKingInCheck(Player currentPlayer,Move defendingChessPieceMove) {
-        this.currentPlayer=currentPlayer;
-        this.defendingChessPieceMove=defendingChessPieceMove;
+
+    public ChessGameCastlingKingInCheck(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
+        this.currentPlayer = currentPlayer;
+        this.defendingChessPieceMove = defendingChessPieceMove;
     }
-    
+
     @Before
     public void setUp() throws Exception {
-        board=new ChessBoard();
-        view=new ChessBoardView(board);
-        chessGame=new ChessGame(board,whitePlayer,blackPlayer);
-        attackingPiece=new BishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(attackingPiece, new Location(E,3));
-        kingPiece=new KingPiece(Colour.WHITE);
-        rookPiece=new RookPiece(Colour.WHITE);
+        board = new ChessBoard();
+        new ChessBoardView(board);
+        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
+        attackingPiece = new BishopPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(attackingPiece, new Location(E, 3));
+        kingPiece = new KingPiece(Colour.WHITE);
+        rookPiece = new RookPiece(Colour.WHITE);
         board.putPieceOnBoardAt(kingPiece, StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(rookPiece, StartingSquare.WHITE_ROOK_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), StartingSquare.BLACK_KING.getLocation());
+        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+                        StartingSquare.BLACK_KING.getLocation());
     }
-    
+
     @Parameters
-    public static Collection<?> addedChessPieces(){
-        
-        return Arrays.asList(new Object[][]{
-                        {whitePlayer,new Move(StartingSquare.WHITE_KING.getLocation(),new Location(G,1))}
-                        });
-        
+    public static Collection<?> addedChessPieces() {
+
+        return Arrays.asList(new Object[][] { { whitePlayer,
+                new Move(StartingSquare.WHITE_KING.getLocation(), new Location(G, 1)) } });
+
     }
-    
-    
-    @Test(expected=IllegalMoveException.class)
-    public void testInvalidMoveExceptionThrown() throws IllegalMoveException{
+
+    @Test(expected = IllegalMoveException.class)
+    public void testInvalidMoveExceptionThrown() throws IllegalMoveException {
         chessGame.move(currentPlayer, defendingChessPieceMove);
-        assertEquals(kingPiece,board.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()));
-        assertEquals(rookPiece,board.getPieceFromBoardAt(StartingSquare.WHITE_ROOK_RIGHT.getLocation()));
+        assertEquals(kingPiece, board.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()));
+        assertEquals(rookPiece,
+                        board.getPieceFromBoardAt(StartingSquare.WHITE_ROOK_RIGHT.getLocation()));
     }
-    
+
     @Test
-    public void testPiecesAreReturnedToStartPositions(){
-        try{
+    public void testPiecesAreReturnedToStartPositions() {
+        try {
             chessGame.move(currentPlayer, defendingChessPieceMove);
-        }catch(IllegalMoveException ime){
-            
+        } catch (IllegalMoveException ime) {
+
         }
-        assertEquals(kingPiece,board.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()));
-        assertEquals(rookPiece,board.getPieceFromBoardAt(StartingSquare.WHITE_ROOK_RIGHT.getLocation()));
+        assertEquals(kingPiece, board.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()));
+        assertEquals(rookPiece,
+                        board.getPieceFromBoardAt(StartingSquare.WHITE_ROOK_RIGHT.getLocation()));
     }
 }

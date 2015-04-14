@@ -1,7 +1,5 @@
 package org.amc.game.chess.view;
 
-import static org.junit.Assert.*;
-
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
@@ -20,10 +18,10 @@ public class ChessBoardViewTest {
 
     @Test
     public void testDisplayTheBoard() {
-        ChessBoard board=new ChessBoard();
+        ChessBoard board = new ChessBoard();
         board.initialise();
-        ChessBoardView view= new ChessBoardView(board);
+        ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
     }
- 
+
 }
