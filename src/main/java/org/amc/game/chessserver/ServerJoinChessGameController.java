@@ -32,9 +32,12 @@ public class ServerJoinChessGameController {
     @Autowired
     private SimpMessagingTemplate template;
     
-    static final String ERROR_GAME_HAS_NO_OPPONENT="Game has no opponent assigned";
-    static final String ERROR_PLAYER_NOT_OPPONENT="Player is not playing this chess game";
-    static final String ERROR_GAMEOVER="Chess game is over";
+    static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
+    static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
+    static final String ERROR_GAMEOVER = "Chess game is over";
+    static final String ERROR_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
+    static final String ERROR_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
+    static final String CHESS_PAGE = "chessGamePortal";
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
@@ -89,12 +92,12 @@ public class ServerJoinChessGameController {
     }
 
     private void setupModelForChessGameScreen(ModelAndView mav, long gameUUID) {
-        mav.getModel().put("GAME_UUID", gameUUID);
+        mav.getModel().put(ServerConstants.GAME_UUID, gameUUID);
         ServerChessGame serverGame = gameMap.get(gameUUID);
-        mav.getModel().put("GAME", serverGame);
-        mav.getModel().put("CHESSPLAYER", serverGame.getOpponent());
+        mav.getModel().put(ServerConstants.GAME, serverGame);
+        mav.getModel().put(ServerConstants.CHESSPLAYER, serverGame.getOpponent());
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
-        mav.setViewName("chessGamePortal");
+        mav.setViewName(CHESS_PAGE);
     }
 
     private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {
@@ -111,8 +114,8 @@ public class ServerJoinChessGameController {
     }
     
     private void setErrorPageAndMessage(ModelAndView mav, String errorMessage) {
-        mav.setViewName("forward:/app/chessgame/chessapplication");
-        mav.getModel().put("ERRORS", errorMessage);
+        mav.setViewName(ERROR_FORWARD_PAGE);
+        mav.getModel().put(ServerConstants.ERRORS, errorMessage);
         logger.error(errorMessage);
     }
     
@@ -167,8 +170,8 @@ public class ServerJoinChessGameController {
     public ModelAndView handleMissingRequestParameter(MissingServletRequestParameterException be) {
         ModelAndView mav = new ModelAndView();
         logger.error("MissingServletRequestParameterException:" + be.getMessage());
-        mav.getModel().put("ERRORS", "Missing GAME Id");
-        mav.setViewName("redirect:/app/chessgame/chessapplication");
+        mav.getModel().put(ServerConstants.ERRORS, "Missing GAME Id");
+        mav.setViewName(ERROR_REDIRECT_PAGE);
         return mav;
     }
 
@@ -183,7 +186,7 @@ public class ServerJoinChessGameController {
     @ExceptionHandler(HttpSessionRequiredException.class)
     public String handleMissingSessionAttributes(HttpSessionRequiredException hsre) {
         logger.error("HttpSessionRequiredException:" + hsre.getMessage());
-        return "redirect:/app/chessgame/chessapplication";
+        return ERROR_REDIRECT_PAGE;
     }
 
 }

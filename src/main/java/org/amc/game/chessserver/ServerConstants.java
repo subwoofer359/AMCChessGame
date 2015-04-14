@@ -6,9 +6,11 @@ package org.amc.game.chessserver;
  * @author Adrian Mclaughlin
  *
  */
-public enum ServerConstants {
-    GAMEMAP,
-    GAME_UUID, 
-    PLAYER,
-    CHESSPLAYER
+public class ServerConstants {
+    public static final String GAMEMAP = "GAMEMAP";
+    public static final String PLAYER = "PLAYER";
+    public static final String GAME_UUID = "GAME_UUID";
+    public static final String GAME = "GAME";
+    public static final String CHESSPLAYER = "CHESSPLAYER";
+    public static final String ERRORS = "ERRORS";
 }
