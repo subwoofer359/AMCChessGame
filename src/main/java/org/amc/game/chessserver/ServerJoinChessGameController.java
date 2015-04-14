@@ -37,10 +37,12 @@ public class ServerJoinChessGameController {
         ServerChessGame chessGame = gameMap.get(gameUUID);
         ModelAndView mav = new ModelAndView();
         if (canPlayerJoinGame(chessGame, player)) {
-            addPlayerToGame(chessGame, player);
+            if(inAwaitingPlayerState(chessGame)){
+                addPlayerToGame(chessGame, player);
+                addView(chessGame);
+                addGameListener(chessGame);
+            }
             setupModelForChessGameScreen(mav, gameUUID);
-            addView(chessGame);
-            addGameListener(chessGame);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
@@ -48,7 +50,8 @@ public class ServerJoinChessGameController {
     }
 
     private boolean canPlayerJoinGame(ServerChessGame chessGame, Player player) {
-        return inAwaitingPlayerState(chessGame) && !isPlayerJoiningOwnGame(chessGame, player);
+        return (inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player)) && 
+                        !isPlayerJoiningOwnGame(chessGame, player);
     }
 
     private void addPlayerToGame(ServerChessGame chessGame, Player player) {
@@ -82,6 +85,14 @@ public class ServerJoinChessGameController {
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
         return chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+    }
+    
+    private boolean joiningCurrentGame(ServerChessGame chessGame, Player player) {
+        if(chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
+            return player.equals(chessGame.getOpponent());
+        } else {
+            return false;
+        }
     }
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
