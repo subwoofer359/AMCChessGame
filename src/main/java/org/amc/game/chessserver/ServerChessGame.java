@@ -45,7 +45,7 @@ public class ServerChessGame extends DefaultSubject {
     public synchronized void addOpponent(Player opponent){
         if(this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)){
             if(ComparePlayers.comparePlayers(this.player, opponent)){
-                logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));;
+                logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));
             } else {
                 
                 this.opponent=new ChessGamePlayer(opponent,Colour.BLACK);

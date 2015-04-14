@@ -90,7 +90,7 @@ public class ServerJoinChessGameController {
     }
 
     private boolean canPlayerJoinGame(ServerChessGame chessGame, Player player) {
-        return (inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player));
+        return inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player);
     }
 
     private void addPlayerToGame(ServerChessGame chessGame, Player player) {
