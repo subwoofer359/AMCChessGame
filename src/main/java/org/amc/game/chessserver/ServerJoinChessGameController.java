@@ -1,6 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessGamePlayer;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
@@ -54,7 +55,7 @@ public class ServerJoinChessGameController {
     }
 
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
-        return player.equals(chessGame.getPlayer());
+        return ComparePlayers.comparePlayers(player, chessGame.getPlayer());
     }
     
     private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
@@ -142,7 +143,7 @@ public class ServerJoinChessGameController {
 
     private boolean joiningCurrentGame(ServerChessGame chessGame, Player player) {
         if (chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
-            return player.equals(chessGame.getOpponent());
+            return ComparePlayers.comparePlayers(player, chessGame.getOpponent());
         } else {
             return false;
         }

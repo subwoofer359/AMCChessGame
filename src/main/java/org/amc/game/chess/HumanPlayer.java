@@ -8,6 +8,7 @@ package org.amc.game.chess;
  */
 public class HumanPlayer implements Player {
     private String name;
+    private int uid;
 
     public HumanPlayer(String name) {
         this.name = name;
@@ -24,27 +25,15 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+    public int getUid() {
+        return uid;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass().equals(Player.class.getClass()))
-            return false;
-        Player other = (Player) obj;
-        if (name == null) {
-            if (other.getName() != null)
-                return false;
-        } else if (!name.equals(other.getName()))
-            return false;
-        return true;
+    public void setUid(int uid) {
+        this.uid = uid;
+        
     }
+    
+    
 }

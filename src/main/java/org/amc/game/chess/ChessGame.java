@@ -90,7 +90,7 @@ public class ChessGame{
     }
 
     private void isPlayersTurn(Player player) throws IllegalMoveException{
-        if(!getCurrentPlayer().equals(player)){
+        if(!ComparePlayers.comparePlayers(getCurrentPlayer(),player)) {
             throw new IllegalMoveException("Not Player's turn");
         }
     }

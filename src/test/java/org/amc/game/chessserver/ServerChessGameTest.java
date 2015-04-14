@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.Colour;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.junit.After;
@@ -26,7 +27,7 @@ public class ServerChessGameTest {
     @Test
     public void testInitialState() {
         ServerChessGame game = new ServerChessGame(player);
-        assertEquals(game.getPlayer(), player);
+        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, game.getCurrentStatus());
         assertEquals(Colour.WHITE, game.getPlayer().getColour());
@@ -36,7 +37,7 @@ public class ServerChessGameTest {
     public void testAddOpponent() {
         ServerChessGame game = new ServerChessGame(player);
         game.addOpponent(opponent);
-        assertEquals(game.getPlayer(), player);
+        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNotNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, game.getCurrentStatus());
         assertEquals(Colour.BLACK, game.getOpponent().getColour());
@@ -46,7 +47,7 @@ public class ServerChessGameTest {
     public void testAddPlayerAsOpponent() {
         ServerChessGame game = new ServerChessGame(player);
         game.addOpponent(player);
-        assertEquals(game.getPlayer(), player);
+        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, game.getCurrentStatus());
     }
@@ -56,7 +57,7 @@ public class ServerChessGameTest {
         ServerChessGame game = new ServerChessGame(player);
         game.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         game.addOpponent(opponent);
-        assertEquals(game.getPlayer(), player);
+        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, game.getCurrentStatus());
     }
@@ -66,7 +67,7 @@ public class ServerChessGameTest {
         ServerChessGame game = new ServerChessGame(player);
         game.setCurrentStatus(ServerChessGame.ServerGameStatus.IN_PROGRESS);
         game.addOpponent(opponent);
-        assertEquals(game.getPlayer(), player);
+        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, game.getCurrentStatus());
     }

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.junit.After;
 import org.junit.Before;
@@ -58,6 +59,6 @@ public class StartPageControllerCreateGame {
     
     private void assertPlayerIsAddedToChessGame(){
         List<ServerChessGame> games= new ArrayList<>(gameMap.values());
-        assertTrue(games.get(0).getPlayer().equals(whitePlayer));
+        assertTrue(ComparePlayers.comparePlayers(games.get(0).getPlayer(), whitePlayer));
     }
 }

@@ -4,6 +4,7 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
@@ -43,7 +44,7 @@ public class ServerChessGame extends DefaultSubject {
      */
     public synchronized void addOpponent(Player opponent){
         if(this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)){
-            if(this.player.equals(opponent)){
+            if(ComparePlayers.comparePlayers(this.player, opponent)){
                 logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));;
             } else {
                 
@@ -78,7 +79,7 @@ public class ServerChessGame extends DefaultSubject {
      * @return ChessGamePlayer represents Player
      */
     public final ChessGamePlayer getPlayer(Player player) {
-        return this.player.equals(player)? this.player : this.opponent; 
+        return ComparePlayers.comparePlayers(this.player, player)? this.player : this.opponent; 
     }
     
     /**

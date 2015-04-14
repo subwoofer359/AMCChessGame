@@ -8,14 +8,25 @@ import org.junit.Test;
 
 public class PlayerEqualityTest {
 
+    private static final int uidOne = 1233303939;
+    private static final int uidTwo = 1903939939;
+    
     Player playerA = new HumanPlayer("Ted");
     Player playerB = new ChessGamePlayer(playerA, Colour.WHITE);
     Player playerC = new HumanPlayer("Ted");
     Player playerD = new HumanPlayer("Tom");
     Player playerE = new ChessGamePlayer(playerD, Colour.WHITE);
+    Player playerF = new HumanPlayer("Ted");
+    Player playerG = new HumanPlayer("Tom");
     
     @Before
     public void setUp() throws Exception {
+        playerA.setUid(uidOne);
+        playerC.setUid(uidOne);
+        playerD.setUid(uidTwo);
+        playerF.setUid(uidTwo);
+        playerG.setUid(uidOne);
+        
     }
 
     @After
@@ -24,13 +35,15 @@ public class PlayerEqualityTest {
 
     @Test
     public void test() {
-        assertEquals(playerA, playerB);
-        assertEquals(playerA, playerC);
-        assertEquals(playerB, playerC);
-        assertNotEquals(playerA, playerD);
-        assertNotEquals(playerA, playerE);
-        assertNotEquals(playerB, playerD);
-        assertNotEquals(playerB, playerE);
+        assertTrue(ComparePlayers.comparePlayers(playerA, playerB));
+        assertTrue(ComparePlayers.comparePlayers(playerA, playerC));
+        assertTrue(ComparePlayers.comparePlayers(playerB, playerC));
+        assertFalse(ComparePlayers.comparePlayers(playerA, playerD));
+        assertFalse(ComparePlayers.comparePlayers(playerA, playerE));
+        assertFalse(ComparePlayers.comparePlayers(playerB, playerD));
+        assertFalse(ComparePlayers.comparePlayers(playerB, playerE));
+        assertFalse(ComparePlayers.comparePlayers(playerA, playerF));
+        assertFalse(ComparePlayers.comparePlayers(playerA, playerG));
     }
 
 }
