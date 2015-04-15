@@ -20,6 +20,11 @@
 <title>Chess Game</title>
 <style>
     @import url(../../css/General.css);
+    body{
+          background-image: url(../../img/1700128.jpg);
+          background-size: cover;
+          background-repeat: no-repeat;
+    }
     #header{
         width:100%;
         padding-bottom: 70px;
