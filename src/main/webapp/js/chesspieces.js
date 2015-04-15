@@ -30,15 +30,16 @@ var coordinates = {
  * @throws {string} if coordinate can't be parsed
  */
 function parseSquareCoordinates(squareCoordinates) {
-    var coordinateRegex = /(\w)(\d)/,
+    var coordinateRegex = /([A-H])([1-8])/,
         coordinate;
     if (coordinateRegex.test(squareCoordinates)) {
         coordinate = coordinateRegex.exec(squareCoordinates);
         return {file : coordinate[1],
                 rank : coordinate[2]
             };
+    } else {
+        throw "Not valid ChessBoard coordinate";
     }
-    throw "Not valid ChessBoard coordinate";
 }
 
 function ChessPieces(playerColour) {
