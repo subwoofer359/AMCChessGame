@@ -85,27 +85,27 @@ function createChessBoard(playerColour, chessboardJSON) {
         if (json.squares.hasOwnProperty(location)) {
             switch (json.squares[location]) {
             case "p":
-                board.append(chesspieces.pawn("test-" + location, location, chesspieces.colour.white));
+                board.append(chesspieces.pawn("pawn-" + location, location, chesspieces.colour.white));
                 break;
 
             case "P":
-                board.append(chesspieces.pawn("test-" + location, location, chesspieces.colour.black));
+                board.append(chesspieces.pawn("pawn-" + location, location, chesspieces.colour.black));
                 break;
 
             case 'r':
-                board.append(chesspieces.rook("test-" + location, location, chesspieces.colour.white));
+                board.append(chesspieces.rook("rook-" + location, location, chesspieces.colour.white));
                 break;
 
             case 'R':
-                board.append(chesspieces.rook("test-" + location, location, chesspieces.colour.black));
+                board.append(chesspieces.rook("rook-" + location, location, chesspieces.colour.black));
                 break;
 
             case 'B':
-                board.append(chesspieces.bishop("test-" + location, location, chesspieces.colour.black));
+                board.append(chesspieces.bishop("bishop-" + location, location, chesspieces.colour.black));
                 break;
 
             case 'b':
-                board.append(chesspieces.bishop("test-" + location, location, chesspieces.colour.white));
+                board.append(chesspieces.bishop("bishop-" + location, location, chesspieces.colour.white));
                 break;
 
             case 'N':

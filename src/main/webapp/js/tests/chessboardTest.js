@@ -41,7 +41,7 @@ QUnit.test("testing chessboard.js: create a non blank chess board", function (as
     assert.equal($chesspieces.length, 32);
     
     $chesspieces.each(function () {
-        var idExpr = /(knight|queen|king|bishop|rook|pawn|test)\-[A-H][1-8]/;
+        var idExpr = /(knight|queen|king|bishop|rook|pawn)\-[A-H][1-8]/;
         assert.ok(idExpr.test($(this).attr("id")));
     });
     
