@@ -9,7 +9,7 @@ import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
 
-public class ChessPieceTextSymbol {
+public final class ChessPieceTextSymbol {
 
     private ChessPieceTextSymbol() {
         throw new RuntimeException(ChessPieceTextSymbol.class.getSimpleName()+

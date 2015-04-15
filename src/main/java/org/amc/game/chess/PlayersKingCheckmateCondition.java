@@ -16,14 +16,14 @@ import java.util.Set;
  */
 public class PlayersKingCheckmateCondition {
 
-    private PlayerKingInCheckCondition kingIsChecked = new PlayerKingInCheckCondition();
-    private ChessGamePlayer player;
-    private ChessGamePlayer opponent;
-    private ChessBoard board;
-    private ChessPieceLocation playersKingLocation;
-    private List<ChessPieceLocation> enemyLocations;
-    private List<ChessPieceLocation> attackingPieces;
-    private List<ChessPieceLocation> playersPieces;
+    private final PlayerKingInCheckCondition kingIsChecked = new PlayerKingInCheckCondition();
+    private final ChessGamePlayer player;
+    private final ChessGamePlayer opponent;
+    private final ChessBoard board;
+    private final ChessPieceLocation playersKingLocation;
+    private final List<ChessPieceLocation> enemyLocations;
+    private final List<ChessPieceLocation> attackingPieces;
+    private final List<ChessPieceLocation> playersPieces;
 
     public PlayersKingCheckmateCondition(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
         this.player = player;
@@ -36,7 +36,7 @@ public class PlayersKingCheckmateCondition {
         this.playersPieces = board.getListOfPlayersPiecesOnTheBoard(player);
     }
 
-    private ChessPieceLocation findThePlayersKing() {
+    private final ChessPieceLocation findThePlayersKing() {
         Location kingLocation = board.getPlayersKingLocation(player);
         return new ChessPieceLocation(board.getPieceFromBoardAt(kingLocation), kingLocation);
     }
@@ -71,7 +71,7 @@ public class PlayersKingCheckmateCondition {
 
     
 
-    private Set<Location> findAllSafeMoveLocations(ChessPieceLocation kingsLocation) {
+    private final Set<Location> findAllSafeMoveLocations(ChessPieceLocation kingsLocation) {
         Set<Location> possibleMoveLocations = getAllTheKingsPossibleMoveLocations(kingsLocation);
         removeKingFromTheBoard(kingsLocation);
         Set<Location> squaresUnderAttack = getSquaresUnderAttack(possibleMoveLocations);
@@ -81,12 +81,12 @@ public class PlayersKingCheckmateCondition {
         return possibleMoveLocations;
     }
 
-    private Set<Location> getAllTheKingsPossibleMoveLocations(ChessPieceLocation kingsLocation) {
+    private final Set<Location> getAllTheKingsPossibleMoveLocations(ChessPieceLocation kingsLocation) {
         return ((KingPiece) kingsLocation.getPiece()).getPossibleMoveLocations(board,
                         kingsLocation.getLocation());
     }
     
-    private void removeKingFromTheBoard(ChessPieceLocation kingsLocation){
+    private final void removeKingFromTheBoard(ChessPieceLocation kingsLocation){
         board.removePieceOnBoardAt(kingsLocation.getLocation());
     }
     
@@ -99,7 +99,7 @@ public class PlayersKingCheckmateCondition {
      * @param possibleMoveLocations Set of Squares to be checked
      * @return Set of Squares that can be attacked
      */
-    private Set<Location> getSquaresUnderAttack(Set<Location> possibleMoveLocations) {
+    private final Set<Location> getSquaresUnderAttack(Set<Location> possibleMoveLocations) {
         Set<Location> squaresUnderAttack = new HashSet<>();
         for (Location location : possibleMoveLocations) {
             for (ChessPieceLocation enemyPiece : enemyLocations) {
@@ -122,7 +122,7 @@ public class PlayersKingCheckmateCondition {
         return squaresUnderAttack;
     }
     
-    private void replaceKingOnTheBoard(ChessPieceLocation kingsLocation){
+    private final void replaceKingOnTheBoard(ChessPieceLocation kingsLocation){
         board.putPieceOnBoardAt(kingsLocation.getPiece(), kingsLocation.getLocation());
     }
     
@@ -155,13 +155,13 @@ public class PlayersKingCheckmateCondition {
         return true;
     }
 
-    private boolean willPlayerBeInCheck(Move move){
+    private final boolean willPlayerBeInCheck(Move move){
         ChessBoard testBoard=new ChessBoard(board);
         testBoard.move(move);
         return isPlayersKingInCheck(testBoard);
     }
     
-    private boolean isThereMoreThanOneAttacker() {
+    private final boolean isThereMoreThanOneAttacker() {
         return attackingPieces.size() != 1;
     }
 
@@ -215,7 +215,7 @@ public class PlayersKingCheckmateCondition {
      *            Move
      * @return Set of Locations
      */
-    private Set<Location> getAllSquaresInAMove(ChessPiece piece, Move move) {
+    private final Set<Location> getAllSquaresInAMove(ChessPiece piece, Move move) {
         Set<Location> squares = new HashSet<>();
         if (piece.canSlide()) {
             int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
@@ -242,7 +242,7 @@ public class PlayersKingCheckmateCondition {
      *            ChessBoard
      * @return List of ChessPieceLocation of attacking pieces
      */
-    List<ChessPieceLocation> getAllPiecesAttackingTheKing() {
+    final List<ChessPieceLocation> getAllPiecesAttackingTheKing() {
         List<ChessPieceLocation> attackingPieces = new ArrayList<>();
         for (ChessPieceLocation cpl : enemyLocations) {
             Move move = new Move(cpl.getLocation(), playersKingLocation.getLocation());

@@ -29,10 +29,11 @@ public class ServerChessGame extends DefaultSubject {
     
     ChessGame chessGame=null;
     private ServerGameStatus currentStatus;
-    private ChessGamePlayer player;
+    private final ChessGamePlayer player;
     private ChessGamePlayer opponent;
 
     public ServerChessGame(Player player) {
+        super();
         this.player=new ChessGamePlayer(player,Colour.WHITE);
         this.currentStatus=ServerGameStatus.AWAITING_PLAYER;
     }
@@ -42,17 +43,19 @@ public class ServerChessGame extends DefaultSubject {
      * Only valid if ServerChessGame is in AWAITING_PLAYER state, no exception is thrown if not in that state
      * @param opponent Player
      */
-    public synchronized void addOpponent(Player opponent){
-        if(this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)){
-            if(ComparePlayers.comparePlayers(this.player, opponent)){
-                logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));
-            } else {
-                
-                this.opponent=new ChessGamePlayer(opponent,Colour.BLACK);
-                ChessBoard board=new ChessBoard();
-                SetupChessBoard.setUpChessBoardToDefault(board);
-                chessGame=new ChessGame(board,this.player,this.opponent);
-                this.currentStatus=ServerGameStatus.IN_PROGRESS;
+    public void addOpponent(Player opponent){
+        synchronized (this) {
+            if(this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)){
+                if(ComparePlayers.comparePlayers(this.player, opponent)){
+                    logger.debug(String.format("Player:(%s) tried to join their own game", opponent.getName()));
+                } else {
+                    
+                    this.opponent=new ChessGamePlayer(opponent,Colour.BLACK);
+                    ChessBoard board=new ChessBoard();
+                    SetupChessBoard.setUpChessBoardToDefault(board);
+                    chessGame=new ChessGame(board,this.player,this.opponent);
+                    this.currentStatus=ServerGameStatus.IN_PROGRESS;
+                }
             }
         }
     }
@@ -61,8 +64,10 @@ public class ServerChessGame extends DefaultSubject {
      * Get current status of the ServerChessGame
      * @return status enum
      */
-    public synchronized final ServerGameStatus getCurrentStatus() {
-        return currentStatus;
+    public final ServerGameStatus getCurrentStatus() {
+        synchronized (this) {
+            return currentStatus;
+        }
     }
 
     /**
@@ -86,8 +91,10 @@ public class ServerChessGame extends DefaultSubject {
      * Set the ServerGame's status
      * @param currentStatus
      */
-    public synchronized final void setCurrentStatus(ServerGameStatus currentStatus) {
-        this.currentStatus = currentStatus;
+    public final void setCurrentStatus(ServerGameStatus currentStatus) {
+        synchronized (this) {
+            this.currentStatus = currentStatus;
+        }
     }
 
     /**

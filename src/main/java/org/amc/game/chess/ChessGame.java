@@ -12,10 +12,10 @@ import java.util.List;
 public class ChessGame{
     private ChessBoard board;
     private ChessGamePlayer currentPlayer;
-    private ChessGamePlayer whitePlayer;
-    private ChessGamePlayer blackPlayer;
+    private final ChessGamePlayer whitePlayer;
+    private final ChessGamePlayer blackPlayer;
     List<ChessMoveRule> chessRules;
-    private PlayerKingInCheckCondition kingInCheck;
+    private final PlayerKingInCheckCondition kingInCheck;
     private GameState gameState;
     
     public enum GameState{
@@ -24,7 +24,7 @@ public class ChessGame{
         WHITE_IN_CHECK,
         BLACK_IN_CHECK,
         WHITE_CHECKMATE,
-        BLACK_CHECKMATE,
+        BLACK_CHECKMATE
     }
     
 
@@ -49,7 +49,7 @@ public class ChessGame{
      * @return Player
      */
     ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
-        return player == whitePlayer ? blackPlayer : whitePlayer;
+        return player.equals(whitePlayer) ? blackPlayer : whitePlayer;
     }
 
     /**

@@ -4,7 +4,7 @@ import static org.amc.game.chess.StartingSquare.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 
-public class SetupChessBoard {
+public final class SetupChessBoard {
 
     public static void setUpChessBoardToDefault(ChessBoard board) {
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_LEFT.getLocation());
@@ -31,4 +31,7 @@ public class SetupChessBoard {
         }
     }
 
+    private SetupChessBoard() {
+        throw new RuntimeException("Can't be instantiated");
+    }
 }

@@ -11,11 +11,8 @@ import org.amc.util.Subject;
 
 public class ChessGameTextView implements Observer {
 
-    private ServerChessGame oChessGame;
-
     public ChessGameTextView(ServerChessGame chessGame) {
-        this.oChessGame = chessGame;
-        this.oChessGame.attachObserver(this);
+        chessGame.attachObserver(this);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class ChessApplication {
     private ChessGame chessGame;
     private ChessBoardView view;
     private Controller controller;
-    private Player playerOne;
-    private Player playerTwo; 
+    private final Player playerOne;
+    private final Player playerTwo; 
 
     public ChessApplication(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;

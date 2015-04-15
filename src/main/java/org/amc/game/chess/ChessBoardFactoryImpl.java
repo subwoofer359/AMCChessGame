@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ChessBoardFactoryImpl implements ChessBoardFactory {
 
-    private SimpleChessBoardSetupNotation notation;
+    private final SimpleChessBoardSetupNotation notation;
 
     public ChessBoardFactoryImpl(SimpleChessBoardSetupNotation notation) {
         this.notation = notation;

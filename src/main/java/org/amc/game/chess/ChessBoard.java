@@ -61,6 +61,7 @@ public class ChessBoard extends DefaultSubject {
      * Creates a new chess board array and initialises the moves list.
      */
     public ChessBoard() {
+        super();
         board = new ChessPiece[Coordinate.values().length][BOARD_WIDTH];
         allGameMoves = new ArrayList<>();
     }
@@ -264,8 +265,8 @@ public class ChessBoard extends DefaultSubject {
     }
 
     public static class ChessPieceLocation {
-        private ChessPiece piece;
-        private Location location;
+        private final ChessPiece piece;
+        private final Location location;
 
         public ChessPieceLocation(ChessPiece piece, Location location) {
             this.piece = piece;

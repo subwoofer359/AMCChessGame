@@ -25,7 +25,7 @@ public abstract class ComplexPiece extends SimplePiece {
             positionX = positionX + 1 * (int) Math.signum(move.getDistanceX());
             positionY = positionY + 1 * (int) Math.signum(move.getDistanceY());
 
-            if (i != distance - 1 && board.getPieceFromBoardAt(positionX, positionY) != null) {
+            if (i < distance - 1 && board.getPieceFromBoardAt(positionX, positionY) != null) {
                 return false;
             } else if (i == distance - 1 && board.getPieceFromBoardAt(positionX, positionY) != null) {
                 ChessPiece piece = board.getPieceFromBoardAt(positionX, positionY);

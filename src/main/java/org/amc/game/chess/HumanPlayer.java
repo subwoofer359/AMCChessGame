@@ -7,7 +7,7 @@ package org.amc.game.chess;
  *
  */
 public class HumanPlayer implements Player {
-    private String name;
+    private final String name;
     private int uid;
 
     public HumanPlayer(String name) {

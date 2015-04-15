@@ -26,7 +26,7 @@ import org.amc.util.Subject;
  *
  */
 public class ChessBoardView implements Observer {
-    private ChessBoard chessBoard;
+    private final ChessBoard chessBoard;
     final int WIDTH_OF_BOARD = ChessBoard.Coordinate.values().length;
 
     public ChessBoardView(ChessBoard chessBoard) {

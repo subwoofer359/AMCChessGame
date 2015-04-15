@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class DefaultSubject implements Subject {
-    private List<Observer> observers;
+    private final List<Observer> observers;
 
     /**
      * 

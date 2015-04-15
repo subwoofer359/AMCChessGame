@@ -16,9 +16,6 @@ public class SimpleInputParser implements InputParser {
     private static final String errorMessage = "Move must be enter like so: A1B2";
     private static final int INPUT_LENGTH = 4;
 
-    public SimpleInputParser() {
-    }
-
     /**
      * @see InputParser#parseMoveString(String)
      */

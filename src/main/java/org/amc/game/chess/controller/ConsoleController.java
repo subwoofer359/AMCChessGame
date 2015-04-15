@@ -17,7 +17,7 @@ import java.text.ParseException;
 public class ConsoleController implements Controller {
     private UserConsole console = new GameTextConsole();
     private InputParser parser = new SimpleInputParser();
-    private ChessGame chessGame;
+    private final ChessGame chessGame;
 
     public ConsoleController(ChessGame chessGame) {
         this.chessGame=chessGame;

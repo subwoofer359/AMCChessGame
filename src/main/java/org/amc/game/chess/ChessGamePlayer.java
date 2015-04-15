@@ -8,7 +8,7 @@ package org.amc.game.chess;
 public class ChessGamePlayer implements Player {
 
     private Colour colour;
-    private Player player;
+    private final Player player;
     
     public ChessGamePlayer(Player player, Colour colour) {
         this.player = player;

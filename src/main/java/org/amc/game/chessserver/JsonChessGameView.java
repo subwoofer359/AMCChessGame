@@ -24,7 +24,7 @@ public class JsonChessGameView implements Observer {
     /** 
      * STOMP messaging object to send stomp message to objects
      */
-    private SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
     /**
      * STOMP message subscription destination

@@ -7,7 +7,7 @@ package org.amc.game.chess;
  *
  */
 
-public class ComparePlayers {
+public final class ComparePlayers {
 
    
         /**
@@ -27,6 +27,10 @@ public class ComparePlayers {
         
         private static boolean isSameName(Player playerOne, Player playerTwo) {
             return playerOne.getName().equals(playerTwo.getName());
+        }
+        
+        private ComparePlayers() {
+            throw new RuntimeException("Can't be instantiated");
         }
 
 }

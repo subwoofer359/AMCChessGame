@@ -12,7 +12,7 @@ import java.util.Set;
  *
  */
 abstract class SimplePiece implements ChessPiece {
-    private Colour colour;
+    private final Colour colour;
     private boolean hasMoved = false;
 
     public SimplePiece(Colour colour) {
@@ -88,11 +88,8 @@ abstract class SimplePiece implements ChessPiece {
         Location endSquare = move.getEnd();
         ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getIndex(),
                         endSquare.getNumber());
-        if (piece.getColour().equals(getColour())) {
-            return false;
-        } else {
-            return true;
-        }
+        return !piece.getColour().equals(getColour());
+         
     }
     
     /**
@@ -101,7 +98,7 @@ abstract class SimplePiece implements ChessPiece {
     public Set<Location> getPossibleMoveLocations(ChessBoard board,Location location){
         Set<Location> locations=new HashSet<>();
         for(Coordinate coord:Coordinate.values()){
-            for(int i=1;i<=board.BOARD_WIDTH;i++){
+            for(int i=1;i<=ChessBoard.BOARD_WIDTH;i++){
                 Location moveLocation=new Location(coord,i);
                 Move move=new Move(location,moveLocation);
                 if(isValidMove(board, move) && !moveLocation.equals(location)){

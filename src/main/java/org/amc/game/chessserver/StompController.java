@@ -75,7 +75,7 @@ public class StompController {
 
         logger.error(message);
 
-        MessageType type = message.equals("") ? MessageType.INFO : MessageType.ERROR;
+        MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
         sendMessageToUser(user, message, type);
     }
 
