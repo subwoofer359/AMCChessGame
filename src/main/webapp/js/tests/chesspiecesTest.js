@@ -27,3 +27,43 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Excep
         parseSquareCoordinates("I1");
     }, /Not valid ChessBoard coordinate/);
 });
+
+QUnit.test("testing chesspieces.js: white player pawn creation", function (assert) {
+    "use strict";
+    var chesspieces = new ChessPieces("WHITE"),
+        whiteId = "whiteId",
+        blackId = "blackId",
+        whiteChesspiece,
+        blackChesspiece,
+        whitePawn = chesspieces.pawn(whiteId,"A1", chesspieces.colour.white),
+        blackPawn = chesspieces.pawn(blackId,"A2", chesspieces.colour.black);
+        
+    $("#qunit-fixture").append(whitePawn);
+    $("#qunit-fixture").append(blackPawn);
+    whiteChesspiece = $("g#" + whiteId);
+    blackChesspiece = $("g#" + blackId);
+    assert.equal(whiteChesspiece.attr("id"), whiteId);
+    assert.equal(whiteChesspiece.attr("class"), "chesspiece draggable");
+    assert.equal(blackChesspiece.attr("id"), blackId);
+    assert.equal(blackChesspiece.attr("class"), "chesspiece");
+});
+
+QUnit.test("testing chesspieces.js: black player pawn creation", function (assert) {
+    "use strict";
+    var chesspieces = new ChessPieces("BLACK"),
+        whiteId = "whiteId",
+        blackId = "blackId",
+        whiteChesspiece,
+        blackChesspiece,
+        whitePawn = chesspieces.pawn(whiteId,"A1", chesspieces.colour.white),
+        blackPawn = chesspieces.pawn(blackId,"A2", chesspieces.colour.black);
+        
+    $("#qunit-fixture").append(whitePawn);
+    $("#qunit-fixture").append(blackPawn);
+    whiteChesspiece = $("g#" + whiteId);
+    blackChesspiece = $("g#" + blackId);
+    assert.equal(whiteChesspiece.attr("id"), whiteId);
+    assert.equal(whiteChesspiece.attr("class"), "chesspiece");
+    assert.equal(blackChesspiece.attr("id"), blackId);
+    assert.equal(blackChesspiece.attr("class"), "chesspiece draggable");
+});
