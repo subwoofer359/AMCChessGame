@@ -140,7 +140,7 @@ $(document).ready(function(){
             for(var gameUUID in data){
                 if(data.hasOwnProperty(gameUUID)){
                     console.log(gameUUID);
-                    tempEntry = '<tr><td>' + gameUUID + '</td><td>' +
+                    tempEntry = '<tr><td>' + (""+gameUUID).slice(-5) + '</td><td>' +
                         data[gameUUID].player.player.name +
                         '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.player.name: "") +
                         '</td><td>' + data[gameUUID].currentStatus +
