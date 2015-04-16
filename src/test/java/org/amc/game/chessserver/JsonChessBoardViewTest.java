@@ -53,6 +53,10 @@ public class JsonChessBoardViewTest {
     private SimpMessagingTemplate template;
     private GsonBuilder gson;
     private ArgumentCaptor<Map> headersArgument;
+    private ArgumentCaptor<String> destinationArgument;
+    ArgumentCaptor<String> messageArgument;
+    
+    private static final long GAME_UID = 1234l;
 
     @BeforeClass
     public static void setupFactory() {
@@ -67,8 +71,10 @@ public class JsonChessBoardViewTest {
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         template = mock(SimpMessagingTemplate.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
+        messageArgument = ArgumentCaptor.forClass(String.class);
+        destinationArgument = ArgumentCaptor.forClass(String.class);
         
-        serverGame = new ServerChessGame(whitePlayer);
+        serverGame = new ServerChessGame(GAME_UID, whitePlayer);
         serverGame.addOpponent(blackPlayer);
         serverGame.chessGame=chessGame;
         
@@ -93,18 +99,18 @@ public class JsonChessBoardViewTest {
     @Test
     public void test() throws IllegalMoveException {
         serverGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
-        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
         
-        
-        verify(template).convertAndSend(anyString(), argument.capture(), headersArgument.capture());
+        verify(template).convertAndSend(destinationArgument.capture(), messageArgument.capture(), headersArgument.capture());
 
-        JsonChessGame jBoard = gson.create().fromJson(argument.getValue(), JsonChessGame.class);
+        JsonChessGame jBoard = gson.create().fromJson(messageArgument.getValue(), JsonChessGame.class);
 
         compareChessBoardAndJsonBoard(jBoard);
 
         compareChessGamePlayerAndJsonPlayer(jBoard);
         
         checkForUpdateMessageHeader();
+        
+        verifyMessageDestination(destinationArgument.getValue());
     }
 
     private void compareChessBoardAndJsonBoard(JsonChessGame jBoard) {
@@ -135,6 +141,10 @@ public class JsonChessBoardViewTest {
 
     private void checkForUpdateMessageHeader(){
         assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompConstants.MESSAGE_HEADER_TYPE));
+    }
+    
+    private void verifyMessageDestination(String destination) {
+        assertEquals(String.format("%s/%d", JsonChessGameView.MESSAGE_DESTINATION, GAME_UID), destination);
     }
     
     /**

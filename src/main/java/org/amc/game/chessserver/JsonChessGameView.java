@@ -29,7 +29,7 @@ public class JsonChessGameView implements Observer {
     /**
      * STOMP message subscription destination
      */
-    private static final String MESSAGE_DESTINATION = "/topic/updates";
+    static final String MESSAGE_DESTINATION = "/topic/updates";
 
     /**
      * Constructor for JsonChessBoardView
@@ -49,12 +49,18 @@ public class JsonChessGameView implements Observer {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessGame) {
+        if (message instanceof ChessGame && subject instanceof ServerChessGame) {
             final Gson gson = new Gson();
+            ServerChessGame serverChessGame = (ServerChessGame) subject;
             String jsonBoard = gson.toJson(new JsonChessGame((ChessGame) message));
-            this.template.convertAndSend(MESSAGE_DESTINATION, jsonBoard, getDefaultHeaders());
-            logger.debug("Message sent to" + MESSAGE_DESTINATION);
+       
+            this.template.convertAndSend(getMessageDestination(serverChessGame), jsonBoard, getDefaultHeaders());
+            logger.debug("Message sent to " + getMessageDestination(serverChessGame));
         }
+    }
+    
+    private String getMessageDestination(ServerChessGame serverChessGame) {
+        return String.format("%s/%d", MESSAGE_DESTINATION, serverChessGame.getUid());
     }
     
     private Map<String,Object> getDefaultHeaders(){

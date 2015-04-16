@@ -31,9 +31,21 @@ public class ServerChessGame extends DefaultSubject {
     private ServerGameStatus currentStatus;
     private final ChessGamePlayer player;
     private ChessGamePlayer opponent;
+    
+    /**
+     * The unique identifier of this game
+     */
+    private long uid;
 
-    public ServerChessGame(Player player) {
+    /**
+     * Constructor
+     * 
+     * @param uid long the unique identifier for this game
+     * @param player Player who created the game and will be the white player
+     */
+    public ServerChessGame(long uid, Player player) {
         super();
+        this.uid = uid;
         this.player=new ChessGamePlayer(player,Colour.WHITE);
         this.currentStatus=ServerGameStatus.AWAITING_PLAYER;
     }
@@ -132,6 +144,15 @@ public class ServerChessGame extends DefaultSubject {
         }
     }
     
+    /**
+     * Retrieve the Unique identifier of the {@link ServerChessGame}
+     * 
+     * @return long Unique identifier
+     */
+    public final long getUid() {
+        return uid;
+    }
+
     /**
      * Checks to see if the game is finished and sets it's status accordingly
      * No check for chessGame being null

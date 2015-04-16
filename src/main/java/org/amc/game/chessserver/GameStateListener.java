@@ -37,12 +37,19 @@ public class GameStateListener implements Observer {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessGame.GameState) {
+        if (message instanceof ChessGame.GameState && subject instanceof ServerChessGame) {
             GameState gameState = (GameState) message;
-            this.template.convertAndSend(MESSAGE_DESTINATION, gameState.toString(), getDefaultHeaders());
-            logger.debug("Message sent to" + MESSAGE_DESTINATION);
+            ServerChessGame serverChessGame = (ServerChessGame)subject;
+            
+            this.template.convertAndSend(getMessageDestination(serverChessGame), gameState.toString(), getDefaultHeaders());
+            
+            logger.debug("Message sent to" + getMessageDestination(serverChessGame));
             logGameState(gameState);   
         }
+    }
+    
+    private String getMessageDestination(ServerChessGame serverChessGame) {
+        return String.format("%s/%d", MESSAGE_DESTINATION, serverChessGame.getUid());
     }
     
     private Map<String,Object> getDefaultHeaders(){

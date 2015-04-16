@@ -29,7 +29,7 @@ public class StartPageControllerJoinGameTest {
         controller.setGameMap(gameMap);
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
-        ServerChessGame chessGame = new ServerChessGame(whitePlayer);
+        ServerChessGame chessGame = new ServerChessGame(gameUUID, whitePlayer);
         gameMap.put(gameUUID, chessGame);
     }
 

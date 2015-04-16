@@ -54,8 +54,9 @@ public class StartPageController {
 
     @RequestMapping(value = "/createGame")
     public String createGame(Model model, @ModelAttribute("PLAYER") Player player) {
-        ServerChessGame serverGame = new ServerChessGame(player);
         long uuid = UUID.randomUUID().getMostSignificantBits();
+        ServerChessGame serverGame = new ServerChessGame(uuid, player);
+        
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         return FORWARD_PAGE;

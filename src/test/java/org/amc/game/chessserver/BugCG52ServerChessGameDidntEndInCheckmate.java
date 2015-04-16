@@ -42,7 +42,7 @@ public class BugCG52ServerChessGameDidntEndInCheckmate {
         blackPlayer=new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board=boardFactory.getChessBoard(CHESSBOARD_CONFIG);
         new ChessBoardView(board);
-        serverChessGame = new ServerChessGame(whitePlayer);
+        serverChessGame = new ServerChessGame(0l,whitePlayer);
         serverChessGame.addOpponent(blackPlayer);
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.setChessBoard(board);

@@ -147,6 +147,10 @@ var sourceId = "",
             BLACK_IN_CHECK : "BLACK_IN_CHECK"
     };
     
+    $("#quit-btn").click(function () {
+        stompClient.send("/app/quit/${GAME_UUID}", {priority: 9},"quit");
+    });
+    
 interact('.draggable')
   .draggable({
     // enable inertial throwing
@@ -246,7 +250,7 @@ interact('.dropzone').dropzone({
                             }
             });
 	    	
-            stompClient.subscribe("/topic/updates",
+            stompClient.subscribe("/topic/updates/${GAME_UUID}",
     	        function(message){
                         console.log("message:" + message.body);
                         if(message.headers.TYPE === "ERROR") {
@@ -273,8 +277,12 @@ interact('.dropzone').dropzone({
                                     break;
                             }
                         } else if(message.headers.TYPE === "INFO"){
-                            console.log("INFO:" + message.body);
-                            gameInfoPanel.text(message.body);
+                            if (/has quit the game$/.test(message.body)) {
+                                    alert(message.body);
+                            } else {
+                                console.log("INFO:" + message.body);
+                                gameInfoPanel.text(message.body);
+                            }
                         } else if(message.headers.TYPE === "UPDATE") {
                             updateChessBoard(playerColour, message.body);
                         }
@@ -296,7 +304,7 @@ interact('.dropzone').dropzone({
             <ul>
                 <li><a href="http://adrianmclaughlin.ie">Message</a></li>
                 <li><a class="description" href="#">Save</a></li>
-                <li><a class="description" href="#">Quit</a></li>
+                <li><button id="quit-btn" class="btn btn-large">Quit</a></li>
             </ul>
             </div>
         </div><!-- sidebar-left -->

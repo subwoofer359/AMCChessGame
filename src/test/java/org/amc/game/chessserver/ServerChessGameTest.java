@@ -13,6 +13,8 @@ import org.junit.Test;
 public class ServerChessGameTest {
     private Player player;
     private Player opponent;
+    
+    private static final long UID = 0l;
 
     @Before
     public void setUp() throws Exception {
@@ -26,7 +28,7 @@ public class ServerChessGameTest {
 
     @Test
     public void testInitialState() {
-        ServerChessGame game = new ServerChessGame(player);
+        ServerChessGame game = new ServerChessGame(UID, player);
         assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, game.getCurrentStatus());
@@ -35,7 +37,7 @@ public class ServerChessGameTest {
 
     @Test
     public void testAddOpponent() {
-        ServerChessGame game = new ServerChessGame(player);
+        ServerChessGame game = new ServerChessGame(UID, player);
         game.addOpponent(opponent);
         assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNotNull(game.getChessGame());
@@ -45,7 +47,7 @@ public class ServerChessGameTest {
 
     @Test
     public void testAddPlayerAsOpponent() {
-        ServerChessGame game = new ServerChessGame(player);
+        ServerChessGame game = new ServerChessGame(UID, player);
         game.addOpponent(player);
         assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
@@ -54,7 +56,7 @@ public class ServerChessGameTest {
 
     @Test
     public void testAddOpponentToFinishedGame() {
-        ServerChessGame game = new ServerChessGame(player);
+        ServerChessGame game = new ServerChessGame(UID, player);
         game.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         game.addOpponent(opponent);
         assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
@@ -64,7 +66,7 @@ public class ServerChessGameTest {
 
     @Test
     public void testAddOpponentToInProgressGame() {
-        ServerChessGame game = new ServerChessGame(player);
+        ServerChessGame game = new ServerChessGame(UID, player);
         game.setCurrentStatus(ServerChessGame.ServerGameStatus.IN_PROGRESS);
         game.addOpponent(opponent);
         assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));

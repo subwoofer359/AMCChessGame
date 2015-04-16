@@ -80,7 +80,7 @@ public class StompControllerIntegrationTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         Map<Long, ServerChessGame> gameMap = (Map<Long, ServerChessGame>) wac.getBean("gameMap");
-        scg = new ServerChessGame(whitePlayer);
+        scg = new ServerChessGame(gameUUID, whitePlayer);
         scg.addOpponent(blackPlayer);
         new ChessGameTextView(scg);
         gameMap.put(gameUUID, scg);

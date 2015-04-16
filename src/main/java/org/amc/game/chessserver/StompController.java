@@ -8,6 +8,7 @@ import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -48,6 +49,8 @@ public class StompController {
     private static final String ERROR_MSG_NOT_ENOUGH_PLAYERS = "Error:Move on game(%d) which hasn't got two players";
 
     private static final String ERROR_MSG_GAME_OVER = "Error:Move on game(%d) which has finished";
+    
+    static final String MSG_PLAYER_HAS_QUIT = "%s has quit the game";
 
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
@@ -112,6 +115,19 @@ public class StompController {
     private void sendMessageToUser(Principal user, String message, MessageType type) {
         template.convertAndSendToUser(user.getName(), "/queue/updates", message, getHeaders(type));
     }
+    
+    /**
+     * Sends a reply to the user
+     * 
+     * @param user
+     *            User to receive message
+     * @param message
+     *            containing either an error message or information update
+     */
+    private void sendMessage(String message, long gameUUID, MessageType type) {
+        String msgDestination = String.format("/topic/updates/%d", gameUUID);
+        template.convertAndSend(msgDestination, message, getHeaders(type));
+    }
 
     private Map<String, Object> getHeaders(MessageType type) {
         Map<String, Object> headers = new HashMap<String, Object>();
@@ -129,6 +145,17 @@ public class StompController {
         JsonChessGame jcb = new JsonChessGame(serverGame.getChessGame());
         logger.debug(wsSession.get("PLAYER") + " requested update for game:" + gameUUID);
         sendMessageToUser(user, gson.toJson(jcb), MessageType.UPDATE);
+    }
+    
+    @MessageMapping("/quit/{gameUUID}")
+    public void quitChessGame(Principal user,
+                    @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
+                    @DestinationVariable long gameUUID, @Payload String message) {
+        ServerChessGame serverGame = gameMap.get(gameUUID);
+        Player player = (Player) wsSession.get("PLAYER");
+        
+        serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
+        sendMessage(String.format(MSG_PLAYER_HAS_QUIT, player.getName()), gameUUID, MessageType.INFO);
     }
 
     @Resource(name = "gameMap")

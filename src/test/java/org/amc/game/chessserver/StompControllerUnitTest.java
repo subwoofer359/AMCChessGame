@@ -28,6 +28,8 @@ public class StompControllerUnitTest {
     private long gameUUID = 1234L;
 
     private ServerChessGame scg;
+    
+    private static final String DESTINATION_BOTH_PLAYERS = "/topic/updates";
 
     private Map<String, Object> sessionAttributes;
 
@@ -53,7 +55,7 @@ public class StompControllerUnitTest {
     @Before
     public void setUp() {
         this.controller = new StompController();
-        scg = new ServerChessGame(whitePlayer);
+        scg = new ServerChessGame(gameUUID, whitePlayer);
         Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
         controller.setGameMap(gameMap);
@@ -73,15 +75,21 @@ public class StompControllerUnitTest {
         String move = "A2-A3";
         sessionAttributes.put("PLAYER", whitePlayer);
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCall();
+        verifySimpMessagingTemplateCallToUser();
         assertEquals("", payoadArgument.getValue());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @SuppressWarnings("unchecked")
-    private void verifySimpMessagingTemplateCall() {
+    private void verifySimpMessagingTemplateCallToUser() {
         verify(template).convertAndSendToUser(userArgument.capture(),
                         destinationArgument.capture(), payoadArgument.capture(),
+                        headersArgument.capture());
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void verifySimpMessagingTemplateCall() {
+        verify(template).convertAndSend(destinationArgument.capture(), payoadArgument.capture(),
                         headersArgument.capture());
     }
 
@@ -91,7 +99,7 @@ public class StompControllerUnitTest {
         sessionAttributes.put("PLAYER", whitePlayer);
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCall();
+        verifySimpMessagingTemplateCallToUser();
         assertEquals("Error:Not a valid move", payoadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
@@ -102,7 +110,7 @@ public class StompControllerUnitTest {
         sessionAttributes.put("PLAYER", blackPlayer);
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCall();
+        verifySimpMessagingTemplateCallToUser();
         assertEquals("Error:Not Player's turn", payoadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
@@ -112,7 +120,7 @@ public class StompControllerUnitTest {
         String move = "A1-A3";
         sessionAttributes.put("PLAYER", whitePlayer);
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCall();
+        verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
                         payoadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
@@ -124,10 +132,25 @@ public class StompControllerUnitTest {
         scg.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCall();
+        verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
                         payoadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+    }
+    
+    
+    @Test
+    public void testQuitChessGame() {
+        scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        verifySimpMessagingTemplateCall();
+        assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
+        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(String.format(StompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
+                        payoadArgument.getValue());
+        assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
+                        destinationArgument.getValue());
     }
     
     /**
