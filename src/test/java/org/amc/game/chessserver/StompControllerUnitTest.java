@@ -6,6 +6,7 @@ import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -148,6 +149,21 @@ public class StompControllerUnitTest {
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(StompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
+                        payoadArgument.getValue());
+        assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
+                        destinationArgument.getValue());
+    }
+    
+    @Test
+    public void testQuitFinishedChessGame() {
+        scg.addOpponent(blackPlayer);
+        scg.setCurrentStatus(ServerGameStatus.FINISHED);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        verifySimpMessagingTemplateCall();
+        assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
+        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(String.format(StompController.MSG_GAME_ALREADY_OVER, principal.getName()),
                         payoadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());

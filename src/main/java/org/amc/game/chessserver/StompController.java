@@ -51,6 +51,8 @@ public class StompController {
     private static final String ERROR_MSG_GAME_OVER = "Error:Move on game(%d) which has finished";
     
     static final String MSG_PLAYER_HAS_QUIT = "%s has quit the game";
+    
+    static final String MSG_GAME_ALREADY_OVER = "Game already over";
 
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
@@ -154,8 +156,15 @@ public class StompController {
         ServerChessGame serverGame = gameMap.get(gameUUID);
         Player player = (Player) wsSession.get("PLAYER");
         
-        serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
-        sendMessage(String.format(MSG_PLAYER_HAS_QUIT, player.getName()), gameUUID, MessageType.INFO);
+        String replyMessage="";
+        
+        if(serverGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.FINISHED)){
+            replyMessage = MSG_GAME_ALREADY_OVER;
+        } else {        
+            serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
+            replyMessage = String.format(MSG_PLAYER_HAS_QUIT, player.getName());
+        }
+        sendMessage(replyMessage, gameUUID, MessageType.INFO);
     }
 
     @Resource(name = "gameMap")
