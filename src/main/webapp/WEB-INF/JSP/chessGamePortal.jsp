@@ -62,18 +62,6 @@
         background-color: #2886d5;
         border: none;
     }
-    
-    #game-info{
-        height: 52vh;
-    }
-    
-    #game-info>div{
-        height: inherit;
-    }
-    
-    #gameInfoPanel{
-        overflow: auto;
-    }
       
     #chessboard .inner {
         margin-top: 10%;
@@ -86,11 +74,10 @@
      .player-name {
         font-family: "Raleway";
         font-size: 2em;
-        margin-top:60px;
-        margin-bottom: 30px;
-        overflow:hidden;
-        height:50px;
-        padding-bottom:60px;
+        margin-top: 30px;
+        overflow: hidden;
+        height: 50px;
+        padding-bottom: 120px;
         min-width: 470px;
     }
     
@@ -100,10 +87,17 @@
         border-style: double;
         border-width: 1px;
         background-color: antiquewhite;
-        padding:10px 30px 12px 15px;
         border-radius: 15px 0px 0px 15px;
         background-color: #2886d5;    
         box-shadow: 5px 5px 8px #000000;
+    }
+    
+    .player-name .title-player {
+        padding:10px 34px 12px 15px;
+    }
+    
+    .player-name .title-opponent {
+        padding:10px 1px 12px 15px;
     }
     
     .player-name .name {
@@ -119,6 +113,7 @@
     
     .player-name-holder {
         min-width: 488px;
+        margin-bottom: 5px;
     }
     
     .player-name-highlight{
@@ -129,7 +124,15 @@
         fill:red!important;
     }
     
+    .alert-hidden {
+        opacity: 0;
+    }
     
+    #my-alert {
+        padding: 15px;
+        font-size: 2em;
+        text-align: center;
+    }
     
 </style>
 <script>
@@ -137,8 +140,9 @@ $(document).ready(function(){
 var sourceId = "",
     destId = "",
     startOfMove = true,
-    playerColour = '<c:out value="${CHESSPLAYER.colour}"/>',
-    gameInfoPanel=$('#gameInfoPanel'),
+    playerColour = '<c:out value="${CHESSPLAYER.colour}"/>'
+    alertBox = $("#my-alert"),
+    alertBoxText = $("#my-alert .alert");
     GAME_STATUS = {
             WHITE_CHECKMATE : "WHITE_CHECKMATE",
             BLACK_CHECKMATE : "BLACK_CHECKMATE",
@@ -236,17 +240,30 @@ interact('.dropzone').dropzone({
                 updatePlayer(chessBoardJson);
             }
         
+        function showFadingAlertMessage(message) {
+            alertBoxText.html(message);
+            alertBox.css("display","block");
+            alertBox.css("opacity","1");
+            alertBox.fadeOut(5000);
+        }
+        
+        function showAlertMessage(message) {
+            alertBoxText.html(message);
+            alertBox.css("display","block");
+            alertBox.css("opacity","1");
+        }
+        
 	    	stompClient.subscribe("/user/queue/updates",
 	    	        function(message){
                             if(message.headers.TYPE === "ERROR") {
-                                gameInfoPanel.text(message.body);
+                                showFadingAlertMessage(message.body);
                                 if(oldChessBoard !== undefined || oldChessBoard !== {}) {
                                     createChessBoard(playerColour, oldChessBoard);
                                 }
                             } else if(message.headers.TYPE === "UPDATE") {
                                 updateChessBoard(playerColour, message.body);
                             } else if(message.headers.TYPE === "INFO") {
-                                gameInfoPanel.text(message.body);
+                                console.log(message.body);
                             }
             });
 	    	
@@ -256,32 +273,30 @@ interact('.dropzone').dropzone({
                         if(message.headers.TYPE === "ERROR") {
                             updateChessBoard(message.body);    
                         } else if(message.headers.TYPE === "STATUS") {
-                            gameInfoPanel.text(message.body);
                             switch(message.body) {
                             case GAME_STATUS.WHITE_CHECKMATE:
-                                    alert("${GAME.opponent.name} has won the game");
+                                    showAlertMessage("${GAME.opponent.name} has won the game");
                                     break;
                             case GAME_STATUS.BLACK_CHECKMATE:
-                                    alert("${GAME.player.name} has won the game");
+                                    showAlertMessage("${GAME.player.name} has won the game");
                                     break;
                             case GAME_STATUS.STALEMATE:
-                                    alert("Game has ended in a draw");
+                                    showAlertMessage("Game has ended in a draw");
                                     break;
                             case GAME_STATUS.WHITE_IN_CHECK:
-                                    gameInfoPanel.text("${GAME.player.name}'s king is in check");
+                                    showFadingAlertMessage("${GAME.player.name}'s king is in check");
                                     break;
                             case GAME_STATUS.BLACK_IN_CHECK:
-                                    gameInfoPanel.text("${GAME.opponent.name}'s king is in check");
+                                    showFadingAlertMessage("${GAME.opponent.name}'s king is in check");
                                     break;
                             default:
                                     break;
                             }
                         } else if(message.headers.TYPE === "INFO"){
                             if (/has quit the game$/.test(message.body)) {
-                                    alert(message.body);
+                                showAlertMessage(message.body);
                             } else {
                                 console.log("INFO:" + message.body);
-                                gameInfoPanel.text(message.body);
                             }
                         } else if(message.headers.TYPE === "UPDATE") {
                             updateChessBoard(playerColour, message.body);
@@ -307,25 +322,17 @@ interact('.dropzone').dropzone({
             </ul>
             </div>
         </div><!-- sidebar-left -->
-        <div class="player-name col-sm-10 col-xs-12">
-            <div id="white-player" class="player-name-holder col-sm-5"><span class="title">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
-            <div id="black-player" class="player-name-holder col-sm-5"><span class="title">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
+        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">
+            <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
+            <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>
-        <div id="chessboard-surround" class="col-sm-6 col-xs-8">
+        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-8">
             <div class="inner col-xs-offset-1 col-xs-11">
-        </div><!-- col-xs-11 -->
-    </div>
-        <div class="side-panel-right col-sm-4 hidden-xs hidden-sm">
-            <div id="game-info" class="col-xs-12">
-                <div  class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Game information</h1>
-                    </div>
-                    <div id="gameInfoPanel" class="panel-body"></div>
-                </div>
-            </div>
+            </div><!-- col-xs-11 -->
         </div>
-        
+        <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
+            <div class="alert alert-warning" role="alert"></div>
+        </div>
     </div>
   </div>
 </body>
