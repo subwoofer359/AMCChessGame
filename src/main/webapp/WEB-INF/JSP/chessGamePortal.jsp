@@ -53,6 +53,16 @@
         padding-left: 20px;
     }
     
+    .side-menu{
+        font-size:1.8em;
+    }
+    
+    .side-menu button{
+        padding: 0;
+        background-color: #2886d5;
+        border: none;
+    }
+    
     #game-info{
         height: 52vh;
     }
@@ -64,17 +74,7 @@
     #gameInfoPanel{
         overflow: auto;
     }
-    
-    #messages {
-        margin-top: 20px;
-        height: 20vh;
-    }
-    
-    #messages>div{
-        height: inherit;
-    }
-        
-    
+      
     #chessboard .inner {
         margin-top: 10%;
     }
@@ -302,9 +302,8 @@ interact('.dropzone').dropzone({
             </a>    
             <div class="side-menu">
             <ul>
-                <li><a href="http://adrianmclaughlin.ie">Message</a></li>
-                <li><a class="description" href="#">Save</a></li>
-                <li><button id="quit-btn" class="btn btn-large">Quit</a></li>
+                <li><button id="save-btn">Save</button></li>
+                <li><button id="quit-btn">Quit</a></li>
             </ul>
             </div>
         </div><!-- sidebar-left -->
@@ -324,14 +323,6 @@ interact('.dropzone').dropzone({
                     </div>
                     <div id="gameInfoPanel" class="panel-body"></div>
                 </div>
-            </div>
-            <div id="messages" class="col-xs-12">
-                <div  class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Messages</h1>
-                    </div>
-                <div id="messagePanel" class="panel-body"></div>
-            </div>
             </div>
         </div>
         
