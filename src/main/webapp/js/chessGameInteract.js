@@ -1,21 +1,20 @@
-/*global interact*/
-function chessGameInteract(stompClient, gameUID) {
+var InteractActions = function (stompClient, gameUID) {
     "use strict";
+    this.stompClient = stompClient;
+    this.gameUid = gameUID;
+    this.ACTION_CLASSES = {
+        DROP_ACTIVE: 'drop-active',
+        DROP_TARGET: 'drop-target',
+        CAN_DROP: 'can-drop'
+    };
+    this.startOfMove = true;
+    this.sourceId = "";
+    this.destId = "";
+};
 
-    var DRAGGABLE_CLASS = '.draggable',
-        DROPZONE_CLASS = '.dropzone',
-        DROPZONE_ACCEPT_CLASS = '.chesspiece',
-        RESTRICTION_ELEMENT = '#layer',
-        ACTION_CLASSES = {
-            DROP_ACTIVE: 'drop-active',
-            DROP_TARGET: 'drop-target',
-            CAN_DROP: 'can-drop'
-        },
-        startOfMove = true,
-        sourceId = "",
-        destId = "";
-
-    function onMove(event) {
+InteractActions.prototype = {
+    onMove : function (event) {
+        "use strict";
         var target = event.target,
             // keep the dragged position in the data-x/data-y attributes
             x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
@@ -30,7 +29,59 @@ function chessGameInteract(stompClient, gameUID) {
         // update the posiion attributes
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
+    },
+
+    onDragEnter : function (event) {
+        "use strict";
+        var draggableElement = event.relatedTarget,
+            dropzoneElement = event.target;
+
+            // feedback the possibility of a drop
+        dropzoneElement.classList.add(this.ACTION_CLASSES.DROP_TARGET);
+        draggableElement.classList.add(this.ACTION_CLASSES.CAN_DROP);
+    },
+
+    onDropActivate : function (event) {
+        "use strict";
+        // add active dropzone feedback
+        event.target.classList.add(this.ACTION_CLASSES.DROP_ACTIVE);
+    },
+
+    onDragLeave : function (event) {
+        "use strict";
+        event.target.classList.remove(this.ACTION_CLASSES.DROP_TARGET);
+        event.relatedTarget.classList.remove(this.ACTION_CLASSES.CAN_DROP);
+        if (this.startOfMove) {
+            this.sourceId = event.target.id;
+            this.startOfMove = false;
+        }
+    },
+
+    onDrop : function (event) {
+        "use strict";
+        this.destId = event.target.id;
+        this.startOfMove = true;
+        var move = this.sourceId + "-" + this.destId;
+        this.stompClient.send("/app/move/" + this.gameUID, {priority: 9}, move);
+    },
+
+    onDropDeactivate : function (event) {
+        "use strict";
+        // remove active dropzone feedback
+        event.target.classList.remove(this.ACTION_CLASSES.DROP_ACTIVE);
+        event.target.classList.remove(this.ACTION_CLASSES.DROP_TARGET);
     }
+};
+
+/*global interact*/
+function chessGameInteract(stompClient, gameUID) {
+    "use strict";
+
+    var DRAGGABLE_CLASS = '.draggable',
+        DROPZONE_CLASS = '.dropzone',
+        DROPZONE_ACCEPT_CLASS = '.chesspiece',
+        RESTRICTION_ELEMENT = '#layer',
+        actions = new InteractActions(stompClient, gameUID);
 
     interact(DRAGGABLE_CLASS).draggable({
         // enable inertial throwing
@@ -43,52 +94,19 @@ function chessGameInteract(stompClient, gameUID) {
         },
 
         // call this function on every dragmove event
-        onmove: onMove
+        onmove: actions.onMove
     });
 
-    function onDragEnter(event) {
-        var draggableElement = event.relatedTarget,
-            dropzoneElement = event.target;
 
-            // feedback the possibility of a drop
-        dropzoneElement.classList.add(ACTION_CLASSES.DROP_TARGET);
-        draggableElement.classList.add(ACTION_CLASSES.CAN_DROP);
-    }
-
-    function onDropActivate(event) {
-        // add active dropzone feedback
-        event.target.classList.add(ACTION_CLASSES.DROP_ACTIVE);
-    }
-
-    function onDrapLeave(event) {
-        event.target.classList.remove(ACTION_CLASSES.DROP_TARGET);
-        event.relatedTarget.classList.remove(ACTION_CLASSES.CAN_DROP);
-        if (startOfMove) {
-            sourceId = event.target.id;
-            startOfMove = false;
-        }
-    }
-
-    function onDrop(event) {
-        destId = event.target.id;
-        startOfMove = true;
-        var move = sourceId + "-" + destId;
-        stompClient.send("/app/move/" + gameUID, {priority: 9}, move);
-    }
-
-    function onDropDeactivate(event) {
-        // remove active dropzone feedback
-        event.target.classList.remove(ACTION_CLASSES.DROP_ACTIVE);
-        event.target.classList.remove(ACTION_CLASSES.DROP_TARGET);
-    }
 
     interact(DROPZONE_CLASS).dropzone({
         accept: DROPZONE_ACCEPT_CLASS,
         overlap: 0.1,
-        ondropactivate: onDropActivate,
-        ondragenter: onDragEnter,
-        ondragleave: onDrapLeave,
-        ondrop: onDrop,
-        ondropdeactivate: onDropDeactivate
+        ondropactivate: actions.onDropActivate,
+        ondragenter: actions.onDragEnter,
+        ondragleave: actions.onDragLeave,
+        ondrop: actions.onDrop,
+        ondropdeactivate: actions.onDropDeactivate
     });
 }
+
