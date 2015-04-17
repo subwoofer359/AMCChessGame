@@ -1,7 +1,7 @@
 var InteractActions = function (stompClient, gameUID) {
     "use strict";
     this.stompClient = stompClient;
-    this.gameUid = gameUID;
+    this.gameUID = gameUID;
     this.ACTION_CLASSES = {
         DROP_ACTIVE: 'drop-active',
         DROP_TARGET: 'drop-target',
@@ -94,7 +94,9 @@ function chessGameInteract(stompClient, gameUID) {
         },
 
         // call this function on every dragmove event
-        onmove: actions.onMove
+        onmove: function (event) {
+            actions.onMove.call(actions, event);
+        }
     });
 
 
@@ -102,11 +104,21 @@ function chessGameInteract(stompClient, gameUID) {
     interact(DROPZONE_CLASS).dropzone({
         accept: DROPZONE_ACCEPT_CLASS,
         overlap: 0.1,
-        ondropactivate: actions.onDropActivate,
-        ondragenter: actions.onDragEnter,
-        ondragleave: actions.onDragLeave,
-        ondrop: actions.onDrop,
-        ondropdeactivate: actions.onDropDeactivate
+        ondropactivate: function (event) {
+            actions.onDropActivate.call(actions, event);
+        },
+        ondragenter: function (event) {
+            actions.onDragEnter.call(actions, event);
+        },
+        ondragleave: function (event) {
+            actions.onDragLeave.call(actions, event);
+        },
+        ondrop: function (event) {
+            actions.onDrop.call(actions, event);
+        },
+        ondropdeactivate: function (event) {
+            actions.onDropDeactivate.call(actions, event);
+        }
     });
 }
 
