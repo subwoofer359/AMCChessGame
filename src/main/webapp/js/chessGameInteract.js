@@ -5,7 +5,7 @@ function chessGameInteract(stompClient, gameUID) {
     var DRAGGABLE_CLASS = '.draggable',
         DROPZONE_CLASS = '.dropzone',
         DROPZONE_ACCEPT_CLASS = '.chesspiece',
-        RESTRICTION_ELEMENT = '#layer#',
+        RESTRICTION_ELEMENT = '#layer',
         ACTION_CLASSES = {
             DROP_ACTIVE: 'drop-active',
             DROP_TARGET: 'drop-target',
@@ -14,6 +14,23 @@ function chessGameInteract(stompClient, gameUID) {
         startOfMove = true,
         sourceId = "",
         destId = "";
+
+    function onMove(event) {
+        var target = event.target,
+            // keep the dragged position in the data-x/data-y attributes
+            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy,
+            correctY = target.transform.baseVal[0].matrix.f,
+            correctX = target.transform.baseVal[0].matrix.e;
+        // translate the element
+        target.style.webkitTransform =
+            target.style.transform =
+            'translate(' + (x + correctX) + 'px, ' + (y + correctY) + 'px)';
+
+        // update the posiion attributes
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+    }
 
     interact(DRAGGABLE_CLASS).draggable({
         // enable inertial throwing
@@ -26,59 +43,52 @@ function chessGameInteract(stompClient, gameUID) {
         },
 
         // call this function on every dragmove event
-        onmove: function (event) {
-            var target = event.target,
-                // keep the dragged position in the data-x/data-y attributes
-                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy,
-                correctY = target.transform.baseVal[0].matrix.f,
-                correctX = target.transform.baseVal[0].matrix.e;
-            // translate the element
-            target.style.webkitTransform =
-                target.style.transform =
-                'translate(' + (x + correctX) + 'px, ' + (y + correctY) + 'px)';
-
-            // update the posiion attributes
-            target.setAttribute('data-x', x);
-            target.setAttribute('data-y', y);
-        }
+        onmove: onMove
     });
 
+    function onDragEnter(event) {
+        var draggableElement = event.relatedTarget,
+            dropzoneElement = event.target;
+
+            // feedback the possibility of a drop
+        dropzoneElement.classList.add(ACTION_CLASSES.DROP_TARGET);
+        draggableElement.classList.add(ACTION_CLASSES.CAN_DROP);
+    }
+
+    function onDropActivate(event) {
+        // add active dropzone feedback
+        event.target.classList.add(ACTION_CLASSES.DROP_ACTIVE);
+    }
+
+    function onDrapLeave(event) {
+        event.target.classList.remove(ACTION_CLASSES.DROP_TARGET);
+        event.relatedTarget.classList.remove(ACTION_CLASSES.CAN_DROP);
+        if (startOfMove) {
+            sourceId = event.target.id;
+            startOfMove = false;
+        }
+    }
+
+    function onDrop(event) {
+        destId = event.target.id;
+        startOfMove = true;
+        var move = sourceId + "-" + destId;
+        stompClient.send("/app/move/" + gameUID, {priority: 9}, move);
+    }
+
+    function onDropDeactivate(event) {
+        // remove active dropzone feedback
+        event.target.classList.remove(ACTION_CLASSES.DROP_ACTIVE);
+        event.target.classList.remove(ACTION_CLASSES.DROP_TARGET);
+    }
 
     interact(DROPZONE_CLASS).dropzone({
         accept: DROPZONE_ACCEPT_CLASS,
         overlap: 0.1,
-        ondropactivate: function (event) {
-            // add active dropzone feedback
-            event.target.classList.add(ACTION_CLASSES.DROP_ACTIVE);
-        },
-        ondragenter: function (event) {
-            var draggableElement = event.relatedTarget,
-                dropzoneElement = event.target;
-
-            // feedback the possibility of a drop
-            dropzoneElement.classList.add(ACTION_CLASSES.DROP_TARGET);
-            draggableElement.classList.add(ACTION_CLASSES.CAN_DROP);
-
-        },
-        ondragleave: function (event) {
-            event.target.classList.remove(ACTION_CLASSES.DROP_TARGET);
-            event.relatedTarget.classList.remove(ACTION_CLASSES.CAN_DROP);
-            if (startOfMove) {
-                sourceId = event.target.id;
-                startOfMove = false;
-            }
-        },
-        ondrop: function (event) {
-            destId = event.target.id;
-            startOfMove = true;
-            var move = sourceId + "-" + destId;
-            stompClient.send("/app/move/" + gameUID, {priority: 9}, move);
-        },
-        ondropdeactivate: function (event) {
-            // remove active dropzone feedback
-            event.target.classList.remove(ACTION_CLASSES.DROP_ACTIVE);
-            event.target.classList.remove(ACTION_CLASSES.DROP_TARGET);
-        }
+        ondropactivate: onDropActivate,
+        ondragenter: onDragEnter,
+        ondragleave: onDrapLeave,
+        ondrop: onDrop,
+        ondropdeactivate: onDropDeactivate
     });
 }
