@@ -17,6 +17,9 @@
 <script src="../../js/chesspieces.js"></script>
 <script src="../../js/chessboard.js"></script>
 <script src="../../js/player.js"></script>
+<script src="../../js/chessGamePortal.js"></script>
+<script src="../../js/chessGameInteract.js"></script>
+
 <title>Chess Game</title>
 <style>
     @import url(../../css/General.css);
@@ -137,175 +140,17 @@
 </style>
 <script>
 $(document).ready(function(){
-var sourceId = "",
-    destId = "",
-    startOfMove = true,
-    playerColour = '<c:out value="${CHESSPLAYER.colour}"/>'
-    alertBox = $("#my-alert"),
-    alertBoxText = $("#my-alert .alert");
-    GAME_STATUS = {
-            WHITE_CHECKMATE : "WHITE_CHECKMATE",
-            BLACK_CHECKMATE : "BLACK_CHECKMATE",
-            STALEMATE : "STALEMATE",
-            WHITE_IN_CHECK : "WHITE_IN_CHECK",
-            BLACK_IN_CHECK : "BLACK_IN_CHECK"
-    };
-    
-    $("#quit-btn").click(function () {
-        stompClient.send("/app/quit/${GAME_UUID}", {priority: 9},"quit");
-    });
-    
-interact('.draggable')
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    restrict: {
-      restriction: '#layer1',
-      endOnly: true,
-      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    },
-
-    // call this function on every dragmove event
-    onmove: function (event) {
-      var target = event.target,
-          // keep the dragged position in the data-x/data-y attributes
-          x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-          y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-      var correctY=target.transform.baseVal[0].matrix.f;
-      var correctX=target.transform.baseVal[0].matrix.e;
-      // translate the element
-      target.style.webkitTransform =
-      target.style.transform =
-        'translate(' + (x+correctX) + 'px, ' + (y+correctY) + 'px)';
-
-      // update the posiion attributes
-      target.setAttribute('data-x', x);
-      target.setAttribute('data-y', y);
-    },
-    // call this function on every dragend event
-  });
-
-
-interact('.dropzone').dropzone({
-    accept: '.chesspiece',
-    overlap: 0.1,
-    ondropactivate: function (event) {
-    // add active dropzone feedback
-    event.target.classList.add('drop-active');
-  },
-  ondragenter: function (event) {
-    var draggableElement = event.relatedTarget,
-        dropzoneElement = event.target;
-
-    // feedback the possibility of a drop
-    dropzoneElement.classList.add('drop-target');
-    draggableElement.classList.add('can-drop');
-
-  },
-  ondragleave: function (event) {
-    event.target.classList.remove('drop-target');
-    event.relatedTarget.classList.remove('can-drop');
-    if(startOfMove){
-	   console.log("Source:"+event.target.id);
-       sourceId=event.target.id;
-	   startOfMove=false;
-    }
-  },
-  ondrop: function (event) {
-	destId=event.target.id;
-	console.log("destination:"+destId);
-	startOfMove=true;
-    var move=sourceId+"-"+destId;
-    stompClient.send("/app/move/${GAME_UUID}",{priority: 9},move);
-  },
-  ondropdeactivate: function (event) {
-    // remove active dropzone feedback
-    event.target.classList.remove('drop-active');
-    event.target.classList.remove('drop-target');
-  }
+    var stompClient = openStompConnection("ws://${pageContext.request.localAddr}:${pageContext.request.localPort}" +
+                        "${pageContext.request.contextPath}" +
+                        "/app/chessgame/chessgame", 
+                        "${GAME_UUID}",
+                        "${GAME.player.name}", 
+                        "${GAME.opponent.name}", 
+                        '<c:out value="${CHESSPLAYER.colour}"/>'
+                       );
+    chessGameInteract(stompClient, "${GAME_UUID}");
 });
-    
-    var socket=new WebSocket("ws://${pageContext.request.localAddr}:${pageContext.request.localPort}${pageContext.request.contextPath}/app/chessgame/chessgame");
-	var stompClient=Stomp.over(socket);
-	var subid='234';
-	stompClient.connect({},
-	        function(frame){
-            var oldChessBoard = {};
-        
-            function updateChessBoard(playerColour, chessBoardJson) {
-                createChessBoard(playerColour, chessBoardJson);
-                oldChessBoard = chessBoardJson;
-                updatePlayer(chessBoardJson);
-            }
-        
-        function showFadingAlertMessage(message) {
-            alertBoxText.html(message);
-            alertBox.css("display","block");
-            alertBox.css("opacity","1");
-            alertBox.fadeOut(5000);
-        }
-        
-        function showAlertMessage(message) {
-            alertBoxText.html(message);
-            alertBox.css("display","block");
-            alertBox.css("opacity","1");
-        }
-        
-	    	stompClient.subscribe("/user/queue/updates",
-	    	        function(message){
-                            if(message.headers.TYPE === "ERROR") {
-                                showFadingAlertMessage(message.body);
-                                if(oldChessBoard !== undefined || oldChessBoard !== {}) {
-                                    createChessBoard(playerColour, oldChessBoard);
-                                }
-                            } else if(message.headers.TYPE === "UPDATE") {
-                                updateChessBoard(playerColour, message.body);
-                            } else if(message.headers.TYPE === "INFO") {
-                                console.log(message.body);
-                            }
-            });
-	    	
-            stompClient.subscribe("/topic/updates/${GAME_UUID}",
-    	        function(message){
-                        console.log("message:" + message.body);
-                        if(message.headers.TYPE === "ERROR") {
-                            updateChessBoard(message.body);    
-                        } else if(message.headers.TYPE === "STATUS") {
-                            switch(message.body) {
-                            case GAME_STATUS.WHITE_CHECKMATE:
-                                    showAlertMessage("${GAME.opponent.name} has won the game");
-                                    break;
-                            case GAME_STATUS.BLACK_CHECKMATE:
-                                    showAlertMessage("${GAME.player.name} has won the game");
-                                    break;
-                            case GAME_STATUS.STALEMATE:
-                                    showAlertMessage("Game has ended in a draw");
-                                    break;
-                            case GAME_STATUS.WHITE_IN_CHECK:
-                                    showFadingAlertMessage("${GAME.player.name}'s king is in check");
-                                    break;
-                            case GAME_STATUS.BLACK_IN_CHECK:
-                                    showFadingAlertMessage("${GAME.opponent.name}'s king is in check");
-                                    break;
-                            default:
-                                    break;
-                            }
-                        } else if(message.headers.TYPE === "INFO"){
-                            if (/has quit the game$/.test(message.body)) {
-                                showAlertMessage(message.body);
-                            } else {
-                                console.log("INFO:" + message.body);
-                            }
-                        } else if(message.headers.TYPE === "UPDATE") {
-                            updateChessBoard(playerColour, message.body);
-                        }
-                });
-        
-            stompClient.send("/app/get/${GAME_UUID}", {priority: 9},"Get ChessBoard");
-	});	    	
-});
+
 </script>
 </head>
 <body>
