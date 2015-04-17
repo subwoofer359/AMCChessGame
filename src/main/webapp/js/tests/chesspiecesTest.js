@@ -1,3 +1,10 @@
+/*global QUnit*/
+/*global $*/
+QUnit.module("chesspieces test");
+
+/*global coordinates*/
+/*global boardWidth*/
+/*global parseSquareCoordinates*/
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function (assert) {
     "use strict";
     var i,
@@ -28,6 +35,8 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Excep
     }, /Not valid ChessBoard coordinate/);
 });
 
+/*global ChessPieces*/
+
 QUnit.test("testing chesspieces.js: white player pawn creation", function (assert) {
     "use strict";
     var chesspieces = new ChessPieces("WHITE"),
@@ -35,9 +44,9 @@ QUnit.test("testing chesspieces.js: white player pawn creation", function (asser
         blackId = "blackId",
         whiteChesspiece,
         blackChesspiece,
-        whitePawn = chesspieces.pawn(whiteId,"A1", chesspieces.colour.white),
-        blackPawn = chesspieces.pawn(blackId,"A2", chesspieces.colour.black);
-        
+        whitePawn = chesspieces.pawn(whiteId, "A1", chesspieces.colour.white),
+        blackPawn = chesspieces.pawn(blackId, "A2", chesspieces.colour.black);
+
     $("#qunit-fixture").append(whitePawn);
     $("#qunit-fixture").append(blackPawn);
     whiteChesspiece = $("g#" + whiteId);
@@ -55,9 +64,9 @@ QUnit.test("testing chesspieces.js: black player pawn creation", function (asser
         blackId = "blackId",
         whiteChesspiece,
         blackChesspiece,
-        whitePawn = chesspieces.pawn(whiteId,"A1", chesspieces.colour.white),
-        blackPawn = chesspieces.pawn(blackId,"A2", chesspieces.colour.black);
-        
+        whitePawn = chesspieces.pawn(whiteId, "A1", chesspieces.colour.white),
+        blackPawn = chesspieces.pawn(blackId, "A2", chesspieces.colour.black);
+
     $("#qunit-fixture").append(whitePawn);
     $("#qunit-fixture").append(blackPawn);
     whiteChesspiece = $("g#" + whiteId);
