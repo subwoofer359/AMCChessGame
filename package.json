@@ -1,0 +1,30 @@
+{
+  "name": "AMCChessGame",
+  "version": "2.1.0",
+  "description": "A simple chess game",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "grunt": "~0.4.5"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.11.2",
+    "grunt": "~0.4.5",
+    "grunt-contrib-qunit": "~0.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://adrian@192.168.1.5:7990/scm/cg/amcchessgame.git"
+  },
+  "keywords": [
+    "java",
+    "chess"
+  ],
+  "author": "Adrian McLaughlin",
+  "license": "MIT"
+}
