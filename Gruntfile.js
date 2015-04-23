@@ -1,9 +1,10 @@
+/*global module*/
 module.exports = function (grunt) {
     "use strict";
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            all: ['Gruntfile.js', ' src/main/webapp/js/**/*.js', 'test/**/*.js']
+            all: ['Gruntfile.js', 'src/main/webapp/js/**/*.js', 'test/**/*.js', '!src/main/webapp/js/**/bootstrap.min.js']
         },
         qunit: {
             all: ['src/main/webapp/WEB-INF/Tests/Qunit.html']
