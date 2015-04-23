@@ -12,7 +12,7 @@ function openStompConnection(websocketURL, gameUID, playerName, opponentName, pl
 
     socket = new WebSocket(websocketURL);
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({}, function () {
         var oldChessBoard = {},
             alertBox = $("#my-alert"),
             alertBoxText = $("#my-alert .alert"),
@@ -38,7 +38,6 @@ function openStompConnection(websocketURL, gameUID, playerName, opponentName, pl
         }
 
         $("#quit-btn").click(function () {
-            /*stompClient.send("/app/quit/${GAME_UUID}", {priority: 9},"quit");*/
             stompClient.send("/app/quit/" + gameUID, {priority: 9}, "quit");
         });
 
