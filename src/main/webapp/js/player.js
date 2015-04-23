@@ -1,3 +1,5 @@
+/*global $*/
+/*global console*/
 function updatePlayer(message) {
     "use strict";
     var jsonPlayer, name, colour, whitePlayerName, whiteNameHolder, blackNameHolder;

@@ -1,3 +1,8 @@
+/*global $*/
+/*global console*/
+/*global ChessPieces*/
+/*global document*/
+
 /**
  *
  * @file related chessboard functions
