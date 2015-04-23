@@ -1,3 +1,19 @@
+/*
+ * @file To set up the interact.js library to allow the user to move the chess pieces on the board
+ * @author Adrian McLaughlin
+ */
+
+/*global interact*/
+/*global console*/
+
+/*
+ * Creates an InteractActions object
+ * To be used by Interact.js
+ * @class
+ * @access private
+ * @param {stompConnection} stompClient - STOMP Connection to server
+ * @param {string} gameUID - String represention of the Game unique number
+ */
 var InteractActions = function (stompClient, gameUID) {
     "use strict";
     this.stompClient = stompClient;
@@ -33,6 +49,7 @@ InteractActions.prototype = {
 
     onDragEnter : function (event) {
         "use strict";
+        console.log("Drop dragEnter");
         var draggableElement = event.relatedTarget,
             dropzoneElement = event.target;
 
@@ -43,12 +60,14 @@ InteractActions.prototype = {
 
     onDropActivate : function (event) {
         "use strict";
+        console.log("Drop onDropActivate");
         // add active dropzone feedback
         event.target.classList.add(this.ACTION_CLASSES.DROP_ACTIVE);
     },
 
     onDragLeave : function (event) {
         "use strict";
+        console.log("Drop onDragLeave");
         event.target.classList.remove(this.ACTION_CLASSES.DROP_TARGET);
         event.relatedTarget.classList.remove(this.ACTION_CLASSES.CAN_DROP);
         if (this.startOfMove) {
@@ -59,6 +78,7 @@ InteractActions.prototype = {
 
     onDrop : function (event) {
         "use strict";
+        console.log("Drop onDrop");
         this.destId = event.target.id;
         this.startOfMove = true;
         var move = this.sourceId + "-" + this.destId;
@@ -67,13 +87,17 @@ InteractActions.prototype = {
 
     onDropDeactivate : function (event) {
         "use strict";
+        console.log("Drop deactivate");
         // remove active dropzone feedback
         event.target.classList.remove(this.ACTION_CLASSES.DROP_ACTIVE);
         event.target.classList.remove(this.ACTION_CLASSES.DROP_TARGET);
     }
 };
 
-/*global interact*/
+
+/*
+ * 
+ */
 function chessGameInteract(stompClient, gameUID) {
     "use strict";
 
