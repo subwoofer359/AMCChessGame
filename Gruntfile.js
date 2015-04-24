@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                 options: {
             // Target-specific options go here 
                 },
-                'pre-commit' : 'jshint'
+                'pre-commit' : 'jshint qunit'
             }
         }
 
