@@ -8,11 +8,21 @@ module.exports = function (grunt) {
         },
         qunit: {
             all: ['src/main/webapp/WEB-INF/Tests/Qunit.html']
+        },
+        githooks: {
+            all: {
+                options: {
+            // Target-specific options go here 
+                },
+                'pre-commit' : 'jshint'
+            }
         }
+
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-githooks');
     grunt.registerTask('default', ['jshint', 'qunit']);
     grunt.registerTask('QUnit', ['qunit']);
 };
