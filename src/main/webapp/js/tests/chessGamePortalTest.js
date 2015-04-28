@@ -2,6 +2,7 @@
 /*global $*/
 /*global ChessPieces*/
 /*global StompActions*/
+/*global openStompConnection*/
 /*global createChessBoard:true*/
 var gameUID,
     playerName,
@@ -201,4 +202,11 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert
 
     myStompActions.topicUpdate(message);
     assert.equal(updateChessBoardCall, true);
+});
+
+QUnit.test("testing openStompConnection: fail with error", function (assert) {
+    "use strict";
+    assert.throws(function () {
+        openStompConnection("", function () { createChessBoard(""); });
+    }, "callback function isn't an instance of StompActions");
 });

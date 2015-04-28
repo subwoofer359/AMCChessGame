@@ -140,7 +140,7 @@
 </style>
 <script>
 $(document).ready(function(){
-    var stompClient = openStompConnection("ws://${pageContext.request.localAddr}:${pageContext.request.localPort}" +
+    var stompClient = setupStompConnection("ws://${pageContext.request.localAddr}:${pageContext.request.localPort}" +
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame", 
                         "${GAME_UUID}",

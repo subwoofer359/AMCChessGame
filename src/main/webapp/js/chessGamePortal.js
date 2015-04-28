@@ -99,22 +99,18 @@ function openStompConnection(websocketURL, stompCallBack) {
     "use strict";
     var stompClient,
         socket,
-        PRIORITY = {priority : 9},
-        APP_QUIT = "/app/quit/",
-        APP_GET = "/app/get/",
         USER_UPDATES = "/user/queue/updates",
-        TOPIC_UPDATES = "/topic/updates/";
+        TOPIC_UPDATES = "/topic/updates/",
+        APP_GET = "/app/get/",
+        PRIORITY = {priority : 9},
+        APP_QUIT = "/app/quit/";
 
-    if (!(typeof stompCallBack === 'function' && stompCallBack instanceof StompActions)) {
+    if (!(typeof stompCallBack === 'object' && stompCallBack instanceof StompActions)) {
         throw "callback function isn't an instance of StompActions";
     }
     socket = new WebSocket(websocketURL);
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function () {
-        $("#quit-btn").click(function () {
-            stompClient.send(APP_QUIT + stompCallBack.gameUID, PRIORITY, "quit");
-        });
-
+    stompClient.connect({}, function onStompConnect() {
         stompClient.subscribe(USER_UPDATES, function (message) {
             stompCallBack.userUpdate.call(stompCallBack, message);
         });
@@ -123,7 +119,20 @@ function openStompConnection(websocketURL, stompCallBack) {
             stompCallBack.topicUpdate.call(stompCallBack, message);
         });
 
-        stompClient.send(APP_GET + stompCallBack.gameUID, {priority: 9}, "Get ChessBoard");
+        $("#quit-btn").click(function () {
+            stompClient.send(APP_QUIT + stompCallBack.gameUID, PRIORITY, "quit");
+        });
+        stompClient.send(APP_GET + stompCallBack.gameUID, PRIORITY, "Get ChessBoard");
+    }, function onStompError() {
+        stompCallBack.showAlertMessage.call(stompCallBack, "Couldn't connect to the STOMP server");
+        console.log("Stomp connection failure");
     });
+    return stompClient;
+}
+
+function setupStompConnection(websocketURL, gameUID, playerName, opponentName, playerColour) {
+    "use strict";
+    var stompCallBack = new StompActions(gameUID, playerName, opponentName, playerColour),
+        stompClient = openStompConnection(websocketURL, stompCallBack);
     return stompClient;
 }
