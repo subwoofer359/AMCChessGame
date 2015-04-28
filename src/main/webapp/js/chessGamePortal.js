@@ -50,7 +50,7 @@ StompActions.prototype = {
         "use strict";
         if (message.headers.TYPE === "ERROR") {
             this.showFadingAlertMessage(message.body);
-            if (this.oldChessBoard !== undefined || !$.isEmptyObject(this.oldChessBoard)) {
+            if (this.oldChessBoard !== undefined && !$.isEmptyObject(this.oldChessBoard)) {
                 createChessBoard(this.playerColour, this.oldChessBoard);
             }
         } else if (message.headers.TYPE === "UPDATE") {
@@ -98,7 +98,12 @@ StompActions.prototype = {
 function openStompConnection(websocketURL, stompCallBack) {
     "use strict";
     var stompClient,
-        socket;
+        socket,
+        PRIORITY = {priority : 9},
+        APP_QUIT = "/app/quit/",
+        APP_GET = "/app/get/",
+        USER_UPDATES = "/user/queue/updates",
+        TOPIC_UPDATES = "/topic/updates/";
 
     if (!(typeof stompCallBack === 'function' && stompCallBack instanceof StompActions)) {
         throw "callback function isn't an instance of StompActions";
@@ -107,18 +112,18 @@ function openStompConnection(websocketURL, stompCallBack) {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
         $("#quit-btn").click(function () {
-            stompClient.send("/app/quit/" + stompCallBack.gameUID, {priority: 9}, "quit");
+            stompClient.send(APP_QUIT + stompCallBack.gameUID, PRIORITY, "quit");
         });
 
-        stompClient.subscribe("/user/queue/updates", function (message) {
+        stompClient.subscribe(USER_UPDATES, function (message) {
             stompCallBack.userUpdate.call(stompCallBack, message);
         });
 
-        stompClient.subscribe("/topic/updates/" + stompCallBack.gameUID, function (message) {
+        stompClient.subscribe(TOPIC_UPDATES + stompCallBack.gameUID, function (message) {
             stompCallBack.topicUpdate.call(stompCallBack, message);
         });
 
-        stompClient.send("/app/get/" + stompCallBack.gameUID, {priority: 9}, "Get ChessBoard");
+        stompClient.send(APP_GET + stompCallBack.gameUID, {priority: 9}, "Get ChessBoard");
     });
     return stompClient;
 }
