@@ -43,8 +43,18 @@ body {
     margin-top: 100px;
     padding-left:50px;
     padding-right:50px;
+    //display: none;
 }
-    
+
+#signup-box {
+    background-color: #428aca;
+    border-radius: 22px;
+    margin-top: 100px;
+    padding-left:50px;
+    padding-right:50px;
+    display: none;
+}    
+
 #login-icon {
     margin-top: 35px;
     margin-bottom: 10px;
@@ -66,6 +76,29 @@ body {
     font-family:"Orbitron";
     font-size: 2em;
 }
+
+#signup-icon {
+    margin-top: 35px;
+    margin-bottom: 20px;
+    margin-left: -50px;
+    width: 120px;
+    height: 120px;
+}
+    
+#signup-title {
+    text-align: center;
+    font-family: Raleway;
+    font-size: x-large;
+    margin-bottom: 10px;
+    margin-top: 70px;
+ 
+}
+#signup-title strong {
+    line-height: 1.3em;
+    font-family:"Orbitron";
+    font-size: 1.0em;
+}
+    
 .inputtext {
     height: 40px;
     margin-bottom: 20px;
@@ -77,18 +110,37 @@ body {
     text-indent: 30px;
 }
 
-#submit-btn {
+.signup-inputtext {
+    margin-bottom: 30px;
+}
+
+.submit-btn {
     margin-bottom: 20px;
     background-color: #0b5494;
 }
+
+.filler {
+    height: 20px;
+}
     
 #signup-msg {
+    font-size: 1.3em;    
+    display: block;
     color: white;
     text-align: center;
     padding-bottom: 20px;
+    text-decoration: none;
 }
 
 </style>
+<script>
+$(document).ready(function () {
+    $("#signup-msg").click(function () {
+        $("#login-box").css("display", "none");
+        $("#signup-box").css("display", "block");
+    });
+});
+</script>
 </head>
 <body>
 <div id="main" class="container-fluid">
@@ -96,13 +148,28 @@ body {
     <div class="row">
         <form method="post" action="j_security_check">
         <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
-            <img id="login-icon" src="./img/Knight.svg"/>
+            <img id="login-icon" alt="knight"  src="./img/Knight.svg"/>
             <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
             <input class="inputtext form-control" type="text" name="j_username" required="required" placeholder="Username"/>
             <input class="inputtext form-control" type="password" name="j_password" required="required" placeholder="Password"/>
-            <input id="submit-btn" class="btn btn-lg btn-block btn-primary col-xs-offset-" type="submit" value="Play Game"/>
-            <p id="signup-msg">Not a Member? Sign up now</p>
+            <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>
+            <a id="signup-msg">Not a Member? Sign up now</a>
         </div>
+        </form>
+        <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
+            <div id="title">
+                <div class="col-xs-2"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
+                <p class="col-xs-10" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
+            </div>
+            <input class="inputtext signup-inputtext form-control" type="text" name="name" required="required" placeholder="Name"/>
+            <input class="inputtext signup-inputtext form-control" type="text" name="userName" required="required" placeholder="Username"/>
+            <input class="inputtext signup-inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
+            <input class="inputtext signup-inputtext form-control" type="password" required="required" placeholder="Confirm password"/>
+            <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="create Player"/>
+            <div class="filler"></div>
+        </div>
+        <form>
+        
         </form>
     </div>
 </div> <!-- Container -->
