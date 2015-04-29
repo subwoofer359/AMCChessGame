@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>AMCChessGame login</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+<!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<style>
+@import url(css/General.css);  
+
+body {
+    background-image: url(img/1700128.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
+#main{
+    height:100%;
+}
+    
+ 
+.padding {
+    height: 20px;
+}
+
+/* Information box */
+    
+#description {
+    
+    border-style:ridge;
+    border-width: 2px;
+    padding:15px;
+    background-color: white;
+    box-shadow: 5px 5px 8px #2a78ba;
+    opacity: 0.7;
+}
+    
+#description p {
+    font-weight: 400;
+    color: #000000;
+}
+    
+.header {
+    border-width: 2px;
+    min-width: 170px;
+    background-color: #2886d5;
+    box-shadow: 5px 5px 8px #2a78ba;
+}
+    
+.header h2 {
+    position: relative;
+    text-indent: 10px;
+    line-height: 1.5em;
+    padding-bottom: 5px;
+    padding-top:5px;
+    
+}
+
+#introduction{
+    position:absolute;
+    display: none;
+    top:1000px;
+    left:8%;
+}
+    
+/* Title banner */
+    
+#title{
+    font-size: 4em;
+    background-color: #2886d5;
+    opacity: 0.7;
+    box-shadow: 5px 5px 8px #000000;
+    padding-top: 12px;
+    padding-right: 15px;
+    border-radius: 5px;
+    max-width: 700px;
+    min-width: 700px;
+}
+
+#title strong{
+    font-family: "Orbitron";
+    font-weight: bold;
+    font-size: 2em;
+    padding-left: 100px;
+    padding-top: 10px;
+    display: block;
+    max-width: 700px;
+    min-width: 700px;
+}
+
+/* play button */
+    
+#play-button{
+    position: absolute;
+    display: block;
+    top:50%;
+    left:45%;
+    height:70px;
+    width:250px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 30px 0px 30px 0px;
+    padding:5px 10px 0px 5px;
+    background-color: #2886d5;
+    box-shadow: 5px 5px 8px black;
+    opacity: 0.8;
+}
+
+#play-button a{
+    display: inline-block;
+}
+
+#play-button img{
+    height: 50px;
+    
+    
+}
+
+#play-button p{
+    position: relative;
+    color: black;
+    display: inline-block;
+    top:-14px;
+    font-family: "Orbitron";
+    font-size: 2em;
+    
+}
+    
+#login-box {
+    background-color: #428aca;
+    border-radius: 22px;
+    margin-top: 100px;
+}
+    
+#login-icon {
+    margin-top: 15px;
+    margin-bottom: 65px;
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+    
+.inputtext {
+    margin-bottom: 20px;
+}
+
+#submit-btn {
+    margin-bottom: 20px;
+}
+/* Handle different screen sizes */
+    
+@media (min-width:360px) and (max-width:768px){
+    #title {
+        max-width: 768px;
+        min-width: 580px;
+        font-size: 3em;
+    }
+    
+    #title strong {
+        max-width: 580px;
+        min-width: 580px;
+    }
+}
+    
+@media (max-width:360px){
+    #title {
+        max-width: 360px;
+        min-width: 360px;
+        font-size: 3em;
+    }
+    
+    #title strong {
+        max-width: 340px;
+        min-width: 340px;
+        padding-left: 50px;
+    }
+}
+</style>
+</head>
+<body>
+<div id="main" class="container-fluid">
+<div class="row">
+    <div id="contents" class="col-xs-10">
+        <div class="row">       
+            <div class="row padding"></div>
+            <div class="col-sm-2 hidden-xs"></div>
+            <div id="title" class="col-xs-8 col-md-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+            <div class="clearfix"></div>
+        </div>
+    </div><!-- contents div -->
+    </div><!-- Top row -->
+    <div class="row">
+        <form method="post" action="j_security">
+        <div id="login-box" class="col-sm-offset-4 col-sm-4">
+            <img id="login-icon" src="./img/Knight.svg"/>
+            <input class="inputtext form-control" type="text" name="j_username" required="required" placeholder="Username"/>
+            <input class="inputtext form-control" type="password" name="j_password" required="required" placeholder="Password"/>
+            <input id="submit-btn" class="btn btn-primary pull-right" type="submit" value="Play Game"/>
+        </div>
+        </form>
+    </div>
+</div> <!-- Container -->
+    
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</body>
+</html>
