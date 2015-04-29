@@ -6,6 +6,7 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
            http://www.springframework.org/schema/aop
@@ -15,7 +16,9 @@
            http://www.springframework.org/schema/mvc
            http://www.springframework.org/schema/mvc/spring-mvc.xsd
            http://www.springframework.org/schema/websocket 
-           http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+           http://www.springframework.org/schema/websocket/spring-websocket.xsd
+           http://www.springframework.org/schema/security 
+           http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 	
 	<context:component-scan base-package="org.amc.game."/>
     <mvc:annotation-driven />
@@ -43,4 +46,21 @@
 	<!-- 
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
 	 -->
+	 
+	 <security:global-method-security pre-post-annotations="enabled">
+	 </security:global-method-security>
+	 <security:http>
+	 	<security:intercept-url pattern="/app/chessgame/**" access="isAuthenticated()"/>
+	 	<security:form-login login-page="/Login.html"/>
+	 	<security:logout/>
+	 	<security:csrf disabled="true"/> 
+	 </security:http>
+	     <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="adrian" password="xwlin98" authorities="ROLE_SUPERVISOR, ROLE_USER" />
+                <security:user name="sarah" password="xwlin98" authorities="ROLE_USER" />
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
 </beans>

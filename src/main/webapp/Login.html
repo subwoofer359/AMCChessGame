@@ -146,12 +146,12 @@ $(document).ready(function () {
 <div id="main" class="container-fluid">
 ><!-- Top row -->
     <div class="row">
-        <form method="post" action="j_security_check">
+        <form method="post" action="./login">
         <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
             <img id="login-icon" alt="knight"  src="./img/Knight.svg"/>
             <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
-            <input class="inputtext form-control" type="text" name="j_username" required="required" placeholder="Username"/>
-            <input class="inputtext form-control" type="password" name="j_password" required="required" placeholder="Password"/>
+            <input class="inputtext form-control" type="text" name="username" required="required" placeholder="Username"/>
+            <input class="inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>
             <a id="signup-msg">Not a Member? Sign up now</a>
         </div>
