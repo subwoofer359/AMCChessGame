@@ -23,6 +23,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-githooks');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.registerTask('default', ['jshint', 'qunit']);
     grunt.registerTask('QUnit', ['qunit']);
 };
