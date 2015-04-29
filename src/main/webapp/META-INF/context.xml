@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--  
+	@author Adrian Mclaughlin
+ 	@version 1
+-->
 <Context>
-<Realm className="org.apache.catalina.realm.MemoryRealm">
-
-</Realm>
+	
+	<Realm className="org.apache.catalina.realm.DataSourceRealm"
+			dataSourceName="jdbc/APLSystemTest"
+			userTable="users" userNameCol="user_name" userCredCol="user_pass"
+			userRoleTable="user_roles" roleNameCol="role_name"
+			localDataSource="true"
+			digest="SHA-256"
+			/>
+	
+	<Resource name="jdbc/APLSystem"
+				auth="Container"
+				type="javax.sql.DataSource"
+				username="adminYTspVIn"
+				password="iDwuSCz7GaUK"
+				driverClassName="com.mysql.jdbc.Driver"
+				url="jdbc:mysql://127.12.78.130:3306/myservlet"
+				validationQuery="SELECT 1"
+				maxActive="200"
+				maxIdle="20"
+				maxWait="10000"
+				removeAbandoned="true"
+				removeAbandonedTimeout="30"
+				logAbandoned="true"
+				/>
+				
+	<Resource name="jdbc/APLSystemTest"
+				auth="Container"
+				type="javax.sql.DataSource"
+				username="adrian"
+				password="cr2032ux"
+				driverClassName="com.mysql.jdbc.Driver"
+				url="jdbc:mysql://192.168.1.5/aplsystem"
+				validationQuery="SELECT 1"
+				maxActive="200"
+				maxIdle="10"
+				removeAbandoned="true"
+				removeAbandonedTimeout="60"
+				logAbandoned="true"
+				/>
+	
 </Context>
