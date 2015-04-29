@@ -36,182 +36,72 @@ body {
 .padding {
     height: 20px;
 }
-
-/* Information box */
-    
-#description {
-    
-    border-style:ridge;
-    border-width: 2px;
-    padding:15px;
-    background-color: white;
-    box-shadow: 5px 5px 8px #2a78ba;
-    opacity: 0.7;
-}
-    
-#description p {
-    font-weight: 400;
-    color: #000000;
-}
-    
-.header {
-    border-width: 2px;
-    min-width: 170px;
-    background-color: #2886d5;
-    box-shadow: 5px 5px 8px #2a78ba;
-}
-    
-.header h2 {
-    position: relative;
-    text-indent: 10px;
-    line-height: 1.5em;
-    padding-bottom: 5px;
-    padding-top:5px;
-    
-}
-
-#introduction{
-    position:absolute;
-    display: none;
-    top:1000px;
-    left:8%;
-}
-    
-/* Title banner */
-    
-#title{
-    font-size: 4em;
-    background-color: #2886d5;
-    opacity: 0.7;
-    box-shadow: 5px 5px 8px #000000;
-    padding-top: 12px;
-    padding-right: 15px;
-    border-radius: 5px;
-    max-width: 700px;
-    min-width: 700px;
-}
-
-#title strong{
-    font-family: "Orbitron";
-    font-weight: bold;
-    font-size: 2em;
-    padding-left: 100px;
-    padding-top: 10px;
-    display: block;
-    max-width: 700px;
-    min-width: 700px;
-}
-
-/* play button */
-    
-#play-button{
-    position: absolute;
-    display: block;
-    top:50%;
-    left:45%;
-    height:70px;
-    width:250px;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 30px 0px 30px 0px;
-    padding:5px 10px 0px 5px;
-    background-color: #2886d5;
-    box-shadow: 5px 5px 8px black;
-    opacity: 0.8;
-}
-
-#play-button a{
-    display: inline-block;
-}
-
-#play-button img{
-    height: 50px;
-    
-    
-}
-
-#play-button p{
-    position: relative;
-    color: black;
-    display: inline-block;
-    top:-14px;
-    font-family: "Orbitron";
-    font-size: 2em;
-    
-}
     
 #login-box {
     background-color: #428aca;
     border-radius: 22px;
     margin-top: 100px;
+    padding-left:50px;
+    padding-right:50px;
 }
     
 #login-icon {
-    margin-top: 15px;
-    margin-bottom: 65px;
+    margin-top: 35px;
+    margin-bottom: 10px;
     display: block;
     width: 150px;
     height: 150px;
     margin-left: auto;
     margin-right: auto;
 }
-    
+
+#login-title {
+    text-align: center;
+    font-family: Raleway;
+    font-size: x-large;
+    margin-bottom: 30px;
+}
+#login-title strong {
+    line-height: 1.3em;
+    font-family:"Orbitron";
+    font-size: 2em;
+}
 .inputtext {
+    height: 40px;
     margin-bottom: 20px;
+    background-color: #285478;
+    color: white;
+    border-style: none;
+    border-radius: 20px;
+    box-shadow: 0px 0px 2px 2px #407199 inset;
+    text-indent: 30px;
 }
 
 #submit-btn {
     margin-bottom: 20px;
-}
-/* Handle different screen sizes */
-    
-@media (min-width:360px) and (max-width:768px){
-    #title {
-        max-width: 768px;
-        min-width: 580px;
-        font-size: 3em;
-    }
-    
-    #title strong {
-        max-width: 580px;
-        min-width: 580px;
-    }
+    background-color: #0b5494;
 }
     
-@media (max-width:360px){
-    #title {
-        max-width: 360px;
-        min-width: 360px;
-        font-size: 3em;
-    }
-    
-    #title strong {
-        max-width: 340px;
-        min-width: 340px;
-        padding-left: 50px;
-    }
+#signup-msg {
+    color: white;
+    text-align: center;
+    padding-bottom: 20px;
 }
+
 </style>
 </head>
 <body>
 <div id="main" class="container-fluid">
-<div class="row">
-    <div id="contents" class="col-xs-10">
-        <div class="row">       
-            <div class="row padding"></div>
-            <div class="col-sm-2 hidden-xs"></div>
-            <div id="title" class="col-xs-8 col-md-6">Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
-            <div class="clearfix"></div>
-        </div>
-    </div><!-- contents div -->
-    </div><!-- Top row -->
+><!-- Top row -->
     <div class="row">
-        <form method="post" action="j_security">
-        <div id="login-box" class="col-sm-offset-4 col-sm-4">
+        <form method="post" action="j_security_check">
+        <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
             <img id="login-icon" src="./img/Knight.svg"/>
+            <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
             <input class="inputtext form-control" type="text" name="j_username" required="required" placeholder="Username"/>
             <input class="inputtext form-control" type="password" name="j_password" required="required" placeholder="Password"/>
-            <input id="submit-btn" class="btn btn-primary pull-right" type="submit" value="Play Game"/>
+            <input id="submit-btn" class="btn btn-lg btn-block btn-primary col-xs-offset-" type="submit" value="Play Game"/>
+            <p id="signup-msg">Not a Member? Sign up now</p>
         </div>
         </form>
     </div>
