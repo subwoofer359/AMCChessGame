@@ -77,6 +77,13 @@ body {
     font-size: 2em;
 }
 
+#login-fail {
+    display: block;
+    font-size: 2em;
+    margin-top: -38px;
+    margin-bottom: 8px
+}
+    
 #signup-icon {
     margin-top: 35px;
     margin-bottom: 20px;
@@ -150,6 +157,7 @@ $(document).ready(function () {
         <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
             <img id="login-icon" alt="knight"  src="./img/Knight.svg"/>
             <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
+            <span id="login-fail" class="label label-danger">Login failed</span>
             <input class="inputtext form-control" type="text" name="username" required="required" placeholder="Username"/>
             <input class="inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>

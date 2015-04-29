@@ -51,7 +51,7 @@
 	 </security:global-method-security>
 	 <security:http>
 	 	<security:intercept-url pattern="/app/chessgame/**" access="isAuthenticated()"/>
-	 	<security:form-login login-page="/Login.html"/>
+	 	<security:form-login login-page="/Login.jsp"/>
 	 	<security:logout/>
 	 	<security:csrf disabled="true"/> 
 	 </security:http>
