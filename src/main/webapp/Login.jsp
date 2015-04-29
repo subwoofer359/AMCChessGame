@@ -1,3 +1,5 @@
+<%@page contentType="text/html; charset=ISO-8859-1" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
@@ -35,6 +37,12 @@ body {
  
 .padding {
     height: 20px;
+}
+    
+.box {
+    background: -webkit-linear-gradient(left, rgb(125, 165, 203), rgb(13, 116, 212), rgb(125, 165, 203));
+    background: -moz-linear-gradient(left, rgb(125, 165, 203), rgb(13, 116, 212), rgb(125, 165, 203));
+    box-shadow: black 5px 5px 10px;
 }
     
 #login-box {
@@ -154,17 +162,19 @@ $(document).ready(function () {
 ><!-- Top row -->
     <div class="row">
         <form method="post" action="./login">
-        <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
+        <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
             <img id="login-icon" alt="knight"  src="./img/Knight.svg"/>
             <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
-            <span id="login-fail" class="label label-danger">Login failed</span>
+            <c:if test="${param.error != null}">
+            	<span id="login-fail" class="label label-danger">Login failed</span>
+            </c:if>
             <input class="inputtext form-control" type="text" name="username" required="required" placeholder="Username"/>
             <input class="inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>
             <a id="signup-msg">Not a Member? Sign up now</a>
         </div>
         </form>
-        <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4">
+        <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
             <div id="title">
                 <div class="col-xs-2"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
                 <p class="col-xs-10" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
