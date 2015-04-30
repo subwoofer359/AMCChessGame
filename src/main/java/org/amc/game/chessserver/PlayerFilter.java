@@ -20,8 +20,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class PlayerFilter Adds a Player object which
- * represents the currently logged in user to the Session If the Player is
- * deactivated, the user is automatically logged out
+ * represents the currently logged in player to the Session If the Player is
+ * deactivated, the player is automatically logged out
  * 
  * @author Adrian Mclaughlin
  * @version 1
@@ -29,25 +29,23 @@ import javax.servlet.http.HttpSession;
 public class PlayerFilter implements Filter {
     private FilterConfig filterConfig;
     
+    private static final Logger logger = Logger.getLogger(PlayerFilter.class);
+    
     /**
      * Spring WebAPP Context
      */
-
-    public final static String SPRING_WEBAPPCONTEXT = "org.springframework.web.context.WebApplicationContext.ROOT";
+    static final String SPRING_WEBAPPCONTEXT = "org.springframework.web.context.WebApplicationContext.ROOT";
     
     /**
      * Session variable to hold the Player Object
      */
-    
-    public static final String SESSIONVAR_PLAYER = "PLAYER";
-
-    private final static Logger logger = Logger.getLogger(PlayerFilter.class);
+    static final String SESSIONVAR_PLAYER = "PLAYER";
 
     // The Spring bean's name referring a PlayerDAO object
-    private final static String USERDAO = "myPlayerDAO";
+    static final String PLAYERDAO = "myPlayerDAO";
 
     // Field of the Player entity (@see org.amc.model.Player)
-    private final static String PLAYER_NAME = "name";
+    static final String PLAYER_NAME = "name";
 
     /**
      * @see Filter#destroy()
@@ -66,13 +64,13 @@ public class PlayerFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         synchronized (httpRequest.getSession()) {
-            // Get the username from the Request object
+            // Get the playername from the Request object
             if (httpRequest.getUserPrincipal() != null
                             && httpRequest.getSession().getAttribute(SESSIONVAR_PLAYER) == null) {
-                String userName = httpRequest.getUserPrincipal().getName();
+                String playerName = httpRequest.getUserPrincipal().getName();
                 // Get the User object from the database
-                Player user = getPlayer(httpRequest.getSession(), userName);
-                addLoggedPlayerToSession(httpRequest.getSession(), user);
+                Player player = getPlayer(httpRequest.getSession(), playerName);
+                addLoggedPlayerToSession(httpRequest.getSession(), player);
             }
         }
         chain.doFilter(request, response);
@@ -89,14 +87,14 @@ public class PlayerFilter implements Filter {
     /**
      * 
      * @param session
-     * @param userName
-     * @return Player Object representing the current user
+     * @param playerName
+     * @return Player Object representing the current player
      * @throws ServletException
      *             if Player is not found in the database
      */
 
     @SuppressWarnings("unchecked")
-    private final Player getPlayer(HttpSession session, String userName) throws ServletException {
+    private final Player getPlayer(HttpSession session, String playerName) throws ServletException {
         // Spring Context containing the PlayerDAO object
         ApplicationContext context2;
 
@@ -105,14 +103,14 @@ public class PlayerFilter implements Filter {
                             SPRING_WEBAPPCONTEXT);
         }
 
-        DAO<Player> userDAO = context2.getBean(USERDAO, DAO.class);
+        DAO<Player> playerDAO = context2.getBean(PLAYERDAO, DAO.class);
 
         try {
-            List<Player> listOfPlayer = userDAO.findEntities(PLAYER_NAME, userName);
+            List<Player> listOfPlayer = playerDAO.findEntities(PLAYER_NAME, playerName);
             if (listOfPlayer != null && listOfPlayer.size() == 1) {
                 return listOfPlayer.get(0);
             } else {
-                logger.debug("Error when adding Player " + userName + " added to Session:");
+                logger.debug("Error when adding Player " + playerName + " added to Session:");
                 throw new ServletException(
                                 "No Player has been found in the Player Database with that Player name");
             }
@@ -127,12 +125,12 @@ public class PlayerFilter implements Filter {
      * Adds the Player Object to the HttpSession
      * 
      * @param session
-     * @param user
+     * @param player
      */
-    private final void addLoggedPlayerToSession(HttpSession session, Player user) {
+    private final void addLoggedPlayerToSession(HttpSession session, Player player) {
         synchronized (session) {
-            session.setAttribute(SESSIONVAR_PLAYER, user);
-            logger.debug("Player added to Session:" + user);
+            session.setAttribute(SESSIONVAR_PLAYER, player);
+            logger.debug("Player added to Session:" + player);
         }
     }
 
