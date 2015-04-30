@@ -26,7 +26,7 @@
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/GameServerContext.xml</param-value>
+		<param-value>/WEB-INF/GameServerContext.xml /WEB-INF/EntityManagerFactory.xml</param-value>
 	</context-param>
 	
 	<!-- Spring controllers -->
@@ -63,6 +63,18 @@
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
+	 
+	<filter>
+		<filter-name>EntityManagerFilter</filter-name>
+		<filter-class>org.amc.game.chessserver.EntityManagerFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	 
+	<filter>
+		<filter-name>PlayerFilter</filter-name>
+		<filter-class>org.amc.game.chessserver.PlayerFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
 	
 	<filter-mapping>
 		<filter-name>NoCacheFilter</filter-name>
@@ -73,7 +85,18 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	
+	<filter-mapping>
+		<filter-name>EntityManagerFilter</filter-name>
+		<url-pattern>/app/chessgame/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+    	<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>PlayerFilter</filter-name>
+		<url-pattern>/app/chessgame/*</url-pattern>
+	</filter-mapping>
 	
 </web-app>
 

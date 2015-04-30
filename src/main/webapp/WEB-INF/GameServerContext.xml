@@ -43,6 +43,19 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 
+	<bean id="myDatabase" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://192.168.1.5/amcchessgame"/>
+      	<property name="username" value="adrian"/>
+      	<property name="password" value="cr2032ux"/>
+	</bean>
+
+	<bean id="myPlayerDAO" class="org.amc.dao.DAO" scope="prototype">
+     	<constructor-arg>  	
+     		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
+    	 </constructor-arg>
+  	</bean>
+	
 	<!-- 
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
 	 -->
@@ -57,10 +70,7 @@
 	 </security:http>
 	     <security:authentication-manager>
         <security:authentication-provider>
-            <security:user-service>
-                <security:user name="adrian" password="xwlin98" authorities="ROLE_SUPERVISOR, ROLE_USER" />
-                <security:user name="sarah" password="xwlin98" authorities="ROLE_USER" />
-            </security:user-service>
+            <security:jdbc-user-service data-source-ref="myDatabase"/>
         </security:authentication-provider>
     </security:authentication-manager>
 </beans>
