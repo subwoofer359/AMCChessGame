@@ -24,6 +24,9 @@ public class HumanPlayer implements Player {
     @Column(name = "name", nullable = false)
     private String name;
     
+    @Column(name = "username" ,nullable = false)
+    private String userName;
+    
     public HumanPlayer(String name) {
         this.name = name;
     }
@@ -48,6 +51,17 @@ public class HumanPlayer implements Player {
         this.uid = uid;
         
     }
+
+    @Override
+    public String getUserName() {
+        return userName;
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
     
     
 }

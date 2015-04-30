@@ -45,7 +45,7 @@ public class PlayerFilter implements Filter {
     static final String PLAYERDAO = "myPlayerDAO";
 
     // Field of the Player entity (@see org.amc.model.Player)
-    static final String PLAYER_NAME = "name";
+    static final String PLAYER_USERNAME = "userName";
 
     /**
      * @see Filter#destroy()
@@ -106,7 +106,7 @@ public class PlayerFilter implements Filter {
         DAO<Player> playerDAO = context2.getBean(PLAYERDAO, DAO.class);
 
         try {
-            List<Player> listOfPlayer = playerDAO.findEntities(PLAYER_NAME, playerName);
+            List<Player> listOfPlayer = playerDAO.findEntities(PLAYER_USERNAME, playerName);
             if (listOfPlayer != null && listOfPlayer.size() == 1) {
                 return listOfPlayer.get(0);
             } else {

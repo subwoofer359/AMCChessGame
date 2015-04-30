@@ -35,7 +35,7 @@
 				username="adrian"
 				password="cr2032ux"
 				driverClassName="com.mysql.jdbc.Driver"
-				url="jdbc:mysql://192.168.1.5/aplsystem"
+				url="jdbc:mysql://192.168.1.5/amcchessgame"
 				validationQuery="SELECT 1"
 				maxActive="200"
 				maxIdle="10"

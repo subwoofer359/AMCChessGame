@@ -30,7 +30,7 @@ public class ChessGamePlayer implements Player {
 
     @Override
     public String toString(){
-        return String.format("%s(%s)%n",player.getName(),getColour().toString());
+        return String.format("%s(%s)",player.getName(),getColour().toString());
     }
 
     @Override
@@ -41,6 +41,17 @@ public class ChessGamePlayer implements Player {
     @Override
     public void setUid(int uid) {
        this.player.setUid(uid); 
+    }
+
+    @Override
+    public String getUserName() {
+        return this.player.getUserName();
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        this.player.setUserName(userName);
+
     }
     
     

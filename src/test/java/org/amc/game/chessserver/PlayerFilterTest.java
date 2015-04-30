@@ -59,7 +59,7 @@ public final class PlayerFilterTest {
         DAO<Player> playerDAO = mock(DAO.class);
         List<Player> playerList = new ArrayList<Player>();
         playerList.add(player);
-        when(playerDAO.findEntities(PlayerFilter.PLAYER_NAME, PLAYERNAME)).thenReturn(playerList);
+        when(playerDAO.findEntities(PlayerFilter.PLAYER_USERNAME, PLAYERNAME)).thenReturn(playerList);
 
         // Spring Context
         ApplicationContext applicationContext = mock(ApplicationContext.class);

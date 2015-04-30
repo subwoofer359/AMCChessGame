@@ -28,4 +28,16 @@ public interface Player {
      */
     String getName();
     
+    /**
+     * UserName of Player
+     * @return String
+     */
+    String getUserName();
+    
+    /**
+     * Set the Player's username
+     * @param userName String
+     */
+    void setUserName(String userName);
+    
 }
