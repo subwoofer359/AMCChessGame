@@ -23,7 +23,7 @@ import javax.persistence.Query;
  * @version 1
  * @param <T> WorkEntity
  */
-public class DAO<T extends Player> implements Serializable {
+public class DAO<T> implements Serializable {
     /**
      * Serializable
      */
@@ -37,9 +37,9 @@ public class DAO<T extends Player> implements Serializable {
     /**
      * The class this DAO is handling
      */
-    private final Class<? extends Player> entityClass;
+    private final Class<?> entityClass;
 
-    public DAO(Class<? extends Player> entityClass) {
+    public DAO(Class<?> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -192,7 +192,7 @@ public class DAO<T extends Player> implements Serializable {
      * @return Class object which this DAO is handling
      * @see Player
      */
-    protected Class<? extends Player> getEntityClass() {
+    protected Class<?> getEntityClass() {
         return this.entityClass;
     }
 

@@ -21,10 +21,10 @@ public class HumanPlayer implements Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
     
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
     
-    @Column(name = "username" ,nullable = false)
+    @Column(name = "username" , length =50, unique = true, nullable = false)
     private String userName;
     
     public HumanPlayer(String name) {

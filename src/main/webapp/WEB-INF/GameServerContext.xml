@@ -42,6 +42,13 @@
 	</bean>
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
+	
+	 <bean id="playerDAO" class="org.amc.dao.DAO">
+     	<constructor-arg>  	
+     		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
+     	</constructor-arg>
+     </bean>
+     
 
 	<bean id="myDatabase" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -49,10 +56,10 @@
       	<property name="username" value="adrian"/>
       	<property name="password" value="cr2032ux"/>
 	</bean>
-
-	<bean id="myPlayerDAO" class="org.amc.dao.DAO" scope="prototype">
+  	
+  	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
      	<constructor-arg>  	
-     		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
+     		<value type="java.lang.Class">org.amc.User</value>
     	 </constructor-arg>
   	</bean>
 	
