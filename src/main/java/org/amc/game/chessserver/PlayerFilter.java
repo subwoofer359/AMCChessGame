@@ -42,7 +42,7 @@ public class PlayerFilter implements Filter {
     static final String SESSIONVAR_PLAYER = "PLAYER";
 
     // The Spring bean's name referring a PlayerDAO object
-    static final String PLAYERDAO = "playerDAO";
+    static final String PLAYERDAO = "myPlayerDAO";
 
     // Field of the Player entity (@see org.amc.model.Player)
     static final String PLAYER_USERNAME = "userName";

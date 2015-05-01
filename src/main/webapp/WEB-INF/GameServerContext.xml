@@ -43,7 +43,7 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
-	 <bean id="playerDAO" class="org.amc.dao.DAO">
+	 <bean id="myPlayerDAO" class="org.amc.dao.DAO">
      	<constructor-arg>  	
      		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
      	</constructor-arg>

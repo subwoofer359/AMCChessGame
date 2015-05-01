@@ -74,7 +74,7 @@ public class SignUpController {
         this.userDAO = userDAO;
     }
     
-    @Resource(name="playerDAO")
+    @Resource(name="myPlayerDAO")
     public void setPlayerDAO(DAO<Player> playerDAO){
         this.playerDAO = playerDAO;
     }
