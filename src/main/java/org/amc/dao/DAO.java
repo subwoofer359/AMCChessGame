@@ -58,7 +58,7 @@ public class DAO<T> implements Serializable {
             em.persist(entity);
             em.getTransaction().commit();
         } catch (PersistenceException pe) {
-            em.getTransaction().rollback();
+            //em.getTransaction().rollback();
             em.close();
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to persist entity");

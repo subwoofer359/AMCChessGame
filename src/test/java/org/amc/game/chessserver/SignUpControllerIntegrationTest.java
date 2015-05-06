@@ -13,13 +13,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("/SignUpControllerTest.xml")
+@ContextConfiguration("SignUpControllerTest.xml")
 public class SignUpControllerIntegrationTest {
 
     @Autowired
@@ -27,13 +28,17 @@ public class SignUpControllerIntegrationTest {
     
     private MockMvc mockMvc;
     
+    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     @Before
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        this.signUpfixture.setUp();
+        
     }
 
     @After
     public void tearDown() throws Exception {
+        this.signUpfixture.tearDown();
     }
 
     @Test
@@ -41,9 +46,10 @@ public class SignUpControllerIntegrationTest {
         String name = "adrian mclaughlin";
         String userName = "adrian";
         String password = "password";
-        this.mockMvc.perform(post("/signup").param("name", name)
-                        .param("username", userName)
+       this.mockMvc.perform(post("/signup").param("name", name)
+                        .param("userName", userName)
                         .param("password", password))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
     }
 }

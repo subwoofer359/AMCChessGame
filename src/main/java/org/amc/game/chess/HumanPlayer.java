@@ -30,10 +30,18 @@ public class HumanPlayer implements Player {
     public HumanPlayer(String name) {
         this.name = name;
     }
+    
+    public HumanPlayer() {
+        // do nothing
+    }
 
     @Override
     public String getName() {
         return this.name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
     @Override
@@ -60,8 +68,5 @@ public class HumanPlayer implements Player {
     @Override
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-    
-    
-    
+    }   
 }
