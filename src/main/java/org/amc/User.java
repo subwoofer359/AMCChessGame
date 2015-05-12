@@ -2,12 +2,16 @@ package org.amc;
 
 import org.amc.game.chess.Player;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,11 +38,15 @@ public class User {
     @Column(name = "password", length = 50, nullable = false)
     private char[] password;
     
-    @Column
+    @Column(nullable = false)
     private boolean enabled = true;
-    
+   
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "player")
     private Player player;
+    
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Authorities> authorities;
 
     public String getName() {
         return name;
@@ -86,6 +94,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<Authorities> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authorities> authorities) {
+        this.authorities = authorities;
     }
     
     

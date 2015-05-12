@@ -43,25 +43,30 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
-	 <bean id="myPlayerDAO" class="org.amc.dao.DAO">
+	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
+     	<constructor-arg>  	
+     		<value type="java.lang.Class">org.amc.User</value>
+    	 </constructor-arg>
+  	</bean>
+  	
+  	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
      	<constructor-arg>  	
      		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
      	</constructor-arg>
      </bean>
      
-
+     <bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
+     	<constructor-arg>  	
+     		<value type="java.lang.Class">org.amc.Authorities</value>
+     	</constructor-arg>
+     </bean>
+	
 	<bean id="myDatabase" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<property name="url" value="jdbc:mysql://192.168.1.5/amcchessgame"/>
       	<property name="username" value="adrian"/>
       	<property name="password" value="cr2032ux"/>
 	</bean>
-  	
-  	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
-     	<constructor-arg>  	
-     		<value type="java.lang.Class">org.amc.User</value>
-    	 </constructor-arg>
-  	</bean>
 	
 	<!-- 
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>

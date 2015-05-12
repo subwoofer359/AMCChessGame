@@ -10,6 +10,7 @@
 <persistence-unit name="myDatabase" transaction-type="RESOURCE_LOCAL">
 <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 <class>org.amc.User</class>
+<class>org.amc.Authorities</class>
 <class>org.amc.game.chess.HumanPlayer</class>
 <properties>
       <property name="openjpa.ConnectionURL" value="jdbc:mysql://192.168.1.5/amcchessgame"/>

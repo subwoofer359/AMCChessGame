@@ -22,16 +22,15 @@ import java.util.List;
 public class SignUpControllerUnitTest {
 
     private DAO<User> myUserDAO;
-    private DAO<Player> myPlayerDAO;
     private SignUpController controller;
-    
+    private static final String PASSWORD = "1234";
+    private static final String NAME = "Adrian McLaughlin";
+    private static final String USER_NAME = "adrian";
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         myUserDAO = mock(DAO.class);
-        myPlayerDAO = mock(DAO.class);
         controller =new SignUpController();
-        controller.setPlayerDAO(myPlayerDAO);
         controller.setUserDAO(myUserDAO);
     }
 
@@ -40,11 +39,11 @@ public class SignUpControllerUnitTest {
     }
 
     @Test
-    public void testCreateEntryInPlayerTable() throws DAOException {
+    public void testCreateEntryInUserTable() throws DAOException {
         ArgumentCaptor<User> userArgument = ArgumentCaptor.forClass(User.class);
-        Player player = new HumanPlayer("Adrian McLaughlin");
-        player.setUserName("adrian");
-        String password = "password";
+        Player player = new HumanPlayer(NAME);
+        player.setUserName(USER_NAME);
+        String password = PASSWORD;
         controller.createEntryInUserTable(player, password);
         verify(myUserDAO).addEntity(userArgument.capture());
         assertEquals(player.getName(), userArgument.getValue().getName());
@@ -55,16 +54,8 @@ public class SignUpControllerUnitTest {
     }
     
     @Test
-    public void testCreateEntryInUserTable() throws DAOException {
-        Player player = new HumanPlayer("Adrian McLaughlin");
-        player.setUserName("adrian");
-        controller.createEntryInPlayerTable(player);
-        verify(myPlayerDAO).addEntity(any(Player.class));
-    }
-    
-    @Test
     public void testIsUserNameFree() throws DAOException {
-        String freeUserName = "adrian";
+        String freeUserName = USER_NAME;
         when(myUserDAO.findEntities("userName", freeUserName)).thenReturn(new ArrayList<User>());
         assertTrue(controller.isUserNameFree(freeUserName));
         verify(myUserDAO).findEntities("userName", freeUserName);
@@ -80,13 +71,12 @@ public class SignUpControllerUnitTest {
     @Test
     public void testSignUpFreeUserName() throws DAOException{
         String name = "adrian mclaughlin";
-        String userName = "adrian";
-        String password = "password";
+        String userName = USER_NAME;
+        String password = PASSWORD;
         when(myUserDAO.findEntities("userName", userName)).thenReturn(new ArrayList<User>());
         
         ModelAndView mav = controller.signUp(name, userName, password);
         verify(myUserDAO).addEntity(any(User.class));
-        verify(myPlayerDAO).addEntity(any(Player.class));
         ModelAndViewAssert.assertViewName(mav, "/Login");
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.MESSAGE_MODEL_ATTR,
                         SignUpController.SUCCESS_MSG);
@@ -95,8 +85,8 @@ public class SignUpControllerUnitTest {
     @Test
     public void testSignUpTakenUserName() throws DAOException{
         String name = "adrian mclaughlin";
-        String userName = "adrian";
-        String password = "password";
+        String userName = USER_NAME;
+        String password = PASSWORD;
         List<User> users = new ArrayList<>();
         users.add(new User());
         
@@ -104,7 +94,6 @@ public class SignUpControllerUnitTest {
         
         ModelAndView mav = controller.signUp(name, userName, password);
         verify(myUserDAO, never()).addEntity(any(User.class));
-        verify(myPlayerDAO, never()).addEntity(any(Player.class));
         ModelAndViewAssert.assertViewName(mav, "/Login");
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         SignUpController.USERTAKEN_MSG);
@@ -113,15 +102,13 @@ public class SignUpControllerUnitTest {
     @Test
     public void testSignUpDAOException() throws DAOException{
         String name = "adrian mclaughlin";
-        String userName = "adrian";
-        String password = "password";
+        String userName = USER_NAME;
+        String password = PASSWORD;
         
         when(myUserDAO.findEntities("userName", userName)).thenReturn(new ArrayList<User>());
-        doThrow(new DAOException("Database error")).when(myPlayerDAO).addEntity(any(Player.class));
+        doThrow(new DAOException("Database error")).when(myUserDAO).addEntity(any(User.class));
         
         ModelAndView mav = controller.signUp(name, userName, password);
-        //verify(myUserDAO, never()).addEntity(any(User.class));
-        //verify(myPlayerDAO, never()).addEntity(any(Player.class));
         ModelAndViewAssert.assertViewName(mav, "/Login");
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         SignUpController.ERROR_MSG);

@@ -17,14 +17,15 @@ import javax.persistence.Table;
 @Table(name="players")
 public class HumanPlayer implements Player {
     
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid;
+    private int id;
     
     @Column(name = "name", length = 50, nullable = false)
     private String name;
     
-    @Column(name = "username" , length =50, unique = true, nullable = false)
+    @Column(name = "username" , length =50, nullable = false)
     private String userName;
     
     public HumanPlayer(String name) {
@@ -50,13 +51,13 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public int getUid() {
-        return uid;
+    public int getId() {
+        return id;
     }
 
     @Override
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setId(int id) {
+        this.id = id;
         
     }
 

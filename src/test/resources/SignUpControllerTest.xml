@@ -47,4 +47,10 @@
      		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
      	</constructor-arg>
     </bean>
+    
+    <bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
+     	<constructor-arg>  	
+     		<value type="java.lang.Class">org.amc.Authorities</value>
+     	</constructor-arg>
+     </bean>
 </beans>

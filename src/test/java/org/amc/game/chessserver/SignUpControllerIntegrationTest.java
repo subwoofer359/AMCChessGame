@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("SignUpControllerTest.xml")
+@ContextConfiguration(locations={"classpath:SignUpControllerTest.xml"})
 public class SignUpControllerIntegrationTest {
 
     @Autowired
@@ -51,5 +51,10 @@ public class SignUpControllerIntegrationTest {
                         .param("password", password))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
+       this.mockMvc.perform(post("/signup").param("name", "Sarah O'Neill")
+                       .param("userName", "sarah")
+                       .param("password", "lll"))
+                       .andExpect(status().isOk())
+                       .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
     }
 }

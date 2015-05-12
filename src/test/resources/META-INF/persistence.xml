@@ -10,6 +10,7 @@
 <persistence-unit name="myDatabaseTest" transaction-type="RESOURCE_LOCAL">
 <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 <class>org.amc.User</class>
+<class>org.amc.Authorities</class>
 <class>org.amc.game.chess.HumanPlayer</class>
 <properties>
       <property name="openjpa.ConnectionURL" value="jdbc:mysql://192.168.1.5/amcchessgametest"/>
@@ -22,7 +23,8 @@
       <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
       <property name="jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
       <property name="openjpa.Log" value="Runtime=TRACE, SQL=TRACE"/> 
-      
+      <!--  <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict,
+    FieldStrategies='org.mag.data.InfoStruct=org.mag.mapping.InfoStructHandler'"/>-->
  </properties>
 </persistence-unit>     
 </persistence>

@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import org.amc.Authorities;
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Arrays;
 
 import javax.annotation.Resource;
 
@@ -26,9 +29,9 @@ public class SignUpController {
     static final String SUCCESS_MSG = "account created";
     static final String USERTAKEN_MSG = "Username is already taken";
     static final String ERROR_MSG = "Trouble creating account";
+    static final String DEFAULT_AUTHORITY = "ROLE_USER";
     
     private DAO<User> userDAO;
-    private DAO<Player> playerDAO;
     
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView signUp(String name, String userName, String password) {
@@ -39,7 +42,6 @@ public class SignUpController {
                 Player player = new HumanPlayer(name);
                 player.setUserName(userName);
                 createEntryInUserTable(player, password);
-                createEntryInPlayerTable(player);
                 mav.getModel().put(MESSAGE_MODEL_ATTR, SUCCESS_MSG);
             } else {
                 mav.getModel().put(ERRORS_MODEL_ATTR, USERTAKEN_MSG);
@@ -62,20 +64,20 @@ public class SignUpController {
         user.setUserName(player.getUserName());
         user.setPassword(password.toCharArray());
         user.setPlayer(player);
+        addDefaultAuthorities(user);
         userDAO.addEntity(user);
+        
     }
     
-    void createEntryInPlayerTable(Player player) throws DAOException {
-        playerDAO.addEntity(player);
+    void addDefaultAuthorities(User user) throws DAOException {
+        Authorities authorities = new Authorities();
+        authorities.setAuthority(DEFAULT_AUTHORITY);
+        authorities.setUser(user);
+        user.setAuthorities(Arrays.asList(authorities));
     }
-    
     @Resource(name="myUserDAO")
     public void setUserDAO(DAO<User> userDAO){
         this.userDAO = userDAO;
     }
     
-    @Resource(name="myPlayerDAO")
-    public void setPlayerDAO(DAO<Player> playerDAO){
-        this.playerDAO = playerDAO;
-    }
 }
