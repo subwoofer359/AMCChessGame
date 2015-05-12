@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +24,7 @@ public class SignUpControllerUnitTest {
 
     private DAO<User> myUserDAO;
     private SignUpController controller;
+    private BCryptPasswordEncoder passwordEncoder;
     private static final String PASSWORD = "1234";
     private static final String NAME = "Adrian McLaughlin";
     private static final String USER_NAME = "adrian";
@@ -33,6 +35,9 @@ public class SignUpControllerUnitTest {
         myUserDAO = mock(DAO.class);
         controller =new SignUpController();
         controller.setUserDAO(myUserDAO);
+        
+        passwordEncoder = new BCryptPasswordEncoder();
+        controller.setPasswordEncoder(passwordEncoder);
     }
 
     @After
@@ -49,7 +54,8 @@ public class SignUpControllerUnitTest {
         verify(myUserDAO).addEntity(userArgument.capture());
         assertEquals(player.getName(), userArgument.getValue().getName());
         assertEquals(player.getUserName(), userArgument.getValue().getUserName());
-        assertTrue(Arrays.equals(password.toCharArray(), userArgument.getValue().getPassword()));
+        assertTrue(passwordEncoder.matches(String.valueOf(password.toCharArray()),
+                        String.valueOf(userArgument.getValue().getPassword())));
         assertEquals(player, userArgument.getValue().getPlayer());
         
     }

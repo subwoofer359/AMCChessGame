@@ -26,6 +26,26 @@
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
+
+	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
+		<constructor-arg>
+			<value type="java.lang.Class">org.amc.User</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
+		<constructor-arg>
+			<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
+		<constructor-arg>
+			<value type="java.lang.Class">org.amc.Authorities</value>
+		</constructor-arg>
+	</bean>
+    
+    <bean id="myPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
     	<property name="customEditors">

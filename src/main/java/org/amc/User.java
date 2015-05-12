@@ -38,7 +38,7 @@ public class User {
     @Column(name = "username", length = 50, nullable = false, unique = true)
     private String userName;
     
-    @Column(name = "password", length = 50, nullable = false)
+    @Column(name = "password", length = 60, nullable = false)
     private char[] password;
     
     @Column(nullable = false)

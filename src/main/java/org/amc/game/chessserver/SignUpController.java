@@ -7,6 +7,7 @@ import org.amc.dao.DAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +31,8 @@ public class SignUpController {
     static final String USERTAKEN_MSG = "Username is already taken";
     static final String ERROR_MSG = "Trouble creating account";
     static final String DEFAULT_AUTHORITY = "ROLE_USER";
+    
+    private PasswordEncoder encoder;
     
     private DAO<User> userDAO;
     
@@ -62,11 +65,15 @@ public class SignUpController {
         User user = new User();
         user.setName(player.getName());
         user.setUserName(player.getUserName());
-        user.setPassword(password.toCharArray());
+        user.setPassword(encoder.encode(password).toCharArray());
         user.setPlayer(player);
         addDefaultAuthorities(user);
         userDAO.addEntity(user);
         
+    }
+    
+    String hashPassword(String password){
+        return encoder.encode(password);
     }
     
     void addDefaultAuthorities(User user) throws DAOException {
@@ -80,4 +87,8 @@ public class SignUpController {
         this.userDAO = userDAO;
     }
     
+    @Resource(name="myPasswordEncoder")
+    public void setPasswordEncoder(PasswordEncoder encoder){
+        this.encoder = encoder;
+    }
 }

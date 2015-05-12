@@ -22,7 +22,6 @@
 	
 	</bean>
 	
-	
 	<bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
 	</bean>
@@ -53,4 +52,6 @@
      		<value type="java.lang.Class">org.amc.Authorities</value>
      	</constructor-arg>
      </bean>
+     
+     <bean id="myPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans>

@@ -68,6 +68,8 @@
       	<property name="password" value="cr2032ux"/>
 	</bean>
 	
+	<bean id="myPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
 	<!-- 
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
 	 -->
@@ -82,6 +84,7 @@
 	 </security:http>
 	     <security:authentication-manager>
         <security:authentication-provider>
+        <security:password-encoder hash="bcrypt" ref="myPasswordEncoder" />
             <security:jdbc-user-service data-source-ref="myDatabase"/>
         </security:authentication-provider>
     </security:authentication-manager>
