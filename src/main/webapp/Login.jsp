@@ -154,6 +154,10 @@ $(document).ready(function () {
         $("#login-box").css("display", "none");
         $("#signup-box").css("display", "block");
     });
+    
+    if("${param.ERRORS}") {
+        $("#signup-msg").click();
+    }
 });
 </script>
 </head>
@@ -174,7 +178,11 @@ $(document).ready(function () {
             <a id="signup-msg">Not a Member? Sign up now</a>
         </div>
         </form>
+        <form method="post" action="signup">
         <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
+             <c:if test="${param.ERRORS != null}">
+            	   <span id="login-fail" class="label label-danger"><c:out value="${param.ERRORS}"></c:out></span>
+            </c:if>
             <div id="title">
                 <div class="col-xs-2"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
                 <p class="col-xs-10" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
@@ -186,8 +194,6 @@ $(document).ready(function () {
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="create Player"/>
             <div class="filler"></div>
         </div>
-        <form>
-        
         </form>
     </div>
 </div> <!-- Container -->
