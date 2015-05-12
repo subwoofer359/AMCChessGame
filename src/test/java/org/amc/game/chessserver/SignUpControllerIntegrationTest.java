@@ -1,14 +1,13 @@
 package org.amc.game.chessserver;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.equalTo;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.hamcrest.Matcher;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -54,12 +52,12 @@ public class SignUpControllerIntegrationTest {
        this.mockMvc.perform(post("/signup").param("name", NAME)
                         .param("userName", USER_NAME)
                         .param("password", PASSWORD))
-                        .andExpect(status().isOk())
+                        .andExpect(status().is3xxRedirection())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
        this.mockMvc.perform(post("/signup").param("name", "Sarah O'Neill")
                        .param("userName", "sarah")
                        .param("password", "lll"))
-                       .andExpect(status().isOk())
+                       .andExpect(status().is3xxRedirection())
                        .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
     }
     
@@ -69,12 +67,12 @@ public class SignUpControllerIntegrationTest {
        this.mockMvc.perform(post("/signup").param("name", NAME)
                         .param("userName", USER_NAME)
                         .param("password", PASSWORD))
-                        .andExpect(status().isOk())
+                        .andExpect(status().is3xxRedirection())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
        this.mockMvc.perform(post("/signup").param("name", NAME)
                        .param("userName", USER_NAME)
                        .param("password", PASSWORD))
-                       .andExpect(status().isOk())
+                       .andExpect(status().is3xxRedirection())
                        .andExpect(model().attribute(SignUpController.ERRORS_MODEL_ATTR,SignUpController.USERTAKEN_MSG));
        
     }

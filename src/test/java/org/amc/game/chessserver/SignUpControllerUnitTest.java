@@ -26,6 +26,7 @@ public class SignUpControllerUnitTest {
     private static final String PASSWORD = "1234";
     private static final String NAME = "Adrian McLaughlin";
     private static final String USER_NAME = "adrian";
+    private static final String  VIEW = "redirect:/Login.jsp";
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
@@ -77,7 +78,7 @@ public class SignUpControllerUnitTest {
         
         ModelAndView mav = controller.signUp(name, userName, password);
         verify(myUserDAO).addEntity(any(User.class));
-        ModelAndViewAssert.assertViewName(mav, "/Login");
+        ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.MESSAGE_MODEL_ATTR,
                         SignUpController.SUCCESS_MSG);
     }
@@ -94,7 +95,7 @@ public class SignUpControllerUnitTest {
         
         ModelAndView mav = controller.signUp(name, userName, password);
         verify(myUserDAO, never()).addEntity(any(User.class));
-        ModelAndViewAssert.assertViewName(mav, "/Login");
+        ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         SignUpController.USERTAKEN_MSG);
     }
@@ -109,7 +110,7 @@ public class SignUpControllerUnitTest {
         doThrow(new DAOException("Database error")).when(myUserDAO).addEntity(any(User.class));
         
         ModelAndView mav = controller.signUp(name, userName, password);
-        ModelAndViewAssert.assertViewName(mav, "/Login");
+        ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         SignUpController.ERROR_MSG);
     }
