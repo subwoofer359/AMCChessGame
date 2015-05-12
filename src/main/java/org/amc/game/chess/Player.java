@@ -13,13 +13,13 @@ public interface Player {
      * 
      * @return uid Integer
      */
-    int getUid();
+    int getId();
     
     /**
      * set player's unique identifying number
      * 
      */
-    void setUid(int uid);
+    void setId(int id);
     
     /**
      * Name of the Player

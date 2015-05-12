@@ -34,13 +34,13 @@ public class ChessGamePlayer implements Player {
     }
 
     @Override
-    public int getUid() {
-        return player.getUid();
+    public int getId() {
+        return player.getId();
     }
 
     @Override
-    public void setUid(int uid) {
-       this.player.setUid(uid); 
+    public void setId(int uid) {
+       this.player.setId(uid); 
     }
 
     @Override

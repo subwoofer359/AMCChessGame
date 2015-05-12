@@ -22,7 +22,7 @@ public final class ComparePlayers {
         }
         
         private static boolean isSameUid(Player playerOne, Player playerTwo) {
-            return playerOne.getUid() == playerTwo.getUid();
+            return playerOne.getId() == playerTwo.getId();
         }
         
         private static boolean isSameName(Player playerOne, Player playerTwo) {

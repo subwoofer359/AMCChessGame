@@ -21,11 +21,11 @@ public class PlayerEqualityTest {
     
     @Before
     public void setUp() throws Exception {
-        playerA.setUid(uidOne);
-        playerC.setUid(uidOne);
-        playerD.setUid(uidTwo);
-        playerF.setUid(uidTwo);
-        playerG.setUid(uidOne);
+        playerA.setId(uidOne);
+        playerC.setId(uidOne);
+        playerD.setId(uidTwo);
+        playerF.setId(uidTwo);
+        playerG.setId(uidOne);
         
     }
 
