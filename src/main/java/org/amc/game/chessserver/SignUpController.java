@@ -36,7 +36,7 @@ public class SignUpController {
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView signUp(String name, String userName, String password) {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/Login");
+        mav.setViewName("redirect:/Login.jsp");
         try {
             if (isUserNameFree(userName)) {
                 Player player = new HumanPlayer(name);

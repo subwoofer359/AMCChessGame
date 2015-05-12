@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,6 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
+@IdClass(User.UserId.class)
 public class User {
 
     @Id
@@ -32,6 +34,7 @@ public class User {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
     
+    @Id
     @Column(name = "username", length = 50, nullable = false, unique = true)
     private String userName;
     
@@ -102,6 +105,40 @@ public class User {
 
     public void setAuthorities(List<Authorities> authorities) {
         this.authorities = authorities;
+    }
+    
+    public static class UserId {
+        public int id;
+        public String userName;
+        
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + id;
+            result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+            return result;
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            UserId other = (UserId) obj;
+            if (id != other.id)
+                return false;
+            if (userName == null) {
+                if (other.userName != null)
+                    return false;
+            } else if (!userName.equals(other.userName))
+                return false;
+            return true;
+        }
+        
+        
     }
     
     
