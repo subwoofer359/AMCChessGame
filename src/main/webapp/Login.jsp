@@ -177,6 +177,7 @@ $(document).ready(function () {
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>
             <a id="signup-msg">Not a Member? Sign up now</a>
         </div>
+            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
         </form>
         <form method="post" action="signup">
         <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
@@ -194,6 +195,7 @@ $(document).ready(function () {
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="create Player"/>
             <div class="filler"></div>
         </div>
+            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
         </form>
     </div>
 </div> <!-- Container -->

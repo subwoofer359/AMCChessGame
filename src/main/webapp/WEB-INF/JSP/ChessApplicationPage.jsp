@@ -4,11 +4,14 @@
 <html lang="en">
 <head>
 <title>Chess Application Home Page</title>
-    
+
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-
+<meta name="_csrf" content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+    
 <!-- Bootstrap -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -129,6 +132,18 @@ $(document).ready(function(){
         
     });
     
+    
+    /*
+     * add CSRF token to AJAX requests
+     */
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+	       xhr.setRequestHeader(header, token);
+        });
+    });
+    
     /**
      * Long polling for Table updates
      *
@@ -164,6 +179,7 @@ $(document).ready(function(){
 </head>
 <body>
 <form id="side-menu-form" method="post">
+    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
 <nav role="navigation" class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm">
  <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
