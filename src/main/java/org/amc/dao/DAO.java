@@ -58,7 +58,7 @@ public class DAO<T> implements Serializable {
             em.persist(entity);
             em.getTransaction().commit();
         } catch (PersistenceException pe) {
-            //em.getTransaction().rollback();
+            em.getTransaction().rollback();
             em.close();
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to persist entity");
@@ -164,11 +164,11 @@ public class DAO<T> implements Serializable {
      *             if a problem occurs in the underlying database
      */
     @SuppressWarnings("unchecked")
-    public T getEntity(String workEntityId) throws DAOException {
+    public T getEntity(int id) throws DAOException {
 
         Query query = getEntityManager().createQuery(
                         "Select x from " + entityClass.getSimpleName() + " x where x.id="
-                                        + workEntityId + "");
+                                        + id + "");
         try {
             T mp = (T) query.getSingleResult();
             return mp;
