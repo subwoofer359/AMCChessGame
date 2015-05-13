@@ -45,6 +45,7 @@
 		<servlet-name>chessgame</servlet-name>
 		<url-pattern>/app/chessgame/*</url-pattern>
 		<url-pattern>/signup</url-pattern>
+		<url-pattern>/isUserNameAvailable</url-pattern>
 	</servlet-mapping>
 	
 	<!-- My listener Classes -->
@@ -91,6 +92,7 @@
 		<filter-name>EntityManagerFilter</filter-name>
 		<url-pattern>/app/chessgame/*</url-pattern>
 		<url-pattern>/signup</url-pattern>
+		<url-pattern>/isUserNameAvailable</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
     	<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>

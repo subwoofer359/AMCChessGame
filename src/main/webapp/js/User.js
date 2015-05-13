@@ -18,7 +18,7 @@ var validUsername=false;
 function isUsernameAvailable(event){
     var inputUserName=$('#userName');
     var userName=inputUserName.val();
-    var formData="username="+userName;
+    var formData="userName="+userName;
     
     $.post('./isUserNameAvailable',formData,function(data,status){
         if(data.trim()==='true'){
@@ -88,17 +88,17 @@ function canSubmit(event){
     if(!checkPassword('passwordOne','passwordTwo')){
         return false;
     }
-    /*
+    
     if(!validUsername){
         showPanelMessage("#alert","Username is not valid.",true);
         return false;
     }
-    */
+    
     return true;
     
 }
 
 $(document).ready(function(){
-    /*$('#userName').keyup(isUsernameAvailable);*/
+    $('#userName').keyup(isUsernameAvailable);
     $('#userForm').submit(canSubmit);
 });
