@@ -107,6 +107,7 @@ public class ServerChessGame extends DefaultSubject {
         synchronized (this) {
             this.currentStatus = currentStatus;
         }
+        notifyObservers(this.currentStatus);
     }
 
     /**
@@ -166,7 +167,6 @@ public class ServerChessGame extends DefaultSubject {
         case BLACK_CHECKMATE:
         case STALEMATE:
             setCurrentStatus(ServerGameStatus.FINISHED);
-            notifyObservers(chessGame.getGameState());
             break;
             
         case BLACK_IN_CHECK:
