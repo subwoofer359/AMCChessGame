@@ -20,7 +20,7 @@ public class FinishedChessGameRemovalUnitTest {
     ServerChessGame chessGame;
     long uid = 1234L;
     Player player = new HumanPlayer("Adrian McLaughlin");
-    GameFinishListener listener;
+    GameFinishedListener listener;
     ThreadPoolTaskScheduler scheduler;
     
     @Before
@@ -30,7 +30,7 @@ public class FinishedChessGameRemovalUnitTest {
         gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         player.setUserName("adrian");
         chessGame = new ServerChessGame(uid, player);
-        listener = new GameFinishListener();
+        listener = new GameFinishedListener();
         listener.addServerChessGame(chessGame);
         listener.setGameMap(gameMap);
         listener.setTaskScheduler(scheduler);

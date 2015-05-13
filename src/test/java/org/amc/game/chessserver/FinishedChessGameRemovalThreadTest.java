@@ -42,7 +42,7 @@ public class FinishedChessGameRemovalThreadTest {
         for(int i = 0; i < uids.length; i++) {
             uids[i] = i;
             chessGames[i] = new ServerChessGame(uids[i], player);
-            GameFinishListener listener =new GameFinishListener();
+            GameFinishedListener listener =new GameFinishedListener();
             listener.setGameMap(gameMap);
             listener.addServerChessGame(chessGames[i]);
             listener.setTaskScheduler(scheduler);
@@ -78,7 +78,7 @@ public class FinishedChessGameRemovalThreadTest {
     
     /**
      * Execute Thread to call {@link ServerChessGame#setCurrentStatus(ServerGameStatus)} method
-     * which in turn calls {@link GameFinishListener#update(org.amc.util.Subject, Object)}
+     * which in turn calls {@link GameFinishedListener#update(org.amc.util.Subject, Object)}
      * 
      * @author Adrian Mclaughlin
      *

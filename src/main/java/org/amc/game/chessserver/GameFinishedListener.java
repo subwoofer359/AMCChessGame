@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  */
 @Component
 @Scope("prototype")
-public class GameFinishListener implements Observer {
+public class GameFinishedListener implements Observer {
 
     /**
      * Time in seconds to wait before deleting the chessGame from the gameMap.
@@ -33,9 +33,9 @@ public class GameFinishListener implements Observer {
 
     private Map<Long, ServerChessGame> gameMap;
 
-    private static final Logger logger = Logger.getLogger(GameFinishListener.class);
+    private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
-    public GameFinishListener() {
+    public GameFinishedListener() {
     }
 
     public void addServerChessGame(ServerChessGame chessGame) {

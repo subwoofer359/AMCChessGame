@@ -34,7 +34,7 @@ public class ServerJoinChessGameController {
     @Autowired
     private SimpMessagingTemplate template;
 
-    private GameFinishListener gameFinishListener;
+    private GameFinishedListener gameFinishListener;
 
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
@@ -165,7 +165,7 @@ public class ServerJoinChessGameController {
     }
 
     @Autowired
-    public void setGameFinishListener(GameFinishListener gameFinishListener) {
+    public void setGameFinishListener(GameFinishedListener gameFinishListener) {
         this.gameFinishListener = gameFinishListener;
     }
 
