@@ -134,6 +134,7 @@ public class ServerJoinChessGameController {
 
     private void addGameListener(ServerChessGame chessGame) {
         new GameStateListener(chessGame, template);
+        new GameFinishListener(gameMap, chessGame);
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {

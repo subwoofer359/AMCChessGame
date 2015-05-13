@@ -41,4 +41,11 @@ public class DefaultSubject implements Subject {
     public void removeObserver(Observer O) {
         observers.remove(O);
     }
+
+    @Override
+    public void removeAllObservers() {
+        observers.clear();
+    }
+    
+    
 }

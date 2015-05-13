@@ -25,5 +25,10 @@ public interface Subject {
      * @param O Observer to be removed
      */
     void removeObserver(Observer observer);
+    
+    /**
+     * Observers will no longer be sent updates
+     */
+    void removeAllObservers();
 
 }
