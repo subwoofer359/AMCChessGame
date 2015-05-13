@@ -32,10 +32,11 @@ public class DefaultSubject implements Subject {
      * @see org.amc.util.Subject#notifyObservers(java.lang.Object)
      */
     public void notifyObservers(Object message) {
-        for (Observer observer:observers) {
+        List<Observer> copy = new ArrayList<>(observers);
+        for (Observer observer:copy) {
             observer.update(this, message);
         }
-
+        copy.clear();
     }
 
     public void removeObserver(Observer O) {
