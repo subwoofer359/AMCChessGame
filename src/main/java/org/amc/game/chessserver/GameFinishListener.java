@@ -1,6 +1,6 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
@@ -20,13 +20,15 @@ public class GameFinishListener implements Observer {
 
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessGame.GameState && subject instanceof ServerChessGame) {
-            ServerChessGame chessGame = (ServerChessGame) subject;
-            chessGame.removeAllObservers();
-            gameMap.remove(chessGame.getUid());
-            this.gameMap = null;
-            logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
+        if (message instanceof ServerGameStatus && subject instanceof ServerChessGame) {
+            ServerGameStatus status = (ServerGameStatus) message;
+            if(status == ServerGameStatus.FINISHED) {
+                ServerChessGame chessGame = (ServerChessGame) subject;
+                chessGame.removeObserver(this);;
+                gameMap.remove(chessGame.getUid());
+                this.gameMap = null;
+                logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
+            }
         }
     }
-
 }
