@@ -8,9 +8,11 @@ import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalUnitTest {
 
@@ -19,13 +21,20 @@ public class FinishedChessGameRemovalUnitTest {
     long uid = 1234L;
     Player player = new HumanPlayer("Adrian McLaughlin");
     GameFinishListener listener;
+    ThreadPoolTaskScheduler scheduler;
     
     @Before
     public void setUp() throws Exception {
+        scheduler=new ThreadPoolTaskScheduler();
+        scheduler.afterPropertiesSet();
         gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         player.setUserName("adrian");
         chessGame = new ServerChessGame(uid, player);
-        new GameFinishListener(gameMap, chessGame);
+        listener = new GameFinishListener();
+        listener.addServerChessGame(chessGame);
+        listener.setGameMap(gameMap);
+        listener.setTaskScheduler(scheduler);
+        listener.setDelayTime(1);
         gameMap.put(uid, chessGame);
     }
 
@@ -36,11 +45,13 @@ public class FinishedChessGameRemovalUnitTest {
     }
     
     @Test
-    public void test() {
+    public void test() throws Exception {
         assertTrue(gameMap.containsKey(uid));
         chessGame.setCurrentStatus(ServerGameStatus.AWAITING_PLAYER);
         assertTrue(gameMap.containsKey(uid));
         chessGame.setCurrentStatus(ServerGameStatus.FINISHED);
+        scheduler.getScheduledThreadPoolExecutor().shutdown();
+        scheduler.getScheduledThreadPoolExecutor().awaitTermination(60, TimeUnit.SECONDS);
         assertFalse(gameMap.containsKey(uid));
     }
 }

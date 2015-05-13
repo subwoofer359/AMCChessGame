@@ -8,6 +8,7 @@ import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -20,24 +21,32 @@ import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalThreadTest {
 
-    int NUMBER_OF_GAMES = 1000;
-    CountDownLatch latch = new CountDownLatch(NUMBER_OF_GAMES);
-    ExecutorService threadService;
-    Map<Long, ServerChessGame> gameMap;
-    ServerChessGame[] chessGames = new ServerChessGame[NUMBER_OF_GAMES];
-    long[] uids = new long[NUMBER_OF_GAMES];
-    Player player = new HumanPlayer("Adrian McLaughlin");
-    GameFinishListener listener;
+    private int NUMBER_OF_GAMES = 1000;
+    private ThreadPoolTaskScheduler scheduler;
+    // Countdown Latch used to synchonise removal threads
+    private CountDownLatch latch = new CountDownLatch(NUMBER_OF_GAMES);
+    private ExecutorService threadService;
+    private Map<Long, ServerChessGame> gameMap;
+    private ServerChessGame[] chessGames = new ServerChessGame[NUMBER_OF_GAMES];
+    private long[] uids = new long[NUMBER_OF_GAMES];
+    private Player player = new HumanPlayer("Adrian McLaughlin");
     
     @Before
     public void setUp() throws Exception {
         threadService = Executors.newFixedThreadPool(NUMBER_OF_GAMES);
+        scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(NUMBER_OF_GAMES);
+        scheduler.afterPropertiesSet();
         gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         player.setUserName("adrian");
         for(int i = 0; i < uids.length; i++) {
             uids[i] = i;
             chessGames[i] = new ServerChessGame(uids[i], player);
-            new GameFinishListener(gameMap, chessGames[i]);
+            GameFinishListener listener =new GameFinishListener();
+            listener.setGameMap(gameMap);
+            listener.addServerChessGame(chessGames[i]);
+            listener.setTaskScheduler(scheduler);
+            listener.setDelayTime(1);
             gameMap.put(uids[i], chessGames[i]);
         }
         
@@ -46,31 +55,41 @@ public class FinishedChessGameRemovalThreadTest {
 
     @After
     public void tearDown() throws Exception {
-        
         gameMap.clear();
     }
     
     @Test
     public void test() throws Exception {
         for(int i = 0; i < uids.length; i++){
-            threadService.submit((new GameRemover(latch, gameMap, uids[i], chessGames[i])));
+            threadService.submit((new GameRemover(latch, chessGames[i])));
         }
-        threadService.shutdown();
-        threadService.awaitTermination(30, TimeUnit.SECONDS);
+        latch.await();
+        waitForThreadServicesShutdown();
         assertTrue(gameMap.isEmpty());
     }
     
+    private void waitForThreadServicesShutdown() throws Exception {
+        threadService.shutdown();
+        threadService.awaitTermination(60, TimeUnit.SECONDS);
+        
+        scheduler.getScheduledThreadPoolExecutor().shutdown();
+        scheduler.getScheduledThreadPoolExecutor().awaitTermination(60, TimeUnit.SECONDS);
+    }
+    
+    /**
+     * Execute Thread to call {@link ServerChessGame#setCurrentStatus(ServerGameStatus)} method
+     * which in turn calls {@link GameFinishListener#update(org.amc.util.Subject, Object)}
+     * 
+     * @author Adrian Mclaughlin
+     *
+     */
     public static class GameRemover implements Callable<String> {
-        private Map<?,?> gameMap;
         private ServerChessGame chessGame;
-        private long uid;
         private CountDownLatch latch;
         
-        public GameRemover(CountDownLatch latch, Map<?,?> gameMap, long uid, ServerChessGame chessGame) {
+        public GameRemover(CountDownLatch latch, ServerChessGame chessGame) {
             this.latch = latch;
-            this.gameMap = gameMap;
             this.chessGame = chessGame;
-            this.uid = uid;
             
         }
         @Override

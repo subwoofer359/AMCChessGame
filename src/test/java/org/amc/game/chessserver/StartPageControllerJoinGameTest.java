@@ -27,6 +27,7 @@ public class StartPageControllerJoinGameTest {
         gameMap = new ConcurrentHashMap<>();
         controller = new ServerJoinChessGameController();
         controller.setGameMap(gameMap);
+        controller.setGameFinishListener(new GameFinishListener());
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
         ServerChessGame chessGame = new ServerChessGame(gameUUID, whitePlayer);

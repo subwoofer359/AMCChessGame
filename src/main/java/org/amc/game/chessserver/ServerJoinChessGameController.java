@@ -34,6 +34,8 @@ public class ServerJoinChessGameController {
     @Autowired
     private SimpMessagingTemplate template;
 
+    private GameFinishListener gameFinishListener;
+
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
     static final String ERROR_GAMEOVER = "Chess game is over";
@@ -57,7 +59,7 @@ public class ServerJoinChessGameController {
     private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
         return ComparePlayers.comparePlayers(player, chessGame.getPlayer());
     }
-    
+
     private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
                     long gameUUID) {
         if (canPlayerEnterGame(chessGame, player)) {
@@ -97,7 +99,8 @@ public class ServerJoinChessGameController {
         chessGame.addOpponent(player);
     }
 
-    private void setupModelForChessGameScreen(ModelAndView mav, ChessGamePlayer player, long gameUUID) {
+    private void setupModelForChessGameScreen(ModelAndView mav, ChessGamePlayer player,
+                    long gameUUID) {
         mav.getModel().put(ServerConstants.GAME_UUID, gameUUID);
         ServerChessGame serverGame = gameMap.get(gameUUID);
         mav.getModel().put(ServerConstants.GAME, serverGame);
@@ -134,7 +137,7 @@ public class ServerJoinChessGameController {
 
     private void addGameListener(ServerChessGame chessGame) {
         new GameStateListener(chessGame, template);
-        new GameFinishListener(gameMap, chessGame);
+        gameFinishListener.addServerChessGame(chessGame);
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
@@ -149,6 +152,7 @@ public class ServerJoinChessGameController {
             return false;
         }
     }
+
     /**
      * Dependency Injection of Map containing current ChessGames
      * 
@@ -158,6 +162,11 @@ public class ServerJoinChessGameController {
     @Resource(name = "gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap) {
         this.gameMap = gameMap;
+    }
+
+    @Autowired
+    public void setGameFinishListener(GameFinishListener gameFinishListener) {
+        this.gameFinishListener = gameFinishListener;
     }
 
     /**
