@@ -20,6 +20,7 @@
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script src="js/User.js"></script>
 <style>
 @import url(css/General.css);  
 
@@ -179,7 +180,7 @@ $(document).ready(function () {
         </div>
             <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
         </form>
-        <form method="post" action="signup">
+        <form id="userForm" method="post" action="signup">
         <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
              <c:if test="${param.ERRORS != null}">
             	   <span id="login-fail" class="label label-danger"><c:out value="${param.ERRORS}"></c:out></span>
@@ -189,9 +190,9 @@ $(document).ready(function () {
                 <p class="col-xs-10" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
             </div>
             <input class="inputtext signup-inputtext form-control" type="text" name="name" required="required" placeholder="Name"/>
-            <input class="inputtext signup-inputtext form-control" type="text" name="userName" required="required" placeholder="Username"/>
-            <input class="inputtext signup-inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
-            <input class="inputtext signup-inputtext form-control" type="password" required="required" placeholder="Confirm password"/>
+            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username"/>
+            <input class="inputtext signup-inputtext form-control" type="password" name="password" id="passwordOne" required="required" placeholder="Password"/>
+            <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="create Player"/>
             <div class="filler"></div>
         </div>
