@@ -128,9 +128,7 @@ $(document).ready(function(){
             event.preventDefault();
             return;
         } else {
-            $(".join-button").attr("formaction","joinGame");   
-        }
-        
+            $(".join-button").attr("formaction","joinGame");        
     });
     
     
@@ -153,11 +151,12 @@ $(document).ready(function(){
         $.post("getGameMap",function(data){
             var yourEntry = "",
                 otherEntry = "",
-                tempEntry;
+                tempEntry,
+                selectedRow = $(".games-table tbody tr").find("input:checked").val();
+            console.log(selectedRow);
             for(var gameUUID in data){
-                if(data.hasOwnProperty(gameUUID)){
-                    console.log(gameUUID);
-                    tempEntry = '<tr><td>' + (""+gameUUID).slice(-5) + '</td><td>' +
+                if (data.hasOwnProperty(gameUUID)) {
+                    tempEntry = '<tr><td>' + ("" + gameUUID).slice(-5) + '</td><td>' +
                         data[gameUUID].player.player.userName +
                         '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.player.userName: "") +
                         '</td><td>' + data[gameUUID].currentStatus +
@@ -166,13 +165,14 @@ $(document).ready(function(){
                     if(playerName === data[gameUUID].player.player.name) {
                         yourEntry += tempEntry;
                     } else {
-                        otherEntry +=tempEntry;
+                        otherEntry += tempEntry;
                     }
                 }
             }
             $("#your-games-table tbody").html(yourEntry);
             $("#other-games-table tbody").html(otherEntry);
             addTableRowListener();
+            $(".games-table tbody tr").find("input:checkbox[value=" + selectedRow + "]").click();
         });
     },5000);
 });    

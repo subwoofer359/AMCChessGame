@@ -14,9 +14,9 @@ function addTableRowListener() {
     $(".games-table tbody tr").click(function () {
         $(".games-table tbody tr").each(function () {
             $(this).removeClass("selected");
-            $(this).find(":checkbox").prop("checked", false);
+            $(this).find("input:checkbox").prop("checked", false);
         });
         $(this).addClass("selected");
-        $(this).find(":checkbox").prop("checked", true);
+        $(this).find("input:checkbox").prop("checked", true);
     });
 }
