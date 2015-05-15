@@ -162,8 +162,8 @@ $(document).ready(function(){
             </a>    
             <div class="side-menu">
             <ul>
-                <li><button id="save-btn">Save</button></li>
-                <li><button id="quit-btn">Quit</a></li>
+                <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
+                <li><button id="quit-btn">Quit Game</a></li>
             </ul>
             </div>
         </div><!-- sidebar-left -->
