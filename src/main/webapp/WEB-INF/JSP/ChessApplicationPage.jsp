@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -236,7 +237,9 @@ $(document).ready(function(){
                 <tbody>
                     <c:forEach var="game" items='${GAMEMAP}'>
                         <c:if test="${PLAYER.userName eq game.value.player.userName}">
-				            <tr><td>${game.key}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>${game.value.currentStatus}</td>
+                        <c:set var="uid">${game.key}</c:set>
+                        <c:set var="index" value="${fn:length(uid)}"/>
+				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>${game.value.currentStatus}</td>
 						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
 						    </tr>		
                         </c:if>
@@ -260,7 +263,9 @@ $(document).ready(function(){
                 <tbody>
                     <c:forEach var="game" items='${GAMEMAP}'>
                         <c:if test="${PLAYER.userName ne game.value.player.userName}">
-				            <tr><td>${game.key}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>${game.value.currentStatus}</td>
+                         	<c:set var="uid">${game.key}</c:set>
+                        	<c:set var="index" value="${fn:length(uid)}"/>
+				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>${game.value.currentStatus}</td>
 						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
 						    </tr>		
                         </c:if>
