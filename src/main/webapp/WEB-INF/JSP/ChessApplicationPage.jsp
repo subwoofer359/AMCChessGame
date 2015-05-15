@@ -128,7 +128,8 @@ $(document).ready(function(){
             event.preventDefault();
             return;
         } else {
-            $(".join-button").attr("formaction","joinGame");        
+            $(".join-button").attr("formaction","joinGame");
+        }
     });
     
     
