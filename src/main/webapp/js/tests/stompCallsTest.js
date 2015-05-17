@@ -5,7 +5,7 @@
 /*global StompActions*/
 /*jslint unparam: true*/
 
-var WebSocket = function (URL) {
+var SockJS = function (URL) {
     "use strict";
     this.url = URL;
 },

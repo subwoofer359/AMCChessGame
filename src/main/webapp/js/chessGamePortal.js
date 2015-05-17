@@ -4,6 +4,7 @@
 /*global updatePlayer*/
 /*global console*/
 /*global Stomp*/
+/*global SockJS*/
 
 function StompActions(gameUID, playerName, opponentName, playerColour) {
     "use strict";
@@ -108,7 +109,7 @@ function openStompConnection(websocketURL, stompCallBack) {
     if (!(typeof stompCallBack === 'object' && stompCallBack instanceof StompActions)) {
         throw "callback function isn't an instance of StompActions";
     }
-    socket = new WebSocket(websocketURL);
+    socket = new SockJS(websocketURL);
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function onStompConnect() {
         stompClient.subscribe(USER_UPDATES, function (message) {

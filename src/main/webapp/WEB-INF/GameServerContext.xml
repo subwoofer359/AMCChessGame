@@ -29,6 +29,7 @@
         	<websocket:handshake-interceptors>
         		<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
         	</websocket:handshake-interceptors>
+        	<websocket:sockjs/>
         </websocket:stomp-endpoint>
         <websocket:simple-broker prefix="/queue, /topic"/>
         <!-- <websocket:message-converters register-defaults="true">
