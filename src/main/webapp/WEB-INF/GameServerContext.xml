@@ -25,7 +25,7 @@
 	
 	<!-- WebSocket Configuration -->
 	<websocket:message-broker application-destination-prefix="/app">
-        <websocket:stomp-endpoint path="/chessgame">
+        <websocket:stomp-endpoint path="/chessgame" allowed-origins="http://192.168.1.6:8080">
         	<websocket:handshake-interceptors>
         		<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
         	</websocket:handshake-interceptors>
@@ -78,12 +78,19 @@
 	 
 	 <security:global-method-security pre-post-annotations="enabled">
 	 </security:global-method-security>
+	 
+	 <security:http pattern="/css/**" security="none"/>
+	 <security:http pattern="/img/**" security="none"/>
+	 
 	 <security:http>
+	 	<security:csrf request-matcher-ref="csrfMatcher"/> 
+	 	<security:headers>
+	 		<security:frame-options policy="SAMEORIGIN"/>
+	 	</security:headers>
         <security:intercept-url pattern="/isUserNameAvailable*" access="isAnonymous()"/>
 	 	<security:intercept-url pattern="/app/chessgame/**" access="isAuthenticated()"/>
 	 	<security:form-login login-page="/Login.jsp"/>
 	 	<security:logout/>
-	 	<security:csrf disabled="false"/> 
 	 </security:http>
 	     <security:authentication-manager>
         <security:authentication-provider>
@@ -91,4 +98,6 @@
             <security:jdbc-user-service data-source-ref="myDatabase"/>
         </security:authentication-provider>
     </security:authentication-manager>
+    
+    <bean id="csrfMatcher" class="org.amc.game.chessserver.spring.CsrfSecurityRequestMatcher"/>
 </beans>

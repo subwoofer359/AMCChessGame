@@ -1,10 +1,12 @@
 /*global $*/
+
 /*global WebSocket*/
 /*global createChessBoard*/
 /*global updatePlayer*/
 /*global console*/
 /*global Stomp*/
 /*global SockJS*/
+/*global headers*/
 
 function StompActions(gameUID, playerName, opponentName, playerColour) {
     "use strict";
@@ -96,7 +98,7 @@ StompActions.prototype = {
     }
 };
 
-function openStompConnection(websocketURL, stompCallBack) {
+function openStompConnection(websocketURL, headers, stompCallBack) {
     "use strict";
     var stompClient,
         socket,
@@ -111,7 +113,7 @@ function openStompConnection(websocketURL, stompCallBack) {
     }
     socket = new SockJS(websocketURL);
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function onStompConnect() {
+    stompClient.connect(headers, function onStompConnect() {
         stompClient.subscribe(USER_UPDATES, function (message) {
             stompCallBack.userUpdate.call(stompCallBack, message);
         });
@@ -131,9 +133,9 @@ function openStompConnection(websocketURL, stompCallBack) {
     return stompClient;
 }
 
-function setupStompConnection(websocketURL, gameUID, playerName, opponentName, playerColour) {
+function setupStompConnection(stompObject) {
     "use strict";
-    var stompCallBack = new StompActions(gameUID, playerName, opponentName, playerColour),
-        stompClient = openStompConnection(websocketURL, stompCallBack);
+    var stompCallBack = new StompActions(stompObject.gameUUID, stompObject.playerName, stompObject.opponentName, stompObject.playerColour),
+        stompClient = openStompConnection(stompObject.URL, stompObject.headers, stompCallBack);
     return stompClient;
 }

@@ -45,7 +45,7 @@ QUnit.module("Stomp Calls Test", {
 QUnit.test("testing Stomp Calls Test", function (assert) {
     "use strict";
     var sentMessage;
-    openStompConnection("", new StompActions("gameUID", "playerName", "opponentName", "playerColour"));
+    openStompConnection("", {}, new StompActions("gameUID", "playerName", "opponentName", "playerColour"));
     assert.equal(subscriptions.indexOf(USER_UPDATES), 0);
     assert.equal(subscriptions.indexOf(TOPIC_UPDATES + "gameUID"), 1);
     sentMessage = messages.pop();
