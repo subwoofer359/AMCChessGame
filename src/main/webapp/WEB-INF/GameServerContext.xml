@@ -44,6 +44,8 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
+	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser" scope="prototype"/>
+	
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
      	<constructor-arg>  	
      		<value type="java.lang.Class">org.amc.User</value>

@@ -5,8 +5,6 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -30,11 +28,8 @@ public class ServerJoinChessGameController {
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
 
     private Map<Long, ServerChessGame> gameMap;
-
-    @Autowired
-    private SimpMessagingTemplate template;
-
-    private GameFinishedListener gameFinishListener;
+    
+    private SCGInitialiser initialiser;
 
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
@@ -82,8 +77,7 @@ public class ServerJoinChessGameController {
         if (canPlayerJoinGame(chessGame, player)) {
             if (inAwaitingPlayerState(chessGame)) {
                 addPlayerToGame(chessGame, player);
-                addView(chessGame);
-                addGameListener(chessGame);
+                initialiser.init(chessGame);
             }
             setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
         } else {
@@ -131,15 +125,6 @@ public class ServerJoinChessGameController {
         return ServerChessGame.ServerGameStatus.FINISHED.equals(chessGame.getCurrentStatus());
     }
 
-    private void addView(ServerChessGame chessGame) {
-        new JsonChessGameView(chessGame, template);
-    }
-
-    private void addGameListener(ServerChessGame chessGame) {
-        new GameStateListener(chessGame, template);
-        gameFinishListener.addServerChessGame(chessGame);
-    }
-
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
         return chessGame.getCurrentStatus()
                         .equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
@@ -162,11 +147,6 @@ public class ServerJoinChessGameController {
     @Resource(name = "gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap) {
         this.gameMap = gameMap;
-    }
-
-    @Autowired
-    public void setGameFinishListener(GameFinishedListener gameFinishListener) {
-        this.gameFinishListener = gameFinishListener;
     }
 
     /**
@@ -200,4 +180,8 @@ public class ServerJoinChessGameController {
         return ERROR_REDIRECT_PAGE;
     }
 
+    @Resource(name = "sCGInitialiser")
+    public void setSCGInitialiser(SCGInitialiser initialiser) {
+    	this.initialiser = initialiser;
+    }
 }
