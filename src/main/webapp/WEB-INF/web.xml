@@ -58,12 +58,13 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-		<!-- MyFilters -->
+	<!-- MyFilters -->
 	<filter>
 		<filter-name>CacheFilter</filter-name>
 		<filter-class>org.amc.game.chessserver.CacheFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
+
 	
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
