@@ -11,17 +11,22 @@
 		<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-core</artifactId>
-		<version>4.0.0.RELEASE</version>
+		<version>4.0.1.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-web</artifactId>
-		<version>4.0.0.RELEASE</version>
+		<version>4.0.1.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-config</artifactId>
-		<version>4.0.0.RELEASE</version>
+		<version>4.0.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-test</artifactId>
+		<version>4.0.1.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>javax.servlet</groupId>
@@ -140,7 +145,12 @@
 		<version>2.5.3</version>
 	</dependency>
 	<!-- Needed for SockJS:end -->
-  </dependencies>
+	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>javax.mail-api</artifactId>
+		<version>1.5.3</version>
+	</dependency>
+	</dependencies>
   
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

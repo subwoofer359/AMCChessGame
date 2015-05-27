@@ -176,6 +176,10 @@ $(document).ready(function(){
             $(".games-table tbody tr").find("input:checkbox[value=" + selectedRow + "]").click();
         });
     },5000);
+    
+    $.get("/AMCChessGame/onlinePlayerList", function(data){
+        console.log(data);
+    });
 });    
 </script>
 </head>

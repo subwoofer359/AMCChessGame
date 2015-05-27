@@ -74,7 +74,7 @@ public class JsonChessGameView implements Observer {
      * @author Adrian Mclaughlin
      *
      */
-    static class JsonChessGame {
+    public static class JsonChessGame {
 
         private Map<String, String> squares;
         private ChessGamePlayer currentPlayer;

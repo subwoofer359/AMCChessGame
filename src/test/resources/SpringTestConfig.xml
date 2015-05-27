@@ -13,7 +13,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-	<context:component-scan base-package="org.amc.game.chessserver"/>
+	<context:component-scan  base-package="org.amc.game.chessserver."/>
 	<mvc:annotation-driven/>
     <!-- Application beans -->
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
@@ -51,10 +51,9 @@
         	</map>
     	</property>
     </bean>
-    
+        
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
 	<task:executor id="myExecutor" pool-size="5"/>
 	<task:scheduler id="myScheduler" pool-size="10"/>
-
-    
+	
 </beans>
