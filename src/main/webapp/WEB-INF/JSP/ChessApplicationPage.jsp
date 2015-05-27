@@ -24,6 +24,8 @@
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
  <script src="${pageContext.request.contextPath}/js/sidebar.js"></script>
  <script src="${pageContext.request.contextPath}/js/selectTableRow.js"></script>
 <style>
@@ -104,6 +106,19 @@
     .games-table tr td:last-of-type,tr th:last-of-type {
         display: none;
     }
+    
+    #player-list {
+    	width: 150px;
+  		height: 200px;
+  		position: fixed;
+  		border-style: dashed;
+  		border-width: 2px;
+  		bottom: 0;
+  		font-size: 2em;
+  		padding: 10px 20px 10px 20px;
+  		overflow: auto;
+  		background-color: greenyellow;
+    }
 </style>
 <script>
 $(document).ready(function(){
@@ -180,6 +195,41 @@ $(document).ready(function(){
     $.get("/AMCChessGame/onlinePlayerList", function(data){
         console.log(data);
     });
+    
+    var headerName = "${_csrf.headerName}",
+    token = "${_csrf.token}",
+    stompObject = {};
+
+	stompObject.headers = {};
+	stompObject.headers[headerName] = token;
+	stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
+                    "${pageContext.request.contextPath}" +
+                    "/app/chessgame/chessgame";
+	var stompClient,
+    	socket;
+	socket = new SockJS(stompObject.URL);
+    stompClient = Stomp.over(socket);
+    
+    stompClient.connect(stompObject.headers, function () {
+        
+        function onlinePlayerList(message) {
+            var $playerList = $("#player-list"),
+        	users = $.parseJSON(message.body),
+        	html = "<ul>",
+        	i,
+        	len;
+        	for(i = 0, len = users.length; i< len; i+=1) {
+            	html += "<li>"+users[i].username+"</li>";
+        	}
+        	html += "</ul>";
+        	$playerList.html(html);
+    	}
+        stompClient.subscribe("/topic/updates/onlineplayerlist", onlinePlayerList);
+        stompClient.subscribe("/user/queue/updates/onlineplayerlist", onlinePlayerList);
+        
+        stompClient.send("/app/get/onlinePlayerList", {priority : 9}, "get onlinePlayerList");
+    });
+    
 });    
 </script>
 </head>
@@ -283,6 +333,9 @@ $(document).ready(function(){
     
         </div> <!-- container -->
 </form>
+<footer>
+<div id="player-list"></div>
+</footer>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>

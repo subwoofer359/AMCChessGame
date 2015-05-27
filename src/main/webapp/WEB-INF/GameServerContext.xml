@@ -22,8 +22,6 @@
 	<bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
 	</bean>
-	
-	<bean id="onlineUserList" class="org.amc.game.OnlineUserList" scope="singleton"/>
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 

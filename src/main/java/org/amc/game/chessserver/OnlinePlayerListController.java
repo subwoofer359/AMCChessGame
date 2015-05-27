@@ -2,7 +2,10 @@ package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,13 @@ public class OnlinePlayerListController {
    
     private SessionRegistry registry;
     
+    @Autowired
+    OnlinePlayerListMessager messager;
+    
+    /**
+     * ASynchronous call for the list of Online Users.
+     * @return String representation of a JSON
+     */
     @RequestMapping(method= RequestMethod.GET, value="/onlinePlayerList",produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Callable<String> getOnlinePlayerList() {
@@ -31,6 +41,16 @@ public class OnlinePlayerListController {
         };
     }
 
+    /**
+     * STOMP message handle to return a list of Online Users
+     * to only the requester.
+     */
+    @MessageMapping("/get/onlinePlayerList")
+    @SendToUser(value = "/queue/updates/onlineplayerlist", broadcast = false)
+    public void getOnlinePlayerListViaSTOMP() {
+        messager.sendPlayerList();
+    }
+    
     @Resource(name="sessionRegistry")
     public void setSessionRegistry(SessionRegistry registry) {
         this.registry = registry;

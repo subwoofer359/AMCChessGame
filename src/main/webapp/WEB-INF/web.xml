@@ -60,10 +60,6 @@
 	</listener>
 	
 	<listener>
-		<listener-class>org.amc.game.chessserver.spring.OnlineUserListener</listener-class>
-	</listener>
-	
-	<listener>
 		<listener-class>
 			org.springframework.security.web.session.HttpSessionEventPublisher
 		</listener-class>

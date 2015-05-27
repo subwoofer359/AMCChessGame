@@ -53,7 +53,6 @@ public class OnlinePlayerListControllerIntegrationTest {
                         .andExpect(request().asyncStarted()).andReturn();
         
         MvcResult result2 = this.mockMvc.perform(asyncDispatch(result)).andExpect(status().isOk())
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                         .andReturn();
         System.out.println("--------------->" + result2.getAsyncResult(500000));
         
