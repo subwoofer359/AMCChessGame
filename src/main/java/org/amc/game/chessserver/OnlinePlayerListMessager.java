@@ -19,8 +19,7 @@ public class OnlinePlayerListMessager {
     /**
      * STOMP messaging object to send stomp message to objects
      */
-    @Autowired
-    private SimpMessagingTemplate template;
+    SimpMessagingTemplate template;
 
     private SessionRegistry registry;
 
@@ -43,5 +42,10 @@ public class OnlinePlayerListMessager {
     @Resource(name = "sessionRegistry")
     public void setSessionRegistry(SessionRegistry registry) {
         this.registry = registry;
+    }
+    
+    @Autowired
+    public void setSimpMessagingTemplate(SimpMessagingTemplate template) {
+        this.template = template;
     }
 }
