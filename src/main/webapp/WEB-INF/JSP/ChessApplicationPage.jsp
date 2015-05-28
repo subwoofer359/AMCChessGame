@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -196,39 +197,7 @@ $(document).ready(function(){
         console.log(data);
     });
     
-    var headerName = "${_csrf.headerName}",
-    token = "${_csrf.token}",
-    stompObject = {};
-
-	stompObject.headers = {};
-	stompObject.headers[headerName] = token;
-	stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
-                    "${pageContext.request.contextPath}" +
-                    "/app/chessgame/chessgame";
-	var stompClient,
-    	socket;
-	socket = new SockJS(stompObject.URL);
-    stompClient = Stomp.over(socket);
     
-    stompClient.connect(stompObject.headers, function () {
-        
-        function onlinePlayerList(message) {
-            var $playerList = $("#player-list"),
-        	users = $.parseJSON(message.body),
-        	html = "<ul>",
-        	i,
-        	len;
-        	for(i = 0, len = users.length; i< len; i+=1) {
-            	html += "<li>"+users[i].username+"</li>";
-        	}
-        	html += "</ul>";
-        	$playerList.html(html);
-    	}
-        stompClient.subscribe("/topic/updates/onlineplayerlist", onlinePlayerList);
-        stompClient.subscribe("/user/queue/updates/onlineplayerlist", onlinePlayerList);
-        
-        stompClient.send("/app/get/onlinePlayerList", {priority : 9}, "get onlinePlayerList");
-    });
     
 });    
 </script>
@@ -334,7 +303,7 @@ $(document).ready(function(){
         </div> <!-- container -->
 </form>
 <footer>
-<div id="player-list"></div>
+<tags:PlayerList csrfName="${_csrf.headerName}" csrfToken="${_csrf.token}"/>
 </footer>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
