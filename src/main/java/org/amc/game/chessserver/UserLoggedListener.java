@@ -6,7 +6,7 @@ import org.springframework.security.core.session.SessionDestroyedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SessionDestroyedListener  implements ApplicationListener<SessionDestroyedEvent>{
+public class UserLoggedListener  implements ApplicationListener<SessionDestroyedEvent>{
 
     @Autowired
     private OnlinePlayerListMessager messager;

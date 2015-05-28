@@ -6,7 +6,7 @@ import org.springframework.security.core.session.SessionCreationEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SessionCreationListener implements ApplicationListener<SessionCreationEvent>{
+public class UserLoggedInListener implements ApplicationListener<SessionCreationEvent>{
 
     @Autowired
     private OnlinePlayerListMessager messager;
