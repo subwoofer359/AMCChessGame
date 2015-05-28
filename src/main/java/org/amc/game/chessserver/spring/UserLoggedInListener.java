@@ -1,5 +1,6 @@
-package org.amc.game.chessserver;
+package org.amc.game.chessserver.spring;
 
+import org.amc.game.chessserver.OnlinePlayerListMessager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.core.session.SessionCreationEvent;

@@ -12,34 +12,35 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 @Component
-public class OnlinePlayerListMessager{
+public class OnlinePlayerListMessager {
 
     private static final Logger logger = Logger.getLogger(OnlinePlayerListMessager.class);
-    
-    /** 
+
+    /**
      * STOMP messaging object to send stomp message to objects
      */
     @Autowired
     private SimpMessagingTemplate template;
-    
+
     private SessionRegistry registry;
-    
-    
+
     /**
      * STOMP message subscription destination
      */
     static final String MESSAGE_DESTINATION = "/topic/updates/onlineplayerlist";
-     
+
     public void sendPlayerList() {
-         template.convertAndSend(MESSAGE_DESTINATION, getMessage());
+        String message = getMessage();
+        template.convertAndSend(MESSAGE_DESTINATION, message);
+        logger.debug("Sent Player List:" + message);
     }
 
     private String getMessage() {
         Gson gson = new Gson();
         return gson.toJson(registry.getAllPrincipals());
     }
-    
-    @Resource(name="sessionRegistry")
+
+    @Resource(name = "sessionRegistry")
     public void setSessionRegistry(SessionRegistry registry) {
         this.registry = registry;
     }
