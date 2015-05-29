@@ -246,7 +246,7 @@ $(document).ready(function(){
         </div><!-- sidebar-left -->
         <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
         
-        <div class="col-xs-5">
+        <div class="col-xs-12 col-md-5">
             <div id="your-games-table" class="games-table">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -272,7 +272,7 @@ $(document).ready(function(){
             </table>
             </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-xs-12 col-md-5">
             <div id="other-games-table" class="games-table">
             <table class="table table-bordered table-striped">
                 <thead>
