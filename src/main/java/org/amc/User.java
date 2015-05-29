@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 /**
  * Represents a User to be authenicated by Spring Security There is one to one
@@ -43,6 +44,10 @@ public class User {
     @Column(name = "password", length = 60, nullable = false)
     private char[] password;
 
+    @Pattern(regexp = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b", message = "Email not in correct format")
+    @Column(length=100,nullable=true)
+    private String emailAddress;
+    
     @Column(nullable = false)
     private boolean enabled = true;
 
@@ -108,6 +113,14 @@ public class User {
     public void setAuthorities(List<Authorities> authorities) {
         this.authorities = authorities;
     }
+    
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 
     public static class UserId implements Serializable {
         private static final long serialVersionUID = 1L;
@@ -143,5 +156,4 @@ public class User {
         }
 
     }
-
 }
