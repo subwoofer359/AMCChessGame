@@ -64,6 +64,12 @@
 			org.springframework.security.web.session.HttpSessionEventPublisher
 		</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>
+			org.amc.util.web.StartupShutdownListener
+		</listener-class>
+	</listener>
 
 	<!-- MyFilters -->
 	<filter>
