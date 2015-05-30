@@ -178,4 +178,16 @@ public class ServerChessGame extends DefaultSubject {
             break;
         }
     }
+    
+    /**
+     * Remove Observers from receiving updates
+     * Sets Status to FINISHED
+     * Tidys up references
+     */
+    public void destory() {
+        setCurrentStatus(ServerGameStatus.FINISHED);
+        removeAllObservers();
+        this.opponent = null;
+        this.chessGame = null;
+    }
 }
