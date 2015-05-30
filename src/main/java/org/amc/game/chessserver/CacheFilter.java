@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Adrian Mclaughlin
  * @version 1
  */
-public class NoCacheFilter implements Filter {
+public class CacheFilter implements Filter {
     /**
      * @see Filter#destroy()
      */
@@ -34,8 +34,7 @@ public class NoCacheFilter implements Filter {
 
         // pass the request along the filter chain
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setHeader("Cache-Control", "no-cache, no-store");
-        httpResponse.setHeader("Pragma", "no-cache");
+        httpResponse.setHeader("Cache-Control", "max-age=86400");
         chain.doFilter(request, response);
         
     }

@@ -26,7 +26,12 @@
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/GameServerContext.xml /WEB-INF/EntityManagerFactory.xml</param-value>
+		<param-value>
+			/WEB-INF/GameServerContext.xml 
+			/WEB-INF/EntityManagerFactory.xml
+			/WEB-INF/GameServerSecurity.xml
+			/WEB-INF/GameServerWebSockets.xml
+		</param-value>
 	</context-param>
 	
 	<!-- Spring controllers -->
@@ -55,8 +60,8 @@
 
 		<!-- MyFilters -->
 	<filter>
-		<filter-name>NoCacheFilter</filter-name>
-		<filter-class>org.amc.game.chessserver.NoCacheFilter</filter-class>
+		<filter-name>CacheFilter</filter-name>
+		<filter-class>org.amc.game.chessserver.CacheFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
 	
@@ -79,8 +84,8 @@
 	</filter>
 	
 	<filter-mapping>
-		<filter-name>NoCacheFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<filter-name>CacheFilter</filter-name>
+		<url-pattern>/img/*</url-pattern>
 	</filter-mapping>
 	
 	<filter-mapping>

@@ -12,6 +12,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- delete later{end} -->
+<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.3/interact.min.js"></script>
 <script src="../../js/chesspieces.js"></script>
@@ -140,14 +141,21 @@
 </style>
 <script>
 $(document).ready(function(){
-    var stompClient = setupStompConnection("ws://${pageContext.request.localAddr}:${pageContext.request.localPort}" +
+    var headerName = "${_csrf.headerName}",
+        token = "${_csrf.token}",
+        stompObject = {};
+    
+    stompObject.headers = {};
+    stompObject.headers[headerName] = token;
+    stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
                         "${pageContext.request.contextPath}" +
-                        "/app/chessgame/chessgame", 
-                        "${GAME_UUID}",
-                        "${GAME.player.name}", 
-                        "${GAME.opponent.name}", 
-                        '<c:out value="${CHESSPLAYER.colour}"/>'
-                       );
+                        "/app/chessgame/chessgame";
+    stompObject.gameUUID = "${GAME_UUID}";
+    stompObject.playerName = "${GAME.player.name}";
+    stompObject.opponentName = "${GAME.opponent.name}";
+    stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
+    
+    var stompClient = setupStompConnection(stompObject);
     chessGameInteract(stompClient, "${GAME_UUID}");
 });
 
@@ -163,7 +171,7 @@ $(document).ready(function(){
             <div class="side-menu">
             <ul>
                 <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
-                <li><button id="quit-btn">Quit Game</a></li>
+                <li><button id="quit-btn">Quit Game</button></li>
             </ul>
             </div>
         </div><!-- sidebar-left -->

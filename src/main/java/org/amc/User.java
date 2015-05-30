@@ -2,6 +2,7 @@ package org.amc;
 
 import org.amc.game.chess.Player;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,8 +18,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Represents a User to be authenicated by Spring Security
- * There is one to one relationship between User and Player
+ * Represents a User to be authenicated by Spring Security There is one to one
+ * relationship between User and Player
+ * 
  * @author adrian
  *
  */
@@ -30,25 +32,25 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(name = "name", length = 50, nullable = false)
     private String name;
-    
+
     @Id
     @Column(name = "username", length = 50, nullable = false, unique = true)
     private String userName;
-    
+
     @Column(name = "password", length = 60, nullable = false)
     private char[] password;
-    
+
     @Column(nullable = false)
     private boolean enabled = true;
-   
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "player")
     private Player player;
-    
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Authorities> authorities;
 
     public String getName() {
@@ -106,11 +108,12 @@ public class User {
     public void setAuthorities(List<Authorities> authorities) {
         this.authorities = authorities;
     }
-    
-    public static class UserId {
+
+    public static class UserId implements Serializable {
+        private static final long serialVersionUID = 1L;
         public int id;
         public String userName;
-        
+
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -119,6 +122,7 @@ public class User {
             result = prime * result + ((userName == null) ? 0 : userName.hashCode());
             return result;
         }
+
         @Override
         public boolean equals(Object obj) {
             if (this == obj)
@@ -137,9 +141,7 @@ public class User {
                 return false;
             return true;
         }
-        
-        
+
     }
-    
-    
+
 }

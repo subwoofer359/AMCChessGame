@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<beans:bean id="myDatabase"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url"
+			value="jdbc:mysql://192.168.1.5/amcchessgame" />
+		<beans:property name="username" value="adrian" />
+		<beans:property name="password" value="cr2032ux" />
+	</beans:bean>
+
+	<beans:bean id="myPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<global-method-security pre-post-annotations="enabled" />
+
+	<http pattern="/css/**" security="none" />
+	<http pattern="/img/**" security="none" />
+	<http pattern="/js/**" security="none" />
+
+	<http>
+		<csrf request-matcher-ref="csrfMatcher" />
+		<headers>
+			<frame-options policy="SAMEORIGIN" />
+		</headers>
+		<intercept-url pattern="/isUserNameAvailable*" access="isAnonymous()" />
+		<intercept-url pattern="/app/chessgame/**" access="isAuthenticated()" />
+		<form-login login-page="/Login.jsp" />
+		<logout />
+	</http>
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="bcrypt" ref="myPasswordEncoder" />
+			<jdbc-user-service data-source-ref="myDatabase" />
+		</authentication-provider>
+	</authentication-manager>
+
+	<beans:bean id="csrfMatcher"
+		class="org.amc.game.chessserver.spring.CsrfSecurityRequestMatcher" />
+</beans:beans>

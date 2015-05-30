@@ -1,44 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:websocket="http://www.springframework.org/schema/websocket"
-	xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
-		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-	
-	<context:component-scan base-package="org.amc.game."/>
-    <mvc:annotation-driven />
-	
-	<task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
-	<task:executor id="myExecutor" pool-size="10"/>
-	<task:scheduler id="myScheduler" pool-size="10"/>
-	
-	<!-- WebSocket Configuration -->
-	<websocket:message-broker application-destination-prefix="/app">
-        <websocket:stomp-endpoint path="/chessgame">
-        	<websocket:handshake-interceptors>
-        		<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-        	</websocket:handshake-interceptors>
-        </websocket:stomp-endpoint>
-        <websocket:simple-broker prefix="/queue, /topic"/>
-        <!-- <websocket:message-converters register-defaults="true">
-			<bean class="org.amc.game.chessserver.MoveConverter"/>
-		</websocket:message-converters> -->
-    </websocket:message-broker>
-    
-    
-    <!-- Application beans -->
-    <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<context:component-scan base-package="org.amc.game." />
+	<mvc:annotation-driven />
+
+	<task:annotation-driven executor="myExecutor"
+		scheduler="myScheduler" />
+	<task:executor id="myExecutor" pool-size="10" />
+	<task:scheduler id="myScheduler" pool-size="10" />
+
+	<!-- Application beans -->
+	<bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
 	</bean>
 
@@ -46,50 +26,22 @@
 	
 	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser" scope="prototype"/>
 	
+
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
-     	<constructor-arg>  	
-     		<value type="java.lang.Class">org.amc.User</value>
-    	 </constructor-arg>
-  	</bean>
-  	
-  	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
-     	<constructor-arg>  	
-     		<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
-     	</constructor-arg>
-     </bean>
-     
-     <bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
-     	<constructor-arg>  	
-     		<value type="java.lang.Class">org.amc.Authorities</value>
-     	</constructor-arg>
-     </bean>
-	
-	<bean id="myDatabase" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://192.168.1.5/amcchessgame"/>
-      	<property name="username" value="adrian"/>
-      	<property name="password" value="cr2032ux"/>
+		<constructor-arg>
+			<value type="java.lang.Class">org.amc.User</value>
+		</constructor-arg>
 	</bean>
-	
-	<bean id="myPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-	
-	<!-- 
-	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
-	 -->
-	 
-	 <security:global-method-security pre-post-annotations="enabled">
-	 </security:global-method-security>
-	 <security:http>
-        <security:intercept-url pattern="/isUserNameAvailable*" access="isAnonymous()"/>
-	 	<security:intercept-url pattern="/app/chessgame/**" access="isAuthenticated()"/>
-	 	<security:form-login login-page="/Login.jsp"/>
-	 	<security:logout/>
-	 	<security:csrf disabled="false"/> 
-	 </security:http>
-	     <security:authentication-manager>
-        <security:authentication-provider>
-        <security:password-encoder hash="bcrypt" ref="myPasswordEncoder" />
-            <security:jdbc-user-service data-source-ref="myDatabase"/>
-        </security:authentication-provider>
-    </security:authentication-manager>
+
+	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
+		<constructor-arg>
+			<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
+		<constructor-arg>
+			<value type="java.lang.Class">org.amc.Authorities</value>
+		</constructor-arg>
+	</bean>
 </beans>

@@ -4,7 +4,8 @@
 /*global StompActions*/
 /*global openStompConnection*/
 /*global createChessBoard:true*/
-var gameUID,
+var stompObject = {},
+    gameUID,
     playerName,
     opponentName,
     playerColour,
@@ -33,11 +34,13 @@ QUnit.module("Stomp Message tests", {
     beforeEach : function () {
         "use strict";
         $("#qunit-fixture").html('<div id="my-alert"><div class="alert"></div></div>');
-        gameUID = "1234";
-        playerName = "testPlayer";
-        opponentName = "testOpponent";
-        playerColour = ChessPieces.prototype.colour.black;
-        myStompActions = new StompActions(gameUID, playerName, opponentName, playerColour);
+        stompObject.gameUID = "1234";
+        stompObject.playerName = "testPlayer";
+        stompObject.opponentName = "testOpponent";
+        stompObject.playerColour = ChessPieces.prototype.colour.black;
+        stompObject.headers = {};
+        myStompActions = new StompActions(stompObject.gameUID, stompObject.playerName,
+                                          stompObject.opponentName, stompObject.playerColour);
         updatePlayerCall = false;
         updateChessBoardCall = false;
     }
