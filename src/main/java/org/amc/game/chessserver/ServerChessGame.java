@@ -30,7 +30,7 @@ public class ServerChessGame extends DefaultSubject {
     ChessGame chessGame = null;
     private ServerGameStatus currentStatus;
     private final ChessGamePlayer player;
-    private ChessGamePlayer opponent;
+    ChessGamePlayer opponent;
 
     /**
      * The unique identifier of this game
