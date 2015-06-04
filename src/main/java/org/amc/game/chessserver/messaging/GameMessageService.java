@@ -1,7 +1,7 @@
 package org.amc.game.chessserver.messaging;
 
-import org.amc.game.chess.Player;
+import org.amc.User;
 
 public interface GameMessageService<T> {
-    void send(Player player, T message) throws Exception;
+    void send(User user, T message) throws Exception;
 }

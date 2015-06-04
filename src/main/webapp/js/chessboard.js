@@ -73,72 +73,75 @@ function createBlankChessBoardSVG() {
     return svgDocument;
 }
 
-function createChessBoard(playerColour, chessboardJSON) {
+function createChessPiecesElements(playerColour, chessboardJSON) {
     "use strict";
-    var json = $.parseJSON(chessboardJSON),
-        board,
-        chessBoardSVG = $("#chessboard-surround"),
+    var json = JSON.parse(chessboardJSON),
         location,
-        chesspieces;
-    console.log("parsed JSON");
+        chesspieces,
+        piecesOnBoard="";
 
     chesspieces = new ChessPieces(playerColour);
-
-    chessBoardSVG.html(createBlankChessBoardSVG());
-    board = $("#layer1");
+    
     for (location in json.squares) {
         if (json.squares.hasOwnProperty(location)) {
             switch (json.squares[location]) {
             case "p":
-                board.append(chesspieces.pawn("pawn-" + location, location, chesspieces.colour.white));
+                piecesOnBoard += chesspieces.pawn("pawn-" + location, location, chesspieces.colour.white);
                 break;
 
             case "P":
-                board.append(chesspieces.pawn("pawn-" + location, location, chesspieces.colour.black));
+                piecesOnBoard += chesspieces.pawn("pawn-" + location, location, chesspieces.colour.black);
                 break;
 
             case 'r':
-                board.append(chesspieces.rook("rook-" + location, location, chesspieces.colour.white));
+                piecesOnBoard += chesspieces.rook("rook-" + location, location, chesspieces.colour.white);
                 break;
 
             case 'R':
-                board.append(chesspieces.rook("rook-" + location, location, chesspieces.colour.black));
+                piecesOnBoard += chesspieces.rook("rook-" + location, location, chesspieces.colour.black);
                 break;
 
             case 'B':
-                board.append(chesspieces.bishop("bishop-" + location, location, chesspieces.colour.black));
+                piecesOnBoard += chesspieces.bishop("bishop-" + location, location, chesspieces.colour.black);
                 break;
 
             case 'b':
-                board.append(chesspieces.bishop("bishop-" + location, location, chesspieces.colour.white));
+                piecesOnBoard += chesspieces.bishop("bishop-" + location, location, chesspieces.colour.white);
                 break;
 
             case 'N':
-                board.append(chesspieces.knight("knight-" + location, location, chesspieces.colour.black));
+                piecesOnBoard += chesspieces.knight("knight-" + location, location, chesspieces.colour.black);
                 break;
 
             case 'n':
-                board.append(chesspieces.knight("knight-" + location, location, chesspieces.colour.white));
+                piecesOnBoard += chesspieces.knight("knight-" + location, location, chesspieces.colour.white);
                 break;
 
             case 'Q':
-                board.append(chesspieces.queen("queen-" + location, location, chesspieces.colour.black));
+                piecesOnBoard += chesspieces.queen("queen-" + location, location, chesspieces.colour.black);
                 break;
 
             case 'q':
-                board.append(chesspieces.queen("queen-" + location, location, chesspieces.colour.white));
+                piecesOnBoard += chesspieces.queen("queen-" + location, location, chesspieces.colour.white);
                 break;
 
             case 'K':
-                board.append(chesspieces.king("king-" + location, location, chesspieces.colour.black));
+                piecesOnBoard += chesspieces.king("king-" + location, location, chesspieces.colour.black);
                 break;
 
             case 'k':
-                board.append(chesspieces.king("king-" + location, location, chesspieces.colour.white));
+                piecesOnBoard += chesspieces.king("king-" + location, location, chesspieces.colour.white);
                 break;
             }
         }
     }
-    chessBoardSVG.html(chessBoardSVG.html());
-
+    return piecesOnBoard;
 }
+    function createChessBoard(playerColour, chessboardJSON) {
+        "use strict";
+        var chessBoardSVG = $("#chessboard-surround"),
+            board;
+        chessBoardSVG.html(createBlankChessBoardSVG());
+        board = $("#layer1");
+        board.append(createChessPiecesElements(playerColour, chessboardJSON));
+    }
