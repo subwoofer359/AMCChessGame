@@ -10,6 +10,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 	<context:component-scan base-package="org.amc.game." />
+	<context:component-scan base-package="org.amc.game.chessserver.spring."/>
 	<mvc:annotation-driven />
 
 	<task:annotation-driven executor="myExecutor"
@@ -44,4 +45,5 @@
 			<value type="java.lang.Class">org.amc.Authorities</value>
 		</constructor-arg>
 	</bean>
+	
 </beans>

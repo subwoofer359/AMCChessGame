@@ -31,6 +31,7 @@
 			/WEB-INF/EntityManagerFactory.xml
 			/WEB-INF/GameServerSecurity.xml
 			/WEB-INF/GameServerWebSockets.xml
+			/WEB-INF/EmailServiceContext.xml
 		</param-value>
 	</context-param>
 	
@@ -51,19 +52,33 @@
 		<url-pattern>/app/chessgame/*</url-pattern>
 		<url-pattern>/signup</url-pattern>
 		<url-pattern>/isUserNameAvailable</url-pattern>
+		<url-pattern>/onlinePlayerList</url-pattern>
 	</servlet-mapping>
 	
 	<!-- My listener Classes -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>
+			org.springframework.security.web.session.HttpSessionEventPublisher
+		</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>
+			org.amc.util.web.StartupShutdownListener
+		</listener-class>
+	</listener>
 
-		<!-- MyFilters -->
+	<!-- MyFilters -->
 	<filter>
 		<filter-name>CacheFilter</filter-name>
 		<filter-class>org.amc.game.chessserver.CacheFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
+
 	
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,8 @@
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
  <script src="${pageContext.request.contextPath}/js/sidebar.js"></script>
  <script src="${pageContext.request.contextPath}/js/selectTableRow.js"></script>
 <style>
@@ -104,6 +107,19 @@
     .games-table tr td:last-of-type,tr th:last-of-type {
         display: none;
     }
+    
+    #player-list {
+    	width: 150px;
+  		height: 200px;
+  		position: fixed;
+  		border-style: dashed;
+  		border-width: 2px;
+  		bottom: 0;
+  		font-size: 2em;
+  		padding: 10px 20px 10px 20px;
+  		overflow: auto;
+  		background-color: greenyellow;
+    }
 </style>
 <script>
 $(document).ready(function(){
@@ -176,6 +192,13 @@ $(document).ready(function(){
             $(".games-table tbody tr").find("input:checkbox[value=" + selectedRow + "]").click();
         });
     },5000);
+    
+    $.get("/AMCChessGame/onlinePlayerList", function(data){
+        console.log(data);
+    });
+    
+    
+    
 });    
 </script>
 </head>
@@ -223,7 +246,7 @@ $(document).ready(function(){
         </div><!-- sidebar-left -->
         <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
         
-        <div class="col-xs-5">
+        <div class="col-xs-12 col-md-5">
             <div id="your-games-table" class="games-table">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -249,7 +272,7 @@ $(document).ready(function(){
             </table>
             </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-xs-12 col-md-5">
             <div id="other-games-table" class="games-table">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -279,6 +302,9 @@ $(document).ready(function(){
     
         </div> <!-- container -->
 </form>
+<footer>
+<tags:PlayerList csrfName="${_csrf.headerName}" csrfToken="${_csrf.token}"/>
+</footer>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>

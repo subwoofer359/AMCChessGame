@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations={"/SpringTestConfig.xml"})
+@ContextConfiguration(locations={"/SpringTestConfig.xml","/GameServerSecurity.xml"})
 public class SignUpControllerIntegrationTest {
 
     private static final String NAME = "adrian mclaughlin";

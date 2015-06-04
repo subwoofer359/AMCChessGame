@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("/SpringTestConfig.xml")
+@ContextConfiguration({"/SpringTestConfig.xml","/GameServerSecurity.xml"})
 
 public class StompControllerIntegrationTest {
     private static final String SESSION_ID = "0";

@@ -40,23 +40,25 @@
 		<form-login login-page="/Login.jsp" />
 		<logout />
 	</http>
+	
 	<authentication-manager>
 		<authentication-provider>
 			<password-encoder hash="bcrypt" ref="myPasswordEncoder" />
 			<jdbc-user-service data-source-ref="myDatabase" />
 		</authentication-provider>
 	</authentication-manager>
-
+	
 	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
 		<beans:constructor-arg ref="sessionRegistry"/>
 	</beans:bean>
 	
-	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+	<beans:bean id="concurrencyFilter" 
+	class="org.springframework.security.web.session.ConcurrentSessionFilter">
 		<beans:constructor-arg ref="sessionRegistry" />
 	</beans:bean>
+	
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
 
 	<beans:bean id="csrfMatcher"
 		class="org.amc.game.chessserver.spring.CsrfSecurityRequestMatcher" />
-		
-	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
 </beans:beans>

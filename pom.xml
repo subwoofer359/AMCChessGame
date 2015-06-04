@@ -11,17 +11,22 @@
 		<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-core</artifactId>
-		<version>4.0.0.RELEASE</version>
+		<version>4.0.1.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-web</artifactId>
-		<version>4.0.0.RELEASE</version>
+		<version>4.0.1.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-config</artifactId>
-		<version>4.0.0.RELEASE</version>
+		<version>4.0.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-test</artifactId>
+		<version>4.0.1.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>javax.servlet</groupId>
@@ -84,6 +89,11 @@
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+		<version>4.1.6.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 		<version>4.1.6.RELEASE</version>
 	</dependency>
@@ -121,6 +131,25 @@
 		<groupId>org.apache.openjpa</groupId>
 		<artifactId>openjpa</artifactId>
 		<version>2.3.0</version>
+	</dependency>	
+	
+	<dependency>
+		<groupId>org.sonatype.gossip</groupId>
+		<artifactId>gossip-slf4j</artifactId>
+		<version>1.8</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.sonatype.gossip</groupId>
+		<artifactId>gossip</artifactId>
+		<version>1.2</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>xerces</groupId>
+		<artifactId>xercesImpl</artifactId>
+		<version>2.11.0</version>
 	</dependency>
 	
 	<!-- Needed for SockJS -->
@@ -140,8 +169,39 @@
 		<version>2.5.3</version>
 	</dependency>
 	<!-- Needed for SockJS:end -->
-  </dependencies>
-  
+	
+	<dependency>
+		<groupId>javax.validation</groupId>
+		<artifactId>validation-api</artifactId>
+		<version>1.0.0.GA</version>
+	</dependency>
+	
+	<!-- Used for emailing Games statuses to Players -->
+	<dependency>
+		<groupId>org.thymeleaf</groupId>
+		<artifactId>thymeleaf-spring4</artifactId>
+		<version>2.1.4.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>javax.mail-api</artifactId>
+		<version>1.5.3</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>mail</artifactId>
+		<version>1.4.7</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.activation</groupId>
+		<artifactId>activation</artifactId>
+		<version>1.1.1</version>
+	</dependency>
+	
+	
+	</dependencies>
+	
+	
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>

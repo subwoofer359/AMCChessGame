@@ -13,7 +13,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-	<context:component-scan base-package="org.amc.game.chessserver"/>
+	<context:component-scan  base-package="org.amc.game.chessserver." use-default-filters="false" />
+	
 	<mvc:annotation-driven/>
     <!-- Application beans -->
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
@@ -51,10 +52,30 @@
         	</map>
     	</property>
     </bean>
-    
+        
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
 	<task:executor id="myExecutor" pool-size="5"/>
 	<task:scheduler id="myScheduler" pool-size="10"/>
 
-    
+	<bean class="org.amc.game.chessserver.spring.UserLoggedInListener">
+		<property name="messager" ref="mockPlayerListMessager"/>
+	</bean>
+	
+	<bean class="org.amc.game.chessserver.spring.UserLoggedOutListener">
+		<property name="messager" ref="mockPlayerListMessager"/>
+	</bean>
+
+	<bean id="mockPlayerListMessager" class="org.amc.game.chessserver.MockPlayerListMessager"/>
+	
+	<bean class="org.springframework.messaging.simp.SimpMessagingTemplate">
+		<constructor-arg ref="channel"></constructor-arg>
+	</bean>
+	
+	<bean id="channel" class="org.springframework.messaging.support.ExecutorSubscribableChannel"/>
+	
+	<bean class="org.amc.game.chessserver.SignUpController">
+		<property name="passwordEncoder" ref="myPasswordEncoder"/>
+		<property name="userDAO" ref="myUserDAO"/>
+	</bean>
+	
 </beans>
