@@ -1,5 +1,8 @@
 package org.amc;
 
+import org.amc.game.chessserver.EntityManagerFilter;
+import org.apache.log4j.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -9,6 +12,8 @@ import javax.persistence.EntityManagerFactory;
  *
  */
 public final class EntityManagerThreadLocal {
+    
+    private static Logger logger = Logger.getLogger(EntityManagerThreadLocal.class);
     /**
      * JPA EntityManagerFactory Set up Spring IOC Thread safe
      */
@@ -24,6 +29,7 @@ public final class EntityManagerThreadLocal {
          */
         @Override
         protected EntityManager initialValue() {
+            logger.debug("EntityManager created");
             return FACTORY.createEntityManager();
         }
 
@@ -40,6 +46,7 @@ public final class EntityManagerThreadLocal {
      * @return an JPA EntityManager
      */
     public static EntityManager getEntityManager() {
+        logger.debug("Object retrieved EntityManager instance with get");
         return ENTITYMANAGER.get();
     }
 
@@ -49,6 +56,7 @@ public final class EntityManagerThreadLocal {
     public static void closeEntityManager() {
         ENTITYMANAGER.get().close();
         ENTITYMANAGER.remove();
+        logger.debug("EntityManager closed");
     }
 
     /**
