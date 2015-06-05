@@ -27,6 +27,7 @@
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-test</artifactId>
 		<version>4.0.1.RELEASE</version>
+		<scope>test</scope>
 	</dependency>
 	<dependency>
 		<groupId>javax.servlet</groupId>
@@ -60,6 +61,7 @@
 		<groupId>org.mockito</groupId>
 		<artifactId>mockito-all</artifactId>
 		<version>1.10.19</version>
+		<scope>test</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.jacoco</groupId>
@@ -116,6 +118,7 @@
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-mock</artifactId>
 		<version>2.0.8</version>
+		<scope>test</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.xbean</groupId>
@@ -151,6 +154,20 @@
 		<artifactId>xercesImpl</artifactId>
 		<version>2.11.0</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>batik</groupId>
+		<artifactId>batik-svg-dom</artifactId>
+		<version>1.6-1</version>
+	</dependency>
+	<dependency>
+		<groupId>batik</groupId>
+		<artifactId>batik-util</artifactId>
+		<version>1.6-1</version>
+		<scope>test</scope>
+	</dependency>
+	
+	
 	
 	<!-- Needed for SockJS -->
 	<dependency>

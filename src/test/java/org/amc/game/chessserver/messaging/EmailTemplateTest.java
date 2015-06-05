@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
+import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
+import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -67,12 +69,7 @@ public class EmailTemplateTest {
     public void test() throws Exception {
         String html = template.getEmailHtml();
         
-        String startTag = "<svg";
-        String endTag = "</svg>";
-        
-        int start = html.indexOf(startTag);
-        int end = html.indexOf(endTag);
-        String svg = html.substring(start, end + endTag.length());
+        String svg = getSVGString(html);
         
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -82,6 +79,30 @@ public class EmailTemplateTest {
         assertNotNull(document);
         NodeList list = document.getElementsByTagName("g");
         
+    }
+    
+    private String getSVGString(String html) {
+        String startTag = "<svg";
+        String endTag = "</svg>";
+        
+        int start = html.indexOf(startTag);
+        int end = html.indexOf(endTag);
+        return html.substring(start, end + endTag.length());
+    }
+    
+    @Test
+    public void testSVG() throws Exception {
+        String html = template.getEmailHtml();
+        
+        String svg = getSVGString(html);
+        svg = "\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" + svg;
+        
+        String parser = XMLResourceDescriptor.getXMLParserClassName();
+        SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+        f.setValidating(true);
+        StringReader reader =new StringReader(svg);
+        Document doc = f.createDocument("file:", reader);
+        assertNotNull(doc);
     }
 
 }
