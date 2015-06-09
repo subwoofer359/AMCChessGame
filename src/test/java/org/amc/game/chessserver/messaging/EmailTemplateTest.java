@@ -34,8 +34,10 @@ public class EmailTemplateTest {
     private ScriptEngine engine;
     private final long GAME_UID = 20202l;
     private FileTemplateResolver emailTemplateResolver;
-    private static final Logger logger = Logger.getLogger(EmailTemplateTest.class);
-    
+    /**
+     * Number of g tags to be found in the chess game SVG
+     */
+    private static final int NUMBER_OF_G_TAGS = 48;
     
     @Before
     public void setUp() throws Exception {
@@ -78,6 +80,8 @@ public class EmailTemplateTest {
         Document document = dBuilder.parse(input);
         assertNotNull(document);
         NodeList list = document.getElementsByTagName("g");
+        assertNotNull(list);
+        assertTrue(list.getLength() == NUMBER_OF_G_TAGS);
         
     }
     

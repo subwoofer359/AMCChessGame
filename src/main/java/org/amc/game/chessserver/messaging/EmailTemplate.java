@@ -50,7 +50,6 @@ public class EmailTemplate {
     private final Player otherPlayer;
 
     private ScriptEngine jsEngine;
-
     private DocumentBuilder dBuilder;
     
     private static final String EMAIL_TEMPLATE = "gameStatus.html";
@@ -105,7 +104,7 @@ public class EmailTemplate {
         Element chessPieces = getChessPiecesElement(in);
 
         mergeDocuments(document, svgRoot, chessPieces);
-        logger.debug(svgDomToString(document));
+
         return svgDomToString(document);
     }
 
