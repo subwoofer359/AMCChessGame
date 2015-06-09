@@ -22,7 +22,7 @@ public class OfflineChessGameMessager implements Observer {
 
     private SessionRegistry registry;
     private GameMessageService<EmailTemplate> messageService;
-    private static final Logger logger = Logger.getLogger(OfflineChessGameMessagerTest.class);
+    private static final Logger logger = Logger.getLogger(OfflineChessGameMessager.class);
     private DAO<User> userDAO;
 
     @Override
