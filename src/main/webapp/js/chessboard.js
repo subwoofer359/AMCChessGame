@@ -144,4 +144,5 @@ function createChessPiecesElements(playerColour, chessboardJSON) {
         chessBoardSVG.html(createBlankChessBoardSVG());
         board = $("#layer1");
         board.append(createChessPiecesElements(playerColour, chessboardJSON));
+        chessBoardSVG.html(chessBoardSVG.html());
     }
