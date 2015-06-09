@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,12 +44,15 @@ import javax.xml.transform.stream.StreamResult;
 public class EmailTemplate {
 
     private static final Logger logger = Logger.getLogger(EmailTemplate.class);
+    
+    @Autowired
+    ServletContext servletContext;
 
     private SpringTemplateEngine templateEngine;
 
-    private final ServerChessGame serverChessGame;
+    private ServerChessGame serverChessGame;
 
-    private final Player otherPlayer;
+    private Player otherPlayer;
 
     private ScriptEngine jsEngine;
     private DocumentBuilder dBuilder;
@@ -62,18 +67,24 @@ public class EmailTemplate {
     private static final List<String> SCRIPTS_TO_EVAL;
     static {
         SCRIPTS_TO_EVAL = Collections.unmodifiableList(Arrays.asList(
-                        "src/main/webapp/js/chesspieces.js", "src/main/webapp/js/chessboard.js"));
+                        "js/chesspieces.js", "js/chessboard.js"));
     }
 
-    public EmailTemplate(Player player, ServerChessGame serverChessGame)
-                    throws ParserConfigurationException {
+    public EmailTemplate() throws ParserConfigurationException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         dbFactory.setValidating(false);
         this.dBuilder = dbFactory.newDocumentBuilder();
+    }
+    
+    public EmailTemplate(Player player, ServerChessGame serverChessGame)
+                    throws ParserConfigurationException {
+        this();
         this.serverChessGame = serverChessGame;
         this.otherPlayer = player;
     }
 
+    
+    
     public String getEmailHtml() {
         final Context ctx = new Context(Locale.getDefault());
         ctx.setVariable("name", otherPlayer.getName());
@@ -110,7 +121,8 @@ public class EmailTemplate {
 
     private void loadJSScripts() throws FileNotFoundException, ScriptException {
         for (String script : SCRIPTS_TO_EVAL) {
-            jsEngine.eval(new FileReader(script));
+            
+            jsEngine.eval(new InputStreamReader(servletContext.getResourceAsStream(script)));
         }
     }
 
@@ -180,4 +192,14 @@ public class EmailTemplate {
     Player getPlayer() {
         return otherPlayer;
     }
+
+    public void setServerChessGame(ServerChessGame serverChessGame) {
+        this.serverChessGame = serverChessGame;
+    }
+
+    public void setPlayer(Player player) {
+        this.otherPlayer = player;
+    }
+    
+    
 }

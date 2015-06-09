@@ -13,6 +13,7 @@ import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import javax.annotation.Resource;
 
 public class OfflineChessGameMessager implements Observer {
 
+    @Autowired
+    private WebApplicationContext springContext;
     private SessionRegistry registry;
     private GameMessageService<EmailTemplate> messageService;
     private static final Logger logger = Logger.getLogger(OfflineChessGameMessager.class);
@@ -35,7 +38,7 @@ public class OfflineChessGameMessager implements Observer {
                 }
                 if (message instanceof ChessGame) {
                     final ChessGame chessGame = (ChessGame) message;
-                    messageService.send(getUser(chessGame), new EmailTemplate(
+                    messageService.send(getUser(chessGame), newEmailTemplate(
                                     getOfflinePlayer(chessGame), scg));
                 }
             } catch (Exception e) {
@@ -60,6 +63,17 @@ public class OfflineChessGameMessager implements Observer {
         } else {
             throw new DAOException("No User found with that username");
         }
+    }
+    
+    private EmailTemplate newEmailTemplate(Player player, ServerChessGame serverChessGame) {
+        EmailTemplate template = getEmailTemplate();
+        template.setPlayer(player);
+        template.setServerChessGame(serverChessGame);
+        return template;
+    }
+    
+    private EmailTemplate getEmailTemplate() {
+        return (EmailTemplate)springContext.getBean(EmailTemplate.class);
     }
     
     private Player getOfflinePlayer(ChessGame chessGame) {

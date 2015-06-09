@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,13 +79,18 @@ public class EmailMessagingIntegrationTest {
                         .isOk())
                         .andDo(print());
         
-        this.mockMvc.perform(
+        result = this.mockMvc.perform(
                         post("/joinGame").param("gameUUID", String.valueOf(this.gameUUID))
                         .sessionAttr(ServerConstants.PLAYER, whitePlayer))
                         .andExpect(status()
                         .isOk())
-                        .andDo(print());
+                        .andDo(print())
+                        .andReturn();
       
+        EmailTemplate template = (EmailTemplate)wac.getBean("emailTemplate");
+        template.setPlayer(whitePlayer);
+        template.setServerChessGame((ServerChessGame)result.getModelAndView().getModel().get("GAME"));
+        System.out.println(template.getEmailHtml());
     }
 
     
