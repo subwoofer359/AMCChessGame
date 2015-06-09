@@ -22,36 +22,39 @@ public class OfflineChessGameMessager implements Observer {
 
     private SessionRegistry registry;
     private GameMessageService<EmailTemplate> messageService;
-    private static final Logger logger = Logger.getLogger(OfflineChessGameMessager.class);
+    private static final Logger logger = Logger.getLogger(OfflineChessGameMessagerTest.class);
     private DAO<User> userDAO;
 
     @Override
     public void update(Subject subject, Object message) {
-        if(subject instanceof ServerChessGame) {
-            ServerChessGame scg = (ServerChessGame)subject;
-            if(isOnline(scg.getOpponent())){
-                return;
-            }
-            if(message instanceof ChessGame) {
-                try {
-                    final ChessGame chessGame = (ChessGame)message;
-                    messageService.send(getUser(chessGame), new EmailTemplate(getOfflinePlayer(chessGame), scg));
-                } catch (Exception e) {
-                    logger.error(message);
+        if (subject instanceof ServerChessGame) {
+            ServerChessGame scg = (ServerChessGame) subject;
+            try {
+                if (isOnline(scg.getOpponent())) {
+                    return;
                 }
+                if (message instanceof ChessGame) {
+                    final ChessGame chessGame = (ChessGame) message;
+                    messageService.send(getUser(chessGame), new EmailTemplate(
+                                    getOfflinePlayer(chessGame), scg));
+                }
+            } catch (Exception e) {
+                logger.error(e);
             }
         }
     }
     
-    boolean isOnline(Player player) {
-        return registry.getAllPrincipals().contains(player);
+    boolean isOnline(Player player) throws DAOException {
+        return registry.getAllPrincipals().contains(getUser(player));
     }
-    
     
     private User getUser(ChessGame chessGame) throws DAOException {
         Player otherPlayer = getOfflinePlayer(chessGame);
-        
-        List<User> users = userDAO.findEntities("userName", otherPlayer.getUserName());
+        return getUser(otherPlayer);
+    }
+    
+    private User getUser(Player player) throws DAOException {
+        List<User> users = userDAO.findEntities("userName", player.getUserName());
         if(users.size() == 1) {
             return users.get(0);
         } else {
@@ -61,9 +64,9 @@ public class OfflineChessGameMessager implements Observer {
     
     private Player getOfflinePlayer(ChessGame chessGame) {
         if(ComparePlayers.comparePlayers(chessGame.getCurrentPlayer(), chessGame.getWhitePlayer())) {
-            return chessGame.getBlackPlayer();
-        } else {
             return chessGame.getWhitePlayer();
+        } else {
+            return chessGame.getBlackPlayer();
         }
     }
     

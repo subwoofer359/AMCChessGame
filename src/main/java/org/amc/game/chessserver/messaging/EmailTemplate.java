@@ -172,4 +172,12 @@ public class EmailTemplate {
     public void setScriptEngine(ScriptEngine engine) {
         this.jsEngine = engine;
     }
+    
+    ServerChessGame getServerChessGame() {
+        return this.serverChessGame;
+    }
+    
+    Player getPlayer() {
+        return otherPlayer;
+    }
 }

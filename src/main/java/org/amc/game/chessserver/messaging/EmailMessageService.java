@@ -3,6 +3,7 @@ package org.amc.game.chessserver.messaging;
 import org.amc.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -21,7 +22,7 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
     }
   
     @Override
-    public void send(User user, EmailTemplate message) throws Exception {
+    public void send(User user, EmailTemplate message) throws MailException, MessagingException {
         MimeMessage emailMessage = createMessage(user.getEmailAddress(), message);
         this.mailSender.send(emailMessage);
         log.debug("Sent message:"+ emailMessage.toString());
