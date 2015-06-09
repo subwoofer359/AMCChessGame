@@ -17,6 +17,7 @@
 	
 	<mvc:annotation-driven/>
     <!-- Application beans -->
+    
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
 	</bean>
@@ -24,6 +25,17 @@
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
+	
+	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
+		<property name="gameMap" ref="gameMap"></property>
+	</bean>
+	
+	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">
+		<property name="gameMap" ref="gameMap"></property>
+		<property name="gameFinishListener" ref="gameFinishListener"></property>
+	</bean>
+	
+	<bean id="gameFinishListener" class="org.amc.game.chessserver.GameFinishedListener"/>
 
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
 		<constructor-arg>
@@ -66,13 +78,13 @@
 	</bean>
 
 	<bean id="mockPlayerListMessager" class="org.amc.game.chessserver.MockPlayerListMessager"/>
-	
+	<!-- 
 	<bean class="org.springframework.messaging.simp.SimpMessagingTemplate">
 		<constructor-arg ref="channel"></constructor-arg>
 	</bean>
 	
 	<bean id="channel" class="org.springframework.messaging.support.ExecutorSubscribableChannel"/>
-	
+	 -->
 	<bean class="org.amc.game.chessserver.SignUpController">
 		<property name="passwordEncoder" ref="myPasswordEncoder"/>
 		<property name="userDAO" ref="myUserDAO"/>
