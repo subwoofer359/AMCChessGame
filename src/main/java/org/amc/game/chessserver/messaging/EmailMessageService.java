@@ -12,7 +12,9 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailMessageService implements GameMessageService<EmailTemplate> {
 
-    private final static Logger log = Logger.getLogger(EmailMessageService.class);
+    private static final Logger log = Logger.getLogger(EmailMessageService.class);
+    static final String EMAIL_SENDER_ADDR = "chessgame@adrianmclaughlin.ie";
+    static final String EMAIL_SUBJECT = "This is the message subject";
     
     private JavaMailSender mailSender;
     
@@ -31,9 +33,9 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
     private final MimeMessage createMessage(String toAddress,EmailTemplate messageTextBody)throws MessagingException{
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-        message.setFrom("chessgame@adrianmclaughlin.ie");
+        message.setFrom(EMAIL_SENDER_ADDR);
         message.setTo(toAddress);
-        message.setSubject("This is the message subject");
+        message.setSubject(EMAIL_SUBJECT);
         message.setText(messageTextBody.getEmailHtml(), true);
         return mimeMessage;
     }
