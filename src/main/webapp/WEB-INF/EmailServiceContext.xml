@@ -15,14 +15,11 @@
 	<bean id="messageService" class="org.amc.game.chessserver.messaging.EmailMessageService"/>
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-  		<property name="host" value="${mail.smtp.host}" />
+  		<property name="host" value="smtp.gmail.com" />
   		<property name="port" value="465"/>
-  		<property name="protocol" value="${mail.server.protocol}" />
-  		<property name="username" value="${smtp.username}" />
-  		<property name="password" value="${smtp.password}" />
-  		<property name="javaMailProperties">
-    		<util:properties location="classpath:javamail.properties" />
-  		</property>
+  		<property name="protocol" value="smtp" />
+  		<property name="username" value="subwoofer359@gmail.com" />
+  		<property name="password" value="Belacamelia1024" />
 	</bean>
 	
 	<bean class="org.amc.game.chessserver.messaging.EmailTemplate" scope="prototype">
@@ -30,10 +27,10 @@
 		<property name="templateEngine" ref="templateEngine"></property>
 	</bean>
 	
-	<bean class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
+	<bean id="offlineChessGameMessager" class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
 		<property name="messageService" ref="messageService"></property>
 		<property name="sessionRegistry" ref="sessionRegistry"></property>
-		<property name="userDAO" ref="userDAO"></property>
+		<property name="userDAO" ref="myUserDAO"></property>
 	</bean>
 	
 	
