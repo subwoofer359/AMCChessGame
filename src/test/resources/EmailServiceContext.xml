@@ -25,15 +25,15 @@
   		</property>
 	</bean>
 	
-	<bean class="org.amc.game.chessserver.messaging.EmailTemplate" scope="prototype">
+	<bean id="emailTemplate" class="org.amc.game.chessserver.messaging.EmailTemplate" scope="prototype">
 		<property name="scriptEngine" ref="scriptEngine"></property>
 		<property name="templateEngine" ref="templateEngine"></property>
 	</bean>
 	
-	<bean class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
+	<bean id="offlineChessGameMessager" class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
 		<property name="messageService" ref="messageService"></property>
 		<property name="sessionRegistry" ref="sessionRegistry"></property>
-		<property name="userDAO" ref="userDAO"></property>
+		<property name="userDAO" ref="myUserDAO"></property>
 	</bean>
 	
 	
@@ -53,10 +53,4 @@
     		</set>
   		</property>
 	</bean>
-	
-	
-	
-	
-	
-	
 </beans>
