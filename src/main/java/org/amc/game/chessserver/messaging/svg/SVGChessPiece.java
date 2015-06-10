@@ -1,5 +1,6 @@
 package org.amc.game.chessserver.messaging.svg;
 
+import org.amc.game.chess.Colour;
 import org.amc.game.chess.Location;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,19 +10,19 @@ public abstract class SVGChessPiece {
     protected Document document;
     protected String svgNS;
     
-    protected enum Colour {
+    protected enum SVGColour {
         WHITE("#ffd5d5","#000000"),
         BLACK("#191406","#ffffff");
         
         String stroke;
         String fill;
         
-        private Colour(String fill, String stroke) {
+        private SVGColour(String fill, String stroke) {
             this.stroke = stroke;
             this.fill = fill;
         }
         
-        public Colour getColour(org.amc.game.chess.Colour colour) {
+        public static SVGColour getColour(org.amc.game.chess.Colour colour) {
             if(colour.equals(org.amc.game.chess.Colour.BLACK)) {
                 return BLACK;
             } else {

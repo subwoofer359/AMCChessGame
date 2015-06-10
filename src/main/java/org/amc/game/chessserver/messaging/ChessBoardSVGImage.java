@@ -1,94 +1,102 @@
 package org.amc.game.chessserver.messaging;
 
-import org.amc.game.chessserver.JsonChessGameView;
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessPiece;
+import org.amc.game.chess.Location;
+import org.amc.game.chess.PawnPiece;
+import org.amc.game.chess.RookPiece;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
+import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
+import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
+import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
+import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.script.Bindings;
-import javax.script.Invocable;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-import javax.servlet.ServletContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 public class ChessBoardSVGImage {
 
     private static final Logger logger = Logger.getLogger(ChessBoardSVGImage.class);
 
-    private ServletContext servletContext;
-
     private ServerChessGame serverChessGame;
 
-    private ScriptEngine jsEngine;
-    private DocumentBuilder dBuilder;
-
-    private static final String JS_FUNCTION_EMPTY_CHESSBOARD = "createBlankChessBoardSVG";
-    private static final String JS_FUNCTION_CHESSPIECES = "createChessPiecesElements";
     private static final String SVG_NODE_G = "g";
-    private static final String BINDING_DOCUMENT = "document";
-    private static final String BINDING_WINDOW = "window";
-    private static final String OUTPUT_FILE="out.jpg";
 
-    private static final List<String> SCRIPTS_TO_EVAL;
-    static {
-        SCRIPTS_TO_EVAL = Collections.unmodifiableList(Arrays.asList("js/chesspieces.js",
-                        "js/chessboard.js"));
-    }
+    private static final String OUTPUT_FILE = "out.jpg";
+
+    private SVGBlankChessBoard blankChessBoardFactory;
+
+    private Map<Class<? extends ChessPiece>, SVGChessPiece> sVGElementfactory;
+
+    private Document document;
+    private Element svgRoot;
+    private Element layer;
+    private String svgNS;
 
     public ChessBoardSVGImage() throws ParserConfigurationException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        dbFactory.setValidating(false);
-        this.dBuilder = dbFactory.newDocumentBuilder();
+        svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
     }
 
-    public ChessBoardSVGImage(ServerChessGame serverChessGame)
-                    throws ParserConfigurationException {
+    public ChessBoardSVGImage(ServerChessGame serverChessGame) throws ParserConfigurationException {
         this();
         this.serverChessGame = serverChessGame;
-        
+
     }
+
+    private void createSVGDocument() {
+        DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
+        document = impl.createDocument(svgNS, "svg", null);
+        svgRoot = document.getDocumentElement();
+        svgRoot.setAttributeNS(null, "width", "500");
+        svgRoot.setAttributeNS(null, "height", "500");
+        layer = document.createElementNS(svgNS, SVG_NODE_G);
+        svgRoot.appendChild(layer);
+
+        blankChessBoardFactory = new SVGBlankChessBoard(document, svgNS);
+        setUpSVGChessPieceFactory();
+        blankChessBoardFactory.createBlankChessBoard(layer);
+        addChessPieces();
+    }
+
+    private void setUpSVGChessPieceFactory() {
+        if(this.sVGElementfactory == null) {
+            this.sVGElementfactory = new HashMap<>();
+        } else {
+            this.sVGElementfactory.clear();
+        }
+        sVGElementfactory.put(PawnPiece.class, new SVGPawnPiece(document, svgNS));
+        sVGElementfactory.put(RookPiece.class, new SVGRookPiece(document, svgNS));
+    }
+
     
+
     public void setServerChessGame(ServerChessGame serverChessGame) {
         this.serverChessGame = serverChessGame;
+        document = null;
     }
 
     public String getChessBoardImage() throws Exception {
+        if (document == null) {
+            createSVGDocument();
+        }
         JPEGTranscoder t = new JPEGTranscoder();
-        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
-                        new Float(.8));
-        
-        StringReader reader = new StringReader(getChessBoardSVG());
-        TranscoderInput input = new TranscoderInput(reader);
+        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.8));
+
+        TranscoderInput input = new TranscoderInput(document);
         OutputStream ostream = new FileOutputStream(OUTPUT_FILE);
         TranscoderOutput output = new TranscoderOutput(ostream);
         t.transcode(input, output);
@@ -98,88 +106,30 @@ public class ChessBoardSVGImage {
 
     }
 
-    private String getChessBoardSVG() throws Exception {
-        loadJSScripts();
+    private void addChessPieces() {
+        ChessGame chessGame = this.serverChessGame.getChessGame();
 
-        Document document = dBuilder.newDocument();
+        if (chessGame == null) {
+            logger.debug("ChessBoard doesn't exist in this ServerChessGame");
+        } else {
+            ChessBoard board = chessGame.getChessBoard();
+            for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
+                for (Coordinate letter : ChessBoard.Coordinate.values()) {
+                    ChessPiece piece = board.getPieceFromBoardAt(new Location(letter, i));
+                    if (piece == null) {
 
-        document.setXmlStandalone(true);
+                    } else {
+                        SVGChessPiece svgFactory = sVGElementfactory.get(piece.getClass());
 
-        setScriptEngineBindings(document);
-
-        Invocable in = (Invocable) jsEngine;
-
-        Element svgRoot = (Element) in.invokeFunction(JS_FUNCTION_EMPTY_CHESSBOARD, "");
-
-        Element chessPieces = getChessPiecesElement(in);
-
-        mergeDocuments(document, svgRoot, chessPieces);
-
-        return svgDomToString(document);
-    }
-
-    private void loadJSScripts() throws FileNotFoundException, ScriptException {
-        for (String script : SCRIPTS_TO_EVAL) {
-            jsEngine.eval(new InputStreamReader(servletContext.getResourceAsStream(script)));
+                        if (svgFactory != null) {
+                            Element element = svgFactory.getChessPieceElement("", new Location(
+                                            letter, i), piece.getColour());
+                            layer.appendChild(element);
+                        }
+                    }
+                    System.out.println(new Location(letter, i));
+                }
+            }
         }
-    }
-
-    private Element getChessPiecesElement(Invocable in) throws Exception {
-        String chessPieces = (String) in.invokeFunction(JS_FUNCTION_CHESSPIECES,
-                        this.serverChessGame.getOpponent(),
-                        JsonChessGameView.convertChessGameToJson(serverChessGame.getChessGame()));
-        chessPieces = String.format("<g id=\"layer2\">%s</g>", chessPieces);
-        return (Element) getDOMDocument(chessPieces).getFirstChild();
-    }
-
-    private void mergeDocuments(Document document, Element svgRoot, Element chessPieces)
-                    throws SAXException, ParserConfigurationException, IOException {
-        document.appendChild(svgRoot);
-
-        Element rootGNode = getRootGNode(document);
-
-        Node pieces = document.importNode(chessPieces, true);
-        rootGNode.appendChild(pieces);
-    }
-
-    private Element getRootGNode(Document document) {
-        NodeList list = document.getElementsByTagName(SVG_NODE_G);
-        return (Element) list.item(0);
-    }
-
-    private Document getDOMDocument(String xml) throws ParserConfigurationException, IOException,
-                    SAXException {
-        InputSource strInput = new InputSource(new StringReader(xml));
-        return dBuilder.parse(strInput);
-    }
-    
-    private String svgDomToString(Document document) {
-        StringWriter writer = new StringWriter();
-        Source input = new DOMSource(document);
-        Result output = new StreamResult(writer);
-        try {
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.transform(input, output);
-        } catch (Exception e) {
-            logger.error(e);
-            e.printStackTrace();
-        }
-        return writer.toString();
-    }
-
-    private void setScriptEngineBindings(Document document) {
-        Bindings engineScope = jsEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-        engineScope.put(BINDING_WINDOW, engineScope);
-        engineScope.put(BINDING_DOCUMENT, document);
-    }
-
-    @Autowired
-    public void setScriptEngine(ScriptEngine engine) {
-        this.jsEngine = engine;
-    }
-
-    @Autowired
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
     }
 }
