@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<websocket:message-broker application-destination-prefix="/app">
+        <websocket:stomp-endpoint path="/chessgame" allowed-origins="http://192.168.1.6:8080, http://192.168.1.5:8080">
+        	<websocket:handshake-interceptors>
+        		<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+        	</websocket:handshake-interceptors>
+        	<websocket:sockjs/>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/queue, /topic"/>
+        <!-- <websocket:message-converters register-defaults="true">
+			<bean class="org.amc.game.chessserver.MoveConverter"/>
+		</websocket:message-converters> -->
+    </websocket:message-broker>
+</beans>

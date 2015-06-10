@@ -4,6 +4,7 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
+@Deprecated
 public class ChessGameSVG {
 
     private ChessGame chessGame;

@@ -15,14 +15,17 @@
 	<bean id="messageService" class="org.amc.game.chessserver.messaging.EmailMessageService"/>
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-  		<property name="host" value="smtp.gmail.com" />
+  		<property name="host" value="${mail.smtp.host}" />
   		<property name="port" value="465"/>
-  		<property name="protocol" value="smtp" />
-  		<property name="username" value="subwoofer359@gmail.com" />
-  		<property name="password" value="Belacamelia1024" />
+  		<property name="protocol" value="${mail.server.protocol}" />
+  		<property name="username" value="${smtp.username}" />
+  		<property name="password" value="${smtp.password}" />
+  		<property name="javaMailProperties">
+    		<util:properties location="classpath:javamail.properties" />
+  		</property>
 	</bean>
 	
-	<bean class="org.amc.game.chessserver.messaging.EmailTemplate" scope="prototype">
+	<bean id="emailTemplate" class="org.amc.game.chessserver.messaging.EmailTemplate" scope="prototype">
 		<property name="scriptEngine" ref="scriptEngine"></property>
 		<property name="templateEngine" ref="templateEngine"></property>
 	</bean>
@@ -50,10 +53,4 @@
     		</set>
   		</property>
 	</bean>
-	
-	
-	
-	
-	
-	
 </beans>

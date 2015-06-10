@@ -2,6 +2,8 @@ package org.amc.game.chessserver;
 
 import org.apache.log4j.Logger;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -34,6 +37,9 @@ public class StartPageController {
         }
     };
 
+    @Autowired
+    private WebApplicationContext springContext;
+    
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
     static final String FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
@@ -56,10 +62,14 @@ public class StartPageController {
     public String createGame(Model model, @ModelAttribute("PLAYER") Player player) {
         long uuid = UUID.randomUUID().getMostSignificantBits();
         ServerChessGame serverGame = new ServerChessGame(uuid, player);
-        
+        serverGame.attachObserver(getOfflineChessGameMessager());
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         return FORWARD_PAGE;
+    }
+    
+    private OfflineChessGameMessager getOfflineChessGameMessager() {
+        return (OfflineChessGameMessager)springContext.getBean("offlineChessGameMessager");
     }
 
     /**

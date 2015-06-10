@@ -50,9 +50,8 @@ public class JsonChessGameView implements Observer {
     @Override
     public void update(Subject subject, Object message) {
         if (message instanceof ChessGame && subject instanceof ServerChessGame) {
-            final Gson gson = new Gson();
             ServerChessGame serverChessGame = (ServerChessGame) subject;
-            String jsonBoard = gson.toJson(new JsonChessGame((ChessGame) message));
+            String jsonBoard = convertChessGameToJson((ChessGame)message);
        
             this.template.convertAndSend(getMessageDestination(serverChessGame), jsonBoard, getDefaultHeaders());
             logger.debug("Message sent to " + getMessageDestination(serverChessGame));
@@ -67,6 +66,11 @@ public class JsonChessGameView implements Observer {
         Map<String,Object> headers = new HashMap<String, Object>();
         headers.put(StompConstants.MESSAGE_HEADER_TYPE, MessageType.UPDATE);
         return headers;
+    }
+    
+    public static String convertChessGameToJson(ChessGame chessGame) {
+        final Gson gson = new Gson();
+        return gson.toJson(new JsonChessGame((ChessGame) chessGame));        
     }
     
     /**

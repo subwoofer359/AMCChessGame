@@ -19,7 +19,7 @@ public class ServerChessGameTest {
     @Before
     public void setUp() throws Exception {
         player = new HumanPlayer("Ted");
-        opponent = new HumanPlayer("Chris");;
+        opponent = new HumanPlayer("Chris");
     }
 
     @After
