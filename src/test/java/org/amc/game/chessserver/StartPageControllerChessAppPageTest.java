@@ -1,10 +1,13 @@
 package org.amc.game.chessserver;
 
+import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,10 +26,21 @@ public class StartPageControllerChessAppPageTest {
 
     @Before
     public void setUp() throws Exception {
+        final OfflineChessGameMessager ocgMessager = mock(OfflineChessGameMessager.class);
         session = new MockHttpSession();
         gameMap = new ConcurrentHashMap<>();
-        controller = new StartPageController();
+        controller = new StartPageController(); 
+        OfflineChessGameMessagerFactory factory =new OfflineChessGameMessagerFactory() {
+
+            @Override
+            public OfflineChessGameMessager createOfflineChessGameMessager() {
+                
+                return ocgMessager;
+            }
+            
+        };
         controller.setGameMap(gameMap);
+        controller.setOfflineChessGameMessagerFactory(factory);
         whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
     }
 

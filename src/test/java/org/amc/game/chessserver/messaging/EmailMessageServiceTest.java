@@ -13,10 +13,10 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.mail.MessagingException;
-
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
+
 
 public class EmailMessageServiceTest {
 
@@ -38,6 +38,10 @@ public class EmailMessageServiceTest {
         when(mailSender.createMimeMessage()).thenReturn(mailMessage);
 
         when(emailTemplate.getEmailHtml()).thenReturn(EMAIL_TEXT);
+        
+        when(emailTemplate.getEmailSubject()).thenReturn("Test Message");
+        when(emailTemplate.getBackgroundImagePath()).thenReturn("/");
+        when(emailTemplate.getImageFileName()).thenReturn("/");
 
         user = new User();
         user.setEmailAddress("adrian@adrianmclaughlin.ie");
@@ -50,7 +54,7 @@ public class EmailMessageServiceTest {
     }
 
     @Test
-    public void test() throws MessagingException, MailException {
+    public void testFromAddress() throws MessagingException, MailException {
         service.send(user, emailTemplate);
 
         ArgumentCaptor<InternetAddress> fromAddressCaptor = ArgumentCaptor
@@ -58,20 +62,25 @@ public class EmailMessageServiceTest {
         verify(mailMessage).setFrom(fromAddressCaptor.capture());
         assertEquals(EmailMessageService.EMAIL_SENDER_ADDR, fromAddressCaptor.getValue()
                         .getAddress());
+    }
+    
+    @Test
+    public void testToAddress() throws MessagingException, MailException {
+        service.send(user, emailTemplate);
 
         ArgumentCaptor<InternetAddress> toAddressCaptor = ArgumentCaptor
                         .forClass(InternetAddress.class);
         verify(mailMessage).setRecipient(eq(RecipientType.TO), toAddressCaptor.capture());
         assertEquals(user.getEmailAddress(), toAddressCaptor.getValue().getAddress());
-
-        ArgumentCaptor<String> subjectCaptor = ArgumentCaptor.forClass(String.class);
-        verify(mailMessage).setSubject(subjectCaptor.capture());
-        assertEquals(EmailMessageService.EMAIL_SUBJECT, subjectCaptor.getValue());
-
-        ArgumentCaptor<String> textCaptor = ArgumentCaptor.forClass(String.class);
-        verify(mailMessage).setContent(textCaptor.capture(), anyString());
-        assertEquals(EMAIL_TEXT, textCaptor.getValue());
-
     }
-
+    
+    @Test
+    public void testSubjectLine() throws MessagingException, MailException {
+        service.send(user, emailTemplate);
+        
+        ArgumentCaptor<String> subjectCaptor = ArgumentCaptor.forClass(String.class);
+        verify(mailMessage).setSubject(subjectCaptor.capture(),anyString());
+        assertEquals(emailTemplate.getEmailSubject(), subjectCaptor.getValue());
+    }
+    
 }

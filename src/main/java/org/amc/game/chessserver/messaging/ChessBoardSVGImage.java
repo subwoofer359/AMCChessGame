@@ -38,7 +38,7 @@ public class ChessBoardSVGImage {
 
     private static final String SVG_NODE_G = "g";
 
-    private static final String OUTPUT_FILE = "out.jpg";
+    private static final String OUTPUT_FILE = "temp/out.jpg";
 
     private SVGBlankChessBoard blankChessBoardFactory;
 

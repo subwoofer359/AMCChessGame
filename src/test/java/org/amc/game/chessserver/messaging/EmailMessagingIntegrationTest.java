@@ -3,6 +3,7 @@ package org.amc.game.chessserver.messaging;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.amc.User;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -91,6 +92,12 @@ public class EmailMessagingIntegrationTest {
         template.setPlayer(whitePlayer);
         template.setServerChessGame((ServerChessGame)result.getModelAndView().getModel().get("GAME"));
         System.out.println(template.getEmailHtml());
+        EmailMessageService service = (EmailMessageService)wac.getBean("messageService");
+        User user =new User();
+        user.setEmailAddress("subwoofer359@gmail.com");
+        user.setUserName("adrian");
+        user.setName("Adrian McLaughlin");
+        //service.send(user, template);
     }
 
     

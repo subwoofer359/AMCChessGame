@@ -48,7 +48,7 @@ public class ChessGame{
      * 
      * @return Player
      */
-    ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
+    public ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
         return player.equals(whitePlayer) ? blackPlayer : whitePlayer;
     }
 

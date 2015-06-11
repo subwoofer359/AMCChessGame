@@ -12,14 +12,16 @@ import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
 
-public class OfflineChessGameMessager implements Observer {
+public abstract class OfflineChessGameMessager implements Observer {
 
     @Autowired
     private WebApplicationContext springContext;
@@ -33,22 +35,42 @@ public class OfflineChessGameMessager implements Observer {
         if (subject instanceof ServerChessGame) {
             ServerChessGame scg = (ServerChessGame) subject;
             try {
-                if (isOnline(scg.getOpponent())) {
-                    return;
-                }
                 if (message instanceof ChessGame) {
                     final ChessGame chessGame = (ChessGame) message;
+                    if (isOnline(getOfflinePlayer(chessGame))) {
+                        logger.debug(String.format("OfflineChessMessager: %s is online", getOfflinePlayer(chessGame)));
+                        return;
+                    }
+                    logger.debug(String.format("OfflineChessMessager: %s is offline", getOfflinePlayer(chessGame)));
                     messageService.send(getUser(chessGame), newEmailTemplate(
                                     getOfflinePlayer(chessGame), scg));
                 }
-            } catch (Exception e) {
+            } catch (MailException e) {
                 logger.error(e);
+            } catch(MessagingException me) {
+                logger.error(me);
+            } catch (DAOException de) {
+                logger.error(de);
             }
+            
         }
     }
     
     boolean isOnline(Player player) throws DAOException {
-        return registry.getAllPrincipals().contains(getUser(player));
+        logger.debug(String.format("OfflineChessMessager: %s in Registry", registry.getAllPrincipals()));
+        
+        List<Object> principals = registry.getAllPrincipals(); 
+        for(Object principal:principals) {
+            if(principal instanceof org.springframework.security.core.userdetails.User) {
+                org.springframework.security.core.userdetails.User user = 
+                                (org.springframework.security.core.userdetails.User)principal;
+                if(user.getUsername().equals(player.getUserName())){
+                    return true;
+                }
+            }
+        }
+        return false;
+        
     }
     
     private User getUser(ChessGame chessGame) throws DAOException {
@@ -72,9 +94,7 @@ public class OfflineChessGameMessager implements Observer {
         return template;
     }
     
-    private EmailTemplate getEmailTemplate() {
-        return (EmailTemplate)springContext.getBean(EmailTemplate.class);
-    }
+    protected abstract EmailTemplate getEmailTemplate();
     
     private Player getOfflinePlayer(ChessGame chessGame) {
         if(ComparePlayers.comparePlayers(chessGame.getCurrentPlayer(), chessGame.getWhitePlayer())) {

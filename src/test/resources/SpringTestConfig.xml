@@ -21,6 +21,10 @@
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
 	</bean>
+	
+	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
+		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
+	</bean>
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
@@ -28,11 +32,16 @@
 	
 	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
 		<property name="gameMap" ref="gameMap"></property>
+		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
+	</bean>
+	
+	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
+		<lookup-method name="createOfflineChessGameMessager" bean="offlineChessGameMessager"/>
 	</bean>
 	
 	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">
 		<property name="gameMap" ref="gameMap"></property>
-		<property name="gameFinishListener" ref="gameFinishListener"></property>
+		<property name="sCGInitialiser" ref="sCGInitialiser"></property>
 	</bean>
 	
 	<bean id="gameFinishListener" class="org.amc.game.chessserver.GameFinishedListener"/>
@@ -54,8 +63,6 @@
 			<value type="java.lang.Class">org.amc.Authorities</value>
 		</constructor-arg>
 	</bean>
-    
-    <bean id="myPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
     	<property name="customEditors">

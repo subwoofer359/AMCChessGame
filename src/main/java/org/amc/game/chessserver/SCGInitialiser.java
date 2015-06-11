@@ -1,7 +1,9 @@
 package org.amc.game.chessserver;
 
-public interface SCGInitialiser {
+public abstract class SCGInitialiser {
 
-	void init(ServerChessGame serverChessGame);
+	public abstract void init(ServerChessGame serverChessGame);
+	
+	protected abstract GameFinishedListener createGameFinishedListener();
 
 }

@@ -25,8 +25,15 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
-	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser" scope="prototype"/>
+	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
+		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
+	</bean>
 	
+	<bean id="gameFinishListener" class="org.amc.game.chessserver.GameFinishedListener" scope="prototype"/>
+	
+	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
+		<lookup-method name="createOfflineChessGameMessager" bean="offlineChessGameMessager"/>
+	</bean>
 
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
 		<constructor-arg>

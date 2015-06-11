@@ -3,12 +3,10 @@ package org.amc.game.chessserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-public class DefaultSCGInitialiser implements SCGInitialiser {
+public abstract class DefaultSCGInitialiser extends SCGInitialiser {
 	
     @Autowired
     private SimpMessagingTemplate template;
-
-    private GameFinishedListener gameFinishListener;
 	
     private ServerChessGame chessGame;
     
@@ -28,11 +26,6 @@ public class DefaultSCGInitialiser implements SCGInitialiser {
 
     private void addGameListener() {
         new GameStateListener(chessGame, template);
-        gameFinishListener.addServerChessGame(chessGame);
-    }
-    
-    @Autowired
-    public void setGameFinishListener(GameFinishedListener gameFinishListener) {
-        this.gameFinishListener = gameFinishListener;
+        createGameFinishedListener().addServerChessGame(chessGame);
     }
 }
