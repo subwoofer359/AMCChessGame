@@ -2,8 +2,11 @@ package org.amc.game.chessserver.messaging.svg;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class SVGBlankChessBoard {
 
@@ -32,7 +35,7 @@ public class SVGBlankChessBoard {
         basicRectangle.setAttributeNS(null, "fill-opacity", "1");
         basicRectangle.setAttributeNS(null, "class", "dropzone");
         
-        for (int i = 0; i < ChessBoard.BOARD_WIDTH; i++) {
+        for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
             x = 0;
             for (Coordinate letter : ChessBoard.Coordinate.values()) {
                 Element rectangle = (Element)basicRectangle.cloneNode(true);
@@ -52,6 +55,26 @@ public class SVGBlankChessBoard {
             y = y + 62.5f;
             whiteToggle = !whiteToggle; // alternate black white pattern
         }
-
+    }
+    public void markMove(Element layer, Move move){
+    	if(move.equals(Move.EMPTY_MOVE)){
+    		return;
+    	}
+    	NodeList nodeList = layer.getChildNodes();
+    	for(int i = 0; i < nodeList.getLength();i++) {
+    		if(nodeList.item(i) instanceof Element) {
+    			Element rectangle = (Element)nodeList.item(i);
+    			String id = rectangle.getAttributeNode("id").getValue();
+    			if(isEqualLocations(move.getStart(), id) || isEqualLocations(move.getEnd(), id)){
+    				rectangle.setAttributeNS(null,"fill","red");
+    			}
+    		}
+    	}
+    }
+    
+    private boolean isEqualLocations(Location location, String strLocation) {
+    	Location templocation = new Location(Coordinate.valueOf(strLocation.substring(0, 1)),
+    			Integer.parseInt(strLocation.substring(1)));
+    	return location.equals(templocation);
     }
 }

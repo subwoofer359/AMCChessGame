@@ -71,6 +71,7 @@ public class ChessBoardSVGImage {
         blankChessBoardFactory = new SVGBlankChessBoard(document, svgNS);
         setUpSVGChessPieceFactory();
         blankChessBoardFactory.createBlankChessBoard(layer);
+        blankChessBoardFactory.markMove(layer, serverChessGame.getChessGame().getChessBoard().getTheLastMove());
         addChessPieces();
     }
 

@@ -4,11 +4,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.amc.User;
+import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
+import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerConstants;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
 public class EmailMessagingIntegrationTest {
 
+	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
 
     private static final String MESSAGE_DESTINATION = "/app/move/";
@@ -57,7 +64,13 @@ public class EmailMessagingIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
+    	this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+    
+    @After
+    public void tearDown() {
+        this.signUpfixture.tearDown();
     }
 
     @Test
@@ -90,14 +103,20 @@ public class EmailMessagingIntegrationTest {
       
         EmailTemplate template = (EmailTemplate)wac.getBean("emailTemplate");
         template.setPlayer(whitePlayer);
-        template.setServerChessGame((ServerChessGame)result.getModelAndView().getModel().get("GAME"));
+        ServerChessGame scg = (ServerChessGame)result.getModelAndView().getModel().get("GAME");
+        
+        scg.move(whitePlayer, new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3)));
+        template.setServerChessGame(scg);
+        
+        
+        
         System.out.println(template.getEmailHtml());
         EmailMessageService service = (EmailMessageService)wac.getBean("messageService");
         User user =new User();
         user.setEmailAddress("subwoofer359@gmail.com");
         user.setUserName("adrian");
         user.setName("Adrian McLaughlin");
-        //service.send(user, template);
+        service.send(user, template);
     }
 
     

@@ -24,7 +24,7 @@ public class EmailTemplate {
 
     private static final String EMAIL_TEMPLATE = "gameStatus.html";
     
-    private final String backgroundImagePath="webapps/AMCChessGame/img/1700128.jpg";
+    private final String backgroundImagePath="src/main/webapp/img/1700128.jpg";
     
     private String chessBoardImageURL = "";
     
