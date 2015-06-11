@@ -74,7 +74,7 @@ public class OfflineChessGameMessagerTest {
         offlineGMessager.setUserDAO(userDAO);
         
         userList = Arrays.asList(opponentUser);
-        userSessionList = Arrays.asList(opponentUser);
+        userSessionList = Arrays.asList((Object)opponentUser);
         
         when(userDAO.findEntities("userName", opponent.getUserName())).thenReturn(userList);
         

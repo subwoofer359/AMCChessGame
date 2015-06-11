@@ -13,6 +13,7 @@ import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
 import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
+import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
@@ -22,6 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +91,7 @@ public class ChessBoardSVGImage {
         document = null;
     }
 
-    public String getChessBoardImage() throws Exception {
+    public String getChessBoardImage() throws IOException {
         if (document == null) {
             createSVGDocument();
         }
@@ -97,11 +99,15 @@ public class ChessBoardSVGImage {
         t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.8));
 
         TranscoderInput input = new TranscoderInput(document);
-        OutputStream ostream = new FileOutputStream(OUTPUT_FILE);
-        TranscoderOutput output = new TranscoderOutput(ostream);
-        t.transcode(input, output);
-        ostream.flush();
-        ostream.close();
+        
+        try(OutputStream ostream = new FileOutputStream(OUTPUT_FILE)){
+        	TranscoderOutput output = new TranscoderOutput(ostream);
+        	t.transcode(input, output);
+        	ostream.flush();
+        	ostream.close();
+        } catch(TranscoderException te) {
+        	throw new IOException(te);
+        }
         return OUTPUT_FILE;
 
     }
