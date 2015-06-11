@@ -27,7 +27,9 @@ public class StartPageControllerJoinGameTest {
         gameMap = new ConcurrentHashMap<>();
         controller = new ServerJoinChessGameController();
         controller.setGameMap(gameMap);
-        controller.setGameFinishListener(new GameFinishedListener());
+        SCGInitialiser initialiser = new DefaultSCGInitialiser();
+        ((DefaultSCGInitialiser)initialiser).setGameFinishListener(new GameFinishedListener());
+        controller.setSCGInitialiser(initialiser);
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
         ServerChessGame chessGame = new ServerChessGame(gameUUID, whitePlayer);

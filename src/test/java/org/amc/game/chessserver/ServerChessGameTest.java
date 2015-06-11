@@ -73,5 +73,16 @@ public class ServerChessGameTest {
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, game.getCurrentStatus());
     }
+    
+    @Test
+    public void testDestroy() {
+        ServerChessGame game = new ServerChessGame(UID, player);
+        game.addOpponent(opponent);
+        game.destory();
+        
+        assertNull(game.getOpponent());
+        assertNull(game.getChessGame());
+        assertEquals(ServerChessGame.ServerGameStatus.FINISHED, game.getCurrentStatus());
+    }
 
 }

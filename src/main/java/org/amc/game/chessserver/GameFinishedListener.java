@@ -87,6 +87,7 @@ public class GameFinishedListener implements Observer {
         @Override
         public void run() {
             gameMap.remove(chessGame.getUid());
+            chessGame.destory();
             logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
         }
 
