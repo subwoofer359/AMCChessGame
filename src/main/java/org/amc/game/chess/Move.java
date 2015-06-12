@@ -9,6 +9,7 @@ package org.amc.game.chess;
 public class Move {
     private final Location start;
     private final Location end;
+    public static final EmptyMove EMPTY_MOVE = new EmptyMove();
 
     public Move(Location start, Location end) {
         this.start = start;

@@ -193,7 +193,7 @@ public class ChessBoard extends DefaultSubject {
      * 
      * @return Move
      */
-    Move getTheLastMove() {
+    public Move getTheLastMove() {
         if (allGameMoves.isEmpty()) {
             return EMPTY_MOVE;
         } else {

@@ -1,8 +1,10 @@
 package org.amc.game.chessserver.messaging;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
@@ -27,6 +30,7 @@ import org.junit.Test;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 
@@ -88,6 +92,50 @@ public class SVGChessPieceTest {
     	SVGBlankChessBoard board = new SVGBlankChessBoard(document, svgNS);
     	board.createBlankChessBoard(layer);
     	assertTrue(isvalidElement());
+    }
+    
+    @Test
+    public void testMarkBlankChessBoard() throws Exception {
+    	Move move = new Move(new Location(Coordinate.A,1), new Location(Coordinate.E, 8));
+    	List<String> locationStr = Arrays.asList("A1","E8");
+    	
+    	SVGBlankChessBoard board = new SVGBlankChessBoard(document, svgNS);
+    	board.createBlankChessBoard(layer);
+    	board.markMove(layer, move);
+    	assertTrue(isvalidElement());
+    	
+    	NodeList list = layer.getChildNodes();
+    	for(int i = 0 ;i < list.getLength();i++) {
+    		if(list.item(i) instanceof Element) {
+    			Element element = (Element)list.item(i);
+    			if(element.getAttribute("fill").equals("red")) {
+    				assertTrue(locationStr.contains(element.getAttribute("id")));
+    			}
+    		}
+    	}
+    }
+    
+    @Test
+    public void testMarkEmptyMoveBlankChessBoard() throws Exception {
+    	Move move = Move.EMPTY_MOVE;
+    	
+    	SVGBlankChessBoard board = new SVGBlankChessBoard(document, svgNS);
+    	board.createBlankChessBoard(layer);
+    	board.markMove(layer, move);
+    	assertTrue(isvalidElement());
+    	
+    	int noOfMarkSquares = 0;
+    	
+    	NodeList list = layer.getChildNodes();
+    	for(int i = 0 ;i < list.getLength();i++) {
+    		if(list.item(i) instanceof Element) {
+    			Element element = (Element)list.item(i);
+    			if(element.getAttribute("fill").equals("red")) {
+    				noOfMarkSquares++;
+    			}
+    		}
+    	}
+    	assertEquals(0, noOfMarkSquares);
     }
     
     
