@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">AMCChessGame</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:700,400' rel='stylesheet' type='text/css'/>
+  </head>
+  <body style="background-image:url(/src/main/webapp/img/1700128.jpg);background-size: cover;background-repeat: no-repeat;"
+  th:style="'background-image:url(cid:' + ${background} + ');background-size: cover;background-repeat: no-repeat;'"
+  >
+      <div id="title" style="font-size: 2em;background-color: #2886d5;opacity: 0.7;box-shadow: 5px 5px 8px #000000;padding-top: 12px;padding-right:15px;padding-left:20px;border-radius: 5px;min-width: 700px;">Adrian McLaughlin's <br/><strong style="font-family: 'Orbitron';font-weight: bold;font-size: 2em;padding-left: 100px;padding-top: 10px;display: block;max-width: 700px;min-width: 700px;">Chess Game</strong></div>
+ <div id="message" style="text-indent:20px;font-size:1.2em;">
+    <p>Hello <span th:text="${name}">Christopher</span>,</p>
+     <p>Player <span  th:text="${opponent}">Stephen</span> has made a move!</p>
+    <p>Game Status is: <span th:text="${status}">IN_PROGRESS</span></p>
+    <img style="display:block;margin-left:auto;margin-right:auto;" id="chessboard" src="/temp/out.jpg" th:src="'cid:' + ${svg}" />
+     
+     <br/>
+     <br/>
+
+     <footer style="color:white;">
+        Regards, <br/>
+        <span style="display:block;text-indent:50px">AMCChessGame System</span>
+     </footer>
+</div>
+  </body>
+</html>
