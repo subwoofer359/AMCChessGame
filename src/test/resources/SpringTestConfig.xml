@@ -71,9 +71,9 @@
         	</map>
     	</property>
     </bean>
-        
+ 
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
-	<task:executor id="myExecutor" pool-size="5"/>
+	<task:executor id="myExecutor" pool-size="20" rejection-policy="DISCARD_OLDEST"/>
 	<task:scheduler id="myScheduler" pool-size="10"/>
 
 	<bean class="org.amc.game.chessserver.spring.UserLoggedInListener">
