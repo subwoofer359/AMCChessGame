@@ -22,6 +22,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,7 +39,11 @@ public class ChessBoardSVGImage {
 
     private static final String SVG_NODE_G = "g";
 
-    private static final String OUTPUT_FILE = "temp/out.jpg";
+    private static final String OUTPUT_DIR = "temp";
+    
+    private static final String TEMP_FILE_PREFIX = "svg_";
+    
+    private static final String TEMP_FILE_SUFFIX = ".jpg";
 
     private SVGBlankChessBoard blankChessBoardFactory;
 
@@ -84,35 +89,7 @@ public class ChessBoardSVGImage {
         sVGElementfactory.put(PawnPiece.class, new SVGPawnPiece(document, svgNS));
         sVGElementfactory.put(RookPiece.class, new SVGRookPiece(document, svgNS));
     }
-
     
-
-    public void setServerChessGame(ServerChessGame serverChessGame) {
-        this.serverChessGame = serverChessGame;
-        document = null;
-    }
-
-    public String getChessBoardImage() throws IOException {
-        if (document == null) {
-            createSVGDocument();
-        }
-        JPEGTranscoder t = new JPEGTranscoder();
-        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.8));
-
-        TranscoderInput input = new TranscoderInput(document);
-        
-        try(OutputStream ostream = new FileOutputStream(OUTPUT_FILE)){
-        	TranscoderOutput output = new TranscoderOutput(ostream);
-        	t.transcode(input, output);
-        	ostream.flush();
-        	ostream.close();
-        } catch(TranscoderException te) {
-        	throw new IOException(te);
-        }
-        return OUTPUT_FILE;
-
-    }
-
     private void addChessPieces() {
         ChessGame chessGame = this.serverChessGame.getChessGame();
 
@@ -134,9 +111,48 @@ public class ChessBoardSVGImage {
                             layer.appendChild(element);
                         }
                     }
-                    System.out.println(new Location(letter, i));
                 }
             }
         }
+    }
+
+    
+
+    public void setServerChessGame(ServerChessGame serverChessGame) {
+        this.serverChessGame = serverChessGame;
+        document = null;
+    }
+
+    public File getChessBoardImage() throws IOException {
+        createSVGIfItDoesntExists();
+        
+        File file = createImageFile();
+        
+        try(OutputStream ostream = new FileOutputStream(file)){
+        	generateImgFromSvg(ostream);
+        } catch(TranscoderException te) {
+        	throw new IOException(te);
+        }
+        return file;
+
+    }
+    
+    private void generateImgFromSvg(OutputStream ostream) throws TranscoderException, IOException {
+    	JPEGTranscoder t = new JPEGTranscoder();
+        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.8));
+    	TranscoderInput input = new TranscoderInput(document);
+    	TranscoderOutput output = new TranscoderOutput(ostream);
+    	t.transcode(input, output);
+    	ostream.flush();
+    }
+    
+    private void createSVGIfItDoesntExists() {
+    	if (document == null) {
+            createSVGDocument();
+        }
+    }
+    
+    private File createImageFile() throws IOException {
+    	return File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX, new File(OUTPUT_DIR));
     }
 }

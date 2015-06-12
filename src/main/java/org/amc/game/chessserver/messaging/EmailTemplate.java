@@ -1,5 +1,6 @@
 package org.amc.game.chessserver.messaging;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -26,7 +27,7 @@ public class EmailTemplate {
     
     private final String backgroundImagePath="src/main/webapp/img/1700128.jpg";
     
-    private String chessBoardImageURL = "";
+    private File chessBoardImageURL;
     
     static final String TEMPLATE_BACKGROUND_TAG = "background";
     
@@ -70,7 +71,7 @@ public class EmailTemplate {
         return this.templateEngine.process(EMAIL_TEMPLATE, ctx);
     }
 
-    private String createChessBoardImage() throws IOException {
+    private File createChessBoardImage() throws IOException {
     	chessBoardImage.setServerChessGame(this.serverChessGame);
     	return chessBoardImage.getChessBoardImage();
     }
@@ -96,7 +97,7 @@ public class EmailTemplate {
         this.otherPlayer = player;
     }
     
-    public String getImageFileName() {
+    public File getImageFile() {
     	return this.chessBoardImageURL;
     }
     

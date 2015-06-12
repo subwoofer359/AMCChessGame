@@ -31,6 +31,7 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
         log.debug("MessageService: Sending message");
         this.mailSender.send(emailMessage);
         log.debug("MessageService: Sent message:"+ emailMessage.toString());
+        deleteImages(message);
     }
     
     private final MimeMessage createMessage(String toAddress,EmailTemplate messageTextBody)throws MessagingException{
@@ -40,11 +41,15 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
         message.setTo(toAddress);
         message.setSubject(messageTextBody.getEmailSubject());
         message.setText(messageTextBody.getEmailHtml(), true);
-        FileSystemResource imageResource = new FileSystemResource(messageTextBody.getImageFileName());
+        FileSystemResource imageResource = new FileSystemResource(messageTextBody.getImageFile());
         message.addInline(EmailTemplate.CHESSBOARD_IMAGE_RESOURCE, imageResource, "image/jpg");
         FileSystemResource backgoundImageResource = new FileSystemResource(messageTextBody.getBackgroundImagePath());
         message.addInline(EmailTemplate.BACKGROUND_IMAGE_RESOURCE, backgoundImageResource, "image/jpg");
         
         return mimeMessage;
+    }
+    
+    private void deleteImages(EmailTemplate message){
+    	message.getImageFile().delete();
     }
 }

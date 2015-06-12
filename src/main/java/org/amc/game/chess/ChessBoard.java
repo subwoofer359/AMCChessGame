@@ -51,13 +51,6 @@ public class ChessBoard extends DefaultSubject {
     List<Move> allGameMoves;
 
     /**
-     * Represents an non move
-     * 
-     * @see EmptyMove
-     */
-    private static final Move EMPTY_MOVE = new EmptyMove();
-
-    /**
      * Creates a new chess board array and initialises the moves list.
      */
     public ChessBoard() {
@@ -195,7 +188,7 @@ public class ChessBoard extends DefaultSubject {
      */
     public Move getTheLastMove() {
         if (allGameMoves.isEmpty()) {
-            return EMPTY_MOVE;
+            return Move.EMPTY_MOVE;
         } else {
             return allGameMoves.get(allGameMoves.size() - 1);
         }

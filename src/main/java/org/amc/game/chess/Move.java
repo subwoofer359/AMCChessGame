@@ -102,4 +102,6 @@ public class Move {
         return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY())
                         && move.getAbsoluteDistanceX() > 0;
     }
+    
+    
 }

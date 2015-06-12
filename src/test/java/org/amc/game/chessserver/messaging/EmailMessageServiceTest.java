@@ -1,8 +1,9 @@
 package org.amc.game.chessserver.messaging;
 
-import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+import java.io.File;
 
 import org.amc.User;
 import org.junit.After;
@@ -25,6 +26,7 @@ public class EmailMessageServiceTest {
     private EmailMessageService service;
     private User user;
     private MimeMessage mailMessage;
+    private File imageFile = mock(File.class);
     private static final String EMAIL_TEXT = "<html><body><h1>Test Email</h1></body></html>";
 
     @Before
@@ -41,7 +43,7 @@ public class EmailMessageServiceTest {
         
         when(emailTemplate.getEmailSubject()).thenReturn("Test Message");
         when(emailTemplate.getBackgroundImagePath()).thenReturn("/");
-        when(emailTemplate.getImageFileName()).thenReturn("/");
+        when(emailTemplate.getImageFile()).thenReturn(imageFile);
 
         user = new User();
         user.setEmailAddress("adrian@adrianmclaughlin.ie");
@@ -82,5 +84,10 @@ public class EmailMessageServiceTest {
         verify(mailMessage).setSubject(subjectCaptor.capture(),anyString());
         assertEquals(emailTemplate.getEmailSubject(), subjectCaptor.getValue());
     }
-    
+ 
+    @Test
+    public void testTempFileDeleted() throws MessagingException, MailException {
+        service.send(user, emailTemplate);
+        verify(this.imageFile, times(1)).delete();
+    }
 }

@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
 public class EmailMessagingIntegrationTest {
 
-	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+	//private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
 	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
 
@@ -64,13 +64,13 @@ public class EmailMessagingIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-    	this.signUpfixture.setUp();
+    	//this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
     
     @After
     public void tearDown() {
-        this.signUpfixture.tearDown();
+        //this.signUpfixture.tearDown();
     }
 
     @Test
@@ -105,7 +105,7 @@ public class EmailMessagingIntegrationTest {
         template.setPlayer(whitePlayer);
         ServerChessGame scg = (ServerChessGame)result.getModelAndView().getModel().get("GAME");
         
-        scg.move(whitePlayer, new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3)));
+        //scg.move(whitePlayer, new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3)));
         template.setServerChessGame(scg);
         
         
