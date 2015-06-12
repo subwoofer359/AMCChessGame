@@ -144,6 +144,7 @@ public class ChessBoardSVGImage {
     	TranscoderOutput output = new TranscoderOutput(ostream);
     	t.transcode(input, output);
     	ostream.flush();
+    	ostream.close();
     }
     
     private void createSVGIfItDoesntExists() {

@@ -13,14 +13,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
@@ -64,8 +63,12 @@ public class EmailMessageServiceTest {
         when(emailTemplate.getEmailHtml()).thenReturn(EMAIL_TEXT);
         
         when(emailTemplate.getEmailSubject()).thenReturn("Test Message");
-        when(emailTemplate.getBackgroundImagePath()).thenReturn("/");
-        when(emailTemplate.getImageFile()).thenReturn(imageFile);
+        
+        Map<String, EmbeddedMailImage> images = new HashMap<String, EmbeddedMailImage>();
+        images.put("TEST", new EmbeddedMailImage("TEST", imageFile, "image/jpg"));
+        
+        when(emailTemplate.getEmbeddedImages()).thenReturn(images);
+        
 
         user = new User();
         user.setEmailAddress("adrian@adrianmclaughlin.ie");

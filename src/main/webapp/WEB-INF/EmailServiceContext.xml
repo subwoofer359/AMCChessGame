@@ -8,7 +8,9 @@
 	
 	<bean id="chessBoardSVGImage" class="org.amc.game.chessserver.messaging.ChessBoardSVGImage"/>
 	
-	<bean id="messageService" class="org.amc.game.chessserver.messaging.EmailMessageService"/>
+	<bean id="messageService" class="org.amc.game.chessserver.messaging.EmailMessageService">
+		<property name="taskExecutor" ref="myExecutor"></property>
+	</bean>
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
   		<property name="host" value="smtp.gmail.com" />

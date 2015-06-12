@@ -1,5 +1,6 @@
 package org.amc.game.chessserver.messaging;
 
+import static org.junit.Assert.*;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
@@ -8,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
+
+import java.util.Map;
 
 public class EmailTemplateTest {
 
@@ -48,6 +51,18 @@ public class EmailTemplateTest {
 
     @Test
     public void test() throws Exception {
-        String html = template.getEmailHtml();   
+        String html = template.getEmailHtml();  
+        Map<String, EmbeddedMailImage> images = template.getEmbeddedImages();
+        assertTrue(images.size() == 2);
+        
+        EmbeddedMailImage imageBackground = images.get(EmailTemplate.BACKGROUND_IMAGE_RESOURCE);
+        assertEquals(imageBackground.getContentId(), EmailTemplate.BACKGROUND_IMAGE_RESOURCE);
+        assertEquals(imageBackground.getContentType(), "image/jpg");
+        assertEquals(imageBackground.getImageSource().getPath(), template.backgroundImagePath);
+        
+        EmbeddedMailImage imageChessboard = images.get(EmailTemplate.CHESSBOARD_IMAGE_RESOURCE);
+        assertEquals(imageChessboard.getContentId(), EmailTemplate.CHESSBOARD_IMAGE_RESOURCE);
+        assertEquals(imageChessboard.getContentType(), "image/jpg");
+        assertNotNull(imageChessboard.getImageSource().getPath());
     }
 }

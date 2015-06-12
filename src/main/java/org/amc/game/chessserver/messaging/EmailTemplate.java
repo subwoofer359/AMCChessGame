@@ -2,7 +2,9 @@ package org.amc.game.chessserver.messaging;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
@@ -25,10 +27,8 @@ public class EmailTemplate {
 
     private static final String EMAIL_TEMPLATE = "gameStatus.html";
     
-    private final String backgroundImagePath="src/main/webapp/img/1700128.jpg";
-    
-    private File chessBoardImageURL;
-    
+    final String backgroundImagePath = "src/main/webapp/img/1700128.jpg";//"webapps/AMCChessGame/img/1700128.jpg";
+
     static final String TEMPLATE_BACKGROUND_TAG = "background";
     
     static final String BACKGROUND_IMAGE_RESOURCE = "background";
@@ -39,10 +39,15 @@ public class EmailTemplate {
     
     private static final String DEFAULT_EMAIL_SUBJECT = "Move update from AMCChessGame";
     
+    private static final String IMAGE_TYPE = "image/jpg";
+    
+    private Map<String, EmbeddedMailImage> images = new HashMap<String,EmbeddedMailImage>();
+    
     private String emailSubject;
     
     public EmailTemplate() {
         emailSubject = DEFAULT_EMAIL_SUBJECT;
+        addEmbeddedImage(BACKGROUND_IMAGE_RESOURCE, new File(backgroundImagePath));
     }
     
     public EmailTemplate(Player player, ServerChessGame serverChessGame){
@@ -51,7 +56,13 @@ public class EmailTemplate {
         this.otherPlayer = player;
     }
 
+    private void addTempEmbeddedImage(String contentId, File filePath) {
+        images.put(contentId, new EmbeddedMailImage(contentId, filePath, IMAGE_TYPE));
+    }
     
+    private void addEmbeddedImage(String contentId, File filePath) {
+        images.put(contentId, new EmbeddedMailImage(contentId, filePath, IMAGE_TYPE, false));
+    }
     
     public String getEmailHtml() {
         final Context ctx = new Context(Locale.getDefault());
@@ -60,8 +71,9 @@ public class EmailTemplate {
         ctx.setVariable("opponent", serverChessGame.getChessGame()
                         .getOpposingPlayer(serverChessGame.getPlayer(otherPlayer)));
         try {
-        	this.chessBoardImageURL = createChessBoardImage();
-            ctx.setVariable(TEMPLATE_CHESSBOARD_TAG, CHESSBOARD_IMAGE_RESOURCE);
+        	addTempEmbeddedImage(CHESSBOARD_IMAGE_RESOURCE, createChessBoardImage());
+            
+        	ctx.setVariable(TEMPLATE_CHESSBOARD_TAG, CHESSBOARD_IMAGE_RESOURCE);
             ctx.setVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
         } catch (IOException e) {
             logger.error(e.getMessage());
@@ -97,10 +109,6 @@ public class EmailTemplate {
         this.otherPlayer = player;
     }
     
-    public File getImageFile() {
-    	return this.chessBoardImageURL;
-    }
-    
     @Autowired
     public void setChessBoardSVGImage(ChessBoardSVGImage chessboardImage) {
     	this.chessBoardImage = chessboardImage;
@@ -113,8 +121,8 @@ public class EmailTemplate {
     public void setEmailSubject(String emailSubject) {
         this.emailSubject = emailSubject;
     }
-
-    public String getBackgroundImagePath() {
-        return backgroundImagePath;
-    }    
+    
+    public Map<String, EmbeddedMailImage> getEmbeddedImages() {
+        return images;
+    }
 }

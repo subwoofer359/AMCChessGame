@@ -35,7 +35,7 @@ public class SVGBlankChessBoard {
         basicRectangle.setAttributeNS(null, "fill-opacity", "1");
         basicRectangle.setAttributeNS(null, "class", "dropzone");
         
-        for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
+        for (int i = ChessBoard.BOARD_WIDTH; i >= 1; i--) {
             x = 0;
             for (Coordinate letter : ChessBoard.Coordinate.values()) {
                 Element rectangle = (Element)basicRectangle.cloneNode(true);

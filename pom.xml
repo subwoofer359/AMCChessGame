@@ -164,7 +164,6 @@
 		<groupId>batik</groupId>
 		<artifactId>batik-util</artifactId>
 		<version>1.6-1</version>
-		<scope>test</scope>
 	</dependency>
 	<dependency>
 		<groupId>batik</groupId>

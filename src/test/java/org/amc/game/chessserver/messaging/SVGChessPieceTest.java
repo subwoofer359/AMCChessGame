@@ -26,6 +26,7 @@ import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -33,7 +34,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 
-
+@Ignore
 public class SVGChessPieceTest {
 	
 	private static final String SVG_DOCTYPE = "\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "

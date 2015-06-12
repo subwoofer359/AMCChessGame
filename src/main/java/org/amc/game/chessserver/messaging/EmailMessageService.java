@@ -9,6 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -86,17 +88,29 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
             message.setFrom(EMAIL_SENDER_ADDR);
             message.setTo(toAddress);
             message.setSubject(messageTextBody.getEmailSubject());
-            message.setText(messageTextBody.getEmailHtml(), true);
-            FileSystemResource imageResource = new FileSystemResource(messageTextBody.getImageFile());
-            message.addInline(EmailTemplate.CHESSBOARD_IMAGE_RESOURCE, imageResource, "image/jpg");
-            FileSystemResource backgoundImageResource = new FileSystemResource(messageTextBody.getBackgroundImagePath());
-            message.addInline(EmailTemplate.BACKGROUND_IMAGE_RESOURCE, backgoundImageResource, "image/jpg");
+            message.setText(messageTextBody.getEmailHtml(), true);     
+            addImagesToMessage(message, messageTextBody);
             
             return mimeMessage;
         }
         
+        private final void addImagesToMessage(MimeMessageHelper message, EmailTemplate messageTextBody) throws MessagingException{
+            for(String key:messageTextBody.getEmbeddedImages().keySet()) {
+                EmbeddedMailImage embeddedImage =  messageTextBody.getEmbeddedImages().get(key);
+                FileSystemResource imageResource = new FileSystemResource(embeddedImage.getImageSource());
+                message.addInline(embeddedImage.getContentId(), imageResource, embeddedImage.getContentType());
+            }
+        }
+        
         private void deleteImages(EmailTemplate message){
-        	message.getImageFile().delete();
+            Collection<EmbeddedMailImage> embeddedImages = message.getEmbeddedImages().values();
+            Iterator<EmbeddedMailImage> iterator = (embeddedImages.iterator());
+            while(iterator.hasNext()) {
+                EmbeddedMailImage image = iterator.next();
+                if(image.isToBeDeleted()) {
+                    image.getImageSource().delete();
+                }
+            }
         }
     }
 }
