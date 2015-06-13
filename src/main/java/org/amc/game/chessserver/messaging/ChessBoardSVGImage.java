@@ -2,12 +2,14 @@ package org.amc.game.chessserver.messaging;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.RookPiece;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
@@ -88,6 +90,7 @@ public class ChessBoardSVGImage {
         }
         sVGElementfactory.put(PawnPiece.class, new SVGPawnPiece(document, svgNS));
         sVGElementfactory.put(RookPiece.class, new SVGRookPiece(document, svgNS));
+        sVGElementfactory.put(BishopPiece.class, new SVGBishopPiece(document, svgNS));
     }
     
     private void addChessPieces() {

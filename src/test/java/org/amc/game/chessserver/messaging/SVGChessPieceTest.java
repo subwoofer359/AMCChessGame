@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,6 +20,7 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
+import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
@@ -26,15 +28,16 @@ import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 
-@Ignore
+
 public class SVGChessPieceTest {
 	
 	private static final String SVG_DOCTYPE = "\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "
@@ -59,6 +62,10 @@ public class SVGChessPieceTest {
 			e.printStackTrace();
 		}
     }
+    
+    @Rule
+    public Timeout timeout =new Timeout(10, TimeUnit.SECONDS);
+    
     @Before
     public void setUp() throws Exception {
     	svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
@@ -83,6 +90,14 @@ public class SVGChessPieceTest {
     @Test
     public void testSVGRookPiece() throws Exception{
     	SVGChessPiece piece = new SVGRookPiece(document, svgNS);
+    	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
+    	layer.appendChild(element);
+    	assertTrue(isvalidElement());
+    }
+    
+    @Test
+    public void testSVGBishopPiece() throws Exception{
+    	SVGChessPiece piece = new SVGBishopPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
     	layer.appendChild(element);
     	assertTrue(isvalidElement());
