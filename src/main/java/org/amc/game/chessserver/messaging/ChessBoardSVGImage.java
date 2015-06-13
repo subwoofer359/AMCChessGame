@@ -131,6 +131,7 @@ public class ChessBoardSVGImage {
         try(OutputStream ostream = new FileOutputStream(file)){
         	generateImgFromSvg(ostream);
         } catch(TranscoderException te) {
+        	logger.debug(te);
         	throw new IOException(te);
         }
         return file;
