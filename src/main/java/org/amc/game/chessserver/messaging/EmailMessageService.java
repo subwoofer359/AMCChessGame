@@ -60,7 +60,7 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
         }
         
         @Override
-        public String call() throws Exception {
+        public String call() {
             try {
                 log.debug("MessageService: Creating message");
                 MimeMessage emailMessage = createMessage(user.getEmailAddress(), message);
@@ -70,11 +70,14 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
                 }
                 deleteImages(message);
                 log.debug("MessageService: Sent message:"+ emailMessage.toString());
-            } catch (MailException e) {
+            } catch (MailException | MessagingException e) {
                 log.error(e);
                 e.printStackTrace();
                 return SENT_FAILED;
-            } catch (MessagingException e) {
+            } catch (Exception e) {
+            	if(e instanceof RuntimeException) {
+            		throw e;
+            	}
                 log.error(e);
                 e.printStackTrace();
                 return SENT_FAILED;
