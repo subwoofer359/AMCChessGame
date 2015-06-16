@@ -52,4 +52,27 @@ public abstract class SVGChessPiece {
     }
     
     public abstract Element getChessPieceElement(String id, Location location, Colour pieceColour);
+    
+    void setStyle(Element element, String style) {
+        element.setAttributeNS(null, "style", style);
+    }
+    
+    void setD(Element element, String dValue) {
+        element.setAttributeNS(null, "d", dValue);
+    }
+
+    Element createElement(String type) {
+        return document.createElementNS(svgNS, type);
+    }
+    
+    Element createPath(String dValue, String style) {
+        Element element = createElement("path");
+        setD(element, dValue);
+        setStyle(element, style);
+        return element;
+    }
+    
+    void appendNewPath(Element root, String dValue, String style) {
+        root.appendChild(createPath(dValue, style));  
+    }
 }
