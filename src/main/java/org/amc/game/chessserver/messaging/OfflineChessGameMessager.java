@@ -33,17 +33,13 @@ public abstract class OfflineChessGameMessager implements Observer {
     @Override
     public void update(Subject subject, Object message) {
         if (subject instanceof ServerChessGame) {
-            ServerChessGame scg = (ServerChessGame) subject;
+            ServerChessGame serverChessGame = (ServerChessGame) subject;
             try {
-                if (message instanceof ChessGame) {
-                    final ChessGame chessGame = (ChessGame) message;
-                    if (isOnline(getOfflinePlayer(chessGame))) {
-                        logger.debug(String.format("OfflineChessMessager: %s is online", getOfflinePlayer(chessGame)));
-                        return;
-                    }
-                    logger.debug(String.format("OfflineChessMessager: %s is offline", getOfflinePlayer(chessGame)));
-                    messageService.send(getUser(chessGame), newEmailTemplate(
-                                    getOfflinePlayer(chessGame), scg));
+                Player player = serverChessGame.getChessGame().getCurrentPlayer(); 
+                if (isOnline(player) || doesUserNotHaveEmailAddress(player)) {
+                    return;
+                } else if (message instanceof ChessGame) {
+                    handleChessGameUpdate(serverChessGame, message);
                 }
             } catch (MailException e) {
                 logger.error(e);
@@ -69,12 +65,34 @@ public abstract class OfflineChessGameMessager implements Observer {
                 }
             }
         }
+        logger.debug(String.format("OfflineChessMessager: %s is online", player));
         return false;
         
     }
     
-    private User getUser(ChessGame chessGame) throws DAOException {
-        Player otherPlayer = getOfflinePlayer(chessGame);
+    private boolean doesUserNotHaveEmailAddress(Player player) throws DAOException {
+        User user = getUser(player);
+        if(user.getEmailAddress() == null) {
+            logger.debug(String.format("OfflineChessMessager: %s has no email address", player.getName() ));
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private void handleChessGameUpdate(ServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
+        final ChessGame chessGame = (ChessGame) message;
+        User user = getUser(chessGame);
+        Player player = chessGame.getCurrentPlayer();
+        logger.debug(String.format("OfflineChessMessager: %s is offline", player));
+           messageService.send(user, newEmailTemplate(player, scg));
+        
+    }
+    
+    
+    
+    private User getUser(ChessGame chessgame) throws DAOException {
+        Player otherPlayer = chessgame.getCurrentPlayer();
         return getUser(otherPlayer);
     }
     
@@ -94,15 +112,11 @@ public abstract class OfflineChessGameMessager implements Observer {
         return template;
     }
     
+    /**
+     * Factory method
+     * @return EmailTemplate
+     */
     protected abstract EmailTemplate getEmailTemplate();
-    
-    private Player getOfflinePlayer(ChessGame chessGame) {
-        if(ComparePlayers.comparePlayers(chessGame.getCurrentPlayer(), chessGame.getWhitePlayer())) {
-            return chessGame.getWhitePlayer();
-        } else {
-            return chessGame.getBlackPlayer();
-        }
-    }
     
     @Autowired
     public void setUserDAO(DAO<User> userDAO) {

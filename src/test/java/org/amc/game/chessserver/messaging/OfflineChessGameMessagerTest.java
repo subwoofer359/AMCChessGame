@@ -46,6 +46,8 @@ public class OfflineChessGameMessagerTest {
     private final long GAME_UID = 3332L;
     private List<Object> userSessionList;
     private List<User> userList;
+    
+    private final List<Object> emptyUserSessionList = new ArrayList<Object>();
 
     private ServerChessGame serverChessGame;
     private Move move;
@@ -107,7 +109,6 @@ public class OfflineChessGameMessagerTest {
 
     @Test
     public void testEmailSentWhenPlayerOffline() throws Exception {
-        final List<Object> emptyUserSessionList = new ArrayList<Object>();
         when(registry.getAllPrincipals()).thenReturn(emptyUserSessionList);
 
         serverChessGame.move(serverChessGame.getPlayer(player), move);
@@ -132,6 +133,14 @@ public class OfflineChessGameMessagerTest {
                     MailException {
         final List<User> emptyUserList = new ArrayList<User>();
         when(userDAO.findEntities("userName", opponentPlayer.getUserName())).thenReturn(emptyUserList);
+        serverChessGame.move(serverChessGame.getPlayer(player), move);
+        verify(emailService, never()).send(userCaptor.capture(), emailTemplateCaptor.capture());
+    }
+    
+    @Test
+    public void testNoEmailAddress() throws Exception {
+        opponentUser.setEmailAddress(null);
+        when(registry.getAllPrincipals()).thenReturn(emptyUserSessionList);
         serverChessGame.move(serverChessGame.getPlayer(player), move);
         verify(emailService, never()).send(userCaptor.capture(), emailTemplateCaptor.capture());
     }
