@@ -23,7 +23,9 @@ import org.amc.game.chess.Move;
 import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
+import org.amc.game.chessserver.messaging.svg.SVGKnightPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
+import org.amc.game.chessserver.messaging.svg.SVGQueenPiece;
 import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.tools.ant.filters.StringInputStream;
@@ -98,6 +100,22 @@ public class SVGChessPieceTest {
     @Test
     public void testSVGBishopPiece() throws Exception{
     	SVGChessPiece piece = new SVGBishopPiece(document, svgNS);
+    	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
+    	layer.appendChild(element);
+    	assertTrue(isvalidElement());
+    }
+    
+    @Test
+    public void testSVGKnightPiece() throws Exception{
+    	SVGChessPiece piece = new SVGKnightPiece(document, svgNS);
+    	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
+    	layer.appendChild(element);
+    	assertTrue(isvalidElement());
+    }
+    
+    @Test
+    public void testSVGQueenPiece() throws Exception{
+    	SVGChessPiece piece = new SVGQueenPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
     	layer.appendChild(element);
     	assertTrue(isvalidElement());

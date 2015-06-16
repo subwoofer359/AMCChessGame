@@ -5,14 +5,18 @@ import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
+import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
+import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
+import org.amc.game.chessserver.messaging.svg.SVGKnightPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
+import org.amc.game.chessserver.messaging.svg.SVGQueenPiece;
 import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderException;
@@ -91,6 +95,8 @@ public class ChessBoardSVGImage {
         sVGElementfactory.put(PawnPiece.class, new SVGPawnPiece(document, svgNS));
         sVGElementfactory.put(RookPiece.class, new SVGRookPiece(document, svgNS));
         sVGElementfactory.put(BishopPiece.class, new SVGBishopPiece(document, svgNS));
+        sVGElementfactory.put(KnightPiece.class, new SVGKnightPiece(document, svgNS));
+        sVGElementfactory.put(QueenPiece.class, new SVGQueenPiece(document, svgNS));
     }
     
     private void addChessPieces() {
