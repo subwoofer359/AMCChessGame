@@ -6,6 +6,7 @@ import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.KnightPiece;
+import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
@@ -15,6 +16,7 @@ import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
 import org.amc.game.chessserver.messaging.svg.SVGKnightPiece;
+import org.amc.game.chessserver.messaging.svg.SVGKingPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
 import org.amc.game.chessserver.messaging.svg.SVGQueenPiece;
 import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
@@ -97,6 +99,7 @@ public class ChessBoardSVGImage {
         sVGElementfactory.put(BishopPiece.class, new SVGBishopPiece(document, svgNS));
         sVGElementfactory.put(KnightPiece.class, new SVGKnightPiece(document, svgNS));
         sVGElementfactory.put(QueenPiece.class, new SVGQueenPiece(document, svgNS));
+        sVGElementfactory.put(KingPiece.class, new SVGKingPiece(document, svgNS));
     }
     
     private void addChessPieces() {

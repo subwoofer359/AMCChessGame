@@ -24,6 +24,7 @@ import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
 import org.amc.game.chessserver.messaging.svg.SVGKnightPiece;
+import org.amc.game.chessserver.messaging.svg.SVGKingPiece;
 import org.amc.game.chessserver.messaging.svg.SVGPawnPiece;
 import org.amc.game.chessserver.messaging.svg.SVGQueenPiece;
 import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
@@ -37,8 +38,6 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-
 
 public class SVGChessPieceTest {
 	
@@ -119,6 +118,13 @@ public class SVGChessPieceTest {
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
     	layer.appendChild(element);
     	assertTrue(isvalidElement());
+    }
+    
+    public void testSVGKingPiece() throws Exception{
+        SVGChessPiece piece = new SVGKingPiece(document, svgNS);
+        Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
+        layer.appendChild(element);
+        assertTrue(isvalidElement());
     }
     
     @Test
