@@ -16,10 +16,7 @@ public class SVGQueenPiece extends SVGChessPiece {
 	private void setTopNodeAttribute(String id, Location location, SVGColour svgColour){
 		float coordX = offsetXY * (location.getLetter().ordinal());
 	    float coordY = -554 - offsetXY * (location.getNumber() - 1);
-	    this.g = document.createElementNS(svgNS, "g");
-        g.setAttributeNS(null, "transform", "translate(" + coordX + "," + coordY + ")");
-        g.setAttributeNS(null, "id", id);
-        g.setAttributeNS(null, "style", "fill:" + svgColour.fill);
+	    this.g = createG(id, "translate(" + coordX + "," + coordY + ")", "fill:" + svgColour.fill);
 	}
 	
 	@Override
@@ -29,8 +26,7 @@ public class SVGQueenPiece extends SVGChessPiece {
 		
 		setTopNodeAttribute(id, location, svgColour);
 	       
-        Element g2 = document.createElementNS(svgNS, "g");
-        g2.setAttributeNS(null, "transform", "matrix(0.37182432,0,0,0.48727711,-545.05741,836.59105)");
+        Element g2 = createG("matrix(0.37182432,0,0,0.48727711,-545.05741,836.59105)");
         
         String styleString_1 = "fill:" + svgColour.fill + ";stroke:" + svgColour.fill + ";stroke-width:0.2277;stroke-linecap:round;stroke-linejoin:round"; 
         String styleString_2 = "fill:" + svgColour.fill + ";stroke:" + svgColour.fill + ";stroke-width:1;stroke-linejoin:round";
@@ -60,9 +56,7 @@ public class SVGQueenPiece extends SVGChessPiece {
 	    appendNewPath(g2, "m 1612.407,344.373 c 0,4.852 -3.932,8.784 -8.781,8.784 -4.852,0 -8.783,-3.933 -8.783,-8.784 0,-4.851 3.932,-8.783 8.783,-8.783 4.849,0 8.781,3.932 8.781,8.783 z",
 	    		styleString_1);
 	        
-	    Element g3 = document.createElementNS(svgNS, "g"); 
-	    
-	    g3.setAttributeNS(null, "transform", "matrix(3.067229,0,0,3.067558,-1332.787,-2735.3764)");
+	    Element g3 = createG("matrix(3.067229,0,0,3.067558,-1332.787,-2735.3764)");
 	    
 	    appendNewPath(g3, "m 926.332,1004.07 c 0,1.105 -0.895,2 -2,2 -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 z",
 	    		styleString_3);

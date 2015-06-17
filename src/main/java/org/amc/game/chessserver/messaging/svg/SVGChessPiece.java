@@ -72,7 +72,49 @@ public abstract class SVGChessPiece {
         return element;
     }
     
-    void appendNewPath(Element root, String dValue, String style) {
-        root.appendChild(createPath(dValue, style));  
+    Element appendNewPath(Element root, String dValue, String style) {
+        Element element = createPath(dValue, style); 
+        root.appendChild(element);
+        return element;
+    }
+    
+    Element createRectangle(String x, String y, String width, String height, String style) {
+        Element element = createElement("rect");
+        element.setAttributeNS(null, "x", x);
+        element.setAttributeNS(null, "y", y);
+        element.setAttributeNS(null, "width", width);
+        element.setAttributeNS(null, "height", height);
+        setStyle(element, style);
+        return element;
+        
+    }
+    
+    Element appendNewRectangle(Element root, String x, String y, String width, String height, String style) {
+        Element element = createRectangle(x, y, width, height, style); 
+        root.appendChild(element);
+        return element;
+    }
+    
+    Element createG(String transform) {
+        Element element = createElement("g");
+        element.setAttributeNS(null, "transform", transform);
+        return element;   
+    }
+    
+    Element createG(String id, String transform) {
+        Element element = createG(transform);
+        element.setAttributeNS(null, "id", transform);
+        return element;   
+    }
+    
+    Element createG(String id, String transform, String style) {
+        Element element = createG(id, transform);
+        setStyle(element, style);
+        return element;   
+    }
+    
+    Element setTransform(Element element, String transform) {
+        element.setAttributeNS(null, "transform", transform);
+        return element;
     }
 }
