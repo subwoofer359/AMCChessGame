@@ -12,9 +12,9 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import java.util.Map;
 
-public class EmailTemplateTest {
+public class PlayerJoinedChessGameEmailTest {
 
-    private MoveUpdateEmail template;
+    private PlayerJoinedChessGameEmail template;
     private SpringTemplateEngine templateEngine;
     private Player player;
     private ServerChessGame scg;
@@ -26,9 +26,7 @@ public class EmailTemplateTest {
         player = new HumanPlayer("Adrian McLaughlin");
         scg = new ServerChessGame(GAME_UID, player);
         scg.addOpponent(new HumanPlayer("Player 2"));
-        template = new MoveUpdateEmail(player, scg);
-        
-        ChessBoardSVGImage cbsi = new ChessBoardSVGImage(scg);
+        template = new PlayerJoinedChessGameEmail(player, scg);
         
         emailTemplateResolver = new FileTemplateResolver();
         emailTemplateResolver.setPrefix("src/main/resources/mail/");
@@ -42,7 +40,6 @@ public class EmailTemplateTest {
         templateEngine.initialize();
      
         template.setTemplateEngine(templateEngine);
-        template.setChessBoardSVGImage(cbsi);
     }
 
     @After
@@ -51,18 +48,7 @@ public class EmailTemplateTest {
 
     @Test
     public void test() throws Exception {
-        template.getEmailHtml();  
-        Map<String, EmbeddedMailImage> images = template.getEmbeddedImages();
-        assertTrue(images.size() == 2);
+        String html = template.getEmailHtml();  
         
-        EmbeddedMailImage imageBackground = images.get(MoveUpdateEmail.BACKGROUND_IMAGE_RESOURCE);
-        assertEquals(imageBackground.getContentId(), MoveUpdateEmail.BACKGROUND_IMAGE_RESOURCE);
-        assertEquals(imageBackground.getContentType(), "image/jpg");
-        assertEquals(imageBackground.getImageSource().getPath(), template.backgroundImagePath);
-        
-        EmbeddedMailImage imageChessboard = images.get(MoveUpdateEmail.CHESSBOARD_IMAGE_RESOURCE);
-        assertEquals(imageChessboard.getContentId(), MoveUpdateEmail.CHESSBOARD_IMAGE_RESOURCE);
-        assertEquals(imageChessboard.getContentType(), "image/jpg");
-        assertNotNull(imageChessboard.getImageSource().getPath());
     }
 }

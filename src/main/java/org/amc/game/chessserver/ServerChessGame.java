@@ -61,19 +61,19 @@ public class ServerChessGame extends DefaultSubject {
      *            Player
      */
     public void addOpponent(Player opponent) {
-        synchronized (this) {
-            if (this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)) {
-                if (ComparePlayers.comparePlayers(this.player, opponent)) {
-                    logger.debug(String.format("Player:(%s) tried to join their own game",
-                                    opponent.getName()));
-                } else {
-
-                    this.opponent = new ChessGamePlayer(opponent, Colour.BLACK);
-                    ChessBoard board = new ChessBoard();
-                    SetupChessBoard.setUpChessBoardToDefault(board);
-                    chessGame = new ChessGame(board, this.player, this.opponent);
-                    this.currentStatus = ServerGameStatus.IN_PROGRESS;
-                }
+        if (this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)) {
+            if (ComparePlayers.comparePlayers(this.player, opponent)) {
+                logger.debug(String.format("Player:(%s) tried to join their own game",
+                                opponent.getName()));
+            } else {
+            	ChessBoard board = new ChessBoard();
+        		SetupChessBoard.setUpChessBoardToDefault(board);
+            	synchronized (this) {
+            		this.opponent = new ChessGamePlayer(opponent, Colour.BLACK);
+            		this.chessGame = new ChessGame(board, this.player, this.opponent);
+            		this.currentStatus = ServerGameStatus.IN_PROGRESS;
+            	}
+            	//notifyObservers(opponent);
             }
         }
     }

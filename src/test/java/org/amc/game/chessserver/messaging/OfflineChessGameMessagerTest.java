@@ -7,6 +7,7 @@ import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
@@ -33,6 +34,7 @@ public class OfflineChessGameMessagerTest {
 
     private OfflineChessGameMessager offlineGMessager;
     private EmailMessageService emailService;
+    private EmailTemplateFactory templateFactory;
     private SessionRegistry registry;
     private DAO<User> userDAO;
     private JavaMailSender mailSender;
@@ -64,11 +66,7 @@ public class OfflineChessGameMessagerTest {
         opponentUser.setEmailAddress("Chris@adrianmclaughlin.ie");
         opponentUser.setUserName(opponentPlayer.getUserName());
 
-        offlineGMessager = new OfflineChessGameMessager() {
-            protected EmailTemplate getEmailTemplate() {
-                return new EmailTemplate();
-            };
-        };
+        offlineGMessager = new OfflineChessGameMessager();
         
         emailService = mock(EmailMessageService.class);
         registry = mock(SessionRegistry.class);
@@ -80,10 +78,14 @@ public class OfflineChessGameMessagerTest {
         emailTemplateCaptor = ArgumentCaptor.forClass(EmailTemplate.class);
 
         emailService.setMailSender(mailSender);
+        
+        templateFactory = mock(EmailTemplateFactory.class);
+        when(templateFactory.getEmailTemplate(ChessGame.class.getClass())).thenReturn(new MoveUpdateEmail());
 
         offlineGMessager.setMessageService(emailService);
         offlineGMessager.setSessionRegistry(registry);
         offlineGMessager.setUserDAO(userDAO);
+        offlineGMessager.setEmailTemplateFactory(templateFactory);
 
         userList = Arrays.asList(opponentUser);
 
@@ -101,6 +103,7 @@ public class OfflineChessGameMessagerTest {
 
         move = new Move(new Location(ChessBoard.Coordinate.A, 2), new Location(
                         ChessBoard.Coordinate.A, 3));
+
     }
 
     @After
