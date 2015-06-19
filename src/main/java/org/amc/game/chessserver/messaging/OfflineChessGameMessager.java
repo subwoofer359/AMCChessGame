@@ -1,11 +1,9 @@
 package org.amc.game.chessserver.messaging;
 
-
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.util.Observer;
@@ -21,13 +19,14 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
-public abstract class OfflineChessGameMessager implements Observer {
+public class OfflineChessGameMessager implements Observer {
 
     @Autowired
     private WebApplicationContext springContext;
     private SessionRegistry registry;
     private GameMessageService<EmailTemplate> messageService;
     private static final Logger logger = Logger.getLogger(OfflineChessGameMessager.class);
+    private EmailTemplateFactory templateFactory;
     private DAO<User> userDAO;
 
     @Override
@@ -40,6 +39,8 @@ public abstract class OfflineChessGameMessager implements Observer {
                     return;
                 } else if (message instanceof ChessGame) {
                     handleChessGameUpdate(serverChessGame, message);
+                } else if(message instanceof Player) {
+                	//handlePlayerUpdate(serverChessGame, message);
                 }
             } catch (MailException e) {
                 logger.error(e);
@@ -85,8 +86,15 @@ public abstract class OfflineChessGameMessager implements Observer {
         User user = getUser(chessGame);
         Player player = chessGame.getCurrentPlayer();
         logger.debug(String.format("OfflineChessMessager: %s is offline", player));
-           messageService.send(user, newEmailTemplate(player, scg));
+           messageService.send(user, newMoveUpdateEmail(player, scg));
         
+    }
+    
+    private void handlePlayerUpdate(ServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
+    	User user = getUser(scg.getChessGame());
+    	Player player = scg.getChessGame().getCurrentPlayer();
+    	logger.debug(String.format("OfflineChessMessager: %s is offline", player));
+        messageService.send(user, newPlayerJoinGameEmail(player, scg));
     }
     
     
@@ -105,8 +113,15 @@ public abstract class OfflineChessGameMessager implements Observer {
         }
     }
     
-    private EmailTemplate newEmailTemplate(Player player, ServerChessGame serverChessGame) {
-        EmailTemplate template = getEmailTemplate();
+    private EmailTemplate newMoveUpdateEmail(Player player, ServerChessGame serverChessGame) {
+        EmailTemplate template = getEmailTemplate(ChessGame.class);
+        template.setPlayer(player);
+        template.setServerChessGame(serverChessGame);
+        return template;
+    }
+    
+    private EmailTemplate newPlayerJoinGameEmail(Player player, ServerChessGame serverChessGame) {
+    	EmailTemplate template = getEmailTemplate(Player.class);
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);
         return template;
@@ -116,7 +131,9 @@ public abstract class OfflineChessGameMessager implements Observer {
      * Factory method
      * @return EmailTemplate
      */
-    protected abstract EmailTemplate getEmailTemplate();
+    private EmailTemplate getEmailTemplate(Object object) {
+    	return templateFactory.getEmailTemplate(object.getClass());
+    }
     
     @Autowired
     public void setUserDAO(DAO<User> userDAO) {
@@ -127,6 +144,11 @@ public abstract class OfflineChessGameMessager implements Observer {
     public void setMessageService(GameMessageService<EmailTemplate> gameMessageService) {
         this.messageService = gameMessageService;
     }
+    
+    @Autowired
+    public void setEmailTemplateFactory(EmailTemplateFactory templateFactory) {
+		this.templateFactory = templateFactory;
+	}
     
     @Resource(name="sessionRegistry")
     public void setSessionRegistry(SessionRegistry registry) {

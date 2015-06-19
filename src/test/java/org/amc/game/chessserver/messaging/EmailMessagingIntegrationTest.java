@@ -6,11 +6,13 @@ import static org.junit.Assert.*;
 
 import org.amc.User;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
+import org.amc.game.chess.Player;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerConstants;
@@ -38,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
 public class EmailMessagingIntegrationTest {
 
-	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+	//private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
 	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
 
@@ -62,13 +64,13 @@ public class EmailMessagingIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-    	this.signUpfixture.setUp();
+    	//this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
     
     @After
     public void tearDown() {
-        this.signUpfixture.tearDown();
+        //this.signUpfixture.tearDown();
     }
 
     @Test
@@ -99,12 +101,17 @@ public class EmailMessagingIntegrationTest {
                         .andDo(print())
                         .andReturn();
       
-        EmailTemplate template = (EmailTemplate)wac.getBean("emailTemplate");
+        EmailTemplateFactory factory = (EmailTemplateFactory)wac.getBean("emailTemplateFactory");
+        EmailTemplate template = factory.getEmailTemplate(ChessGame.class);
+        EmailTemplate playerJoinedGameEmail = factory.getEmailTemplate(Player.class);
         template.setPlayer(whitePlayer);
+        
+        playerJoinedGameEmail.setPlayer(blackPlayer);
         ServerChessGame scg = (ServerChessGame)result.getModelAndView().getModel().get("GAME");
         
-        scg.move(whitePlayer, new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3)));
+        //scg.move(whitePlayer, new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3)));
         template.setServerChessGame(scg);
+        playerJoinedGameEmail.setServerChessGame(scg);
         
         EmailMessageService service = (EmailMessageService)wac.getBean("messageService");
         User user =new User();
@@ -112,7 +119,9 @@ public class EmailMessagingIntegrationTest {
         user.setUserName("adrian");
         user.setName("Adrian McLaughlin");
         Future<String> mailresult = service.send(user, template);
+        Future<String> mailresult2 = service.send(user, playerJoinedGameEmail);
         assertEquals(SendMessage.SENT_SUCCESS, mailresult.get());
+        assertEquals(SendMessage.SENT_SUCCESS, mailresult2.get());
     }
 
     
