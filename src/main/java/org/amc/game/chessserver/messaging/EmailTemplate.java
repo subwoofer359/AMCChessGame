@@ -17,13 +17,8 @@ public abstract class EmailTemplate {
     
     static final String BACKGROUND_IMAGE_RESOURCE = "background";
     
-    final String backgroundImagePath = "webapps/AMCChessGame/img/1700128.jpg";
+    String backgroundImagePath = "webapps/AMCChessGame/img/1700128.jpg";
 
-    /*
-     * location of image for local testing
-     */
-    //final String backgroundImagePath = "src/main/webapp/img/1700128.jpg";
-    
 	private static final String IMAGE_TYPE = "image/jpg";
 	
 	private static final String DEFAULT_EMAIL_SUBJECT = "Move update from AMCChessGame";
