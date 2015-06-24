@@ -73,7 +73,7 @@ public class ServerChessGame extends DefaultSubject {
             		this.chessGame = new ChessGame(board, this.player, this.opponent);
             		this.currentStatus = ServerGameStatus.IN_PROGRESS;
             	}
-            	//notifyObservers(opponent);
+            	notifyObservers(opponent);
             }
         }
     }
