@@ -2,12 +2,13 @@ package org.amc.game.chessserver.messaging;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 public abstract class EmailTemplate {
@@ -30,7 +31,11 @@ public abstract class EmailTemplate {
     
     private Map<String, EmbeddedMailImage> images = new HashMap<String,EmbeddedMailImage>();
     
+    private Map<String, Object> contextVariables = new HashMap<String,Object>();
+    
     private String emailSubject;
+    
+    private String emailTemplateName = "";
     
     public EmailTemplate() {
         emailSubject = DEFAULT_EMAIL_SUBJECT;
@@ -42,7 +47,22 @@ public abstract class EmailTemplate {
         this.otherPlayer = player;
     }
     
-    public abstract String getEmailHtml();
+    public abstract void addContextVariables();
+    
+    public abstract void addImages();
+    
+    public final String getEmailHtml() {
+        addContextVariables();
+        addImages();
+        
+        final Context ctx = new Context(Locale.getDefault());
+        
+        for(String key:contextVariables.keySet()) {
+            ctx.setVariable(key, contextVariables.get(key));
+        }
+
+        return this.templateEngine.process(emailTemplateName, ctx);
+    }
 
     protected void addTempEmbeddedImage(String contentId, File filePath) {
         images.put(contentId, new EmbeddedMailImage(contentId, filePath, IMAGE_TYPE));
@@ -55,10 +75,6 @@ public abstract class EmailTemplate {
     @Autowired
     public void setTemplateEngine(SpringTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
-    }
-    
-    public TemplateEngine getTemplateEngine() {
-    	return this.templateEngine;
     }
     
     public ServerChessGame getServerChessGame() {
@@ -88,4 +104,12 @@ public abstract class EmailTemplate {
     public Map<String, EmbeddedMailImage> getEmbeddedImages() {
         return images;
     }   
+    
+    public void addContextVariable(String name, Object value) {
+        this.contextVariables.put(name, value);
+    }
+    
+    public void setEmailTemplateName(String emailTemplateName) {
+        this.emailTemplateName = emailTemplateName;
+    }
 }

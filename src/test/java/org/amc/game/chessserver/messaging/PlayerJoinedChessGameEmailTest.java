@@ -1,6 +1,8 @@
 package org.amc.game.chessserver.messaging;
 
 import static org.junit.Assert.*;
+
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
@@ -48,6 +50,9 @@ public class PlayerJoinedChessGameEmailTest {
 
     @Test
     public void test() throws Exception {
+        assertEquals(template.getEmailSubject(), PlayerJoinedChessGameEmail.DEFAULT_EMAIL_SUBJECT);
+        assertTrue(ComparePlayers.comparePlayers(template.getPlayer(),player));
+        assertEquals(template.getServerChessGame(), scg);
         String html = template.getEmailHtml();  
         
     }
