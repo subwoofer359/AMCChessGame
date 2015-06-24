@@ -2,13 +2,16 @@ package org.amc.game.chessserver.messaging;
 
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
+import org.apache.log4j.Logger;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 public class EmailTemplateFactory {
 
+    private static final Logger logger = Logger.getLogger(EmailTemplateFactory.class);
+    
 	private SpringTemplateEngine templateEngine;
 
-	private ChessBoardSVGImage chessBoardImage;
+	private ChessBoardSVGFactory chessBoardImage;
 
 	public EmailTemplate getEmailTemplate(Class<?> clss) {
 		if (clss.equals(Player.class)) {
@@ -21,6 +24,7 @@ public class EmailTemplateFactory {
 			email.setTemplateEngine(templateEngine);
 			return email;
 		} else {
+		    logger.error("Factory received object of invalid class:" + clss.getSimpleName());
 			throw new FactoryInstantinationException();
 		}
 	}
@@ -29,7 +33,7 @@ public class EmailTemplateFactory {
 		this.templateEngine = templateEngine;
 	}
 
-	public void setChessBoardImage(ChessBoardSVGImage chessBoardImage) {
+	public void setChessBoardImage(ChessBoardSVGFactory chessBoardImage) {
 		this.chessBoardImage = chessBoardImage;
 	}
 

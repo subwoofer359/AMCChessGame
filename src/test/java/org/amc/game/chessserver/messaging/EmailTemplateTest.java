@@ -28,7 +28,7 @@ public class EmailTemplateTest {
         scg.addOpponent(new HumanPlayer("Player 2"));
         template = new MoveUpdateEmail(player, scg);
         
-        ChessBoardSVGImage cbsi = new ChessBoardSVGImage(scg);
+        ChessBoardSVGFactory cbsi = new ChessBoardSVGFactory(scg);
         
         emailTemplateResolver = new FileTemplateResolver();
         emailTemplateResolver.setPrefix("src/main/resources/mail/");

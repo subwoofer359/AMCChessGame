@@ -39,9 +39,9 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-public class ChessBoardSVGImage {
+public class ChessBoardSVGFactory {
 
-    private static final Logger logger = Logger.getLogger(ChessBoardSVGImage.class);
+    private static final Logger logger = Logger.getLogger(ChessBoardSVGFactory.class);
 
     private ServerChessGame serverChessGame;
 
@@ -62,11 +62,11 @@ public class ChessBoardSVGImage {
     private Element layer;
     private String svgNS;
 
-    public ChessBoardSVGImage() throws ParserConfigurationException {
+    public ChessBoardSVGFactory() throws ParserConfigurationException {
         svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
     }
 
-    public ChessBoardSVGImage(ServerChessGame serverChessGame) throws ParserConfigurationException {
+    public ChessBoardSVGFactory(ServerChessGame serverChessGame) throws ParserConfigurationException {
         this();
         this.serverChessGame = serverChessGame;
 

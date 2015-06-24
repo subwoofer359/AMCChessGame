@@ -12,7 +12,7 @@ public class MoveUpdateEmail extends EmailTemplate {
 
 	private static final Logger logger = Logger.getLogger(MoveUpdateEmail.class);
     
-    private ChessBoardSVGImage chessBoardImage;
+    private ChessBoardSVGFactory chessBoardImage;
 
     private static final String EMAIL_TEMPLATE = "gameStatus.html";
     
@@ -61,7 +61,11 @@ public class MoveUpdateEmail extends EmailTemplate {
     }
     
     @Autowired
-    public void setChessBoardSVGImage(ChessBoardSVGImage chessboardImage) {
+    public void setChessBoardSVGImage(ChessBoardSVGFactory chessboardImage) {
     	this.chessBoardImage = chessboardImage;
+    }
+    
+    ChessBoardSVGFactory getChessBoardSVGFactory() {
+        return this.chessBoardImage;
     }
 }
