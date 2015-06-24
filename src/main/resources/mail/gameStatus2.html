@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">AMCChessGame</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+      html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+        
+*{
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+html {
+	font-size:62.5%;
+	width:600px;
+}
+
+p,footer {
+    font-family: serif;
+    font-size: medium;
+    font-weight: 400;
+    line-height: 1.5em;
+    margin-left: 30px;
+}
+
+body {
+    background-image: url(../../../../temp/background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+	font-family:"Times New Roman", serif;
+	font-weight:normal;
+    background-color: #c3d3e1;
+    min-height: 500px;
+}    
+/* Title banner */
+    
+#title{
+    font-size: 32px;
+    background-color: #2886d5;
+    opacity: 0.7;
+    box-shadow: 5px 5px 8px #000000;
+    padding-top: 12px;
+    padding-right: 15px;
+    padding-left: 20px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    max-width: 700px;
+    min-width: 600px;
+}
+
+#title strong{
+    font-family: Verdana;
+    font-weight: bold;
+    font-size: 64px;
+    padding-left: 180px;
+    padding-top: 10px;
+    display: block;
+    max-width: 700px;
+    min-width: 700px;
+}
+    
+#chessboard {
+    border-style: ridge;
+    border-width: 5px;
+    box-shadow: 5px 5px 2px black;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    margin-left: 30px;
+    
+    }
+        
+#message {
+    background-color: rgba(255,255,255,.4);
+    width: 600px;
+    padding-top: 20px;
+</style>
+  </head>
+  <body th:style="'background-image:url(cid:' + ${background} + ');background-size: cover;background-repeat: no-repeat;'"
+  >
+      <div id="title" >Adrian McLaughlin's <br/><strong>Chess Game</strong></div>
+ <div id="message">
+    <p>Hello <span th:text="${name}">Christopher</span>,</p>
+     <p>Player <span  th:text="${opponent}">Stephen</span> has made a move!</p>
+    
+        
+     <div th:switch="${status}">
+        <p>Game Status is  
+        <span th:case="IN_PROGRESS">in progress</span>
+        <span th:case="AWAITING_PLAYER">awaiting opponent to join the game</span>
+        <span th:case="FINISHED">finished</span>
+         </p>
+      </div>
+    <img id="chessboard" src="../../../../temp/out.jpg" th:src="'cid:' + ${svg}" />
+     
+     <footer>
+        Regards, <br/>
+        <span>AMCChessGame System</span>
+     </footer>
+</div>
+  </body>
+</html>
