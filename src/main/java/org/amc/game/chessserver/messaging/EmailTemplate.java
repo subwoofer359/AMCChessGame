@@ -17,8 +17,13 @@ public abstract class EmailTemplate {
     
     static final String BACKGROUND_IMAGE_RESOURCE = "background";
     
-    final String backgroundImagePath = "src/main/webapp/img/1700128.jpg";//"webapps/AMCChessGame/img/1700128.jpg";
+    final String backgroundImagePath = "webapps/AMCChessGame/img/1700128.jpg";
 
+    /*
+     * location of image for local testing
+     */
+    //final String backgroundImagePath = "src/main/webapp/img/1700128.jpg";
+    
 	private static final String IMAGE_TYPE = "image/jpg";
 	
 	private static final String DEFAULT_EMAIL_SUBJECT = "Move update from AMCChessGame";
@@ -51,7 +56,14 @@ public abstract class EmailTemplate {
     
     public abstract void addImages();
     
-    public final String getEmailHtml() {
+    
+    /**
+     * Return a string containing the html markup for the email
+     * Template method design pattern
+     * Should be final but can't be due to testing
+     * @return String
+     */
+    public String getEmailHtml() {
         addContextVariables();
         addImages();
         
@@ -75,6 +87,10 @@ public abstract class EmailTemplate {
     @Autowired
     public void setTemplateEngine(SpringTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
+    }
+    
+    SpringTemplateEngine getTemplateEngine() {
+        return this.templateEngine;
     }
     
     public ServerChessGame getServerChessGame() {
