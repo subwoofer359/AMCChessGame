@@ -64,8 +64,8 @@ public class SVGChessPieceTest {
 		}
     }
     
-    @Rule
-    public Timeout timeout =new Timeout(10, TimeUnit.SECONDS);
+    //@Rule
+    //public Timeout timeout =new Timeout(10, TimeUnit.SECONDS);
     
     @Before
     public void setUp() throws Exception {
@@ -144,12 +144,16 @@ public class SVGChessPieceTest {
     	board.markMove(layer, move);
     	assertTrue(isvalidElement());
     	
+    	final String marker = "marker-";
+    	
     	NodeList list = layer.getChildNodes();
     	for(int i = 0 ;i < list.getLength();i++) {
     		if(list.item(i) instanceof Element) {
     			Element element = (Element)list.item(i);
-    			if(element.getAttribute("fill").equals("red")) {
-    				assertTrue(locationStr.contains(element.getAttribute("id")));
+    			if(element.getAttributeNS(null, "id").startsWith(marker)) {
+    			    String markerId = element.getAttributeNS(null, "id");
+    			    String id = markerId.substring(marker.length(), markerId.length());
+    				assertTrue(locationStr.contains(id));
     			}
     		}
     	}

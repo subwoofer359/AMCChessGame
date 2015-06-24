@@ -68,7 +68,7 @@ public class SVGBlankChessBoard {
     			String id = rectangle.getAttributeNode("id").getValue();
     			if(isEqualLocations(move.getStart(), id) || isEqualLocations(move.getEnd(), id)){
     				Element marker = (Element)rectangle.cloneNode(true);
-    				marker.removeAttributeNS(null, "id");
+    				marker.setAttributeNS(null, "id", "marker-" + id);
     				marker.setAttributeNS(null,"fill", "red");
     				marker.setAttributeNS(null,"fill-opacity", "0.50142865");
     				marker.setAttributeNS(null,"opacity", "0.50142865");
