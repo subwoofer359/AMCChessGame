@@ -81,6 +81,7 @@ public class OfflineChessGameMessagerTest {
         
         templateFactory = mock(EmailTemplateFactory.class);
         when(templateFactory.getEmailTemplate(ChessGame.class)).thenReturn(new MoveUpdateEmail());
+        when(templateFactory.getEmailTemplate(Player.class)).thenReturn(new PlayerJoinedChessGameEmail());
 
         offlineGMessager.setMessageService(emailService);
         offlineGMessager.setSessionRegistry(registry);
@@ -98,7 +99,7 @@ public class OfflineChessGameMessagerTest {
         when(userDAO.findEntities("userName", opponentPlayer.getUserName())).thenReturn(userList);
 
         serverChessGame = new ServerChessGame(GAME_UID, player);
-        serverChessGame.addOpponent(opponentPlayer);
+        
         serverChessGame.attachObserver(offlineGMessager);
 
         move = new Move(new Location(ChessBoard.Coordinate.A, 2), new Location(
@@ -114,6 +115,7 @@ public class OfflineChessGameMessagerTest {
     public void testEmailSentWhenPlayerOffline() throws Exception {
         when(registry.getAllPrincipals()).thenReturn(emptyUserSessionList);
 
+        serverChessGame.addOpponent(opponentPlayer);
         serverChessGame.move(serverChessGame.getPlayer(player), move);
 
         verify(emailService).send(userCaptor.capture(), emailTemplateCaptor.capture());
@@ -126,6 +128,8 @@ public class OfflineChessGameMessagerTest {
     @Test
     public void testNoEmailSentWhenPlayerOnline() throws Exception {
         when(registry.getAllPrincipals()).thenReturn(userSessionList);
+        
+        serverChessGame.addOpponent(opponentPlayer);
         serverChessGame.move(serverChessGame.getPlayer(player), move);
         verify(emailService, never()).send(userCaptor.capture(), emailTemplateCaptor.capture());
 
@@ -136,6 +140,8 @@ public class OfflineChessGameMessagerTest {
                     MailException {
         final List<User> emptyUserList = new ArrayList<User>();
         when(userDAO.findEntities("userName", opponentPlayer.getUserName())).thenReturn(emptyUserList);
+        
+        serverChessGame.addOpponent(opponentPlayer);
         serverChessGame.move(serverChessGame.getPlayer(player), move);
         verify(emailService, never()).send(userCaptor.capture(), emailTemplateCaptor.capture());
     }
@@ -144,7 +150,24 @@ public class OfflineChessGameMessagerTest {
     public void testNoEmailAddress() throws Exception {
         opponentUser.setEmailAddress(null);
         when(registry.getAllPrincipals()).thenReturn(emptyUserSessionList);
+        
+        serverChessGame.addOpponent(opponentPlayer);
         serverChessGame.move(serverChessGame.getPlayer(player), move);
         verify(emailService, never()).send(userCaptor.capture(), emailTemplateCaptor.capture());
+    }
+    
+    @Test
+    public void testHandlePlayerUpdate() throws Exception {
+        when(userDAO.findEntities("userName", player.getUserName())).thenReturn(userList);
+        when(registry.getAllPrincipals()).thenReturn(emptyUserSessionList);
+        serverChessGame.addOpponent(opponentPlayer);
+        verify(emailService).send(userCaptor.capture(), emailTemplateCaptor.capture());
+    }
+    
+    @Test
+    public void testUpdateThrowsMessagingException() throws Exception {
+        doThrow(MessagingException.class).when(emailService).send(any(),any());
+        serverChessGame.addOpponent(opponentPlayer);
+        serverChessGame.move(serverChessGame.getPlayer(player), move);
     }
 }
