@@ -61,12 +61,18 @@ public class SVGBlankChessBoard {
     		return;
     	}
     	NodeList nodeList = layer.getChildNodes();
-    	for(int i = 0; i < nodeList.getLength();i++) {
+    	int noOfChildNodes = nodeList.getLength(); 
+    	for(int i = 0; i < noOfChildNodes; i++) {
     		if(nodeList.item(i) instanceof Element) {
     			Element rectangle = (Element)nodeList.item(i);
     			String id = rectangle.getAttributeNode("id").getValue();
     			if(isEqualLocations(move.getStart(), id) || isEqualLocations(move.getEnd(), id)){
-    				rectangle.setAttributeNS(null,"fill","red");
+    				Element marker = (Element)rectangle.cloneNode(true);
+    				marker.removeAttributeNS(null, "id");
+    				marker.setAttributeNS(null,"fill", "red");
+    				marker.setAttributeNS(null,"fill-opacity", "0.50142865");
+    				marker.setAttributeNS(null,"opacity", "0.50142865");
+    				layer.appendChild(marker);
     			}
     		}
     	}
