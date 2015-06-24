@@ -40,7 +40,7 @@ public class OfflineChessGameMessager implements Observer {
                 } else if (message instanceof ChessGame) {
                     handleChessGameUpdate(serverChessGame, message);
                 } else if(message instanceof Player) {
-                	//handlePlayerUpdate(serverChessGame, message);
+                	handlePlayerUpdate(serverChessGame, message);
                 }
             } catch (MailException e) {
                 logger.error(e);
@@ -92,7 +92,7 @@ public class OfflineChessGameMessager implements Observer {
     
     private void handlePlayerUpdate(ServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
     	User user = getUser(scg.getChessGame());
-    	Player player = scg.getChessGame().getCurrentPlayer();
+    	Player player = (Player) message;
     	logger.debug(String.format("OfflineChessMessager: %s is offline", player));
         messageService.send(user, newPlayerJoinGameEmail(player, scg));
     }
@@ -131,8 +131,8 @@ public class OfflineChessGameMessager implements Observer {
      * Factory method
      * @return EmailTemplate
      */
-    private EmailTemplate getEmailTemplate(Object object) {
-    	return templateFactory.getEmailTemplate(object.getClass());
+    private EmailTemplate getEmailTemplate(Class<?> object) {
+    	return templateFactory.getEmailTemplate(object);
     }
     
     @Autowired
