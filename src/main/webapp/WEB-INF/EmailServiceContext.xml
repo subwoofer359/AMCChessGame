@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
 	
-	<bean id="chessBoardSVGImage" class="org.amc.game.chessserver.messaging.ChessBoardSVGImage"/>
+	<bean id="chessBoardSVGImage" class="org.amc.game.chessserver.messaging.ChessBoardSVGImage" scope="prototype"/>
 	
 	<bean id="messageService" class="org.amc.game.chessserver.messaging.EmailMessageService">
 		<property name="taskExecutor" ref="myExecutor"></property>
@@ -20,8 +20,8 @@
   		<property name="password" value="Belacamelia1024" />
 	</bean>
 	
-	<bean id="emailTemplate" class="org.amc.game.chessserver.messaging.EmailTemplate" scope="prototype">
-		<property name="chessBoardSVGImage" ref="chessBoardSVGImage"></property>
+	<bean id="emailTemplateFactory" class="org.amc.game.chessserver.messaging.EmailTemplateFactory" scope="prototype">
+		<property name="chessBoardImage" ref="chessBoardSVGImage"></property>
 		<property name="templateEngine" ref="templateEngine"></property>
 	</bean>
 	
@@ -29,7 +29,7 @@
 		<property name="messageService" ref="messageService"></property>
 		<property name="sessionRegistry" ref="sessionRegistry"></property>
 		<property name="userDAO" ref="myUserDAO"></property>
-		<lookup-method name="getEmailTemplate" bean="emailTemplate"/>
+		<property name="emailTemplateFactory" ref="emailTemplateFactory"></property>
 	</bean>
 	
 	
@@ -48,11 +48,5 @@
       			<ref bean="emailTemplateResolver" />	
     		</set>
   		</property>
-	</bean>
-	
-	
-	
-	
-	
-	
+	</bean>	
 </beans>
