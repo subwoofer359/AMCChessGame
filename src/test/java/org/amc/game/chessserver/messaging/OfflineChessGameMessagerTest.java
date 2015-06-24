@@ -80,7 +80,7 @@ public class OfflineChessGameMessagerTest {
         emailService.setMailSender(mailSender);
         
         templateFactory = mock(EmailTemplateFactory.class);
-        when(templateFactory.getEmailTemplate(ChessGame.class.getClass())).thenReturn(new MoveUpdateEmail());
+        when(templateFactory.getEmailTemplate(ChessGame.class)).thenReturn(new MoveUpdateEmail());
 
         offlineGMessager.setMessageService(emailService);
         offlineGMessager.setSessionRegistry(registry);
