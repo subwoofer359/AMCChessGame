@@ -21,7 +21,7 @@ public class EmailTemplateFactoryTest {
     public void setUp() throws Exception {
         factory = new EmailTemplateFactory();
         cbsImageFactory = new ChessBoardSVGFactory();
-        factory.setChessBoardImage(cbsImageFactory);
+        factory.setChessBoardSVGFactory(cbsImageFactory);
         stEngine = mock(SpringTemplateEngine.class);
         factory.setTemplateEngine(stEngine);
     }

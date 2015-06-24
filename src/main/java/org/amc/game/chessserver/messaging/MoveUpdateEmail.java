@@ -12,7 +12,7 @@ public class MoveUpdateEmail extends EmailTemplate {
 
 	private static final Logger logger = Logger.getLogger(MoveUpdateEmail.class);
     
-    private ChessBoardSVGFactory chessBoardImage;
+    private ChessBoardSVGFactory chessBoardSVGFactory;
 
     private static final String EMAIL_TEMPLATE = "gameStatus.html";
     
@@ -56,16 +56,16 @@ public class MoveUpdateEmail extends EmailTemplate {
     }
     
     private File createChessBoardImage() throws IOException {
-    	chessBoardImage.setServerChessGame(getServerChessGame());
-    	return chessBoardImage.getChessBoardImage();
+        chessBoardSVGFactory.setServerChessGame(getServerChessGame());
+    	return chessBoardSVGFactory.getChessBoardImage();
     }
     
     @Autowired
-    public void setChessBoardSVGImage(ChessBoardSVGFactory chessboardImage) {
-    	this.chessBoardImage = chessboardImage;
+    public void setChessBoardSVGFactory(ChessBoardSVGFactory chessBoardSVGFactory) {
+    	this.chessBoardSVGFactory = chessBoardSVGFactory;
     }
     
     ChessBoardSVGFactory getChessBoardSVGFactory() {
-        return this.chessBoardImage;
+        return this.chessBoardSVGFactory;
     }
 }

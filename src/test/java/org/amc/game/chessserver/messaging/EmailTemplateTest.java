@@ -42,7 +42,7 @@ public class EmailTemplateTest {
         templateEngine.initialize();
      
         template.setTemplateEngine(templateEngine);
-        template.setChessBoardSVGImage(cbsi);
+        template.setChessBoardSVGFactory(cbsi);
     }
 
     @After

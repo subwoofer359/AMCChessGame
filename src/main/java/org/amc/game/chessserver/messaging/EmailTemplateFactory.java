@@ -11,7 +11,7 @@ public class EmailTemplateFactory {
     
 	private SpringTemplateEngine templateEngine;
 
-	private ChessBoardSVGFactory chessBoardImage;
+	private ChessBoardSVGFactory chessBoardSVGFactory;
 
 	public EmailTemplate getEmailTemplate(Class<?> clss) {
 		if (clss.equals(Player.class)) {
@@ -20,7 +20,7 @@ public class EmailTemplateFactory {
 			return email;
 		} else if (clss.equals(ChessGame.class)) {
 			MoveUpdateEmail email = new MoveUpdateEmail();
-			email.setChessBoardSVGImage(chessBoardImage);
+			email.setChessBoardSVGFactory(chessBoardSVGFactory);
 			email.setTemplateEngine(templateEngine);
 			return email;
 		} else {
@@ -33,8 +33,8 @@ public class EmailTemplateFactory {
 		this.templateEngine = templateEngine;
 	}
 
-	public void setChessBoardImage(ChessBoardSVGFactory chessBoardImage) {
-		this.chessBoardImage = chessBoardImage;
+	public void setChessBoardSVGFactory(ChessBoardSVGFactory chessBoardSVGFactory) {
+		this.chessBoardSVGFactory = chessBoardSVGFactory;
 	}
 
 	public static class FactoryInstantinationException extends RuntimeException {
