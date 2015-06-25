@@ -6,6 +6,7 @@ import org.amc.dao.DAO;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
@@ -94,10 +95,12 @@ public class OfflineChessGameMessager implements Observer {
     	User user = getUser(scg.getChessGame());
     	Player player = (Player) message;
     	logger.debug(String.format("OfflineChessMessager: %s is offline", player));
-        messageService.send(user, newPlayerJoinGameEmail(player, scg));
+    	if(scg.getCurrentStatus() == ServerGameStatus.IN_PROGRESS) {
+    	    messageService.send(user, newPlayerJoinGameEmail(player, scg));
+    	} else if(scg.getCurrentStatus() == ServerGameStatus.FINISHED) {
+    	    messageService.send(user, newPlayerQuitGameEmail(player, scg));
+    	}
     }
-    
-    
     
     private User getUser(ChessGame chessgame) throws DAOException {
         Player otherPlayer = chessgame.getCurrentPlayer();
@@ -114,27 +117,26 @@ public class OfflineChessGameMessager implements Observer {
     }
     
     private EmailTemplate newMoveUpdateEmail(Player player, ServerChessGame serverChessGame) {
-        EmailTemplate template = getEmailTemplate(ChessGame.class);
+        EmailTemplate template = templateFactory.getEmailTemplate(ChessGame.class);
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);
         return template;
     }
     
     private EmailTemplate newPlayerJoinGameEmail(Player player, ServerChessGame serverChessGame) {
-    	EmailTemplate template = getEmailTemplate(Player.class);
+    	EmailTemplate template = templateFactory.getEmailTemplate(Player.class);
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);
         return template;
     }
     
-    /**
-     * Factory method
-     * @return EmailTemplate
-     */
-    private EmailTemplate getEmailTemplate(Class<?> object) {
-    	return templateFactory.getEmailTemplate(object);
+    private EmailTemplate newPlayerQuitGameEmail(Player player, ServerChessGame serverChessGame) {
+        EmailTemplate template = templateFactory.getEmailTemplate(Player.class, serverChessGame.getCurrentStatus());
+        template.setPlayer(player);
+        template.setServerChessGame(serverChessGame);
+        return template;
     }
-    
+   
     @Autowired
     public void setUserDAO(DAO<User> userDAO) {
         this.userDAO = userDAO;

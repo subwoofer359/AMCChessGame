@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">AMCChessGame</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:700,400' rel='stylesheet' type='text/css'/>
+  </head>
+  <body style="background-image:url(/src/main/webapp/img/1700128.jpg);background-size: cover;background-repeat: no-repeat;width:600px;min-height:600px;"
+  th:style="'background-image:url(cid:' + ${background} + ');background-size: cover;background-repeat: no-repeat;width:600px;min-height:600px;'"
+  >
+      <div id="title" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 32px;vertical-align: baseline;margin: 0;padding: 0;background-color: #2886d5;opacity: 0.7;box-shadow: 5px 5px 8px #000000;padding-top: 12px;padding-right: 15px;padding-left: 20px;margin-bottom: 30px;border-radius: 5px;max-width: 600px;min-width: 500px;">Adrian McLaughlin's <br style="-moz-box-sizing: border-box;box-sizing: border-box;"/><strong style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0; font-size: 64px;vertical-align: baseline;margin: 0;padding: 0;font-family: Verdana;font-weight: bold;padding-left: 180px;padding-top: 10px;display: block;max-width: 600px;min-width: 500px;">Chess Game</strong></div>
+ <div id="message"  style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;background-color: rgba(255,255,255,0.4);min-width: 100%;max-width:100%;padding-top: 20px;">
+    <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Hello <span th:text="${name}">Christopher</span>,</p>
+     <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Player <span  th:text="${player}">Stephen</span> has quit the game [ID:<span th:text="${GAME_UUID}">989808</span>]!</p>
+    
+     
+     <br/>
+     <br/>
+
+     <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">
+        Best Regards, <br/>
+        <span style="display:block;text-indent:50px">AMCChessGame System.</span>
+     </p>
+</div>
+  </body>
+</html>

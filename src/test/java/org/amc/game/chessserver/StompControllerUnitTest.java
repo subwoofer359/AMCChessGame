@@ -7,6 +7,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,6 +30,8 @@ public class StompControllerUnitTest {
     private long gameUUID = 1234L;
 
     private ServerChessGame scg;
+    
+    private OfflineChessGameMessager messager = mock (OfflineChessGameMessager.class);
     
     private static final String DESTINATION_BOTH_PLAYERS = "/topic/updates";
 
@@ -142,10 +145,15 @@ public class StompControllerUnitTest {
     
     @Test
     public void testQuitChessGame() {
+        
         scg.addOpponent(blackPlayer);
         sessionAttributes.put("PLAYER", whitePlayer);
+        scg.attachObserver(messager);
         controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        
         verifySimpMessagingTemplateCall();
+        
+        verify(messager,times(1)).update(eq(scg), eq(whitePlayer));
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(StompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
@@ -160,10 +168,12 @@ public class StompControllerUnitTest {
         scg.setCurrentStatus(ServerGameStatus.FINISHED);
         sessionAttributes.put("PLAYER", whitePlayer);
         controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        
+        verify(messager,never()).update(eq(scg), eq(whitePlayer));
         verifySimpMessagingTemplateCall();
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(String.format(StompController.MSG_GAME_ALREADY_OVER, principal.getName()),
+        assertEquals(StompController.MSG_GAME_ALREADY_OVER,
                         payoadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());

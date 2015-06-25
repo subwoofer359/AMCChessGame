@@ -162,6 +162,7 @@ public class StompController {
             replyMessage = MSG_GAME_ALREADY_OVER;
         } else {        
             serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
+            serverGame.notifyObservers(player);
             replyMessage = String.format(MSG_PLAYER_HAS_QUIT, player.getName());
         }
         sendMessage(replyMessage, gameUUID, MessageType.INFO);
