@@ -10,7 +10,7 @@
   <body th:style="'background-image:url(cid:' + ${background} + ');background-size: cover;background-repeat: no-repeat;'" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;line-height: 1;background-image: url(../../../../temp/background.jpg);background-size: cover;background-repeat: no-repeat;font-family: &quot;Times New Roman&quot;, serif;font-weight: normal;background-color: #c3d3e1;min-height: 500px;">
       <div id="title" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 32px;vertical-align: baseline;margin: 0;padding: 0;background-color: #2886d5;opacity: 0.7;box-shadow: 5px 5px 8px #000000;padding-top: 12px;padding-right: 15px;padding-left: 20px;margin-bottom: 30px;border-radius: 5px;max-width: 600px;min-width: 500px;">Adrian McLaughlin's <br style="-moz-box-sizing: border-box;box-sizing: border-box;"/><strong style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0; font-size: 64px;vertical-align: baseline;margin: 0;padding: 0;font-family: Verdana;font-weight: bold;padding-left: 180px;padding-top: 10px;display: block;max-width: 600px;min-width: 500px;">Chess Game</strong></div>
  <div id="message" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;background-color: rgba(255,255,255,.4);min-width: 100%;max-width:100%;padding-top: 20px;">
-    <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Hello <span th:text="${name}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;">Christopher</span>,</p>
+    <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Hello <span th:text="${player.name}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;">Christopher</span>,</p>
      <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Player <span th:text="${opponent}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;">Stephen</span> has made a move!</p>
     
         
@@ -22,15 +22,25 @@
          </p>
       </div>
     <img id="chessboard" src="../../../../temp/out.jpg" th:src="'cid:' + ${svg}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;border-style: ridge;border-width: 5px;box-shadow: 5px 5px 2px black;margin-top: 20px;margin-bottom: 40px;margin-left: 30px;"/>
-    
     <div th:if="${gameState} neq 'RUNNING'">
-    <div id="statusBox" th:switch="${gameState}" style="background-color:yellow;width:400px;margin-left:60px; font-size:24px;padding:20px;border-radius:10px; margin-bottom:20px;">
-    	<p th:case="'STALEMATE'">The game has ended in stalemate.</p>
-    	<p th:case="'WHITE_IN_CHECK'"><span th:text="'Your king is in check'">White player's king is in check.</span></p>
-    	<p th:case="'BLACK_IN_CHECK'"><span th:text="${opponent.name} + 's king is in check'">Black player's king is in check.</span></p>
-    	<p th:case="'WHITE_CHECKMATE'"><span th:text="'Your king has been checkmated'">White player's king has been checkmated.</span></p>
-    	<p th:case="'BLACK_CHECKMATE'"><span th:text="${opponent.name} + 's king has been checkmated'">Black player's king has been checkmated.</span></p>
-    </div>
+    	<div th:if="${player.colour} eq ${colourBlack}">
+    		<div id="statusBox" th:switch="${gameState}" style="background-color:yellow;width:400px;margin-left:60px; font-size:24px;padding:20px;border-radius:10px; margin-bottom:20px;">
+    			<p th:case="'STALEMATE'">The game has ended in stalemate.</p>
+    			<p th:case="'WHITE_IN_CHECK'"><span th:text="${opponent.name} + '\'s king is in check'">White player's king is in check.</span></p>
+    			<p th:case="'BLACK_IN_CHECK'">Your king is in check</p>
+    			<p th:case="'WHITE_CHECKMATE'"><span th:text="${opponent.name} + '\'s king has been checkmated'">White player's king has been checkmated.</span></p>
+    			<p th:case="'BLACK_CHECKMATE'">Your king has been checkmated</p>
+    		</div>
+    	</div>
+    	<div th:if="${player.colour} neq ${colourBlack}">
+    		<div id="statusBox" th:switch="${gameState}" style="background-color:yellow;width:400px;margin-left:60px; font-size:24px;padding:20px;border-radius:10px; margin-bottom:20px;">
+    			<p th:case="'STALEMATE'">The game has ended in stalemate.</p>
+    			<p th:case="'WHITE_IN_CHECK'">Your king is in check</p>
+    			<p th:case="'BLACK_IN_CHECK'"><span th:text="${opponent.name} + '\'s king is in check'">Black player's king is in check.</span></p>
+    			<p th:case="'WHITE_CHECKMATE'">Your king has been checkmated</p>
+    			<p th:case="'BLACK_CHECKMATE'"><span th:text="${opponent.name} + '\'s king has been checkmated'">Black player's king has been checkmated.</span></p>
+    		</div>
+    	</div>
     </div>
      <p style="font-size: medium;vertical-align: baseline;margin: 0;padding: 0;display: block;font-family: serif;font-weight: 400;line-height: 1.5em;padding-left:30px;">
         Regards, <br style="-moz-box-sizing: border-box;box-sizing: border-box;"/>

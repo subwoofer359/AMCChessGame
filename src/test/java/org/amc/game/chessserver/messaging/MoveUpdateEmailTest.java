@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
@@ -51,7 +52,7 @@ public class MoveUpdateEmailTest {
         emailTemplateResolver.initialize();
         templateEngine.initialize();
      
-        initialiseTemplate(player, scg);
+        initialiseTemplate(scg.getPlayer(), scg);
         
     }
     
@@ -87,84 +88,46 @@ public class MoveUpdateEmailTest {
     }
     
     @Test
-    public void testBlackKingCheckMated() throws Exception {
-        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("Ka6:kc6:qb1");
-        Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
-        
-        scg.getChessGame().setChessBoard(board);
-        
-        scg.move(scg.getPlayer(player), queenMove);
-        
-        Pattern pattern = Pattern.compile("\\<span\\>Player 2s king has been checkmated\\<\\/span\\>");
-        
-        String emailHtml = template.getEmailHtml();
-        
-        Matcher matcher = pattern.matcher(emailHtml);
-        
-        assertTrue(matcher.find());
+    public void testBlackKingCKMWhitePlayer() throws Exception {
+        testBlackKingStatus(player, "Player 2&#39;s king has been checkmated", "Ka6:kc6:qb1");
         
     }
     
     @Test
-    public void testBlackKingIsCheck() throws Exception {
-        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("Ka6:ke6:qb1");
-        Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
-        
-        scg.getChessGame().setChessBoard(board);
-        
-        scg.move(scg.getPlayer(player), queenMove);
-        
-        Pattern pattern = Pattern.compile("\\<span\\>Player 2s king is in check\\<\\/span\\>");
-        
-        String emailHtml = template.getEmailHtml();
-        
-        Matcher matcher = pattern.matcher(emailHtml);
-        
-        assertTrue(matcher.find());
+    public void testBlackKingCKMBlackPlayer() throws Exception {
+        testBlackKingStatus(opponent, "Your king has been checkmated", "Ka6:kc6:qb1");  
+    }
+
+    @Test
+    public void testBlackKingCheckWhitePlayer() throws Exception {
+        testBlackKingStatus(player, "Player 2&#39;s king is in check", "Ka6:ke6:qb1");
         
     }
     
     @Test
-    public void testWhiteKingCheckMated() throws Exception {
-        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("ka2:Kc2:Qb8");
-        Move queenMove = new Move(new Location(B, 8), new Location(B, 2));
-        
-        scg.getChessGame().setChessBoard(board);
-        scg.getChessGame().changePlayer();
-        
-        scg.move(scg.getPlayer(opponent), queenMove);
-        
-        Pattern pattern = Pattern.compile("\\<span\\>Your king has been checkmated\\<\\/span\\>");
-        
-        String emailHtml = template.getEmailHtml();
-        
-        Matcher matcher = pattern.matcher(emailHtml);
-        
-        assertTrue(matcher.find());
+    public void testBlackKingCheckBlackPlayer() throws Exception {
+        testBlackKingStatus(opponent, "Your king is in check", "Ka6:ke6:qb1");
         
     }
     
     @Test
-    public void testWhiteKingIsCheck() throws Exception {
-        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("ka2:Ke2:Qb8");
-        Move queenMove = new Move(new Location(B, 8), new Location(B, 2));
-        
-        scg.getChessGame().setChessBoard(board);
-        scg.getChessGame().changePlayer();
-        
-        scg.move(scg.getPlayer(opponent), queenMove);
-        
-        Pattern pattern = Pattern.compile("\\<span\\>Your king is in check\\<\\/span\\>");
-        Pattern statusBoxPattern = Pattern.compile("id=\"statusBox\"");
-        
-        String emailHtml = template.getEmailHtml();
-        
-        Matcher matcher = pattern.matcher(emailHtml);
-        Matcher statusBoxMatcher = statusBoxPattern.matcher(emailHtml);
-        
-        assertTrue(matcher.find());
-        assertTrue(statusBoxMatcher.find());
-        
+    public void testWhiteKingCKMWhitePlayer() throws Exception {
+        testWhiteKingStatus(player, "Your king has been checkmated", "ka2:Kc2:Qb8"); 
+    }
+    
+    @Test
+    public void testWhiteKingCKMBlackPlayer() throws Exception {
+        testWhiteKingStatus(opponent, player.getName() + "&#39;s king has been checkmated", "ka2:Kc2:Qb8"); 
+    }
+    
+    @Test
+    public void testWhiteKingCheckWhitePlayer() throws Exception {
+        testWhiteKingStatus(player, "Your king is in check", "ka2:Ke2:Qb8"); 
+    }
+    
+    @Test
+    public void testWhiteKingCheckBlackPlayer() throws Exception {
+        testWhiteKingStatus(opponent, player.getName() + "&#39;s king is in check", "ka2:Ke2:Qb8"); 
     }
     
     /**
@@ -181,6 +144,46 @@ public class MoveUpdateEmailTest {
         
         assertFalse(matcher.find());
         
+    }
+    
+    private void testBlackKingStatus(Player receivingPlayer, String patternStr, String boardSetup) throws Exception {
+        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard(boardSetup);
+        Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
+        
+        scg.getChessGame().setChessBoard(board);
+        
+        moveAndInitialiseTemplate(player, receivingPlayer, queenMove);
+        
+        checkEmailOutput(patternStr);;
+        
+    }
+    
+    private void testWhiteKingStatus(Player receivingPlayer, String patternStr, String boardSetup) throws Exception {
+        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard(boardSetup);
+        Move queenMove = new Move(new Location(B, 8), new Location(B, 2));
+        
+        scg.getChessGame().setChessBoard(board);
+        scg.getChessGame().changePlayer();
+        
+        moveAndInitialiseTemplate(opponent, receivingPlayer, queenMove);
+        
+        checkEmailOutput(patternStr);
+        
+    }
+    
+    private void moveAndInitialiseTemplate(Player player, Player receivingPlayer, Move move) throws IllegalMoveException, ParserConfigurationException{
+        scg.move(scg.getPlayer(player), move);
+        initialiseTemplate(scg.getPlayer(receivingPlayer), scg);
+    }
+    
+    private void checkEmailOutput(String patternStr) {
+        Pattern pattern = Pattern.compile(patternStr);
+        
+        String emailHtml = template.getEmailHtml();
+        
+        Matcher matcher = pattern.matcher(emailHtml);
+        
+        assertTrue(matcher.find());
     }
     
 }
