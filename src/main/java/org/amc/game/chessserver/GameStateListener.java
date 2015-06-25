@@ -22,7 +22,7 @@ public class GameStateListener implements Observer {
     /**
      * STOMP message subscription destination
      */
-    private static final String MESSAGE_DESTINATION = "/topic/updates";
+    static final String MESSAGE_DESTINATION = "/topic/updates";
     
     public GameStateListener(ServerChessGame chessGame, SimpMessagingTemplate template) {
         this.template = template;
