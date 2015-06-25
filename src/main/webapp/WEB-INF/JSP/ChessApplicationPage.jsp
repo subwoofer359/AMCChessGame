@@ -36,7 +36,8 @@
     body {
         background-image: url(../../img/1700128.jpg);
         background-size: cover;
-        background-repeat: no-repeat;
+        background-repeat: repeat-y;
+        overflow: auto;
     }
     
     .player-name {
@@ -46,7 +47,7 @@
         overflow:hidden;
         height:50px;
         padding-bottom:60px;
-        min-width: 470px;
+        min-width: 350px;
     }
     
     .player-name .title {
@@ -68,7 +69,7 @@
         padding:12px 30px 12px 15px;
         background-color: #ffffff;
         box-shadow: 5px 5px 8px #000000;
-        min-width: 400px;
+        min-width: 350px;
     }
     
     .side-menu{
@@ -85,8 +86,6 @@
         font-size: 1.5em;
         color: black;
         margin-top:100px;
-        //border-style: dashed;
-        //border-width: 1px;
         height: 70vh;
         overflow: auto;
         box-shadow: 10px 10px 8px #000000;
@@ -119,6 +118,10 @@
   		padding: 10px 20px 10px 20px;
   		overflow: auto;
   		background-color: greenyellow;
+    }
+    
+    #other-games-table {
+    	margin-bottom:70px;
     }
 </style>
 <script>
@@ -244,7 +247,7 @@ $(document).ready(function(){
             </ul>
             </div>
         </div><!-- sidebar-left -->
-        <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
+        <div class="player-name col-sm-10 col-xs-11"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
         
         <div class="col-xs-12 col-md-5">
             <div id="your-games-table" class="games-table">
