@@ -49,6 +49,7 @@ public class MoveUpdateEmail extends EmailTemplate {
     public void addContextVariables() {
         addContextVariable("name", getPlayer().getName());
         addContextVariable("status", getServerChessGame().getCurrentStatus().toString());
+        addContextVariable("gameState", getServerChessGame().getChessGame().getGameState().toString());
         addContextVariable("opponent", getServerChessGame().getChessGame()
                         .getOpposingPlayer(getServerChessGame().getPlayer(getPlayer())));
         addContextVariable(TEMPLATE_CHESSBOARD_TAG, CHESSBOARD_IMAGE_RESOURCE);
