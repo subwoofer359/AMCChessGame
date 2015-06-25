@@ -12,7 +12,7 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import java.util.Map;
 
-public class EmailTemplateTest {
+public class MoveUpdateEmailTest {
 
     private MoveUpdateEmail template;
     private SpringTemplateEngine templateEngine;
