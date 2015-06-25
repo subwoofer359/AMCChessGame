@@ -1,11 +1,14 @@
 package org.amc.game.chessserver.messaging;
 
+import static org.amc.game.chess.ChessBoard.Coordinate.B;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.junit.Assert.*;
 
 import org.amc.User;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
@@ -13,8 +16,10 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerConstants;
 import org.amc.game.chessserver.messaging.EmailMessageService.SendMessage;
 import org.junit.After;
@@ -40,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
 public class EmailMessagingIntegrationTest {
 
-	//private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
 	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
 
@@ -64,13 +69,13 @@ public class EmailMessagingIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-    	//this.signUpfixture.setUp();
+    	this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
     
     @After
     public void tearDown() {
-        //this.signUpfixture.tearDown();
+        this.signUpfixture.tearDown();
     }
 
     @Test
@@ -101,27 +106,47 @@ public class EmailMessagingIntegrationTest {
                         .andDo(print())
                         .andReturn();
       
+        final String backgroundImagePath = "src/main/webapp/img/1700128.jpg";
         EmailTemplateFactory factory = (EmailTemplateFactory)wac.getBean("emailTemplateFactory");
         EmailTemplate template = factory.getEmailTemplate(ChessGame.class);
-        EmailTemplate playerJoinedGameEmail = factory.getEmailTemplate(Player.class);
+        template.backgroundImagePath = backgroundImagePath;
         template.setPlayer(whitePlayer);
         
+        EmailTemplate playerJoinedGameEmail = factory.getEmailTemplate(Player.class);
+        EmailTemplate playerQuitGameEmail = factory.getEmailTemplate(Player.class, ServerGameStatus.FINISHED);
+        
         playerJoinedGameEmail.setPlayer(blackPlayer);
+        playerQuitGameEmail.setPlayer(blackPlayer);
+        playerJoinedGameEmail.backgroundImagePath = backgroundImagePath;
+        playerQuitGameEmail.backgroundImagePath = backgroundImagePath;
+        
+        
+        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("Ka6:kc6:qb1");
+        Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
+        
         ServerChessGame scg = (ServerChessGame)result.getModelAndView().getModel().get("GAME");
         
-        //scg.move(whitePlayer, new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3)));
+        scg.getChessGame().setChessBoard(board);
+        
+        scg.move(whitePlayer, queenMove);
+        
         template.setServerChessGame(scg);
         playerJoinedGameEmail.setServerChessGame(scg);
+        playerQuitGameEmail.setServerChessGame(scg);
         
         EmailMessageService service = (EmailMessageService)wac.getBean("messageService");
         User user =new User();
         user.setEmailAddress("subwoofer359@gmail.com");
         user.setUserName("adrian");
         user.setName("Adrian McLaughlin");
+        
         Future<String> mailresult = service.send(user, template);
         Future<String> mailresult2 = service.send(user, playerJoinedGameEmail);
+        Future<String> mailresult3 = service.send(user, playerQuitGameEmail);
+        
         assertEquals(SendMessage.SENT_SUCCESS, mailresult.get());
         assertEquals(SendMessage.SENT_SUCCESS, mailresult2.get());
+        assertEquals(SendMessage.SENT_SUCCESS, mailresult3.get());
     }
 
     
