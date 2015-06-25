@@ -30,8 +30,8 @@
 body {
     background-image: url(img/1700128.jpg);
     background-size: cover;
-    background-repeat: no-repeat;
-    
+    background-repeat: repeat-y;
+    overflow:auto;
 }
 
 #main{
@@ -151,6 +151,39 @@ body {
     text-decoration: none;
 }
 
+@media (max-height:650px) and (max-width:450px) {
+	#login-box {
+		margin-top: -45px;
+	}
+	
+	#signup-box {
+		margin-top: 0px;
+	}
+    
+}
+
+@media (max-width:450px) {
+	#login-box {
+		margin-top: 0px;
+	}
+	
+	#signup-box {
+		margin-top: 0px;
+	}
+    
+}
+
+@media (max-height:650px) {
+	#login-box {
+		margin-top: -0px;
+	}
+	
+	#signup-box {
+		margin-top: 0px;
+	}
+    
+}
+
 </style>
 <script>
 $(document).ready(function () {
@@ -181,7 +214,7 @@ $(document).ready(function () {
 ><!-- Top row -->
     <div class="row">
         <form method="post" action="./login">
-        <div id="login-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
+        <div id="login-box" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 box">
             <img id="login-icon" alt="knight"  src="./img/Knight.svg"/>
             <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
             <c:if test="${param.error != null}">
@@ -190,12 +223,12 @@ $(document).ready(function () {
             <input class="inputtext form-control" type="text" name="username" required="required" placeholder="Username"/>
             <input class="inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>
-            <a id="signup-msg">Not a Member? Sign up now</a>
+            <a id="signup-msg">Not a Member? Sign up now <span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
             <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
         </form>
         <form id="userForm" method="post" action="signup">
-        <div id="signup-box" class="col-sm-offset-4 col-sm-5 col-md-offset-4 col-md-4 box">
+        <div id="signup-box" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 box">
              <c:if test="${param.ERRORS != null}">
             	   <span id="login-fail" class="label label-danger"><c:out value="${param.ERRORS}"></c:out></span>
             </c:if>
@@ -207,7 +240,7 @@ $(document).ready(function () {
             <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username"/>
             <input class="inputtext signup-inputtext form-control" type="password" name="password" id="passwordOne" required="required" placeholder="Password"/>
             <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
-            <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="create Player"/>
+            <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Create Player"/>
             <div class="filler"></div>
         </div>
             <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
