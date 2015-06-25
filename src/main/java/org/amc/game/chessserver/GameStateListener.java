@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
@@ -37,15 +38,24 @@ public class GameStateListener implements Observer {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessGame.GameState && subject instanceof ServerChessGame) {
-            GameState gameState = (GameState) message;
+        if(subject instanceof ServerChessGame) {
             ServerChessGame serverChessGame = (ServerChessGame)subject;
-            
-            this.template.convertAndSend(getMessageDestination(serverChessGame), gameState.toString(), getDefaultHeaders());
-            
-            logger.debug("Message sent to" + getMessageDestination(serverChessGame));
-            logGameState(gameState);   
+            if (message instanceof ChessGame.GameState) {
+                GameState gameState = (GameState) message;
+                sendMessage(serverChessGame, gameState.toString());
+                logGameState(gameState);   
+            } else if(message instanceof ServerChessGame.ServerGameStatus) {
+                ServerGameStatus status = (ServerGameStatus)message;
+                if(status == ServerGameStatus.FINISHED) {
+                    sendMessage(serverChessGame, serverChessGame.getChessGame().getGameState().toString());
+                }
+            }
         }
+    }
+    
+    private void sendMessage(ServerChessGame serverChessGame, String message) {
+        this.template.convertAndSend(getMessageDestination(serverChessGame), message, getDefaultHeaders()); 
+        logger.debug("Message sent to" + getMessageDestination(serverChessGame));
     }
     
     private String getMessageDestination(ServerChessGame serverChessGame) {

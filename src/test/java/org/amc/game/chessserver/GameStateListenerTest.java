@@ -52,6 +52,13 @@ public class GameStateListenerTest {
     }
     
     @Test
+    public void testSendCheckMateMessage() {
+        listener = new GameStateListener(serverGame, template);
+        listener.update(serverGame, ServerChessGame.ServerGameStatus.FINISHED);
+        verify(template, times(1)).convertAndSend(anyString(),anyObject(),anyMap());
+    }
+    
+    @Test
     public void testMessageIsIgnored() {
         listener = new GameStateListener(serverGame, template);
         listener.update(serverGame, null);
