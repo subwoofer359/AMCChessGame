@@ -22,6 +22,16 @@
          </p>
       </div>
     <img id="chessboard" src="../../../../temp/out.jpg" th:src="'cid:' + ${svg}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;border-style: ridge;border-width: 5px;box-shadow: 5px 5px 2px black;margin-top: 20px;margin-bottom: 40px;margin-left: 30px;"/>
+    
+    <div th:if="${gameState} neq 'RUNNING'">
+    <div id="statusBox" th:switch="${gameState}" style="background-color:yellow;width:400px;margin-left:60px; font-size:24px;padding:20px;border-radius:10px; margin-bottom:20px;">
+    	<p th:case="'STALEMATE'">The game has ended in stalemate.</p>
+    	<p th:case="'WHITE_IN_CHECK'"><span th:text="'Your king is in check'">White player's king is in check.</span></p>
+    	<p th:case="'BLACK_IN_CHECK'"><span th:text="${opponent.name} + 's king is in check'">Black player's king is in check.</span></p>
+    	<p th:case="'WHITE_CHECKMATE'"><span th:text="'Your king has been checkmated'">White player's king has been checkmated.</span></p>
+    	<p th:case="'BLACK_CHECKMATE'"><span th:text="${opponent.name} + 's king has been checkmated'">Black player's king has been checkmated.</span></p>
+    </div>
+    </div>
      <p style="font-size: medium;vertical-align: baseline;margin: 0;padding: 0;display: block;font-family: serif;font-weight: 400;line-height: 1.5em;padding-left:30px;">
         Regards, <br style="-moz-box-sizing: border-box;box-sizing: border-box;"/>
         <span>AMCChessGame System</span>
