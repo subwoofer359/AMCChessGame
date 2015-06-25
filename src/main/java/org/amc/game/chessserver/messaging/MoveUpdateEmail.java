@@ -3,6 +3,7 @@ package org.amc.game.chessserver.messaging;
 import java.io.File;
 import java.io.IOException;
 
+import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
 import org.apache.log4j.Logger;
@@ -47,11 +48,14 @@ public class MoveUpdateEmail extends EmailTemplate {
     
     @Override
     public void addContextVariables() {
+        ChessGame chessGame = getServerChessGame().getChessGame();
+        Player opponent = chessGame
+                        .getOpposingPlayer(getServerChessGame().getPlayer(getPlayer()));
+        
         addContextVariable("name", getPlayer().getName());
         addContextVariable("status", getServerChessGame().getCurrentStatus().toString());
-        addContextVariable("gameState", getServerChessGame().getChessGame().getGameState().toString());
-        addContextVariable("opponent", getServerChessGame().getChessGame()
-                        .getOpposingPlayer(getServerChessGame().getPlayer(getPlayer())));
+        addContextVariable("gameState", chessGame.getGameState().toString());
+        addContextVariable("opponent", opponent);
         addContextVariable(TEMPLATE_CHESSBOARD_TAG, CHESSBOARD_IMAGE_RESOURCE);
         addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
     }
