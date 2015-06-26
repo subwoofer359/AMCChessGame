@@ -133,14 +133,33 @@
     }
     
     #my-alert {
-        padding: 15px;
+        /*padding: 15px;*/
         font-size: 2em;
         text-align: center;
+    }
+    .alert {
+        margin-bottom: 5px;
+        min-height: 2.6em;
+    }
+    
+    @media (max-width:600px) {
+        body {
+            overflow-x: auto;
+            background-repeat: repeat-x;
+        }
+    }
+    
+    @media (max-height:650px) {
+        body {
+            overflow-y: auto;
+            background-repeat: repeat-y;
+        }
     }
     
 </style>
 <script>
 $(document).ready(function(){
+    
     var headerName = "${_csrf.headerName}",
         token = "${_csrf.token}",
         stompObject = {};
@@ -157,6 +176,8 @@ $(document).ready(function(){
     
     var stompClient = setupStompConnection(stompObject);
     chessGameInteract(stompClient, "${GAME_UUID}");
+    
+    addMessageDialogListener();
 });
 
 </script>
@@ -179,12 +200,12 @@ $(document).ready(function(){
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>
+        <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
+            <div class="alert alert-warning" role="alert"></div>
+        </div>
         <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-8">
             <div class="inner col-xs-offset-1 col-xs-11">
             </div><!-- col-xs-11 -->
-        </div>
-        <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
-            <div class="alert alert-warning" role="alert"></div>
         </div>
     </div>
   </div>
