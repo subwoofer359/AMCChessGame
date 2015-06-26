@@ -109,7 +109,7 @@ function chessGameInteract(stompClient, gameUID) {
 
     interact(DRAGGABLE_CLASS).draggable({
         // enable inertial throwing
-        inertia: true,
+        inertia: false,
         // keep the element within the area of it's parent
         restrict: {
             restriction: RESTRICTION_ELEMENT,
