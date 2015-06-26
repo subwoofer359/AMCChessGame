@@ -108,16 +108,48 @@
     }
     
     #player-list {
-    	width: 150px;
-  		height: 200px;
-  		position: fixed;
-  		border-style: dashed;
-  		border-width: 2px;
-  		bottom: 0;
-  		font-size: 2em;
-  		padding: 10px 20px 10px 20px;
-  		overflow: auto;
-  		background-color: greenyellow;
+        width: 150px;
+        height: 200px;
+        position: fixed;
+        border-style: solid;
+        border-color: #2a78ba;
+        border-width: 10px 10px 10px 10px;
+        bottom: 0;
+        font-size: 2em;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: #428bca;
+    }
+    
+    #player-list::-webkit-scrollbar {
+        width: 12px;
+    }
+ 
+    #player-list::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        border-radius: 10px;
+    }
+ 
+    #player-list::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    }
+    
+    #player-list li {
+        padding:2px 0 2px 5px;
+    }
+    
+    #player-list li:hover {
+        background-color: rgba(255,255,255,0.2);
+        border-top-style: solid;
+        border-bottom-style: solid;
+        border-color: rgba(0,0,0,0.2);
+        border-width: 1px 0 1px 0;
+    }
+    @media (max-width:969px) {
+        #player-list {
+            display: none;
+        }
     }
     
     #other-games-table {
