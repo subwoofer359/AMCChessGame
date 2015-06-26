@@ -8,6 +8,14 @@
 /*global SockJS*/
 /*global headers*/
 
+/* makes Message disappear when chessboard is clicked*/
+function addMessageDialogListener() {
+    "use strict";
+    $("#chessboard-surround").click(function () {
+        $("#my-alert").css("opacity", "0");
+    });
+}
+
 function StompActions(gameUID, playerName, opponentName, playerColour) {
     "use strict";
     this.oldChessBoard = {};
@@ -32,7 +40,6 @@ StompActions.prototype = {
         this.alertBoxText.html(message);
         this.alertBox.css("display", "block");
         this.alertBox.css("opacity", "1");
-        this.alertBox.fadeOut(5000);
     },
 
     showAlertMessage : function (message) {
