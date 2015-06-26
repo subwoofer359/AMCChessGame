@@ -21,7 +21,7 @@ $(document).ready(function(){
 	stompClient.connect(stompObject.headers, function () {
     
     	function onlinePlayerList(message) {
-        	var $playerList = $("#player-list"),
+        	var $playerList = $(".player-list"),
     		users = $.parseJSON(message.body),
     		html = "<ul>",
     		i,
@@ -39,4 +39,4 @@ $(document).ready(function(){
 	});
 });
 </script>
-<div id="player-list"></div>
+<div id="player-list" class="player-list"></div>
