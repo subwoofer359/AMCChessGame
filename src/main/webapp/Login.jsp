@@ -162,6 +162,7 @@ body {
     
 }
 
+    /*
 @media (max-width:450px) {
 	#login-box {
 		margin-top: 0px;
@@ -172,10 +173,10 @@ body {
 	}
     
 }
-
-@media (max-height:650px) {
+*/
+@media (max-height:639px) {
 	#login-box {
-		margin-top: -0px;
+		margin-top: 0px;
 	}
 	
 	#signup-box {
@@ -240,6 +241,7 @@ $(document).ready(function () {
             <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username"/>
             <input class="inputtext signup-inputtext form-control" type="password" name="password" id="passwordOne" required="required" placeholder="Password"/>
             <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
+            <input class="inputtext signup-inputtext form-control" type="email" name="email" id="email" required="required" placeholder="Email Address"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Create Player"/>
             <div class="filler"></div>
         </div>
