@@ -107,6 +107,21 @@
         display: none;
     }
     
+    #sidebar-user {
+        position: fixed;
+        top: 0px;
+        right: -150px;
+        width: 150px;
+        height: 92%;
+        border-style: solid;
+        border-color: #2a78ba;
+        border-width: 10px 10px 10px 10px;
+        font-size: 2em;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: #428bca;
+    }
+    
     #player-list {
         width: 150px;
         height: 200px;
@@ -121,39 +136,57 @@
         background-color: #428bca;
     }
     
-    #player-list::-webkit-scrollbar {
+    #player-list::-webkit-scrollbar, #sidebar-user::-webkit-scrollbar {
         width: 12px;
     }
  
-    #player-list::-webkit-scrollbar-track {
+    #player-list::-webkit-scrollbar-track, #sidebar-user::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
         border-radius: 10px;
     }
  
-    #player-list::-webkit-scrollbar-thumb {
+    #player-list::-webkit-scrollbar-thumb, #sidebar-user::-webkit-scrollbar-thumb {
         border-radius: 10px;
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
     }
     
-    #player-list li {
+    .player-list li {
         padding:2px 0 2px 5px;
     }
     
-    #player-list li:hover {
+    .player-list li:hover {
         background-color: rgba(255,255,255,0.2);
         border-top-style: solid;
         border-bottom-style: solid;
         border-color: rgba(0,0,0,0.2);
         border-width: 1px 0 1px 0;
     }
+    
+    
+    #other-games-table {
+    	margin-bottom:70px;
+    }
+    
     @media (max-width:969px) {
         #player-list {
             display: none;
         }
     }
     
-    #other-games-table {
-    	margin-bottom:70px;
+    @media (max-width:553px) {
+        .player-name .name, .player-name {
+            min-width: 203px; 
+        }
+    }
+    
+    @media (max-width:553px) {
+        .player-name .name, .player-name .title{
+             font-size: 0.7em;
+        }
+        
+        .player-name .title {
+            padding-right: 2px;
+        }
     }
 </style>
 <script>
@@ -250,11 +283,16 @@ $(document).ready(function(){
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
+            
             <a href="#" class="navbar-brand"></a>
         </div>
         <!-- Collection of nav links and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
+                <li><button id="userToggle" type="button" class="btn btn-default btn-block btn-lg">
+                    User List <span class="glyphicon glyphicon-user"></span></button>
+                </li>
                 <li><button formaction="createGame" type="submit" class="btn btn-default btn-block btn-lg">Create Game</button></li>
                 <li><button type="submit" class="join-button btn btn-default btn-block btn-lg ">Join Game</button></li>
                 <li><button type="submit" class="btn btn-default btn-block btn-lg">Delete Game</button></li>
@@ -279,7 +317,7 @@ $(document).ready(function(){
             </ul>
             </div>
         </div><!-- sidebar-left -->
-        <div class="player-name col-sm-10 col-xs-11"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
+        <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
         
         <div class="col-xs-12 col-md-5">
             <div id="your-games-table" class="games-table">
@@ -340,6 +378,29 @@ $(document).ready(function(){
 <footer>
 <tags:PlayerList csrfName="${_csrf.headerName}" csrfToken="${_csrf.token}"/>
 </footer>
+<script>
+    $(document).ready(function(){
+        var open = false;
+        
+        $("#userToggle").click(function () {
+            if(open) {
+                $("#sidebar-user").css("right","-150px");        
+            } else {
+                $("#sidebar-user").css("right","0");
+                $('#navbarCollapse').removeClass('in');
+            }
+            open = !open;
+        });
+        
+        $("#sidebar-user").click(function(){
+            $("#sidebar-user").css("right","-150px");
+            open = false;
+        });
+    });
+</script>
+<div id="sidebar-user" class="player-list">
+    
+</div>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>
