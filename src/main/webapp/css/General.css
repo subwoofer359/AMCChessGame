@@ -93,3 +93,19 @@ body {
 .side-menu a:hover,.side-menu a {
     text-decoration: none;
 }
+
+/* NavBar */
+
+nav div, nav button {
+    background-color: #2886d5;
+}
+
+nav a,nav a:link, .navbar-default .navbar-nav>li>a {
+    font-size: 2em;
+    color:black;
+}
+    
+nav a:hover{
+    text-decoration: none;
+    color:black;
+}
