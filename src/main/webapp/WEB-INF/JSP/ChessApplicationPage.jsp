@@ -32,6 +32,8 @@
 <style>
     @import url(../../css/General.css);
     @import url(../../css/selectTableRow.css);
+    @import url(../../css/PlayerName.css);
+    @import url(../../css/PlayerList.css);
     
     body {
         background-image: url(../../img/1700128.jpg);
@@ -40,37 +42,7 @@
         overflow: auto;
     }
     
-    .player-name {
-        font-family: "Raleway";
-        font-size: 2em;
-        margin-top:60px;
-        overflow:hidden;
-        height:50px;
-        padding-bottom:60px;
-        min-width: 350px;
-    }
     
-    .player-name .title {
-        font-family: "Orbitron";
-        border-style: double;
-        border-width: 1px;
-        background-color: antiquewhite;
-        padding:14px 30px 10px 15px;
-        border-radius: 15px 0px 0px 15px;
-        background-color: #2886d5;    
-        box-shadow: 5px 5px 8px #000000;
-    }
-    
-    .player-name .name {
-        display: inline-block;
-        border-style: double;
-        border-left-style: none;
-        border-width: 1px;
-        padding:12px 30px 12px 15px;
-        background-color: #ffffff;
-        box-shadow: 5px 5px 8px #000000;
-        min-width: 350px;
-    }
     
     .side-menu{
         font-size:1.8em;
@@ -106,87 +78,9 @@
     .games-table tr td:last-of-type,tr th:last-of-type {
         display: none;
     }
-    
-    #sidebar-user {
-        position: fixed;
-        top: 0px;
-        right: -150px;
-        width: 150px;
-        height: 92%;
-        border-style: solid;
-        border-color: #2a78ba;
-        border-width: 10px 10px 10px 10px;
-        font-size: 2em;
-        overflow-x: hidden;
-        overflow-y: auto;
-        background-color: #428bca;
-    }
-    
-    #player-list {
-        width: 150px;
-        height: 200px;
-        position: fixed;
-        border-style: solid;
-        border-color: #2a78ba;
-        border-width: 10px 10px 10px 10px;
-        bottom: 0;
-        font-size: 2em;
-        overflow-x: hidden;
-        overflow-y: auto;
-        background-color: #428bca;
-    }
-    
-    #player-list::-webkit-scrollbar, #sidebar-user::-webkit-scrollbar {
-        width: 12px;
-    }
- 
-    #player-list::-webkit-scrollbar-track, #sidebar-user::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-        border-radius: 10px;
-    }
- 
-    #player-list::-webkit-scrollbar-thumb, #sidebar-user::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-    }
-    
-    .player-list li {
-        padding:2px 0 2px 5px;
-    }
-    
-    .player-list li:hover {
-        background-color: rgba(255,255,255,0.2);
-        border-top-style: solid;
-        border-bottom-style: solid;
-        border-color: rgba(0,0,0,0.2);
-        border-width: 1px 0 1px 0;
-    }
-    
-    
+        
     #other-games-table {
     	margin-bottom:70px;
-    }
-    
-    @media (max-width:969px) {
-        #player-list {
-            display: none;
-        }
-    }
-    
-    @media (max-width:553px) {
-        .player-name .name, .player-name {
-            min-width: 203px; 
-        }
-    }
-    
-    @media (max-width:553px) {
-        .player-name .name, .player-name .title{
-             font-size: 0.7em;
-        }
-        
-        .player-name .title {
-            padding-right: 2px;
-        }
     }
 </style>
 <script>

@@ -1,0 +1,53 @@
+.player-name {
+    font-family: "Raleway";
+    font-size: 2em;
+    margin-top:60px;
+    overflow:hidden;
+    height:50px;
+    padding-bottom:60px;
+    min-width: 350px;
+}
+    
+.player-name .title {
+    font-family: "Orbitron";
+    border-style: double;
+    border-width: 1px;
+    background-color: antiquewhite;
+    padding:14px 30px 10px 15px;
+    border-radius: 15px 0px 0px 15px;
+    background-color: #2886d5;    
+    box-shadow: 5px 5px 8px #000000;
+}
+    
+.player-name .name {
+    display: inline-block;
+    border-style: double;
+    border-left-style: none;
+    border-width: 1px;
+    padding:12px 30px 12px 15px;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 8px #000000;
+    min-width: 350px;
+}
+
+@media (max-width:969px) {
+    #player-list {
+        display: none;
+    }
+}
+    
+@media (max-width:553px) {
+    .player-name .name, .player-name {
+        min-width: 203px; 
+    }
+}
+    
+@media (max-width:553px) {
+    .player-name .name, .player-name .title{
+         font-size: 0.7em;
+    }
+    
+    .player-name .title {
+        padding-right: 2px;
+    }
+}
