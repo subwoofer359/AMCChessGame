@@ -166,7 +166,7 @@ public class OfflineChessGameMessagerTest {
     
     @Test
     public void testUpdateThrowsMessagingException() throws Exception {
-        doThrow(MessagingException.class).when(emailService).send(any(),any());
+        doThrow(MessagingException.class).when(emailService).send(any(User.class),any(EmailTemplate.class));
         serverChessGame.addOpponent(opponentPlayer);
         serverChessGame.move(serverChessGame.getPlayer(player), move);
     }
