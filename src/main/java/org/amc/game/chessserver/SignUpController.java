@@ -52,7 +52,7 @@ public class SignUpController {
             if (errors.hasErrors()) {
             	mav.getModel().put("errors", errors);
             	if(isUserNameInvalid(errors)) {
-            		mav.getModel().put(EmailValidator.EMAIL_ADDR_FIELD, USERTAKEN_MSG);
+            		mav.getModel().put(ERRORS_MODEL_ATTR, USERTAKEN_MSG);
             	} else if(isEmailAddressInvalid(errors)) {
             		mav.getModel().put(ERRORS_MODEL_ATTR, INVALID_EMAIL_ADDRESS_MSG);
             	}
