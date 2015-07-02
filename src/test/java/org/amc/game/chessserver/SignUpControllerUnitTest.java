@@ -45,8 +45,6 @@ public class SignUpControllerUnitTest {
         passwordEncoder = new BCryptPasswordEncoder();
         controller.setPasswordEncoder(passwordEncoder);
         
-        Map<String, Object> errorMap = new HashMap<String, Object>();
-		errors = new MapBindingResult(errorMap, "userName");
     }
 
     @After
@@ -76,7 +74,7 @@ public class SignUpControllerUnitTest {
         String password = PASSWORD;
         when(myUserDAO.findEntities("userName", userName)).thenReturn(new ArrayList<User>());
         
-        ModelAndView mav = controller.signUp(errors, name, userName, password, EMAIL_ADDRESS);
+        ModelAndView mav = controller.signUp(name, userName, password, EMAIL_ADDRESS);
         verify(myUserDAO).addEntity(any(User.class));
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.MESSAGE_MODEL_ATTR,
@@ -93,7 +91,7 @@ public class SignUpControllerUnitTest {
         
         when(myUserDAO.findEntities("userName", userName)).thenReturn(users);
         
-        ModelAndView mav = controller.signUp(errors, name, userName, password, EMAIL_ADDRESS);
+        ModelAndView mav = controller.signUp(name, userName, password, EMAIL_ADDRESS);
         verify(myUserDAO, never()).addEntity(any(User.class));
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
@@ -107,7 +105,7 @@ public class SignUpControllerUnitTest {
         String password = PASSWORD;
         when(myUserDAO.findEntities("userName", userName)).thenReturn(new ArrayList<User>());
         
-        ModelAndView mav = controller.signUp(errors, name, userName, password, INVALID_EMAIL_ADDRESS);
+        ModelAndView mav = controller.signUp(name, userName, password, INVALID_EMAIL_ADDRESS);
         verify(myUserDAO, never()).addEntity(any(User.class));
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
@@ -123,7 +121,7 @@ public class SignUpControllerUnitTest {
         when(myUserDAO.findEntities("userName", userName)).thenReturn(new ArrayList<User>());
         doThrow(new DAOException("Database error")).when(myUserDAO).addEntity(any(User.class));
         
-        ModelAndView mav = controller.signUp(errors, name, userName, password, EMAIL_ADDRESS);
+        ModelAndView mav = controller.signUp(name, userName, password, EMAIL_ADDRESS);
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         SignUpController.ERROR_MSG);

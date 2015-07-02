@@ -12,12 +12,14 @@ import org.apache.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
 
@@ -42,9 +44,10 @@ public class SignUpController {
     private DAO<User> userDAO;
     
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView signUp(Errors errors, String name, String userName, String password, String emailAddress) {
+    public ModelAndView signUp(String name, String userName, String password, String emailAddress) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/Login.jsp");
+        Errors errors = getErrorsObject();
         
         checkUserNameValid(userName, errors);
         checkEmailAddressValid(emailAddress, errors);
@@ -68,6 +71,10 @@ public class SignUpController {
         return mav;
     }
 
+    private Errors getErrorsObject() {
+        return new MapBindingResult(
+                        new HashMap<String, String>(), "userName");
+    }
     
     private void checkUserNameValid(String userName, Errors errors) {
     	Validator userNameValidator = new UserNameValidator(userDAO);
