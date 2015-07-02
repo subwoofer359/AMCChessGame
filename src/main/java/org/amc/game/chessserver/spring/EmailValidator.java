@@ -28,6 +28,10 @@ public class EmailValidator implements Validator {
 
 	@Override
 	public void validate(Object arg0, Errors errors) {
+	    if(arg0 == null) {
+	        return;
+	    }
+	    
 		String emailAddress = (String)arg0;
 		Matcher matcher = emailAddrPattern.matcher(emailAddress);
 		if(matcher.matches()){
