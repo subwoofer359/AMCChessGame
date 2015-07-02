@@ -13,11 +13,6 @@
 		<property name="taskExecutor" ref="myExecutor"></property>
 	</bean>
 	
-	<!-- creates Properties object for SMTP configuration values -->
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations" value="classpath:smtp.properties"/>
-	</bean>
-	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
   		<property name="host" value="${smtp.host}" />
   		<property name="port" value="${smtp.port}"/>

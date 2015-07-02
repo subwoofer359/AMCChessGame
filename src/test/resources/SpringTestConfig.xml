@@ -16,6 +16,18 @@
 	<context:component-scan  base-package="org.amc.game.chessserver." use-default-filters="false" />
 	
 	<mvc:annotation-driven/>
+	
+	
+	<!-- creates Properties configuration values -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+		<list>
+			<value>classpath:smtp.properties</value>
+			<value>classpath:database.properties</value>
+		</list>
+		</property>
+	</bean>
+	
     <!-- Application beans -->
     
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"

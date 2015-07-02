@@ -12,6 +12,16 @@
 	<context:component-scan base-package="org.amc.game." />
 	<context:component-scan base-package="org.amc.game.chessserver.spring."/>
 	<mvc:annotation-driven />
+	
+	<!-- creates Properties configuration values -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+		<list>
+			<value>classpath:smtp.properties</value>
+			<value>classpath:database.properties</value>
+		</list>
+		</property>
+	</bean>
 
 	<task:annotation-driven executor="myExecutor"
 		scheduler="myScheduler" />
