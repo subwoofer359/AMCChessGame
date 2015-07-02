@@ -6,9 +6,13 @@ import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.spring.EmailValidator;
+import org.amc.game.chessserver.spring.UserNameValidator;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,23 +35,30 @@ public class SignUpController {
     static final String USERTAKEN_MSG = "Username is already taken";
     static final String ERROR_MSG = "Trouble creating account";
     static final String DEFAULT_AUTHORITY = "ROLE_USER";
+    static final String INVALID_EMAIL_ADDRESS_MSG = "Invalid Email Address";
     
     private PasswordEncoder encoder;
     
     private DAO<User> userDAO;
     
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView signUp(String name, String userName, String password) {
+    public ModelAndView signUp(Errors errors, String name, String userName, String password, String emailAddress) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/Login.jsp");
+        
+        checkUserNameValid(userName, errors);
+        checkEmailAddressValid(emailAddress, errors);
         try {
-            if (isUserNameFree(userName)) {
-                Player player = new HumanPlayer(name);
-                player.setUserName(userName);
-                createEntryInUserTable(player, password);
-                mav.getModel().put(MESSAGE_MODEL_ATTR, SUCCESS_MSG);
+            if (errors.hasErrors()) {
+            	mav.getModel().put("errors", errors);
+            	if(isUserNameInvalid(errors)) {
+            		mav.getModel().put(EmailValidator.EMAIL_ADDR_FIELD, USERTAKEN_MSG);
+            	} else if(isEmailAddressInvalid(errors)) {
+            		mav.getModel().put(ERRORS_MODEL_ATTR, INVALID_EMAIL_ADDRESS_MSG);
+            	}
             } else {
-                mav.getModel().put(ERRORS_MODEL_ATTR, USERTAKEN_MSG);
+                createUserEntity(name, userName, password, emailAddress);
+                mav.getModel().put(MESSAGE_MODEL_ATTR, SUCCESS_MSG);
             }
         } catch(DAOException dao){
             mav.getModel().put(ERRORS_MODEL_ATTR, ERROR_MSG);
@@ -57,11 +68,32 @@ public class SignUpController {
         return mav;
     }
 
-    boolean isUserNameFree(String userName) throws DAOException {
-        return userDAO.findEntities("userName", userName).isEmpty();
+    
+    private void checkUserNameValid(String userName, Errors errors) {
+    	Validator userNameValidator = new UserNameValidator(userDAO);
+    	userNameValidator.validate(userName, errors);
+    }
+    
+    private void checkEmailAddressValid(String emailAddr, Errors errors) {
+    	Validator emailAddrValiditor = new EmailValidator();
+    	emailAddrValiditor.validate(emailAddr, errors);
+    }
+    
+    private boolean isUserNameInvalid(Errors errors) {
+    	return !errors.getFieldErrors(UserNameValidator.USERNAME_FIELD).isEmpty();
+    }
+    
+    private boolean isEmailAddressInvalid(Errors errors) {
+    	return !errors.getFieldErrors("emailAddress").isEmpty();
     }
 
-    void createEntryInUserTable(Player player, String password) throws DAOException {
+    private void createUserEntity(String name, String userName, String password, String emailAddress) throws DAOException {
+    	Player player = new HumanPlayer(name);
+        player.setUserName(userName);
+        createEntryInUserTable(player, password, emailAddress);
+    }
+    
+    void createEntryInUserTable(Player player, String password, String emailAddress) throws DAOException {
         User user = new User();
         user.setName(player.getName());
         user.setUserName(player.getUserName());

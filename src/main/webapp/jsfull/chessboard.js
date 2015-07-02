@@ -78,7 +78,7 @@ function createChessPiecesElements(playerColour, chessboardJSON) {
     var json = JSON.parse(chessboardJSON),
         location,
         chesspieces,
-        piecesOnBoard="";
+        piecesOnBoard = "";
 
     chesspieces = new ChessPieces(playerColour);
     
@@ -137,12 +137,13 @@ function createChessPiecesElements(playerColour, chessboardJSON) {
     }
     return piecesOnBoard;
 }
-    function createChessBoard(playerColour, chessboardJSON) {
-        "use strict";
-        var chessBoardSVG = $("#chessboard-surround"),
-            board;
-        chessBoardSVG.html(createBlankChessBoardSVG());
-        board = $("#layer1");
-        board.append(createChessPiecesElements(playerColour, chessboardJSON));
-        chessBoardSVG.html(chessBoardSVG.html());
-    }
+
+function createChessBoard(playerColour, chessboardJSON) {
+    "use strict";
+    var chessBoardSVG = $("#chessboard-surround"),
+        board;
+    chessBoardSVG.html(createBlankChessBoardSVG());
+    board = $("#layer1");
+    board.append(createChessPiecesElements(playerColour, chessboardJSON));
+    chessBoardSVG.html(chessBoardSVG.html());
+}
