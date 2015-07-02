@@ -29,6 +29,8 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
  <script src="${pageContext.request.contextPath}/js/sidebar.js"></script>
  <script src="${pageContext.request.contextPath}/js/selectTableRow.js"></script>
+ <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
+ <script src="${pageContext.request.contextPath}/jsfull/ChessApplicationPage.js"></script>
 <style>
     @import url(../../css/General.css);
     @import url(../../css/selectTableRow.css);
@@ -84,84 +86,8 @@
     }
 </style>
 <script>
-$(document).ready(function(){
-    /**
-    $("#side-menu-form").submit(function(event){
-        console.log(event);
-        
-    });
-*/
-    
-    /**
-     * Called to add listeners to the static tables
-     */
-    addTableRowListener();
-    
-    var playerName = '<c:out value="${PLAYER.name}"/>';
-    var userName = '<c:out value="${PLAYER.userName}"/>';
-    
-    $(".join-button").click(function(event){
-        var selectedRow=$("tr.selected");
-        if(selectedRow.length === 0 ){
-            event.preventDefault();
-            return;
-        } else {
-            $(".join-button").attr("formaction","joinGame");
-        }
-    });
-    
-    
-    /*
-     * add CSRF token to AJAX requests
-     */
-    $(function () {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        $(document).ajaxSend(function(e, xhr, options) {
-	       xhr.setRequestHeader(header, token);
-        });
-    });
-    
-    /**
-     * Long polling for Table updates
-     *
-     */
-    setInterval(function(){
-        $.post("getGameMap",function(data){
-            var yourEntry = "",
-                otherEntry = "",
-                tempEntry,
-                selectedRow = $(".games-table tbody tr").find("input:checked").val();
-            console.log(selectedRow);
-            for(var gameUUID in data){
-                if (data.hasOwnProperty(gameUUID)) {
-                    tempEntry = '<tr><td>' + ("" + gameUUID).slice(-5) + '</td><td>' +
-                        data[gameUUID].player.player.userName +
-                        '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.player.userName: "") +
-                        '</td><td>' + data[gameUUID].currentStatus +
-                        '</td><td><input type="checkbox" name="gameUUID" value="' +
-                        gameUUID + '"></td></tr>';
-                    if(playerName === data[gameUUID].player.player.name) {
-                        yourEntry += tempEntry;
-                    } else {
-                        otherEntry += tempEntry;
-                    }
-                }
-            }
-            $("#your-games-table tbody").html(yourEntry);
-            $("#other-games-table tbody").html(otherEntry);
-            addTableRowListener();
-            $(".games-table tbody tr").find("input:checkbox[value=" + selectedRow + "]").click();
-        });
-    },5000);
-    
-    $.get("/AMCChessGame/onlinePlayerList", function(data){
-        console.log(data);
-    });
-    
-    
-    
-});    
+    var playerName = '<c:out value="${PLAYER.name}"/>',
+    	userName = '<c:out value="${PLAYER.userName}"/>';
 </script>
 </head>
 <body>
