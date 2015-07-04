@@ -1,9 +1,10 @@
 package org.amc.game.chessserver;
 
 
+import static org.mockito.Mockito.mock;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,6 +28,7 @@ public class SignUpControllerIntegrationTest {
     private static final String NAME = "adrian mclaughlin";
     private static final String USER_NAME = "adrian";
     private static final String PASSWORD = "password";
+    private static final String EMAIL_ADDRESS = "adrian@adrianmclaughlin.ie";
     
     @Autowired
     private WebApplicationContext wac;
@@ -49,31 +51,46 @@ public class SignUpControllerIntegrationTest {
     @Test
     public void testAddUser() throws Exception {
         
-       this.mockMvc.perform(post("/signup").param("name", NAME)
+       this.mockMvc.perform(post("/signup").param("fullName", NAME)
                         .param("userName", USER_NAME)
-                        .param("password", PASSWORD))
-                        .andExpect(status().is3xxRedirection())
+                        .param("password", PASSWORD)
+                        .param("emailAddress", EMAIL_ADDRESS))
+                        .andExpect(status().isOk())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
-       this.mockMvc.perform(post("/signup").param("name", "Sarah O'Neill")
+       this.mockMvc.perform(post("/signup").param("fullName", "Sarah O'Neill")
                        .param("userName", "sarah")
-                       .param("password", "lll"))
-                       .andExpect(status().is3xxRedirection())
+                       .param("password", "lll")
+                       .param("emailAddress", EMAIL_ADDRESS))
+                       .andExpect(status().isOk())
                        .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
     }
     
     @Test
     public void testAddSameUser() throws Exception {
         
-       this.mockMvc.perform(post("/signup").param("name", NAME)
+       this.mockMvc.perform(post("/signup").param("fullName", NAME)
                         .param("userName", USER_NAME)
-                        .param("password", PASSWORD))
-                        .andExpect(status().is3xxRedirection())
+                        .param("password", PASSWORD)
+                        .param("emailAddress", EMAIL_ADDRESS))
+                        .andExpect(status().isOk())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
-       this.mockMvc.perform(post("/signup").param("name", NAME)
+       this.mockMvc.perform(post("/signup").param("fullName", NAME)
                        .param("userName", USER_NAME)
-                       .param("password", PASSWORD))
-                       .andExpect(status().is3xxRedirection())
-                       .andExpect(model().attribute(SignUpController.ERRORS_MODEL_ATTR,SignUpController.USERTAKEN_MSG));
+                       .param("password", PASSWORD)
+                       .param("emailAddress", EMAIL_ADDRESS))
+                       .andExpect(status().isOk())
+                       .andExpect(model().attributeExists(SignUpController.ERRORS_MODEL_ATTR));
        
+    }
+    
+    @Test
+    public void testInvalidEmail() throws Exception {
+        
+       this.mockMvc.perform(post("/signup").param("fullName", NAME)
+                        .param("userName", USER_NAME)
+                        .param("password", PASSWORD)
+                        .param("emailAddress", "eoeoeo"))
+                        .andExpect(status().isOk())
+                        .andExpect(model().attributeExists(SignUpController.ERRORS_MODEL_ATTR));
     }
 }

@@ -7,21 +7,22 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.validation.MapBindingResult;
+import org.springframework.validation.Errors;
+
 
 public class ValdatorIsUserNameFreeTest {
 
 	private DAO<User> userDAO;
 	private UserNameValidator userNameValidator;
+	private Errors errors;
 	private static final String USER_NAME = "adrian";
 	private static final String TAKEN_USER_NAME = "sarah";
 	
@@ -29,13 +30,14 @@ public class ValdatorIsUserNameFreeTest {
 	public void setUp() throws Exception {
 		this.userDAO = mock(DAO.class);
 		this.userNameValidator = new UserNameValidator(userDAO);
+		this.errors = mock(Errors.class);
 	}
 	
 	@Test
     public void testIsUserNameFree() throws DAOException {
         String freeUserName = USER_NAME;
         when(userDAO.findEntities("userName", freeUserName)).thenReturn(new ArrayList<User>());
-        assertTrue(this.userNameValidator.isUserNameFree(freeUserName));
+        assertTrue(this.userNameValidator.isUserNameFree(freeUserName, errors));
         verify(userDAO).findEntities("userName", freeUserName);
     }
 	
@@ -45,7 +47,7 @@ public class ValdatorIsUserNameFreeTest {
         List<User> users = new ArrayList<>();
         users.add(new User());
         when(userDAO.findEntities("userName", takenUserName)).thenReturn(users);
-        assertFalse(userNameValidator.isUserNameFree(takenUserName));
+        assertFalse(userNameValidator.isUserNameFree(takenUserName, errors));
         verify(userDAO).findEntities("userName", takenUserName);
     }
 }
