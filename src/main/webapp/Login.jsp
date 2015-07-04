@@ -270,6 +270,10 @@ $(document).ready(function () {
                 <p class="col-xs-9" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
             </div>
             <input class="inputtext signup-inputtext form-control" type="text" name="fullName" required="required" placeholder="Name" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
+            <c:if test='${not empty errors and not empty errors.getFieldError("fullName")}'>
+                <span class="signup-error">${errors.getFieldError("fullName").code}</span>
+            </c:if>
+            
             <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>
             
             <c:if test='${not empty errors and not empty errors.getFieldError("userName")}'>
