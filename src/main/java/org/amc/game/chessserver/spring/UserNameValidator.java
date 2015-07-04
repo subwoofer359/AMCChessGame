@@ -14,7 +14,7 @@ public class UserNameValidator implements Validator {
 
 	private static final Logger logger = Logger.getLogger(UserNameValidator.class);
 	public static final String USERNAME_FIELD = "userName";
-	private static Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{4,50}");
+	private static final Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{5,50}");
 	
 	private DAO<User> userDAO;
 	
@@ -54,22 +54,23 @@ public class UserNameValidator implements Validator {
 		}
 	}
 	
-	private void checkUserNameFree(String userName, Errors errors) {
-		if(isUserNameFree(userName)) {
-			
-		} else {
-			errors.rejectValue(USERNAME_FIELD, "username is already in use");
-		}
-	}
+    private void checkUserNameFree(String userName, Errors errors) {
+
+        if (isUserNameFree(userName, errors)) {
+
+        } else {
+            errors.rejectValue(USERNAME_FIELD, "Username is already in use");
+        }
+    }
 	
-	boolean isUserNameFree(String userName) {
-		try {
-			return userDAO.findEntities("userName", userName).isEmpty();
-		} catch (DAOException de) {
-			logger.error("Error on accessing database:" + de.getMessage());
-            de.printStackTrace();
-			return false;
-		}
+    boolean isUserNameFree(String userName, Errors errors) {
+        try {
+            return userDAO.findEntities("userName", userName).isEmpty();
+        } catch (DAOException de) {
+            errors.rejectValue(USERNAME_FIELD, "Can't connect to the Database");
+            logger.error(de);
+            return true;
+        }
     }
 
 }

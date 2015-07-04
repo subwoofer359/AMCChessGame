@@ -11,15 +11,16 @@ import org.amc.game.chessserver.spring.UserNameValidator;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import javax.annotation.Resource;
 
@@ -32,7 +33,7 @@ public class SignUpController {
     
     
     static final String MESSAGE_MODEL_ATTR = "MESSAGE";
-    static final String ERRORS_MODEL_ATTR = "ERRORS";
+    static final String ERRORS_MODEL_ATTR = "errors";
     static final String SUCCESS_MSG = "account created";
     static final String USERTAKEN_MSG = "Username is already taken";
     static final String ERROR_MSG = "Trouble creating account";
@@ -44,36 +45,26 @@ public class SignUpController {
     private DAO<User> userDAO;
     
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView signUp(String name, String userName, String password, String emailAddress) {
+    public ModelAndView signUp(@ModelAttribute UserForm user , BindingResult errors) {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:/Login.jsp");
-        Errors errors = getErrorsObject();
+        mav.setViewName("forward:/Login.jsp");
         
-        checkUserNameValid(userName, errors);
-        checkEmailAddressValid(emailAddress, errors);
+        checkUserNameValid(user.getUserName(), errors);
+        checkEmailAddressValid(user.getEmailAddress(), errors);
         try {
             if (errors.hasErrors()) {
-            	mav.getModel().put("errors", errors);
-            	if(isUserNameInvalid(errors)) {
-            		mav.getModel().put(ERRORS_MODEL_ATTR, USERTAKEN_MSG);
-            	} else if(isEmailAddressInvalid(errors)) {
-            		mav.getModel().put(ERRORS_MODEL_ATTR, INVALID_EMAIL_ADDRESS_MSG);
-            	}
+            	mav.getModel().put(ERRORS_MODEL_ATTR, errors);
+            	mav.getModel().put("userForm", user);
             } else {
-                createUserEntity(name, userName, password, emailAddress);
+                createUserEntity(user);
                 mav.getModel().put(MESSAGE_MODEL_ATTR, SUCCESS_MSG);
             }
         } catch(DAOException dao){
-            mav.getModel().put(ERRORS_MODEL_ATTR, ERROR_MSG);
+            mav.getModel().put(MESSAGE_MODEL_ATTR, ERROR_MSG);
             logger.error("Error on accessing database:" + dao.getMessage());
             dao.printStackTrace();
         }
         return mav;
-    }
-
-    private Errors getErrorsObject() {
-        return new MapBindingResult(
-                        new HashMap<String, String>(), "userName");
     }
     
     private void checkUserNameValid(String userName, Errors errors) {
@@ -85,19 +76,12 @@ public class SignUpController {
     	Validator emailAddrValiditor = new EmailValidator();
     	emailAddrValiditor.validate(emailAddr, errors);
     }
-    
-    private boolean isUserNameInvalid(Errors errors) {
-    	return !errors.getFieldErrors(UserNameValidator.USERNAME_FIELD).isEmpty();
-    }
-    
-    private boolean isEmailAddressInvalid(Errors errors) {
-    	return !errors.getFieldErrors("emailAddress").isEmpty();
-    }
+ 
 
-    private void createUserEntity(String name, String userName, String password, String emailAddress) throws DAOException {
-    	Player player = new HumanPlayer(name);
-        player.setUserName(userName);
-        createEntryInUserTable(player, password, emailAddress);
+    private void createUserEntity(UserForm user) throws DAOException {
+    	Player player = new HumanPlayer(user.getFullName());
+        player.setUserName(user.getUserName());
+        createEntryInUserTable(player, user.getPassword(), user.emailAddress);
     }
     
     void createEntryInUserTable(Player player, String password, String emailAddress) throws DAOException {
@@ -106,6 +90,7 @@ public class SignUpController {
         user.setUserName(player.getUserName());
         user.setPassword(encoder.encode(password).toCharArray());
         user.setPlayer(player);
+        user.setEmailAddress(emailAddress);
         addDefaultAuthorities(user);
         userDAO.addEntity(user);
         
@@ -130,4 +115,42 @@ public class SignUpController {
     public void setPasswordEncoder(PasswordEncoder encoder){
         this.encoder = encoder;
     }
+    
+    public static class UserForm {
+        private String fullName;
+        private String userName;
+        private String password;
+        private String emailAddress;
+        public String getFullName() {
+            return fullName;
+        }
+        public String getUserName() {
+            return userName;
+        }
+        public String getPassword() {
+            return password;
+        }
+        public String getEmailAddress() {
+            return emailAddress;
+        }
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+        public void setPassword(String password) {
+            this.password = password;
+        }
+        public void setEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
+        }
+        
+        @Override
+        public String toString() {
+            return fullName + "(" + userName + ") -" + emailAddress;
+        }
+    }
+    
+    
 }

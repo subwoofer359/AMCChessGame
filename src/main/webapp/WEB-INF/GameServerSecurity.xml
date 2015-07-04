@@ -42,7 +42,7 @@
 		<intercept-url pattern="/isUserNameAvailable*" access="isAnonymous()" />
 		<intercept-url pattern="/app/chessgame/**" access="isAuthenticated()" />
 		<intercept-url pattern="/onlinePlayerList" access="isAuthenticated()" />
-		<form-login login-page="/Login.jsp" />
+		<form-login login-page="/Login.jsp" authentication-failure-url="/Login.jsp?MESSAGE=wrong+username+or+password"/>
 		<logout />
 	</http>
 	<authentication-manager>

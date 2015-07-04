@@ -22,8 +22,9 @@
 <![endif]-->
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
- <script src="js/User.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
+    <script src="js/User.js"></script>
 <style>
 @import url(css/General.css);  
 
@@ -89,17 +90,24 @@ body {
     font-size: 2em;
 }
 
-#login-fail {
+/*
+ * Message at the bottom of the screen
+ */
+.messageLabel {
     display: block;
     font-size: 2em;
     margin-top: -38px;
-    margin-bottom: 8px
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 15px 0 15px 0;
+    z-index: 1000;
 }
     
 #signup-icon {
     margin-top: 35px;
     margin-bottom: 20px;
-    margin-left: -50px;
+    margin-left: -27px;
     width: 120px;
     height: 120px;
 }
@@ -150,30 +158,60 @@ body {
     padding-bottom: 20px;
     text-decoration: none;
 }
+    
+.signup-error {
+    text-align: center;
+    display: block;
+    font-size: 1.7em;
+    margin-top: -27px;
+    margin-bottom: 2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: red;
+}
 
 @media (max-height:650px) and (max-width:450px) {
+    body {
+        background-image: none;
+        background-color: #428aca;
+    }
+    
 	#login-box {
-		margin-top: -45px;
+        box-shadow: none;
+        margin-top: 0px;
+        padding: 0 5px 0 5px;
 	}
 	
 	#signup-box {
+        box-shadow: none;
 		margin-top: 0px;
+        padding: 0 5px 0 5px;
 	}
+    
+    .box {
+        background: none;
+        box-shadow: none;
+    }
     
 }
 
-    /*
-@media (max-width:450px) {
-	#login-box {
-		margin-top: 0px;
-	}
-	
-	#signup-box {
-		margin-top: 0px;
-	}
+@media (min-width:768px) {
+    /* 
+     * Make the message at the bottom of the
+     * screen smaller in witdh and centre in
+     * the middle of the screen
+     */
+    .messageLabel {
+        position: absolute;
+        bottom: 0px;
+        width: 50%;
+        left: 25%;
+        right: 25%;
+    }
+    
     
 }
-*/
+    
 @media (max-height:639px) {
 	#login-box {
 		margin-top: 0px;
@@ -188,23 +226,20 @@ body {
 </style>
 <script>
 $(document).ready(function () {
-    /*
-     * add CSRF token to AJAX requests
-     */
-    $(function () {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        $(document).ajaxSend(function(e, xhr, options) {
-	       xhr.setRequestHeader(header, token);
-        });
-    });
     
     $("#signup-msg").click(function () {
         $("#login-box").css("display", "none");
         $("#signup-box").css("display", "block");
     });
     
-    if("${param.ERRORS}") {
+    <%-- 
+        Message box will fade out when touched
+    --%>
+    $(".messageLabel").click(function() {
+        $(".messageLabel").fadeOut(3000);
+    });
+    
+    if(${not empty errors and errors.hasErrors()}) {
         $("#signup-msg").click();
     }
 });
@@ -230,24 +265,40 @@ $(document).ready(function () {
         </form>
         <form id="userForm" method="post" action="signup">
         <div id="signup-box" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 box">
-             <c:if test="${param.ERRORS != null}">
-            	   <span id="login-fail" class="label label-danger"><c:out value="${param.ERRORS}"></c:out></span>
-            </c:if>
             <div id="title">
-                <div class="col-xs-2"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
-                <p class="col-xs-10" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
+                <div class="col-xs-3"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
+                <p class="col-xs-9" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
             </div>
-            <input class="inputtext signup-inputtext form-control" type="text" name="name" required="required" placeholder="Name"/>
-            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username"/>
+            <input class="inputtext signup-inputtext form-control" type="text" name="fullName" required="required" placeholder="Name" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
+            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>
+            
+            <c:if test='${not empty errors and not empty errors.getFieldError("userName")}'>
+                <span class="signup-error">${errors.getFieldError("userName").code}</span>
+            </c:if>
+            
             <input class="inputtext signup-inputtext form-control" type="password" name="password" id="passwordOne" required="required" placeholder="Password"/>
             <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
-            <input class="inputtext signup-inputtext form-control" type="email" name="email" id="email" required="required" placeholder="Email Address"/>
+        <input class="inputtext signup-inputtext form-control" type="email" name="emailAddress" id="emailAddress" required="required" placeholder="Email Address" <c:if test="${not empty userForm}">value="<c:out value="${userForm.emailAddress}"/>"</c:if>/>
+    
+            <c:if test='${not empty errors and not empty errors.getFieldError("emailAddress")}'>
+                <span class="signup-error">${errors.getFieldError("emailAddress").code}</span>
+            </c:if>
+    
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Create Player"/>
             <div class="filler"></div>
         </div>
             <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
         </form>
+        <%-- Display message --%>
+        <c:if test="${not empty MESSAGE}">
+        	   <span id="messageBox" class="messageLabel label label-success"><c:out value="${MESSAGE}"></c:out></span>
+        </c:if>
+        <%-- Display Login error --%>
+        <c:if test="${not empty param.MESSAGE}">
+        	   <span id="loginFailed" class="messageLabel label label-danger"><c:out value="${param.MESSAGE}"></c:out></span>
+        </c:if>
     </div>
+   
 </div> <!-- Container -->
     
 <!-- Include all compiled plugins (below), or include individual files as needed -->
