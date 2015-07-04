@@ -29,7 +29,7 @@ public class SignUpControllerIntegrationTest {
     
     private static final String NAME = "adrian mclaughlin";
     private static final String USER_NAME = "adrian";
-    private static final String PASSWORD = "password";
+    private static final String PASSWORD = "Password1";
     private static final String EMAIL_ADDRESS = "adrian@adrianmclaughlin.ie";
     private static final String FULL_NAME_FIELD = "fullName";
     private static final String USERNAME_FIELD = "userName";
@@ -65,7 +65,7 @@ public class SignUpControllerIntegrationTest {
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
        this.mockMvc.perform(post(URL).param(FULL_NAME_FIELD, "Sarah O'Neill")
                        .param(USERNAME_FIELD, "sarah")
-                       .param(PASSWORD_FIELD, "lll")
+                       .param(PASSWORD_FIELD, PASSWORD)
                        .param(EMAILADDRESS_FIELD, EMAIL_ADDRESS))
                        .andExpect(status().isOk())
                        .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));

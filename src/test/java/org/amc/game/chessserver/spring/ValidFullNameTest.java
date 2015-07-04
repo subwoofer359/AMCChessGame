@@ -31,7 +31,7 @@ public class ValidFullNameTest {
     public static Collection<?> addedFullNames() {
         return Arrays.asList(new Object[][] { { "Adrian McLaughlin" },
                         { "carla rae stephenson" }, { "Paula S. Carlson" },
-                        { "A.B S. Stempson .bsc" }
+                        { "A.B S. Stempson .bsc"}, { "Sarah O'Neill" }
         });
     }
     
@@ -48,6 +48,6 @@ public class ValidFullNameTest {
     @Test
     public void test() {
         validator.validate(fullName, errors);
-        assertTrue(errors.hasErrors());
+        assertFalse(errors.hasErrors());
     }
 }
