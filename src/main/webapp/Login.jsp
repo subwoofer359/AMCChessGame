@@ -277,6 +277,10 @@ $(document).ready(function () {
             </c:if>
             
             <input class="inputtext signup-inputtext form-control" type="password" name="password" id="passwordOne" required="required" placeholder="Password"/>
+            <c:if test='${not empty errors and not empty errors.getFieldError("password")}'>
+                <span class="signup-error">${errors.getFieldError("password").code}</span>
+            </c:if>
+        
             <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
         <input class="inputtext signup-inputtext form-control" type="email" name="emailAddress" id="emailAddress" required="required" placeholder="Email Address" <c:if test="${not empty userForm}">value="<c:out value="${userForm.emailAddress}"/>"</c:if>/>
     
