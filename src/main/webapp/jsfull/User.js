@@ -1,3 +1,9 @@
+/*global document*/
+/*global $*/
+/*global console*/
+/*global alert*/
+/*global showPanelMessage*/
+
 /**
  * @fileoverview User related functions
  * @author Adrian McLaughlin
@@ -6,7 +12,7 @@
 /**
  * Global variable
  */
-var validUsername=false;
+var validUsername = false;
 
 /**
  * The function uses a ajax request to the server to check if the username is valid.
@@ -15,33 +21,34 @@ var validUsername=false;
  * 
  * @param event
  */
-function isUsernameAvailable(event){
-    var inputUserName=$('#userName');
-    var userName=inputUserName.val();
-    var formData="userName="+userName;
-    
-    $.post('./isUserNameAvailable',formData,function(data,status){
-        if(data.trim()==='true'){
-            data=Boolean(data);
-        }else{
-            data=false;
+function isUsernameAvailable() {
+    "use strict";
+    var inputUserName = $('#userName'),
+        userName = inputUserName.val(),
+        formData = "userName=" + userName;
+
+    $.post('./isUserNameAvailable', formData, function (data) {
+        if (data.trim() === 'true') {
+            data = Boolean(data);
+        } else {
+            data = false;
         }
-        validUsername=data;
-        var inputParent=inputUserName.parent().parent('.form-group');
-        if(data){
-            
-            if(!inputParent.hasClass('has-success')){
+        validUsername = data;
+        var inputParent = inputUserName.parent().parent('.form-group');
+        if (data) {
+
+            if (!inputParent.hasClass('has-success')) {
                 inputParent.addClass('has-success');
             }
-            if(inputParent.hasClass('has-error')){
+            if (inputParent.hasClass('has-error')) {
                 inputParent.removeClass('has-error');
             }
             inputParent.find('#userNameMsg').text("Username is available");
         } else {
-            if(!inputParent.hasClass('has-error')){
+            if (!inputParent.hasClass('has-error')) {
                 inputParent.addClass('has-error');
             }
-            if(inputParent.hasClass('has-success')){
+            if (inputParent.hasClass('has-success')) {
                 inputParent.removeClass('has-success');
             }
             inputParent.find('#userNameMsg').text("Username taken");
@@ -59,17 +66,18 @@ function isUsernameAvailable(event){
  * @return {boolean} true if the passwords are the same
  */
 function checkPassword(inputElementOne, inputElementTwo) {
+    "use strict";
     console.log('Check Password function called');
-    var password1 = document.getElementById(inputElementOne);
-    var password2 = document.getElementById(inputElementTwo);
+    var password1 = document.getElementById(inputElementOne),
+        password2 = document.getElementById(inputElementTwo);
 
-    if (password1.value != password2.value) {
+    if (password1.value === password2.value) {
+        console.log('Passwords are the same');
+        return true;
+    } else {
         console.log('Passwords aren\'t the same');
         alert('Passwords aren\'t the same');
         return false;
-    } else {
-        console.log('Passwords are the same');
-        return true;
     }
 }
 
@@ -84,21 +92,23 @@ function checkPassword(inputElementOne, inputElementTwo) {
  * @param event
  * @returns {Boolean}
  */
-function canSubmit(event){
-    if(!checkPassword('passwordOne','passwordTwo')){
+function canSubmit() {
+    "use strict";
+    if (!checkPassword('passwordOne', 'passwordTwo')) {
         return false;
     }
-    
-    if(!validUsername){
-        showPanelMessage("#alert","Username is not valid.",true);
+
+    if (!validUsername) {
+        showPanelMessage("#alert", "Username is not valid.", true);
         return false;
     }
-    
+
     return true;
-    
+
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
+    "use strict";
     $('#userName').keyup(isUsernameAvailable);
     $('#userForm').submit(canSubmit);
 });
