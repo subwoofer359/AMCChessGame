@@ -14,7 +14,7 @@ public class UserNameValidator implements Validator {
 
 	private static final Logger logger = Logger.getLogger(UserNameValidator.class);
 	public static final String USERNAME_FIELD = "userName";
-	private static final Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{5,50}");
+	private static final Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{4,50}");
 	
 	private DAO<User> userDAO;
 	
