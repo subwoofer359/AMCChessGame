@@ -137,7 +137,7 @@
             </ul>
             </div>
         </div><!-- sidebar-left -->
-        <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name">${PLAYER.name}</span></div>
+        <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name"><c:out value="${PLAYER.name}"/></span></div>
         
         <div class="col-xs-12 col-md-5">
             <div id="your-games-table" class="games-table">
