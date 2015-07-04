@@ -25,10 +25,16 @@ import org.springframework.web.context.WebApplicationContext;
 @ContextConfiguration(locations={"/SpringTestConfig.xml","/GameServerSecurity.xml",  "/GameServerWebSockets.xml"})
 public class SignUpControllerIntegrationTest {
 
+    private static final String URL = "/signup";
+    
     private static final String NAME = "adrian mclaughlin";
     private static final String USER_NAME = "adrian";
     private static final String PASSWORD = "password";
     private static final String EMAIL_ADDRESS = "adrian@adrianmclaughlin.ie";
+    private static final String FULL_NAME_FIELD = "fullName";
+    private static final String USERNAME_FIELD = "userName";
+    private static final String PASSWORD_FIELD = "password";
+    private static final String EMAILADDRESS_FIELD = "emailAddress";
     
     @Autowired
     private WebApplicationContext wac;
@@ -51,16 +57,16 @@ public class SignUpControllerIntegrationTest {
     @Test
     public void testAddUser() throws Exception {
         
-       this.mockMvc.perform(post("/signup").param("fullName", NAME)
-                        .param("userName", USER_NAME)
-                        .param("password", PASSWORD)
-                        .param("emailAddress", EMAIL_ADDRESS))
+       this.mockMvc.perform(post(URL).param(FULL_NAME_FIELD, NAME)
+                        .param(USERNAME_FIELD, USER_NAME)
+                        .param(PASSWORD_FIELD, PASSWORD)
+                        .param(EMAILADDRESS_FIELD, EMAIL_ADDRESS))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
-       this.mockMvc.perform(post("/signup").param("fullName", "Sarah O'Neill")
-                       .param("userName", "sarah")
-                       .param("password", "lll")
-                       .param("emailAddress", EMAIL_ADDRESS))
+       this.mockMvc.perform(post(URL).param(FULL_NAME_FIELD, "Sarah O'Neill")
+                       .param(USERNAME_FIELD, "sarah")
+                       .param(PASSWORD_FIELD, "lll")
+                       .param(EMAILADDRESS_FIELD, EMAIL_ADDRESS))
                        .andExpect(status().isOk())
                        .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
     }
@@ -68,16 +74,16 @@ public class SignUpControllerIntegrationTest {
     @Test
     public void testAddSameUser() throws Exception {
         
-       this.mockMvc.perform(post("/signup").param("fullName", NAME)
-                        .param("userName", USER_NAME)
-                        .param("password", PASSWORD)
-                        .param("emailAddress", EMAIL_ADDRESS))
+       this.mockMvc.perform(post(URL).param(FULL_NAME_FIELD, NAME)
+                        .param(USERNAME_FIELD, USER_NAME)
+                        .param(PASSWORD_FIELD, PASSWORD)
+                        .param(EMAILADDRESS_FIELD, EMAIL_ADDRESS))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(SignUpController.MESSAGE_MODEL_ATTR));
-       this.mockMvc.perform(post("/signup").param("fullName", NAME)
-                       .param("userName", USER_NAME)
-                       .param("password", PASSWORD)
-                       .param("emailAddress", EMAIL_ADDRESS))
+       this.mockMvc.perform(post(URL).param(FULL_NAME_FIELD, NAME)
+                       .param(USERNAME_FIELD, USER_NAME)
+                       .param(PASSWORD_FIELD, PASSWORD)
+                       .param(EMAILADDRESS_FIELD, EMAIL_ADDRESS))
                        .andExpect(status().isOk())
                        .andExpect(model().attributeExists(SignUpController.ERRORS_MODEL_ATTR));
        
@@ -86,10 +92,10 @@ public class SignUpControllerIntegrationTest {
     @Test
     public void testInvalidEmail() throws Exception {
         
-       this.mockMvc.perform(post("/signup").param("fullName", NAME)
-                        .param("userName", USER_NAME)
-                        .param("password", PASSWORD)
-                        .param("emailAddress", "eoeoeo"))
+       this.mockMvc.perform(post(URL).param(FULL_NAME_FIELD, NAME)
+                        .param(USERNAME_FIELD, USER_NAME)
+                        .param(PASSWORD_FIELD, PASSWORD)
+                        .param(EMAILADDRESS_FIELD, "eoeoeo"))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(SignUpController.ERRORS_MODEL_ATTR));
     }
