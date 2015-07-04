@@ -22,9 +22,9 @@
 <![endif]-->
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
-    <script src="js/User.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
+<script src="jsfull/User.js"></script>
 <style>
 @import url(css/General.css);  
 

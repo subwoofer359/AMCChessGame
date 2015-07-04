@@ -34,24 +34,12 @@ function isUsernameAvailable() {
             data = false;
         }
         validUsername = data;
-        var inputParent = inputUserName.parent().parent('.form-group');
+        var userNameBox = $("#userName");
         if (data) {
-
-            if (!inputParent.hasClass('has-success')) {
-                inputParent.addClass('has-success');
-            }
-            if (inputParent.hasClass('has-error')) {
-                inputParent.removeClass('has-error');
-            }
-            inputParent.find('#userNameMsg').text("Username is available");
+            userNameBox.css("background-color","#28794a");
         } else {
-            if (!inputParent.hasClass('has-error')) {
-                inputParent.addClass('has-error');
-            }
-            if (inputParent.hasClass('has-success')) {
-                inputParent.removeClass('has-success');
-            }
-            inputParent.find('#userNameMsg').text("Username taken");
+            userNameBox.css("background-color","#dc4040");
+            
         }
     });
 }
