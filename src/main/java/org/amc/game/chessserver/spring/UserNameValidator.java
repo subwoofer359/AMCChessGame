@@ -14,8 +14,11 @@ public class UserNameValidator implements Validator {
 
 	private static final Logger logger = Logger.getLogger(UserNameValidator.class);
 	public static final String USERNAME_FIELD = "userName";
-	private static final Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{4,50}");
+	public static final String INVALID_USERNAME_ERROR = "invalid username format";
+	public static final String USERNAME_TAKEN_ERROR = "Username is already in use";
+	public static final String DATABASE_ERROR = "Can't connect to the Database";
 	
+	private static final Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{4,50}");
 	private DAO<User> userDAO;
 	
 	public UserNameValidator(DAO<User> userDAO) {
@@ -41,7 +44,7 @@ public class UserNameValidator implements Validator {
 	
 	private void rejectIfEmptyOrWhitespace(Errors errors, String userName, String message) {
 		if("".equals(userName)) {
-			errors.rejectValue(USERNAME_FIELD, "Username is empty");
+			errors.rejectValue(USERNAME_FIELD, message);
 		}
 	}
 	
@@ -50,7 +53,7 @@ public class UserNameValidator implements Validator {
 		if(matcher.matches()) {
 			checkUserNameFree(userName, errors);
 		} else {
-			errors.rejectValue(USERNAME_FIELD, "invalid username format");
+			errors.rejectValue(USERNAME_FIELD, INVALID_USERNAME_ERROR);
 		}
 	}
 	
@@ -59,7 +62,7 @@ public class UserNameValidator implements Validator {
         if (isUserNameFree(userName, errors)) {
 
         } else {
-            errors.rejectValue(USERNAME_FIELD, "Username is already in use");
+            errors.rejectValue(USERNAME_FIELD, USERNAME_TAKEN_ERROR );
         }
     }
 	
@@ -67,7 +70,7 @@ public class UserNameValidator implements Validator {
         try {
             return userDAO.findEntities("userName", userName).isEmpty();
         } catch (DAOException de) {
-            errors.rejectValue(USERNAME_FIELD, "Can't connect to the Database");
+            errors.rejectValue(USERNAME_FIELD, DATABASE_ERROR);
             logger.error(de);
             return true;
         }

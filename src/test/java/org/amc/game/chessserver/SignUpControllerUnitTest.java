@@ -9,6 +9,10 @@ import org.amc.dao.DAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.SignUpController.UserForm;
+import org.amc.game.chessserver.spring.EmailValidator;
+import org.amc.game.chessserver.spring.FullNameValidator;
+import org.amc.game.chessserver.spring.PasswordValidator;
+import org.amc.game.chessserver.spring.UserNameValidator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,13 +30,15 @@ public class SignUpControllerUnitTest {
     private DAO<User> myUserDAO;
     private SignUpController controller;
     private BCryptPasswordEncoder passwordEncoder;
-    private static final String PASSWORD = "1234";
+    private static final String PASSWORD = "Password1234";
     private static final String EMAIL_ADDRESS = "adrian@adrianmclaughlin.ie";
     private static final String INVALID_EMAIL_ADDRESS = "adrian.adrianmclaughlin.ie";
     private static final String NAME = "Adrian McLaughlin";
     private static final String USER_NAME = "adrian";
     private static final String  VIEW = "forward:/Login.jsp";
     private static final UserForm userForm = new UserForm();
+    private ArgumentCaptor<String> fieldErrorCaptor;
+    private ArgumentCaptor<String> messageErrorCaptor;
     private BindingResult bindingResult;
     
     @Before
@@ -50,6 +56,9 @@ public class SignUpControllerUnitTest {
         userForm.setUserName(USER_NAME);
         userForm.setPassword(PASSWORD);
         userForm.setEmailAddress(EMAIL_ADDRESS);
+        
+        fieldErrorCaptor = ArgumentCaptor.forClass(String.class);
+        messageErrorCaptor = ArgumentCaptor.forClass(String.class);
     }
 
     @After
@@ -92,12 +101,32 @@ public class SignUpControllerUnitTest {
         when(bindingResult.hasErrors()).thenReturn(true);
         
         ModelAndView mav = controller.signUp(userForm, bindingResult);
+        
+        verifyBindingError();
         verify(myUserDAO, never()).addEntity(any(User.class));
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         bindingResult);
-        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm",
-                        userForm);
+        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm", userForm);
+        checkCaptorValues(UserNameValidator.USERNAME_FIELD, UserNameValidator.USERNAME_TAKEN_ERROR);
+    }
+    
+    @Test
+    public void testInValidUserName() throws DAOException{
+        when(myUserDAO.findEntities("userName", userForm.getUserName())).thenReturn(new ArrayList<User>());
+        when(bindingResult.hasErrors()).thenReturn(true);
+        
+        userForm.setUserName("adrian-McLaughin");
+        
+        ModelAndView mav = controller.signUp(userForm, bindingResult);
+        
+        verifyBindingError();
+        verify(myUserDAO, never()).addEntity(any(User.class));
+        ModelAndViewAssert.assertViewName(mav, VIEW);
+        ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
+                        bindingResult);
+        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm", userForm);
+        checkCaptorValues(UserNameValidator.USERNAME_FIELD, UserNameValidator.INVALID_USERNAME_ERROR);
     }
     
     @Test
@@ -108,12 +137,15 @@ public class SignUpControllerUnitTest {
         userForm.setEmailAddress(INVALID_EMAIL_ADDRESS);
         
         ModelAndView mav = controller.signUp(userForm, bindingResult);
+        
+        verifyBindingError();
         verify(myUserDAO, never()).addEntity(any(User.class));
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
                         bindingResult);
-        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm",
-                        userForm);
+        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm", userForm);
+        
+        checkCaptorValues(EmailValidator.EMAIL_ADDR_FIELD, EmailValidator.INVALID_EMAIL_ERROR);
     }
     
     @Test
@@ -125,5 +157,51 @@ public class SignUpControllerUnitTest {
         ModelAndViewAssert.assertViewName(mav, VIEW);
         ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.MESSAGE_MODEL_ATTR,
                         SignUpController.ERROR_MSG);
+    }
+    
+    @Test
+    public void testInValidPassword() throws DAOException {
+        when(myUserDAO.findEntities("userName", userForm.getUserName())).thenReturn(new ArrayList<User>());
+        when(bindingResult.hasErrors()).thenReturn(true);
+        
+ 
+        userForm.setPassword("a");
+        ModelAndView mav = controller.signUp(userForm, bindingResult);
+        
+        verifyBindingError();
+        verify(myUserDAO, never()).addEntity(any(User.class));
+        ModelAndViewAssert.assertViewName(mav, VIEW);
+        ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
+                        bindingResult);
+        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm", userForm);
+        
+        checkCaptorValues(PasswordValidator.PASSWORD_FIELD, PasswordValidator.INVALID_PASSWORD_ERROR);
+    }
+    
+    @Test
+    public void testInValidFullName() throws DAOException {
+        when(myUserDAO.findEntities("userName", userForm.getUserName())).thenReturn(new ArrayList<User>());
+        when(bindingResult.hasErrors()).thenReturn(true);
+        userForm.setFullName("<input type='text'/>");
+        
+        ModelAndView mav = controller.signUp(userForm, bindingResult);
+        
+        verifyBindingError();
+        verify(myUserDAO, never()).addEntity(any(User.class));
+        ModelAndViewAssert.assertViewName(mav, VIEW);
+        ModelAndViewAssert.assertModelAttributeValue(mav, SignUpController.ERRORS_MODEL_ATTR,
+                        bindingResult);
+        ModelAndViewAssert.assertModelAttributeValue(mav, "userForm", userForm);
+        
+        checkCaptorValues(FullNameValidator.FULL_NAME_FIELD, FullNameValidator.INVALID_FULLNAME_ERROR);
+    }
+    
+    private void verifyBindingError() {
+        verify(bindingResult).rejectValue(fieldErrorCaptor.capture(), messageErrorCaptor.capture());
+    }
+    
+    private void checkCaptorValues(String inputField, String message) {
+        assertEquals(inputField, fieldErrorCaptor.getValue());
+        assertEquals(message, messageErrorCaptor.getValue());
     }
 }

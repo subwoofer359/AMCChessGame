@@ -7,13 +7,14 @@ import org.amc.dao.DAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.spring.EmailValidator;
+import org.amc.game.chessserver.spring.FullNameValidator;
+import org.amc.game.chessserver.spring.PasswordValidator;
 import org.amc.game.chessserver.spring.UserNameValidator;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,8 +50,11 @@ public class SignUpController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("forward:/Login.jsp");
         
+        checkFullNameValid(user.getFullName(), errors);
         checkUserNameValid(user.getUserName(), errors);
+        checkPasswordValid(user.getPassword(), errors);        
         checkEmailAddressValid(user.getEmailAddress(), errors);
+
         try {
             if (errors.hasErrors()) {
             	mav.getModel().put(ERRORS_MODEL_ATTR, errors);
@@ -77,6 +81,15 @@ public class SignUpController {
     	emailAddrValiditor.validate(emailAddr, errors);
     }
  
+    private void checkFullNameValid(String fullName, Errors errors) {
+        Validator fullNameValidator = new FullNameValidator();
+        fullNameValidator.validate(fullName, errors);
+    }
+    
+    private void checkPasswordValid(String password, Errors errors) {
+        Validator passwordValidator = new PasswordValidator();
+        passwordValidator.validate(password, errors);
+    }
 
     private void createUserEntity(UserForm user) throws DAOException {
     	Player player = new HumanPlayer(user.getFullName());
