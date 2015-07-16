@@ -17,7 +17,7 @@ public class EmailValidator implements Validator {
 
 	private static final Pattern emailAddrPattern = Pattern.compile("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,10}\\b");
 	public static final String EMAIL_ADDR_FIELD = "emailAddress";
-	public static final String INVALID_EMAIL_ERROR = "Not valid email address"; 
+	public static final String INVALID_EMAIL_ERROR = "Not a valid email address"; 
 	
 	@Override
 	public boolean supports(Class<?> arg0) {

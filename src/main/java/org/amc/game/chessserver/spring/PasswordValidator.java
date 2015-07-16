@@ -9,8 +9,8 @@ import org.springframework.validation.Validator;
 public class PasswordValidator implements Validator {
 
 	public static final String PASSWORD_FIELD = "password";
-	public static final String INVALID_PASSWORD_ERROR = "invalid password format";
-    public static final String NO_PASSWORD_ERROR = "password wasn't given";
+	public static final String INVALID_PASSWORD_ERROR = "Must contain Upper,lower case letters and a number";
+    public static final String NO_PASSWORD_ERROR = "Password wasn't given";
 	
 	private static final Pattern passwordPattern = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})");
 	

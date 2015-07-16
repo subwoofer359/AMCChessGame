@@ -14,7 +14,7 @@ public class UserNameValidator implements Validator {
 
 	private static final Logger logger = Logger.getLogger(UserNameValidator.class);
 	public static final String USERNAME_FIELD = "userName";
-	public static final String INVALID_USERNAME_ERROR = "invalid username format";
+	public static final String INVALID_USERNAME_ERROR = "Use lowercase letters and numbers (no spaces)";
 	public static final String USERNAME_TAKEN_ERROR = "Username is already in use";
 	public static final String DATABASE_ERROR = "Can't connect to the Database";
 	
