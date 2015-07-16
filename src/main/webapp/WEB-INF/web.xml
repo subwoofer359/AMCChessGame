@@ -122,6 +122,11 @@
 		<url-pattern>/app/chessgame/*</url-pattern>
 	</filter-mapping>
 	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/Login.jsp</location>
+	</error-page>
+	
 </web-app>
 
 
