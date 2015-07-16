@@ -82,7 +82,7 @@ function checkPassword(inputElementOne, inputElementTwo) {
  */
 function canSubmit() {
     "use strict";
-    if (!checkPassword('passwordOne', 'passwordTwo')) {
+    if (!checkPassword('password', 'passwordTwo')) {
         return false;
     }
 
