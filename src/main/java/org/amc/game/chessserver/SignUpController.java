@@ -36,10 +36,8 @@ public class SignUpController {
     static final String MESSAGE_MODEL_ATTR = "MESSAGE";
     static final String ERRORS_MODEL_ATTR = "errors";
     static final String SUCCESS_MSG = "account created";
-    static final String USERTAKEN_MSG = "Username is already taken";
     static final String ERROR_MSG = "Trouble creating account";
     static final String DEFAULT_AUTHORITY = "ROLE_USER";
-    static final String INVALID_EMAIL_ADDRESS_MSG = "Invalid Email Address";
     
     private PasswordEncoder encoder;
     
@@ -109,16 +107,13 @@ public class SignUpController {
         
     }
     
-    String hashPassword(String password){
-        return encoder.encode(password);
-    }
-    
     void addDefaultAuthorities(User user) throws DAOException {
         Authorities authorities = new Authorities();
         authorities.setAuthority(DEFAULT_AUTHORITY);
         authorities.setUser(user);
         user.setAuthorities(Arrays.asList(authorities));
     }
+    
     @Resource(name="myUserDAO")
     public void setUserDAO(DAO<User> userDAO){
         this.userDAO = userDAO;
