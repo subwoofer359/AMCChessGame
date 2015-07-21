@@ -15,11 +15,11 @@
 <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.3/interact.min.js"></script>
-<script src="../../js/chesspieces.js"></script>
-<script src="../../js/chessboard.js"></script>
-<script src="../../js/player.js"></script>
-<script src="../../js/chessGamePortal.js"></script>
-<script src="../../js/chessGameInteract.js"></script>
+<script src="../../jsfull/chesspieces.js"></script>
+<script src="../../jsfull/chessboard.js"></script>
+<script src="../../jsfull/player.js"></script>
+<script src="../../jsfull/chessGamePortal.js"></script>
+<script src="../../jsfull/chessGameInteract.js"></script>
 
 <title>Chess Game</title>
 <style>
