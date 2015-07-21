@@ -1,5 +1,6 @@
 <%@page contentType="text/html; charset=ISO-8859-1" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 
@@ -162,12 +163,12 @@ body {
 .signup-error {
     text-align: center;
     display: block;
-    font-size: 1.7em;
+    font-size: 1.4em;
     margin-top: -27px;
     margin-bottom: 2px;
     padding-top: 5px;
     padding-bottom: 5px;
-    color: red;
+    color: mediumblue;
 }
 
 @media (max-height:650px) and (max-width:450px) {
@@ -220,7 +221,6 @@ body {
 	#signup-box {
 		margin-top: 0px;
 	}
-    
 }
 
 </style>
@@ -242,6 +242,15 @@ $(document).ready(function () {
     if(${not empty errors and errors.hasErrors()}) {
         $("#signup-msg").click();
     }
+<c:set var="inputFields" value="${fn:split('fullName,userName,password,emailAddress',',')}"/>
+    
+<c:forEach var="inputField" items="${inputFields}">
+<c:if test='${not empty errors and not empty errors.getFieldError(inputField)}'>
+    var $field = $("#${inputField}");
+    $field.css("background-color", "#dc4040");
+    $field.after('<span class="signup-error">${errors.getFieldError(inputField).code}</span>');
+</c:if>
+</c:forEach>
 });
 </script>
 </head>
@@ -253,9 +262,6 @@ $(document).ready(function () {
         <div id="login-box" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 box">
             <img id="login-icon" alt="knight"  src="./img/Knight.svg"/>
             <p id="login-title">Adrian McLaughlin's <strong>Chess Game</strong></p>
-            <c:if test="${param.error != null}">
-            	<span id="login-fail" class="label label-danger">Login failed</span>
-            </c:if>
             <input class="inputtext form-control" type="text" name="username" required="required" placeholder="Username"/>
             <input class="inputtext form-control" type="password" name="password" required="required" placeholder="Password"/>
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Play Game"/>
@@ -269,28 +275,14 @@ $(document).ready(function () {
                 <div class="col-xs-3"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
                 <p class="col-xs-9" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
             </div>
-            <input class="inputtext signup-inputtext form-control" type="text" name="fullName" required="required" placeholder="Name" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
-            <c:if test='${not empty errors and not empty errors.getFieldError("fullName")}'>
-                <span class="signup-error">${errors.getFieldError("fullName").code}</span>
-            </c:if>
+            <input class="inputtext signup-inputtext form-control" type="text" name="fullName" id="fullName" required="required" placeholder="Name" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
             
-            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>
-            
-            <c:if test='${not empty errors and not empty errors.getFieldError("userName")}'>
-                <span class="signup-error">${errors.getFieldError("userName").code}</span>
-            </c:if>
-            
-            <input class="inputtext signup-inputtext form-control" type="password" name="password" id="passwordOne" required="required" placeholder="Password"/>
-            <c:if test='${not empty errors and not empty errors.getFieldError("password")}'>
-                <span class="signup-error">${errors.getFieldError("password").code}</span>
-            </c:if>
+            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>       
+            <input class="inputtext signup-inputtext form-control" type="password" name="password" id="password" required="required" placeholder="Password"/>
         
             <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
+        
         <input class="inputtext signup-inputtext form-control" type="email" name="emailAddress" id="emailAddress" required="required" placeholder="Email Address" <c:if test="${not empty userForm}">value="<c:out value="${userForm.emailAddress}"/>"</c:if>/>
-    
-            <c:if test='${not empty errors and not empty errors.getFieldError("emailAddress")}'>
-                <span class="signup-error">${errors.getFieldError("emailAddress").code}</span>
-            </c:if>
     
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Create Player"/>
             <div class="filler"></div>
