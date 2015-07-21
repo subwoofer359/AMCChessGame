@@ -256,7 +256,7 @@ $(document).ready(function () {
 </head>
 <body>
 <div id="main" class="container-fluid">
-><!-- Top row -->
+<!-- Top row -->
     <div class="row">
         <form method="post" action="./login">
         <div id="login-box" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 box">
