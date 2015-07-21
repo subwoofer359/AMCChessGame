@@ -33,18 +33,12 @@ InteractActions.prototype = {
         "use strict";
         var target = event.target,
             // keep the dragged position in the data-x/data-y attributes
-            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy,
+            x = event.dx,
+            y = event.dy,
             correctY = target.transform.baseVal[0].matrix.f,
             correctX = target.transform.baseVal[0].matrix.e;
         // translate the element
-        target.style.webkitTransform =
-            target.style.transform =
-            'translate(' + (x + correctX) + 'px, ' + (y + correctY) + 'px)';
-
-        // update the posiion attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+        target.setAttribute('transform', 'translate(' + (x + correctX) + ', ' + (y + correctY) + ')');
     },
 
     onDragEnter : function (event) {
