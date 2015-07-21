@@ -242,7 +242,7 @@ $(document).ready(function () {
     if(${not empty errors and errors.hasErrors()}) {
         $("#signup-msg").click();
     }
-<c:set var="inputFields" value="${fn:split('fullName,userName,password,emailAddress',',')}"/>
+<c:set var="inputFields" value="${fn:split('fullName,userName,password,emailAddress', ',')}"/>
     
 <c:forEach var="inputField" items="${inputFields}">
 <c:if test='${not empty errors and not empty errors.getFieldError(inputField)}'>
@@ -269,20 +269,22 @@ $(document).ready(function () {
         </div>
             <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
         </form>
+        <!-- Sign up box -->
         <form id="userForm" method="post" action="signup">
         <div id="signup-box" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 box">
             <div id="title">
                 <div class="col-xs-3"><img id="signup-icon" alt="knight" src="./img/Knight.svg"/></div>
                 <p class="col-xs-9" id="signup-title">Adrian McLaughlin's <br><strong>Chess Game</strong></p>
             </div>
-            <input class="inputtext signup-inputtext form-control" type="text" name="fullName" id="fullName" required="required" placeholder="Name" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
+            <input class="inputtext signup-inputtext form-control" type="text" name="fullName" id="fullName" required="required" placeholder="Name" pattern="\b[a-zA-Z .']{5,50}\b" title="Letters and spaces only, Name length greater than 5 and less than 50" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
             
-            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>       
-            <input class="inputtext signup-inputtext form-control" type="password" name="password" id="password" required="required" placeholder="Password"/>
+            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" pattern="[a-zA-Z][a-zA-Z0-9_]{4,50}" title="Start with a letter. No spaces or special characters. Length greater than 4 and less 50" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>       
+            
+        <input class="inputtext signup-inputtext form-control" type="password" name="password" id="password" required="required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}" title="Must contain numbers, lowercase and uppercase letters and be greater than 6 and less then 20." placeholder="Password"/>
         
             <input class="inputtext signup-inputtext form-control" type="password" required="required" id="passwordTwo" placeholder="Confirm password"/>
         
-        <input class="inputtext signup-inputtext form-control" type="email" name="emailAddress" id="emailAddress" required="required" placeholder="Email Address" <c:if test="${not empty userForm}">value="<c:out value="${userForm.emailAddress}"/>"</c:if>/>
+        <input class="inputtext signup-inputtext form-control" type="email" name="emailAddress" id="emailAddress" required="required" placeholder="Email Address" pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,10}\b" title="format: name@company.domain" <c:if test="${not empty userForm}">value="<c:out value="${userForm.emailAddress}"/>"</c:if>/>
     
             <input class="btn btn-lg btn-block btn-primary submit-btn" type="submit" value="Create Player"/>
             <div class="filler"></div>
