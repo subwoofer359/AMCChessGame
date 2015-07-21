@@ -170,28 +170,6 @@
 				</tr>
 				</thead>
                 <tbody>
-                    <c:forEach var="game" items='${GAMEMAP}'>
-                        <c:if test="${PLAYER.userName eq game.value.player.userName}">
-                        <c:set var="uid">${game.key}</c:set>
-                        <c:set var="index" value="${fn:length(uid)}"/>
-				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${game.value.currentStatus eq 'AWAITING_PLAYER' }">
-                                            <span class="glyphicon glyphicon-time"> </span>
-                                        </c:when>
-                                        <c:when test="${game.value.currentStatus eq 'IN_PROGRESS'}">
-                                            <span class="glyphicon glyphicon-play-circle"> </span>
-                                        </c:when>
-                                        <c:when test="${game.value.currentStatus eq 'FINISHED'}">
-                                            <span class="glyphicon glyphicon-remove"> </span>
-                                        </c:when>
-                                        </c:choose>
-                                </td>
-						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
-						    </tr>		
-                        </c:if>
-				    </c:forEach>
                 </tbody>
             </table>
             </div>
@@ -209,27 +187,6 @@
 				</tr>
 				</thead>
                 <tbody>
-                    <c:forEach var="game" items='${GAMEMAP}'>
-                        <c:if test="${PLAYER.userName ne game.value.player.userName}">
-                         	<c:set var="uid">${game.key}</c:set>
-                        	<c:set var="index" value="${fn:length(uid)}"/>
-				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>
-                                 <c:choose>
-                                        <c:when test="${game.value.currentStatus eq 'AWAITING_PLAYER' }">
-                                            <span class="glyphicon glyphicon-time"> </span>
-                                        </c:when>
-                                        <c:when test="${game.value.currentStatus eq 'IN_PROGRESS'}">
-                                            <span class="glyphicon glyphicon-play-circle"> </span>
-                                        </c:when>
-                                        <c:when test="${game.value.currentStatus eq 'FINISHED'}">
-                                            <span class="glyphicon glyphicon-remove"> </span>
-                                        </c:when>
-                                        </c:choose>
-                                </td>
-						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
-						    </tr>		
-                        </c:if>
-				    </c:forEach>
                 </tbody>
             </table>
             </div>

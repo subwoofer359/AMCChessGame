@@ -19,6 +19,10 @@ $(document).ready(function () {
         return;
     });
 
+    /**
+     * Replaces ServerChessGame status into an icon 
+     * @param {string} status - ServerChessGame status
+     */
     function getStatusSymbol(status) {
         var output = '<span class="glyphicon ';
         if (status === "AWAITING_PLAYER") {
@@ -35,11 +39,12 @@ $(document).ready(function () {
         return output;
     }
 
-    /**
-     * Long polling for Table updates
+    /*
+     * Update the tables with the chess games received from the server
+     * Uses an ajax call
      *
      */
-    setInterval(function () {
+    function updateTables() {
         $.post("getGameMap", function (data) {
             var yourEntry = "",
                 otherEntry = "",
@@ -66,5 +71,16 @@ $(document).ready(function () {
             addTableRowListener();
             $(".games-table tbody tr").find("input:checkbox[value=" + selectedRow + "]").click();
         });
-    }, 5000);
+    }
+
+    /**
+     * initial call on page load to populate the game tables
+     */
+    updateTables();
+
+    /**
+     * Long polling for Table updates
+     *
+     */
+    setInterval(updateTables, 5000);
 });
