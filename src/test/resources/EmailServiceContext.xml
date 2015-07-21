@@ -22,7 +22,7 @@
 	</bean>
 	
 	<bean id="emailTemplateFactory" class="org.amc.game.chessserver.messaging.EmailTemplateFactory" scope="prototype">
-		<property name="chessBoardSVGFactory" ref="chessBoardSVGFactory"></property>
+		<lookup-method name="getChessBoardSVGFactory" bean="chessBoardSVGFactory"/>
 		<property name="templateEngine" ref="templateEngine"></property>
 	</bean>
 	

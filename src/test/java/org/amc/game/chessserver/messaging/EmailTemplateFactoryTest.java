@@ -19,9 +19,14 @@ public class EmailTemplateFactoryTest {
     
     @Before
     public void setUp() throws Exception {
-        factory = new EmailTemplateFactory();
         cbsImageFactory = new ChessBoardSVGFactory();
-        factory.setChessBoardSVGFactory(cbsImageFactory);
+        factory = new EmailTemplateFactory(){
+            @Override
+            public ChessBoardSVGFactory getChessBoardSVGFactory() {
+                return cbsImageFactory;
+            }
+        };
+        
         stEngine = mock(SpringTemplateEngine.class);
         factory.setTemplateEngine(stEngine);
     }

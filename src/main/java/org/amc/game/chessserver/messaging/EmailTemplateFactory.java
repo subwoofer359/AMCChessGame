@@ -6,13 +6,11 @@ import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-public class EmailTemplateFactory {
+public abstract class EmailTemplateFactory {
 
     private static final Logger logger = Logger.getLogger(EmailTemplateFactory.class);
     
 	private SpringTemplateEngine templateEngine;
-
-	private ChessBoardSVGFactory chessBoardSVGFactory;
 
 	public EmailTemplate getEmailTemplate(Class<?> clss) {
 		if (clss.equals(Player.class)) {
@@ -21,7 +19,7 @@ public class EmailTemplateFactory {
 			return email;
 		} else if (clss.equals(ChessGame.class)) {
 			MoveUpdateEmail email = new MoveUpdateEmail();
-			email.setChessBoardSVGFactory(chessBoardSVGFactory);
+			email.setChessBoardSVGFactory(getChessBoardSVGFactory());
 			email.setTemplateEngine(templateEngine);
 			return email;
 		} else {
@@ -51,9 +49,7 @@ public class EmailTemplateFactory {
 		this.templateEngine = templateEngine;
 	}
 
-	public void setChessBoardSVGFactory(ChessBoardSVGFactory chessBoardSVGFactory) {
-		this.chessBoardSVGFactory = chessBoardSVGFactory;
-	}
+	public abstract ChessBoardSVGFactory getChessBoardSVGFactory();
 
 	public static class FactoryInstantinationException extends RuntimeException {
 
