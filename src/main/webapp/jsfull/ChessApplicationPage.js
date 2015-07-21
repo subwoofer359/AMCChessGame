@@ -13,11 +13,27 @@ $(document).ready(function () {
         var selectedRow = $("tr.selected");
         if (selectedRow.length === 0) {
             event.preventDefault();
-            return;
         } else {
             $(".join-button").attr("formaction", "joinGame");
         }
+        return;
     });
+
+    function getStatusSymbol(status) {
+        var output = '<span class="glyphicon ';
+        if (status === "AWAITING_PLAYER") {
+            output += 'glyphicon-time"';
+            output += ' title="Awaiting Player"';
+        } else if (status === "IN_PROGRESS") {
+            output += 'glyphicon-play-circle"';
+            output += ' title="In Progress"';
+        } else if (status === "FINISHED") {
+            output += 'glyphicon-remove"';
+            output += ' title="Game over"';
+        }
+        output += '> </span>';
+        return output;
+    }
 
     /**
      * Long polling for Table updates
@@ -35,7 +51,7 @@ $(document).ready(function () {
                     tempEntry = '<tr><td>' + gameUUID.toString().slice(-5) + '</td><td>' +
                         data[gameUUID].player.player.userName +
                         '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.player.userName : "") +
-                        '</td><td>' + data[gameUUID].currentStatus +
+                        '</td><td>' + getStatusSymbol(data[gameUUID].currentStatus) +
                         '</td><td><input type="checkbox" name="gameUUID" value="' +
                         gameUUID + '"></td></tr>';
                     if (playerName === data[gameUUID].player.player.name) {

@@ -84,6 +84,24 @@
     #other-games-table {
     	margin-bottom:70px;
     }
+    
+    span[class$="glyphicon-time"] {
+        color:#ffcc00;
+        display: block;
+        text-align: center;
+    }
+    
+    span[class$="glyphicon-play-circle"] {
+        color:green;
+        display: block;
+        text-align: center;
+    }
+    
+    span[class$="glyphicon-remove"] {
+        color:red;
+        display: block;
+        text-align: center;
+    }
 </style>
 <script>
     var playerName = '<c:out value="${PLAYER.name}"/>',
@@ -156,7 +174,20 @@
                         <c:if test="${PLAYER.userName eq game.value.player.userName}">
                         <c:set var="uid">${game.key}</c:set>
                         <c:set var="index" value="${fn:length(uid)}"/>
-				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>${game.value.currentStatus}</td>
+				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${game.value.currentStatus eq 'AWAITING_PLAYER' }">
+                                            <span class="glyphicon glyphicon-time"> </span>
+                                        </c:when>
+                                        <c:when test="${game.value.currentStatus eq 'IN_PROGRESS'}">
+                                            <span class="glyphicon glyphicon-play-circle"> </span>
+                                        </c:when>
+                                        <c:when test="${game.value.currentStatus eq 'FINISHED'}">
+                                            <span class="glyphicon glyphicon-remove"> </span>
+                                        </c:when>
+                                        </c:choose>
+                                </td>
 						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
 						    </tr>		
                         </c:if>
@@ -182,7 +213,19 @@
                         <c:if test="${PLAYER.userName ne game.value.player.userName}">
                          	<c:set var="uid">${game.key}</c:set>
                         	<c:set var="index" value="${fn:length(uid)}"/>
-				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>${game.value.currentStatus}</td>
+				            <tr><td>${fn:substring(uid, index-5, index)}</td><td>${game.value.player.userName}</td><td>${game.value.opponent.userName}</td><td>
+                                 <c:choose>
+                                        <c:when test="${game.value.currentStatus eq 'AWAITING_PLAYER' }">
+                                            <span class="glyphicon glyphicon-time"> </span>
+                                        </c:when>
+                                        <c:when test="${game.value.currentStatus eq 'IN_PROGRESS'}">
+                                            <span class="glyphicon glyphicon-play-circle"> </span>
+                                        </c:when>
+                                        <c:when test="${game.value.currentStatus eq 'FINISHED'}">
+                                            <span class="glyphicon glyphicon-remove"> </span>
+                                        </c:when>
+                                        </c:choose>
+                                </td>
 						          <td><input type="checkbox" name="gameUUID" value="${game.key}"></td>
 						    </tr>		
                         </c:if>
