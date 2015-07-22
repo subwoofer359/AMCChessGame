@@ -2,7 +2,7 @@
 /*global document*/
 /*global addTableRowListener*/
 /*global setInterval*/
-/*global playerName*/
+/*global userName*/
 
 $(document).ready(function () {
     "use strict";
@@ -59,7 +59,7 @@ $(document).ready(function () {
                         '</td><td>' + getStatusSymbol(data[gameUUID].currentStatus) +
                         '</td><td><input type="checkbox" name="gameUUID" value="' +
                         gameUUID + '"></td></tr>';
-                    if (playerName === data[gameUUID].player.player.name) {
+                    if (userName === data[gameUUID].player.player.userName) {
                         yourEntry += tempEntry;
                     } else {
                         otherEntry += tempEntry;
