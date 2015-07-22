@@ -65,9 +65,9 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
                 log.debug("MessageService: Creating message");
                 MimeMessage emailMessage = createMessage(user.getEmailAddress(), message);
                 log.debug("MessageService: Sending message");
-                synchronized (mailSender) {
+                //synchronized (mailSender) {
                     this.mailSender.send(emailMessage);
-                }
+                //}
                 deleteImages(message);
                 log.debug("MessageService: Sent message:"+ emailMessage.toString());
             } catch (MailException | MessagingException e) {
