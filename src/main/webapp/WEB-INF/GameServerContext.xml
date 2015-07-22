@@ -22,10 +22,15 @@
 		</list>
 		</property>
 	</bean>
-
-	<task:annotation-driven executor="myExecutor"
-		scheduler="myScheduler" />
-	<task:executor id="myExecutor" pool-size="20" rejection-policy="DISCARD_OLDEST"/>
+	
+	<bean id="myExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    	<property name="corePoolSize" value="5"/>
+    	<property name="maxPoolSize" value="10"/>
+    	<property name="queueCapacity" value="50"/>
+	</bean>
+	<task:annotation-driven scheduler="myScheduler" />
+	<!-- <task:executor id="myExecutor" pool-size="20" rejection-policy="DISCARD_OLDEST"/>  -->
+	
 	<task:scheduler id="myScheduler" pool-size="10" />
 
 	<!-- Application beans -->
