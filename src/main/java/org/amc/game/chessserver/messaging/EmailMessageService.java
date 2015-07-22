@@ -62,14 +62,14 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
         @Override
         public String call() {
             try {
-                log.debug("MessageService: Creating message");
+                log.info("MessageService: Creating message for " + message.getPlayer());
                 MimeMessage emailMessage = createMessage(user.getEmailAddress(), message);
-                log.debug("MessageService: Sending message");
+                log.info("MessageService: Sending message");
                 //synchronized (mailSender) {
                     this.mailSender.send(emailMessage);
                 //}
+                log.info("MessageService: Sent message:"+ emailMessage.toString());
                 deleteImages(message);
-                log.debug("MessageService: Sent message:"+ emailMessage.toString());
             } catch (MailException | MessagingException e) {
                 log.error(e);
                 e.printStackTrace();
@@ -91,7 +91,8 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
             message.setFrom(EMAIL_SENDER_ADDR);
             message.setTo(toAddress);
             message.setSubject(messageTextBody.getEmailSubject());
-            message.setText(messageTextBody.getEmailHtml(), true);     
+            message.setText(messageTextBody.getEmailHtml(), true); 
+            log.info("Adding images to Email");
             addImagesToMessage(message, messageTextBody);
             
             return mimeMessage;

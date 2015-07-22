@@ -166,7 +166,9 @@ public class ChessBoardSVGFactory {
         }
     }
     
-    private File createImageFile() throws IOException {
-    	return File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX, new File(OUTPUT_DIR));
+    private File createImageFile() throws IOException {        
+        File file = File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX, new File(OUTPUT_DIR));
+        logger.info("Creating SVG file:" + file.getAbsolutePath());
+        return file;
     }
 }
