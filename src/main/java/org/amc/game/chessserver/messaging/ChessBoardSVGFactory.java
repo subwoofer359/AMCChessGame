@@ -118,6 +118,7 @@ public class ChessBoardSVGFactory {
                         SVGChessPiece svgFactory = sVGElementfactory.get(piece.getClass());
 
                         if (svgFactory != null) {
+                            logger.info("ChessBoardSVGFactory:adding chesspiece:" + piece.toString() + " at location:" + letter + i);
                             Element element = svgFactory.getChessPieceElement("", new Location(
                                             letter, i), piece.getColour());
                             layer.appendChild(element);
