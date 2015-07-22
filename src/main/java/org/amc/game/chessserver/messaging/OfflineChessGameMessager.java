@@ -87,7 +87,7 @@ public class OfflineChessGameMessager implements Observer {
         User user = getUser(chessGame);
         Player player = chessGame.getCurrentPlayer();
         logger.debug(String.format("OfflineChessMessager: %s is offline", player));
-           messageService.send(user, newMoveUpdateEmail(player, scg));
+        messageService.send(user, newMoveUpdateEmail(player, scg));
         
     }
     
