@@ -7,7 +7,7 @@
 <!-- delete later -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
 <!-- Bootstrap -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -142,6 +142,10 @@
         min-height: 2.6em;
     }
     
+    .bottom-spacer {
+         height: 220px;
+    }
+    
     @media (max-width:600px) {
         body {
             overflow-x: auto;
@@ -183,6 +187,29 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm">
+ <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+            
+            <a href="#" class="navbar-brand"></a>
+        </div>
+        <!-- Collection of nav links and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><button id="home-btn" class="btn btn-default btn-block btn-lg" onclick="window.location='./chessapplication'">Home</button></li>
+                <li><button id="quit-btn" class="btn btn-default btn-block btn-lg">Quit Game</button></li>
+            </ul>
+        </div>
+    </div>
+</nav>
     <div class="container-fluid full-height">
     <div class="row full-height">
         <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
@@ -208,6 +235,10 @@ $(document).ready(function(){
             </div><!-- col-xs-11 -->
         </div>
     </div>
+    <div class="row bottom-spacer">
+    </div>
   </div>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>
 </html>
