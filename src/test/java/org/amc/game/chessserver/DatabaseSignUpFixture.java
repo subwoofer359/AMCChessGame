@@ -7,7 +7,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
+import org.amc.User;
+import org.amc.dao.DAO;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -18,8 +22,15 @@ import org.amc.EntityManagerThreadLocal;
  *
  */
 public class DatabaseSignUpFixture {
+    private static final Logger logger = Logger.getLogger(DatabaseSignUpFixture.class);
+    
     private EntityManager em;
     private EntityManagerFactory factory;
+    private static final String[] userNames = { "nobby", "laura", "stephen" };
+    private static final String[] fullNames = { "Nobby Squeal", "Laura O'Neill", "Stephen Moran" };
+    private static final String[] emailAddresses = {"nobby@adrianmclaughlin.ie", "laura@adrianmclaughlin.ie",
+                    "stephen@adrianmclaughlin.ie" };
+    private static final String password = "C4096cr";
 
     public DatabaseSignUpFixture() {
 
@@ -35,7 +46,8 @@ public class DatabaseSignUpFixture {
         setUpEntitiyManagerFactory();
         deleteUserPlayerTables();
         EntityManagerThreadLocal.closeEntityManager();
-        setUpEntitiyManagerFactory();   
+        setUpEntitiyManagerFactory();
+        addUsers();
     }
     
     public void tearDown() {
@@ -65,6 +77,23 @@ public class DatabaseSignUpFixture {
         }
         em.getTransaction().commit();
     }
+    
+    private void addUsers() {
+        for(int i = 0; i < fullNames.length; i++) {
+            User user = new User();
+            user.setName(fullNames[i]);
+            user.setUserName(userNames[i]);
+            user.setEmailAddress(emailAddresses[i]);
+            user.setPassword(password.toCharArray());
+            DAO<User> userDAO = new DAO<>(User.class);
+            try {
+                userDAO.addEntity(user);
+            } catch (DAOException e) {
+                logger.error("user:" + user.getName()+" not added to datbase");
+                e.printStackTrace();
+            }
+        }
+    }
 
     public boolean tableExists(String tableName) {
         Query tableExists = em.createNativeQuery("SHOW TABLES");
@@ -79,7 +108,5 @@ public class DatabaseSignUpFixture {
 
         return result;
     }
-//    
-//
-//    // Todo Create method setUpSPCMeasurementTable
+
 }

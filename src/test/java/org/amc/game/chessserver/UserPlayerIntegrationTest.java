@@ -75,8 +75,8 @@ public class UserPlayerIntegrationTest {
         
         userDAO.deleteEntity(user);
         
-        assertEquals(true, userDAO.findEntities().isEmpty());
-        assertEquals(true, playerDAO.findEntities().isEmpty());
-        assertEquals(true, authoritiesDAO.findEntities().isEmpty());
+        assertEquals(true, userDAO.findEntities("userName", userName).isEmpty());
+        assertEquals(true, playerDAO.findEntities("userName", userName).isEmpty());
+        assertEquals(true, authoritiesDAO.findEntities("user", user).isEmpty());
     }
 }
