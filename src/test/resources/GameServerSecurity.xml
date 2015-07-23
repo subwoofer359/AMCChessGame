@@ -36,6 +36,7 @@
 		<intercept-url pattern="/isUserNameAvailable*" access="isAnonymous()" />
 		<intercept-url pattern="/app/chessgame/**" access="isAuthenticated()" />
 		<intercept-url pattern="/onlinePlayerList" access="isAuthenticated()" />
+		<intercept-url pattern="/searchForUsers" access="isAuthenticated()" />
 		<form-login login-page="/Login.jsp" />
 		<logout />
 	</http>

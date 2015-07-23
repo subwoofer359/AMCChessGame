@@ -53,6 +53,7 @@
 		<url-pattern>/signup</url-pattern>
 		<url-pattern>/isUserNameAvailable</url-pattern>
 		<url-pattern>/onlinePlayerList</url-pattern>
+		<url-pattern>/searchForUsers</url-pattern>
 	</servlet-mapping>
 	
 	<!-- My listener Classes -->

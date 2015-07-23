@@ -56,6 +56,8 @@
 		<property name="sCGInitialiser" ref="sCGInitialiser"></property>
 	</bean>
 	
+	<bean id="userSearchController" class="org.amc.game.chessserver.UserSearchController" />
+	
 	<bean id="gameFinishListener" class="org.amc.game.chessserver.GameFinishedListener"/>
 
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
