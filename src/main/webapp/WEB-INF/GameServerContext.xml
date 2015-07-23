@@ -49,6 +49,8 @@
 	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
 		<lookup-method name="createOfflineChessGameMessager" bean="offlineChessGameMessager"/>
 	</bean>
+	
+	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
 
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
 		<constructor-arg>

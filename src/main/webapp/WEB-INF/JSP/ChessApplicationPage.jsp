@@ -134,6 +134,7 @@
                 <li><button formaction="createGame" type="submit" class="btn btn-default btn-block btn-lg">Create Game</button></li>
                 <li><button type="submit" class="join-button btn btn-default btn-block btn-lg ">Join Game</button></li>
                 <li><button type="submit" class="btn btn-default btn-block btn-lg">Delete Game</button></li>
+                <li><button type="button" class="btn btn-default btn-block btn-lg" onclick="window.location='./userSearchPage';">Search</button></li>
                 <li><a href="${pageContext.request.contextPath}/app/chessgame/logout" role="button" class="btn btn-default btn-block btn-lg">Log out</a></li>
             </ul>
         </div>
@@ -151,7 +152,9 @@
                 <li><button formaction="createGame" type="submit">Create Game</button></li>
                 <li><button class="join-button" type="submit">Join Game</button></li>
                 <li><a class="description" href="#">Delete Game</a></li>
+                <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">Search</a></li>
                 <li><a href="${pageContext.request.contextPath}/app/chessgame/logout">Log out</a></li>
+                
             </ul>
             </div>
         </div><!-- sidebar-left -->

@@ -19,14 +19,19 @@ public class UserSearchController {
     
     private UserSearchDAO userDAO;
     
+    @RequestMapping(method=RequestMethod.GET, value="/userSearchPage")
+    public String getUserSearchPage() {
+        return "UserSearchPage";
+    }
+    
     @RequestMapping(method=RequestMethod.POST, value="/searchForUsers")
     @ResponseBody
-    public Callable<String> searchForUsers(@RequestParam String searchTerm) {
+    public Callable<String> searchForUsers(@RequestParam final String searchTerm) {
         return new Callable<String>() {
           @Override
           public String call() throws Exception {
               final Gson gson = new Gson();      
-              return gson.toJson(userDAO.findUsers(searchTerm));
+              return gson.toJson(userDAO.findUsers(searchTerm.replaceAll("\\*", "%")));
           }
         };
     }
