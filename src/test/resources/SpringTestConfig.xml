@@ -60,6 +60,8 @@
 	
 	<bean id="gameFinishListener" class="org.amc.game.chessserver.GameFinishedListener"/>
 
+	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
+
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.User</value>

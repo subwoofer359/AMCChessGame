@@ -242,5 +242,20 @@ public class DAO<T> implements Serializable {
         }
 
     }
+    
+    /**
+     * Detaches Entity from the Persistence context
+     *
+     * @param entity
+     * @see EntityManager#detach(Object)
+     */
+    public void detachEntity(T entity){
+        EntityManager em = getEntityManager();
+        try {
+            em.detach(entity);
+        } catch (IllegalArgumentException iae) {
+            LOG.error("DAO: is not an entity");
+        }
+    }
 
 }

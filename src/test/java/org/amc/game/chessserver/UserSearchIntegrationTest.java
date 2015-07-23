@@ -1,5 +1,10 @@
 package org.amc.game.chessserver;
 
+import static org.junit.Assert.assertTrue;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -10,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.Assert.*;
 
 import org.amc.User;
+import org.amc.dao.UserDetails;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,10 +69,16 @@ public class UserSearchIntegrationTest {
                         .andExpect(status().isOk())
                         .andExpect(request().asyncStarted())
                         .andReturn();
-        MvcResult result2 = this.mockMvc.perform(asyncDispatch(result)).andExpect(status().isOk())
+        MvcResult result2 = this.mockMvc.perform(asyncDispatch(result))
+                        .andDo(print())
+                        .andExpect(status().isOk())
                         .andReturn();
-        List<User> userList = (List<User>) result2.getAsyncResult(500000);
-        assertTrue(userList.size() == 1);
+        String jsonString = (String) result2.getAsyncResult(500000);
+        
+        Gson gson = new Gson();
+        Type userType = new TypeToken<List<UserDetails>>(){}.getType();
+        List<User> u = gson.fromJson(jsonString, userType);
+        assertTrue(u.size() == 1);
     }
 
 }
