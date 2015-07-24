@@ -203,4 +203,9 @@ public class ServerChessGame extends DefaultSubject {
         this.opponent = null;
         this.chessGame = null;
     }
+    
+    @Override
+    public String toString() {
+        return "ServerChessGame[" + getPlayer() + " vs " + getOpponent() + "]";
+    }
 }
