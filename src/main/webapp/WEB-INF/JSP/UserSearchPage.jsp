@@ -91,7 +91,8 @@ $(document).ready(function () {
                 $button.addClass("btn-danger");
                 $button.html("request failed");
             }
-            $button.attr("disabled", "disabled");
+            $button.attr("disabled", true);
+            $button.parents("tr").unbind("click");
         });
     }
     
@@ -102,7 +103,9 @@ $(document).ready(function () {
             var td = $(this).find(".buttonHolder"),
                 userName = $(this).find(".userName").text();
             td.append('<button class="play-button btn btn-primary">Request Game</button>');
+            
             $(".play-button").click(function () {
+                event.preventDefault();
                 requestGame(userName);
             });
         });
@@ -137,8 +140,15 @@ $(document).ready(function () {
         });
     }
     
-    $("#search-btn").click(function(){
+    $("#search-btn").click(function(event){
         searchForUserName();
+    });
+    
+    $("#userName").keypress( function( event ) {
+        if ( event.which == 13 ) {
+            event.preventDefault();
+            searchForUserName();
+        }
     });
     
 });
