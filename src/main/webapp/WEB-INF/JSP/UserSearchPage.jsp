@@ -60,6 +60,19 @@
         display:block;
         margin-bottom: 5px;
     }
+    /* 
+     * side menu 
+     * to be removed
+     */
+    .side-menu{
+        font-size:1.8em;
+    }
+    
+    .side-menu button{
+        padding: 0;
+        background-color: #2886d5;
+        border: none;
+    }
 </style>
 <script>
 $(document).ready(function () {
@@ -166,9 +179,20 @@ $(document).ready(function () {
         </div>
     </div>
 </nav>
+    
 <div id="box" class="container-fluid ">
     <div class="row ">
-    <div id="search-box" class="panel panel-default">
+        <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
+            <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
+                <img alt="Queen" src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
+            </a>    
+            <div class="side-menu">
+            <ul>
+                <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
+            </ul>
+            </div>
+        </div>
+    <div id="search-box" class="panel panel-default col-md-10 col-xs-12">
         <div id="search-bar" class="search-bar panel-heading container-fluid">
             <div class="col-xs-8 col-md-10 ">
                 <input id="userName" type="text" placeholder="Search for Users"/>
