@@ -129,7 +129,7 @@ function openStompConnection(websocketURL, headers, stompCallBack) {
             stompCallBack.topicUpdate.call(stompCallBack, message);
         });
 
-        $("#quit-btn").click(function () {
+        $(".quit-btn").click(function () {
             stompClient.send(APP_QUIT + stompCallBack.gameUID, PRIORITY, "quit");
         });
         stompClient.send(APP_GET + stompCallBack.gameUID, PRIORITY, "Get ChessBoard");

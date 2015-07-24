@@ -202,7 +202,7 @@ $(document).ready(function(){
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><button id="home-btn" class="btn btn-default btn-block btn-lg" onclick="window.location='./chessapplication'">Home</button></li>
-                <li><button id="quit-btn" class="btn btn-default btn-block btn-lg">Quit Game</button></li>
+                <li><button id="quit-btn" class="btn btn-default btn-block btn-lg quit-btn">Quit Game</button></li>
             </ul>
         </div>
     </div>
@@ -216,7 +216,7 @@ $(document).ready(function(){
             <div class="side-menu">
             <ul>
                 <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
-                <li><button id="quit-btn">Quit Game</button></li>
+                <li><button class="quit-btn">Quit Game</button></li>
             </ul>
             </div>
         </div><!-- sidebar-left -->
