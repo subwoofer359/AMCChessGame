@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,16 +181,10 @@ $(document).ready(function () {
     
 <div id="box" class="container-fluid ">
     <div class="row ">
-        <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
-            <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
-                <img alt="Queen" src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
-            </a>    
-            <div class="side-menu">
-            <ul>
-                <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
-            </ul>
-            </div>
-        </div>
+        <tags:SideMenu>
+            <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
+        </tags:SideMenu>
+            
     <div id="search-box" class="panel panel-default col-md-10 col-xs-12">
         <div id="search-bar" class="search-bar panel-heading container-fluid">
             <div class="col-xs-8 col-md-10 ">

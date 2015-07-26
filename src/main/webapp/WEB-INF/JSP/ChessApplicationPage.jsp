@@ -130,21 +130,13 @@
 <div class="container-fluid full-height">
    
     <div class="row full-height">
-        <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
-            <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
-                <img alt="Queen" src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
-            </a>    
-            <div class="side-menu">
-            <ul>
-                <li><button formaction="createGame" type="submit">Create Game</button></li>
-                <li><button class="join-button" type="submit">Join Game</button></li>
-                <li><a class="description" href="#">Delete Game</a></li>
-                <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">Search</a></li>
-                <li><a href="${pageContext.request.contextPath}/app/chessgame/logout">Log out</a></li>
-                
-            </ul>
-            </div>
-        </div><!-- sidebar-left -->
+        <tags:SideMenu>
+            <li><button formaction="createGame" type="submit">Create Game</button></li>
+            <li><button class="join-button" type="submit">Join Game</button></li>
+            <li><a class="description" href="#">Delete Game</a></li>
+            <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">Search</a></li>
+            <li><a href="${pageContext.request.contextPath}/app/chessgame/logout">Log out</a></li>
+        </tags:SideMenu>
         <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name"><c:out value="${PLAYER.name}"/></span></div>
         
         <div class="col-xs-12 col-md-5">

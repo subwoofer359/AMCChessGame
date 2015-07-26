@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,17 +210,11 @@ $(document).ready(function(){
 </nav>
     <div class="container-fluid full-height">
     <div class="row full-height">
-        <div class="sidebar-left col-sm-2 hidden-sm hidden-xs">
-            <a id="chess-icon" href="https://openclipart.org/detail/18661/-by--18661">
-                <img alt="Queen" src="https://openclipart.org/download/18661/portablejim-Chess-tile-Queen-3.svg" />
-            </a>    
-            <div class="side-menu">
-            <ul>
+        <tags:SideMenu>
                 <li><a href="./chessapplication"><button id="home-btn">Home</button></a></li>
                 <li><button class="quit-btn">Quit Game</button></li>
-            </ul>
-            </div>
-        </div><!-- sidebar-left -->
+        </tags:SideMenu>
+
         <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
