@@ -51,6 +51,7 @@ $(document).ready(function () {
                 tempEntry,
                 gameUUID,
                 selectedRow = $(".games-table tbody tr").find("input:checked").val();
+            data = $.parseJSON(data);
             for (gameUUID in data) {
                 if (data.hasOwnProperty(gameUUID)) {
                     tempEntry = '<tr><td>' + gameUUID.toString().slice(-5) + '</td><td>' +
