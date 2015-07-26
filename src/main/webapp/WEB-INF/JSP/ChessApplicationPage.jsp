@@ -98,35 +98,19 @@
 <body>
 <form id="side-menu-form" method="post">
     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
-<nav role="navigation" class="navbar navbar-default navbar-fixed-bottom visible-xs visible-sm">
- <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            
-            
-            <a href="#" class="navbar-brand"></a>
-        </div>
-        <!-- Collection of nav links and other content for toggling -->
-        <div id="navbarCollapse" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><button id="userToggle" type="button" class="btn btn-default btn-block btn-lg">
-                    User List <span class="glyphicon glyphicon-user"></span></button>
-                </li>
-                <li><button formaction="createGame" type="submit" class="btn btn-default btn-block btn-lg">Create Game</button></li>
-                <li><button type="submit" class="join-button btn btn-default btn-block btn-lg ">Join Game</button></li>
-                <li><button type="submit" class="btn btn-default btn-block btn-lg">Delete Game</button></li>
-                <li><button type="button" class="btn btn-default btn-block btn-lg" onclick="window.location='./userSearchPage';">Search</button></li>
-                <li><a href="${pageContext.request.contextPath}/app/chessgame/logout" role="button" class="btn btn-default btn-block btn-lg">Log out</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+
+    <tags:BottomMenu>
+        <li><button id="userToggle" type="button" class="btn btn-default btn-block btn-lg">
+            User List <span class="glyphicon glyphicon-user"></span></button>
+        </li>
+        <li><button formaction="createGame" type="submit" class="btn btn-default btn-block btn-lg">Create Game</button></li>
+        <li><button type="submit" class="join-button btn btn-default btn-block btn-lg ">Join Game</button></li>
+        <li><button type="submit" class="btn btn-default btn-block btn-lg">Delete Game</button></li>
+        <li><button type="button" class="btn btn-default btn-block btn-lg" onclick="window.location='./userSearchPage';">Search</button></li>
+        <li>
+            <button type="button" onclick="window.location='./logout';" class="btn btn-default btn-block btn-lg">Log out</button>        </li>
+    </tags:BottomMenu>
+
 <div class="container-fluid full-height">
    
     <div class="row full-height">
