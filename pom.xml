@@ -11,22 +11,22 @@
 		<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-core</artifactId>
-		<version>4.0.1.RELEASE</version>
+		<version>4.0.2.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-web</artifactId>
-		<version>4.0.1.RELEASE</version>
+		<version>4.0.2.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-config</artifactId>
-		<version>4.0.1.RELEASE</version>
+		<version>4.0.2.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-test</artifactId>
-		<version>4.0.1.RELEASE</version>
+		<version>4.0.2.RELEASE</version>
 		<scope>test</scope>
 	</dependency>
 	<dependency>
@@ -49,7 +49,7 @@
 	<dependency>
 	<groupId>org.springframework</groupId>
 		<artifactId>spring-jdbc</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>junit</groupId>
@@ -87,32 +87,32 @@
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context-support</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-test</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-messaging</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-websocket</artifactId>
-		<version>4.1.6.RELEASE</version>
+		<version>4.1.7.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
