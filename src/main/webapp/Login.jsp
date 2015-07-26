@@ -6,24 +6,9 @@
 
 <head>
 <title>AMCChessGame login</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-<meta name="_csrf" content="${_csrf.token}"/>
-<!-- default header name is X-CSRF-TOKEN -->
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<%@ include file="/WEB-INF/JSP/Csrf.jspf" %>
     
-<!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
-
- <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<%@ include file="/BootStrapHeader.jsp" %>
 <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
 <script src="jsfull/User.js"></script>
 <style>
@@ -303,7 +288,6 @@ $(document).ready(function () {
    
 </div> <!-- Container -->
     
-<!-- Include all compiled plugins (below), or include individual files as needed -->
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<%@ include file="/BootStrapFooter.jsp" %>
 </body>
 </html>
