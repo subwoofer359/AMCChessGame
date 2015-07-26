@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class StartPageControllerCreateGame {
+public class StartPageControllerCreateGameTest {
     private Model model;
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private ChessGamePlayer whitePlayer;

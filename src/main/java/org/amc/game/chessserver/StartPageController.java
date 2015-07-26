@@ -25,38 +25,22 @@ import javax.servlet.http.HttpSession;
 @SessionAttributes({ "PLAYER", "GAME_UUID" })
 public class StartPageController {
 
-    enum Views {
-        CHESS_APPLICATION_PAGE("ChessApplicationPage"), CREATE_PLAYER_PAGE("CreatePlayer");
-        private String pageName;
-
-        private Views(String pageName) {
-            this.pageName = pageName;
-        }
-
-        public String getPageName() {
-            return this.pageName;
-        }
-    };
-
     @Autowired
     WebApplicationContext springContext;
     
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
     private OfflineChessGameMessagerFactory offlineChessGameMessagerFactory;
+    
+    static final String CHESS_APPLICATION_PAGE = "ChessApplicationPage";
     static final String FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
     static final String REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
 
     @RequestMapping("/chessapplication")
     public ModelAndView chessGameApplication(HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        Player player = (Player) session.getAttribute(ServerConstants.PLAYER);
-        if (player == null) {
-            mav.setViewName(Views.CREATE_PLAYER_PAGE.getPageName());
-            return mav;
-        }
         mav.getModel().put(ServerConstants.GAMEMAP, gameMap);
-        mav.setViewName(Views.CHESS_APPLICATION_PAGE.getPageName());
+        mav.setViewName(CHESS_APPLICATION_PAGE);
         return mav;
     }
 
