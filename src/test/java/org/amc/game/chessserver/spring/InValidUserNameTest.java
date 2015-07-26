@@ -47,7 +47,8 @@ public class InValidUserNameTest {
         return Arrays.asList(new Object[][] { 
         		{ "Tom" }, { "_a29394" }, { "adrian-McLaughin" }, { "\"adrian_mclaughlin\"" },
         		{ "adrian mclaughlin" }, { "for(i=0;i<length;i++)\nconsole.log(i)" },
-        		{ "_a29394" }, { "TestingAFullUserNameOfLengthOfOver50PaddingPaddingPadding" }
+        		{ "_a29394" }, { "TestingAFullUserNameOfLengthOfOver50PaddingPaddingPadding" }, 
+        		{"Breda234"}, {"1adrianmclaughlin"}
         });
     }
 

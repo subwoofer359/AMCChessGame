@@ -278,7 +278,7 @@ $(document).ready(function () {
             </div>
             <input class="inputtext signup-inputtext form-control" type="text" name="fullName" id="fullName" required="required" placeholder="Name" pattern="\b[a-zA-Z .']{5,50}\b" title="Letters and spaces only, Name length greater than 5 and less than 50" <c:if test="${not empty userForm}">value="<c:out value="${userForm.fullName}"/>"</c:if>/>
             
-            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" pattern="[a-zA-Z][a-zA-Z0-9_]{4,50}" title="Start with a letter. No spaces or special characters. Length greater than 4 and less 50" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>       
+            <input class="inputtext signup-inputtext form-control" type="text" name="userName" id="userName" required="required" pattern="[a-z][a-z0-9_]{4,50}" title="Start with a letter. No spaces or special characters. Length greater than 4 and less 50" placeholder="Username" <c:if test="${not empty userForm}">value="<c:out value="${userForm.userName}"/>"</c:if>/>       
             
         <input class="inputtext signup-inputtext form-control" type="password" name="password" id="password" required="required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}" title="Must contain numbers, lowercase and uppercase letters and be greater than 6 and less then 20." placeholder="Password"/>
         

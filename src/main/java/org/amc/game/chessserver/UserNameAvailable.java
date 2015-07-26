@@ -22,7 +22,7 @@ public class UserNameAvailable {
     
     private static Logger logger = Logger.getLogger(UserNameAvailable.class);
     
-    private static final Pattern pattern = Pattern.compile("[a-z]{1}[a-z0-9]{5,}");
+    private static final Pattern pattern = Pattern.compile("[a-z]{1}[a-z0-9]{4,}");
     
     private DAO<User> userDAO;
     

@@ -18,7 +18,7 @@ public class UserNameValidator implements Validator {
 	public static final String USERNAME_TAKEN_ERROR = "Username is already in use";
 	public static final String DATABASE_ERROR = "Can't connect to the Database";
 	
-	private static final Pattern usernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_]{4,50}");
+	private static final Pattern usernamePattern = Pattern.compile("[a-z][a-z0-9_]{4,50}");
 	private DAO<User> userDAO;
 	
 	public UserNameValidator(DAO<User> userDAO) {

@@ -54,8 +54,8 @@ public class ValidUserNameTest {
 	@Parameters
     public static Collection<?> addedUserNames() {
         return Arrays.asList(new Object[][] { 
-        		{ "adrian" }, { "a29394" }, { "adrianMcLaughin" }, { "adrian_mclaughlin" }, 
-        		{ "TestingAFullUserNameOfLengthOfOver50PaddingPadding" }
+        		{ "adrian" }, { "a29394" }, { "adrianmclaughin" }, { "adrian_mclaughlin" }, 
+        		{ "testingafullusernameoflengthofover50paddingpadding" }
         });
     }
 
