@@ -8,8 +8,6 @@ import org.amc.dao.DAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -36,27 +34,21 @@ public class UserNameAvailableTest {
 
     @Test
     public void testAvailable() throws Exception {
-        Model model = new ExtendedModelMap();
-        Callable<String> result = controller.isUserNameAvailable(model, USERNAME);
-        assertEquals(UserNameAvailable.USERNAME_JSP, result.call());
-        assertTrue((Boolean)model.asMap().get(UserNameAvailable.USERNAME_MODEL_ATTR));
+        Callable<Boolean> result = controller.isUserNameAvailable(USERNAME);
+        assertTrue(result.call());
     }
     
     @Test
     public void testNotAvailable() throws Exception {
         when(userDAO.findEntities(eq("userName"), eq(USERNAME))).thenReturn(Arrays.asList(new User()));
-        Model model = new ExtendedModelMap();
-        Callable<String> result = controller.isUserNameAvailable(model, USERNAME);
-        assertEquals(UserNameAvailable.USERNAME_JSP, result.call());
-        assertFalse((Boolean)model.asMap().get(UserNameAvailable.USERNAME_MODEL_ATTR));
+        Callable<Boolean> result = controller.isUserNameAvailable(USERNAME);
+        assertFalse(result.call());
     }
     
     @Test
     public void testNotValid() throws Exception {
-        Model model = new ExtendedModelMap();
-        Callable<String> result = controller.isUserNameAvailable(model, USERNAME_NOT_VALID);
-        assertEquals(UserNameAvailable.USERNAME_JSP, result.call());
-        assertFalse((Boolean)model.asMap().get(UserNameAvailable.USERNAME_MODEL_ATTR));
+        Callable<Boolean> result = controller.isUserNameAvailable(USERNAME_NOT_VALID);
+        assertFalse(result.call());
     }
 
 }

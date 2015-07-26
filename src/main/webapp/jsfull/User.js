@@ -28,12 +28,6 @@ function isUsernameAvailable() {
         formData = "userName=" + userName;
 
     $.post('./isUserNameAvailable', formData, function (data) {
-        if (data.trim() === 'true') {
-            data = Boolean(data);
-        } else {
-            data = false;
-        }
-        validUsername = data;
         var userNameBox = $("#userName");
         if (data) {
             userNameBox.css("background-color","#28794a");
