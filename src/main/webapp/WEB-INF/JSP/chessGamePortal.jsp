@@ -186,8 +186,8 @@ $(document).ready(function(){
 </head>
 <body>
     <tags:BottomMenu>
-       <li><button id="home-btn" class="btn btn-default btn-block btn-lg" onclick="window.location='./chessapplication'">Home</button></li>
-        <li><button id="quit-btn" class="btn btn-default btn-block btn-lg quit-btn">Quit Game</button></li>
+    	<tags:NavMenuButton id="home-btn" url="./chessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
+        <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
     </tags:BottomMenu>
     
     <div class="container-fluid full-height">

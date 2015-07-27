@@ -109,3 +109,14 @@ nav a:hover{
     text-decoration: none;
     color:black;
 }
+
+@media (max-width:767px) {
+	nav button.btn {
+    	text-align: left;
+  		text-indent: 34%;
+	}
+
+	.glyphicon {
+		text-indent:0;
+	}
+}

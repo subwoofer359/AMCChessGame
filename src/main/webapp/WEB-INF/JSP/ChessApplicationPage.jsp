@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,15 +99,11 @@
     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
 
     <tags:BottomMenu>
-        <li><button id="userToggle" type="button" class="btn btn-default btn-block btn-lg">
-            User List <span class="glyphicon glyphicon-user"></span></button>
-        </li>
-        <li><button formaction="createGame" type="submit" class="btn btn-default btn-block btn-lg">Create Game</button></li>
-        <li><button type="submit" class="join-button btn btn-default btn-block btn-lg ">Join Game</button></li>
-        <li><button type="submit" class="btn btn-default btn-block btn-lg">Delete Game</button></li>
-        <li><button type="button" class="btn btn-default btn-block btn-lg" onclick="window.location='./userSearchPage';">Search</button></li>
-        <li>
-            <button type="button" onclick="window.location='./logout';" class="btn btn-default btn-block btn-lg">Log out</button>        </li>
+    	<tags:NavMenuButton id="userToggle"><span class="glyphicon glyphicon-user"></span> User List</tags:NavMenuButton>
+        <tags:FormMenuButton formaction="createGame"><span class="glyphicon glyphicon-plus"></span> Create Game</tags:FormMenuButton>   
+        <tags:FormMenuButton aclass="join-button"><span class="glyphicon glyphicon-play"></span> Join Button</tags:FormMenuButton>
+        <tags:NavMenuButton url="./userSearchPage"><span class="glyphicon glyphicon-search"></span> Search</tags:NavMenuButton>
+       	<tags:NavMenuButton url="./logout"><span class="glyphicon glyphicon-log-out"></span> Log out</tags:NavMenuButton> 
     </tags:BottomMenu>
 
 <div class="container-fluid full-height">

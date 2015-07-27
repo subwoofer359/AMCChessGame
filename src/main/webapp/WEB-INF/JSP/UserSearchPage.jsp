@@ -158,7 +158,7 @@ $(document).ready(function () {
 <body>
     <tags:BottomMenu>
         <li>
-            <button id="home-btn" class="btn btn-default btn-block btn-lg" onclick="window.location='./chessapplication'">Home</button>
+        	<tags:NavMenuButton id="home-btn" url="./chessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
         </li>
     </tags:BottomMenu>
     
