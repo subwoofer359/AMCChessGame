@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.annotation.Resource;
@@ -40,7 +40,7 @@ public class NewGameRequestController {
                 if(userList.size() == 1) {
                     User user = userList.get(0);
                     StartPageController controller = context.getBean(StartPageController.class);
-                    controller.createGame(model, user.getPlayer());
+                    controller.createGame(model, user.getPlayer(), GameType.NETWORK_GAME);
                                 
                     ServerJoinChessGameController sjcgc = context.getBean(ServerJoinChessGameController.class);
                 

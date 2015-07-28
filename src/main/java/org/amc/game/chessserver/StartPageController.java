@@ -2,14 +2,13 @@ package org.amc.game.chessserver;
 
 import org.apache.log4j.Logger;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
-import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
@@ -30,11 +29,12 @@ public class StartPageController {
     
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
-    private OfflineChessGameMessagerFactory offlineChessGameMessagerFactory;
     
     static final String CHESS_APPLICATION_PAGE = "ChessApplicationPage";
     static final String FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
     static final String REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
+    
+    private ServerChessGameFactory scgFactory;
 
     @RequestMapping("/chessapplication")
     public ModelAndView chessGameApplication(HttpSession session) {
@@ -44,20 +44,16 @@ public class StartPageController {
         return mav;
     }
 
-    @RequestMapping(value = "/createGame")
-    public String createGame(Model model, @ModelAttribute("PLAYER") Player player) {
+    @RequestMapping(value = "/createGame/{gameType}")
+    public String createGame(Model model, @ModelAttribute("PLAYER") Player player, 
+                    @PathVariable ServerChessGameFactory.GameType gameType) {
         long uuid = UUID.randomUUID().getMostSignificantBits();
-        ServerChessGame serverGame = new ServerChessGame(uuid, player);
-        serverGame.attachObserver(createOfflineChessGameMessager());
+        ServerChessGame serverGame = scgFactory.getServerChessGame(gameType, uuid, player);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         return FORWARD_PAGE;
     }
     
-    private OfflineChessGameMessager createOfflineChessGameMessager() {
-        return offlineChessGameMessagerFactory.createOfflineChessGameMessager();
-    }
-
     /**
      * Intercept HttpSessionRequiredExceptions and cause a redirect to
      * chessGameApplication handler
@@ -77,8 +73,8 @@ public class StartPageController {
         this.gameMap = gameMap;
     }
     
-    @Resource(name="offlineChessGameMessagerFactory")
-    public void setOfflineChessGameMessagerFactory(OfflineChessGameMessagerFactory factory) {
-        this.offlineChessGameMessagerFactory = factory;
+    @Autowired
+    public void setServerChessGameFactory(ServerChessGameFactory scgFactory) {
+        this.scgFactory = scgFactory;
     }
 }

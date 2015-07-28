@@ -7,6 +7,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
@@ -25,12 +26,14 @@ public class StartPageControllerCreateGameTest {
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private ChessGamePlayer whitePlayer;
     private StartPageController controller;
+    private ServerChessGameFactory scgFactory;
     
 
     
     @Before
     public void setUp() throws Exception {
         final OfflineChessGameMessager ocgMessager = mock(OfflineChessGameMessager.class);
+        scgFactory = new ServerChessGameFactory();
         model=new ExtendedModelMap();
         gameMap =new ConcurrentHashMap<>();
         whitePlayer=new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
@@ -46,7 +49,8 @@ public class StartPageControllerCreateGameTest {
         };
         
         controller.setGameMap(gameMap);
-        controller.setOfflineChessGameMessagerFactory(factory);
+        scgFactory.setOfflineChessGameMessagerFactory(factory);
+        controller.setServerChessGameFactory(scgFactory);
     }
 
     @After
@@ -54,9 +58,18 @@ public class StartPageControllerCreateGameTest {
     }
 
     @Test
-    public void test() {
+    public void testTwoViewServerGame() {
         assertSessionAttributeNull();    
-        controller.createGame(model, whitePlayer);
+        controller.createGame(model, whitePlayer, GameType.NETWORK_GAME);
+        assertGameMapNotEmpty();
+        assertPlayerIsAddedToChessGame();
+        assertLongStoreInSessionAttribute();
+    }
+    
+    @Test
+    public void testOneViewServerGame() {
+        assertSessionAttributeNull();    
+        controller.createGame(model, whitePlayer, GameType.LOCAL_GAME);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();

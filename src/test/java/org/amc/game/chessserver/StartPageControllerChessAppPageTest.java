@@ -23,10 +23,12 @@ public class StartPageControllerChessAppPageTest {
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private StartPageController controller;
     private ChessGamePlayer whitePlayer;
+    private ServerChessGameFactory scgFactory;
 
     @Before
     public void setUp() throws Exception {
         final OfflineChessGameMessager ocgMessager = mock(OfflineChessGameMessager.class);
+        scgFactory = new ServerChessGameFactory();
         session = new MockHttpSession();
         gameMap = new ConcurrentHashMap<>();
         controller = new StartPageController(); 
@@ -40,7 +42,8 @@ public class StartPageControllerChessAppPageTest {
             
         };
         controller.setGameMap(gameMap);
-        controller.setOfflineChessGameMessagerFactory(factory);
+        controller.setServerChessGameFactory(scgFactory);
+        scgFactory.setOfflineChessGameMessagerFactory(factory);
         whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
     }
 
