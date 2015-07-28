@@ -172,8 +172,8 @@ $(document).ready(function(){
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame";
     stompObject.gameUUID = "${GAME_UUID}";
-    stompObject.playerName = "${GAME.player.name}";
-    stompObject.opponentName = "${GAME.opponent.name}";
+    stompObject.playerName = '<c:out value="${GAME.player.name}"/>';
+    stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
     stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
     
     var stompClient = setupStompConnection(stompObject);
