@@ -13,6 +13,7 @@ import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
@@ -60,19 +61,21 @@ public class StartPageControllerCreateGameTest {
     @Test
     public void testTwoViewServerGame() {
         assertSessionAttributeNull();    
-        controller.createGame(model, whitePlayer, GameType.NETWORK_GAME);
+        String viewName = controller.createGame(model, whitePlayer, GameType.NETWORK_GAME);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
+        assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
     }
     
     @Test
     public void testOneViewServerGame() {
         assertSessionAttributeNull();    
-        controller.createGame(model, whitePlayer, GameType.LOCAL_GAME);
+        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
+        assertEquals(ServerJoinChessGameController.CHESS_PAGE, viewName);
     }
     
     private void assertSessionAttributeNull(){

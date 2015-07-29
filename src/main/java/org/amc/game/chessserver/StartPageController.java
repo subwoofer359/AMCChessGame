@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import org.apache.log4j.Logger;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,8 +32,8 @@ public class StartPageController {
     private static final Logger logger = Logger.getLogger(StartPageController.class);
     
     static final String CHESS_APPLICATION_PAGE = "ChessApplicationPage";
-    static final String FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
-    static final String REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
+    static final String TWOVIEW_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
+    static final String TWOVIEW_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";;
     
     private ServerChessGameFactory scgFactory;
 
@@ -51,7 +52,16 @@ public class StartPageController {
         ServerChessGame serverGame = scgFactory.getServerChessGame(gameType, uuid, player);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
-        return FORWARD_PAGE;
+        
+        String view = null;
+        if(GameType.LOCAL_GAME.equals(gameType)) {
+            view = ServerJoinChessGameController.CHESS_PAGE;
+        } else {
+            view = TWOVIEW_FORWARD_PAGE;
+        }
+        
+        return view;
+        
     }
     
     /**
@@ -65,7 +75,7 @@ public class StartPageController {
     @ExceptionHandler(HttpSessionRequiredException.class)
     public String handleMissingSessionAttributes(HttpSessionRequiredException hsre) {
         logger.error("HttpSessionRequiredException:" + hsre.getMessage());
-        return REDIRECT_PAGE;
+        return TWOVIEW_REDIRECT_PAGE;
     }
 
     @Resource(name = "gameMap")

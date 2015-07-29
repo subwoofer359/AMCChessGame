@@ -34,6 +34,10 @@
 		scope="singleton">
 	</bean>
 	
+	<bean class="org.amc.game.chessserver.ServerChessGameFactory">
+		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
+	</bean>
+	
 	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
 		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
 	</bean>
@@ -44,7 +48,6 @@
 	
 	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
 		<property name="gameMap" ref="gameMap"></property>
-		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
 	</bean>
 	
 	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">

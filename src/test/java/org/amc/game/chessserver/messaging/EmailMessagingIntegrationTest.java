@@ -19,6 +19,8 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.ServerChessGameFactory.GameType;
+import org.amc.game.chessserver.StartPageController;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerConstants;
 import org.amc.game.chessserver.messaging.EmailMessageService.SendMessage;
@@ -81,7 +83,7 @@ public class EmailMessagingIntegrationTest {
     @Test
     public void testMove() throws Exception {
         MvcResult result = this.mockMvc
-                        .perform(post("/createGame").sessionAttr(SESSION_ATTRIBUTE, whitePlayer))
+                        .perform(post("/createGame/" + GameType.NETWORK_GAME).sessionAttr(SESSION_ATTRIBUTE, whitePlayer))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(model()
