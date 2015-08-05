@@ -74,7 +74,7 @@ public class StompController {
             message = moveChessPiece(game, player, moveString);
         } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
             message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
-        } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.FINISHED)) {
+        } else {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
         }
 
@@ -118,13 +118,10 @@ public class StompController {
         template.convertAndSendToUser(user.getName(), "/queue/updates", message, getHeaders(type));
     }
     
-    @MessageMapping("/move/{gameUUID}/{playerName}")
+    @MessageMapping("/oneViewMove/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
     public void registerOneViewMoveMove(Principal user,
-                    @DestinationVariable long gameUUID, @DestinationVariable String playerName, 
-                    @Payload String moveString) {
-
-        logger.debug(String.format("USER(%s)'s move received for game:%d", user.getName(), gameUUID));
+                    @DestinationVariable long gameUUID, @Payload String moveString) {
 
         ServerChessGame game = gameMap.get(gameUUID);
         
@@ -134,26 +131,20 @@ public class StompController {
         }
 
         String message = "";
-        
-        Player player = game.getChessGame().getCurrentPlayer();
-        
-        if(player.getUserName().equals(playerName)) {
-
-            if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
-                message = moveChessPiece(game, player, moveString);
-               } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
-                   message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
-                   logger.error(message);
-               } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.FINISHED)) {
-                   message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
-                   logger.error(message);
-               }
-            MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
-            sendMessageToUser(user, message, type);
-        } else
-        {
-            logger.error("Not Player's turn");
-        }
+       
+        if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
+            Player player = game.getChessGame().getCurrentPlayer();
+            message = moveChessPiece(game, player, moveString);
+           } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
+               message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
+               logger.error(message);
+           } else {
+               message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
+               logger.error(message);
+           }
+        MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
+        sendMessageToUser(user, message, type);
+         
     }
     
     /**
