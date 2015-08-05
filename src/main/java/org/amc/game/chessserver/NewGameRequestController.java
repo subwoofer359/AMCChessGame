@@ -40,7 +40,7 @@ public class NewGameRequestController {
                 if(userList.size() == 1) {
                     User user = userList.get(0);
                     StartPageController controller = context.getBean(StartPageController.class);
-                    controller.createGame(model, user.getPlayer(), GameType.NETWORK_GAME);
+                    controller.createGame(model, user.getPlayer());
                                 
                     ServerJoinChessGameController sjcgc = context.getBean(ServerJoinChessGameController.class);
                 

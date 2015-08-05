@@ -88,18 +88,32 @@ InteractActions.prototype = {
     }
 };
 
+function OneViewInteractActions(stompClient, gameUID) {
+    InteractActions.call(this, stompClient, gameUID);
+}
+
+OneViewInteractActions.prototype = Object.create(InteractActions.prototype);
+OneViewInteractActions.constructor = InteractActions;
+OneViewInteractActions.prototype.onDrop = function (event) {
+    "use strict";
+    console.log("Drop onDrop");
+    this.destId = event.target.id;
+    this.startOfMove = true;
+    var move = this.sourceId + "-" + this.destId;
+    this.stompClient.send("/app/oneViewMove/" + this.gameUID, {priority: 9}, move);
+};
 
 /*
  * 
  */
-function chessGameInteract(stompClient, gameUID) {
+function chessGameInteract(interactCallBack) {
     "use strict";
 
     var DRAGGABLE_CLASS = '.draggable',
         DROPZONE_CLASS = '.dropzone',
         DROPZONE_ACCEPT_CLASS = '.chesspiece',
         RESTRICTION_ELEMENT = '#layer',
-        actions = new InteractActions(stompClient, gameUID);
+        actions = interactCallBack;
 
     interact(DRAGGABLE_CLASS).draggable({
         // enable inertial throwing

@@ -1,6 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.apache.log4j.Logger;
+import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,15 +28,17 @@ public class StartPageController {
 
     @Autowired
     WebApplicationContext springContext;
+      
+    static final String CHESS_APPLICATION_PAGE = "ChessApplicationPage";
+    static final String TWOVIEW_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
+    static final String TWOVIEW_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
+    static final String ONE_VIEW_CHESS_PAGE = "OneViewChessGamePortal";
     
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
-    
-    static final String CHESS_APPLICATION_PAGE = "ChessApplicationPage";
-    static final String TWOVIEW_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
-    static final String TWOVIEW_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";;
-    
+    private SCGInitialiser initialiser;
     private ServerChessGameFactory scgFactory;
+    
 
     @RequestMapping("/chessapplication")
     public ModelAndView chessGameApplication(HttpSession session) {
@@ -45,23 +48,32 @@ public class StartPageController {
         return mav;
     }
 
-    @RequestMapping(value = "/createGame/{gameType}")
-    public String createGame(Model model, @ModelAttribute("PLAYER") Player player, 
-                    @PathVariable ServerChessGameFactory.GameType gameType) {
+    @RequestMapping(value = "/createGame/NETWORK_GAME")
+    public String createGame(Model model, @ModelAttribute("PLAYER") Player player) {
         long uuid = UUID.randomUUID().getMostSignificantBits();
-        ServerChessGame serverGame = scgFactory.getServerChessGame(gameType, uuid, player);
+        ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         
-        String view = null;
-        if(GameType.LOCAL_GAME.equals(gameType)) {
-            view = ServerJoinChessGameController.CHESS_PAGE;
-        } else {
-            view = TWOVIEW_FORWARD_PAGE;
-        }
+        return TWOVIEW_REDIRECT_PAGE;
+    }
+    
+    @RequestMapping(value = "/createGame/LOCAL_GAME")
+    public String createLocalGame(Model model, @ModelAttribute("PLAYER") Player player, 
+                    @RequestParam String playersName) {
+        long uuid = UUID.randomUUID().getMostSignificantBits();
+        ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
+        gameMap.put(uuid, serverGame);
+        model.addAttribute(ServerConstants.GAME_UUID, uuid);
+        model.addAttribute(ServerConstants.GAME, serverGame);
+        model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
         
-        return view;
+        Player opponent = new HumanPlayer(playersName);
+        opponent.setUserName(playersName.toLowerCase().split(" ")[0]);
+        serverGame.addOpponent(opponent);
+        initialiser.init(serverGame);
         
+        return ONE_VIEW_CHESS_PAGE;
     }
     
     /**
@@ -86,5 +98,10 @@ public class StartPageController {
     @Autowired
     public void setServerChessGameFactory(ServerChessGameFactory scgFactory) {
         this.scgFactory = scgFactory;
+    }
+    
+    @Resource(name = "sCGInitialiser")
+    public void setSCGInitialiser(SCGInitialiser initialiser) {
+        this.initialiser = initialiser;
     }
 }

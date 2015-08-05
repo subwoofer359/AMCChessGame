@@ -12,7 +12,8 @@ var stompObject = {},
     myStompActions,
     updatePlayerCall,
     updateChessBoardCall,
-    oldCreateChessBoard;
+    oldCreateChessBoard,
+    chessboardString = '{"squares":{"G1":"n","G2":"p","E1":"k","E2":"p","C1":"b","C2":"p","A1":"r","G7":"P","A2":"p","G8":"N","E7":"P","E8":"K","C7":"P","C8":"B","A7":"P","A8":"R","H1":"r","H2":"p","F1":"b","F2":"p","D1":"q","D2":"p","B1":"n","H7":"P","B2":"p","H8":"R","F7":"P","F8":"B","D7":"P","D8":"Q","B7":"P","B8":"N"},"currentPlayer":{"colour":"WHITE","player":{"id":6,"name":"Caleb Doyle","userName":"Caleb"}}}';
 
 /* mock function for player.js:updarePlayer */
 function updatePlayer() {
@@ -48,11 +49,22 @@ QUnit.module("Stomp Message tests", {
 
 QUnit.test("testing StompActions: function updateChessBoard", function (assert) {
     "use strict";
-    var json = '{"squares":{"C8":"B"}}';
+    var json = chessboardString;
 
     myStompActions.updateChessBoard(json);
     assert.equal(true, updatePlayerCall);
     assert.equal(true, updateChessBoardCall);
+});
+
+QUnit.test("testing StompActions: function updateChessBoard", function (assert) {
+    "use strict";
+    var json = chessboardString, 
+        oneViewStompActions = new OneViewStompActions(stompObject.gameUID, stompObject.playerName,
+                                          stompObject.opponentName, stompObject.playerColour);
+    oneViewStompActions.updateChessBoard(json);
+    assert.equal(true, updatePlayerCall);
+    assert.equal(true, updateChessBoardCall);
+    assert.equal("WHITE", oneViewStompActions.playerColour);
 });
 
 QUnit.test("testing StompActions: function userUpdate(ERROR)", function (assert) {

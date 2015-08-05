@@ -31,6 +31,7 @@ public class StartPageControllerIntegrationTest {
     private static final String PLAYER_SESSION_ATTR = "PLAYER";
     private static final String FULLNAME = "adrian mclaughlin";
     private static final String USERNAME = "adrian";
+    private static final String OPPONENT = "Kate Bush";
     
     private Player player;
     
@@ -61,10 +62,12 @@ public class StartPageControllerIntegrationTest {
 
         this.mockMvc.perform(
                         post("/createGame/" + ServerChessGameFactory.GameType.LOCAL_GAME)
-                                        .sessionAttr(PLAYER_SESSION_ATTR, player)).andDo(print())
+                                        .sessionAttr(PLAYER_SESSION_ATTR, player)
+                                        .param("playersName", OPPONENT))
+                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(ServerConstants.GAME_UUID))
-                        .andExpect(view().name(ServerJoinChessGameController.CHESS_PAGE))
+                        .andExpect(view().name(StartPageController.ONE_VIEW_CHESS_PAGE))
                         .andReturn();
 
     }
@@ -75,9 +78,9 @@ public class StartPageControllerIntegrationTest {
         this.mockMvc.perform(
                         post("/createGame/" + ServerChessGameFactory.GameType.NETWORK_GAME)
                                         .sessionAttr(PLAYER_SESSION_ATTR, player)).andDo(print())
-                        .andExpect(status().isOk())
+                        .andExpect(status().is3xxRedirection())
                         .andExpect(model().attributeExists(ServerConstants.GAME_UUID))
-                        .andExpect(view().name(StartPageController.TWOVIEW_FORWARD_PAGE))
+                        .andExpect(view().name(StartPageController.TWOVIEW_REDIRECT_PAGE))
                         .andReturn();
 
     }

@@ -161,11 +161,13 @@
 </style>
 <script>
 $(document).ready(function(){
-    
     var headerName = "${_csrf.headerName}",
         token = "${_csrf.token}",
         stompObject = {};
     
+    stompObject.currentPlayer = {};
+    stompObject.currentPlayer.userName = "${GAME.player.userName}";
+    stompObject.currentPlayer.colour = "${GAME.player.colour}";
     stompObject.headers = {};
     stompObject.headers[headerName] = token;
     stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
@@ -176,10 +178,11 @@ $(document).ready(function(){
     stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
     stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
     
-    var stompClient = setupStompConnection(stompObject);
-    chessGameInteract(stompClient, "${GAME_UUID}");
+    var stompClient = setupOneViewStompConnection(stompObject);
+    chessGameInteract(new OneViewInteractActions( stompClient, "${GAME_UUID}" ));
     
     addMessageDialogListener();
+    
 });
 
 </script>
@@ -193,7 +196,7 @@ $(document).ready(function(){
     <div class="container-fluid full-height">
     <div class="row full-height">
         <tags:SideMenu>
-                <li><a href="${pageContext.request.contextPath}/chessapplication"><button id="home-btn">Home</button></a></li>
+                <li><a href="${pageContext.request.contextPath}/app/chessgame/chessapplication"><button id="home-btn">Home</button></a></li>
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 

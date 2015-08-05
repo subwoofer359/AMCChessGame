@@ -105,6 +105,20 @@ StompActions.prototype = {
     }
 };
 
+function OneViewStompActions(gameUID, playerName, opponentName, playerColour) {
+    StompActions.call(this,gameUID, playerName, opponentName, playerColour);
+}
+
+OneViewStompActions.prototype = Object.create(StompActions.prototype);
+OneViewStompActions.constructor = StompActions;
+
+OneViewStompActions.prototype.updateChessBoard = function (chessBoardJson) {
+    "use strict";
+    var board = $.parseJSON(chessBoardJson);
+    this.playerColour = board.currentPlayer.colour;
+    StompActions.prototype.updateChessBoard.call(this, chessBoardJson);
+};
+
 function openStompConnection(websocketURL, headers, stompCallBack) {
     "use strict";
     var stompClient,
@@ -144,5 +158,13 @@ function setupStompConnection(stompObject) {
     "use strict";
     var stompCallBack = new StompActions(stompObject.gameUUID, stompObject.playerName, stompObject.opponentName, stompObject.playerColour),
         stompClient = openStompConnection(stompObject.URL, stompObject.headers, stompCallBack);
+    return stompClient;
+}
+
+function setupOneViewStompConnection(stompObject) {
+    "use strict";
+    var stompCallBack = new OneViewStompActions(stompObject.gameUUID, stompObject.playerName, stompObject.opponentName, stompObject.playerColour),
+        stompClient = openStompConnection(stompObject.URL, stompObject.headers, stompCallBack);
+
     return stompClient;
 }

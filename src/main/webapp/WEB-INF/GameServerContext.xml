@@ -40,6 +40,10 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
 	
+	<bean class="org.amc.game.chessserver.ServerChessGameFactory">
+		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
+	</bean>
+	
 	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
 		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
 	</bean>

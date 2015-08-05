@@ -7,13 +7,11 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
@@ -28,6 +26,8 @@ public class StartPageControllerCreateGameTest {
     private ChessGamePlayer whitePlayer;
     private StartPageController controller;
     private ServerChessGameFactory scgFactory;
+    private static final String OPPONENT ="Kate Bush";
+    private SCGInitialiser initialiser;
     
 
     
@@ -39,6 +39,13 @@ public class StartPageControllerCreateGameTest {
         gameMap =new ConcurrentHashMap<>();
         whitePlayer=new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         controller=new StartPageController();
+        initialiser = new DefaultSCGInitialiser() {
+            
+            @Override
+            protected GameFinishedListener createGameFinishedListener() {
+                return new GameFinishedListener();
+            }
+        };
         OfflineChessGameMessagerFactory factory =new OfflineChessGameMessagerFactory() {
 
             @Override
@@ -52,6 +59,7 @@ public class StartPageControllerCreateGameTest {
         controller.setGameMap(gameMap);
         scgFactory.setOfflineChessGameMessagerFactory(factory);
         controller.setServerChessGameFactory(scgFactory);
+        controller.setSCGInitialiser(initialiser);
     }
 
     @After
@@ -61,21 +69,23 @@ public class StartPageControllerCreateGameTest {
     @Test
     public void testTwoViewServerGame() {
         assertSessionAttributeNull();    
-        String viewName = controller.createGame(model, whitePlayer, GameType.NETWORK_GAME);
+        String viewName = controller.createGame(model, whitePlayer);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
-        assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
+        assertEquals(StartPageController.TWOVIEW_REDIRECT_PAGE, viewName);
     }
     
     @Test
     public void testOneViewServerGame() {
         assertSessionAttributeNull();    
-        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME);
+        String viewName = controller.createLocalGame(model, whitePlayer, OPPONENT );
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
-        assertEquals(ServerJoinChessGameController.CHESS_PAGE, viewName);
+        assertEquals(StartPageController.ONE_VIEW_CHESS_PAGE, viewName);
+        assertNotNull(model.asMap().get(ServerConstants.GAME));
+        assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
     }
     
     private void assertSessionAttributeNull(){

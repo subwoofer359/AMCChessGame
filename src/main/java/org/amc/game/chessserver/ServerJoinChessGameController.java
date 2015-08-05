@@ -100,7 +100,11 @@ public class ServerJoinChessGameController {
         mav.getModel().put(ServerConstants.GAME, serverGame);
         mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
-        mav.setViewName(CHESS_PAGE);
+        if(serverGame instanceof OneViewServerChessGame) {
+            mav.setViewName("OneViewChessGamePortal");
+        } else {
+            mav.setViewName(CHESS_PAGE);
+        }
     }
 
     private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {

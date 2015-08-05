@@ -93,6 +93,23 @@ QUnit.test("chessGameInteract: function onDrop", function (assert) {
     assert.equal(stompClient.destination, expectedDestination);
 });
 
+QUnit.test("chessGameInteract: OneViewInteractActions: function onDrop", function (assert) {
+    "use strict";
+    var gameUID = "3939393",
+        interactActions = new OneViewInteractActions(stompClient, gameUID),
+        expectedPriority = {priority: 9},
+        expectedDestination = "/app/oneViewMove/" + gameUID;
+    interactActions.sourceId = "A1";
+    event.target.id = "A2";
+    interactActions.onDrop(event);
+
+    assert.equal(interactActions.destId, event.target.id);
+    assert.equal(interactActions.startOfMove, true);
+    assert.equal(stompClient.moveString, interactActions.sourceId + "-" + interactActions.destId);
+    assert.equal(stompClient.priorityObj.priority, expectedPriority.priority);
+    assert.equal(stompClient.destination, expectedDestination);
+});
+
 QUnit.test("chessGameInteract: function onDragLeave", function (assert) {
     "use strict";
     var gameUID = "3939393",

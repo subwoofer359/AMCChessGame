@@ -18,13 +18,13 @@
  <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
  <script src="${pageContext.request.contextPath}/jsfull/ChessApplicationPage.js"></script>
 <style>
-    @import url(../../css/General.css);
-    @import url(../../css/selectTableRow.css);
-    @import url(../../css/PlayerName.css);
-    @import url(../../css/PlayerList.css);
+    @import url(${pageContext.request.contextPath}/css/General.css);
+    @import url(${pageContext.request.contextPath}/css/selectTableRow.css);
+    @import url(${pageContext.request.contextPath}/css/PlayerName.css);
+    @import url(${pageContext.request.contextPath}/css/PlayerList.css);
     
     body {
-        background-image: url(../../img/1700128.jpg);
+        background-image: url(${pageContext.request.contextPath}/img/1700128.jpg);
         background-size: cover;
         background-repeat: repeat-y;
         overflow: auto;
@@ -110,7 +110,9 @@
    
     <div class="row full-height">
         <tags:SideMenu>
-            <li><button formaction="createGame" type="submit">Create Game</button></li>
+            <li><button formaction="createGame/NETWORK_GAME" type="submit">Create Game(N)</button></li>
+            <li><button formaction="createGame/LOCAL_GAME" type="submit">Create Game(L)</button></li>
+            <input type="hidden" name="playersName" value="Kate Bush"/>
             <li><button class="join-button" type="submit">Join Game</button></li>
             <li><a class="description" href="#">Delete Game</a></li>
             <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">Search</a></li>
