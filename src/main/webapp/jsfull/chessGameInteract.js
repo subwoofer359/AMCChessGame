@@ -88,12 +88,25 @@ InteractActions.prototype = {
     }
 };
 
+/**
+ * InteractActions for an One view chess game
+ * @class
+ * @constructor
+ * @augments InteractActions
+ * @param {object} stompClient stomp connectiob object
+ * @param {string} gameUID game identification number
+ */
 function OneViewInteractActions(stompClient, gameUID) {
+    "use strict";
     InteractActions.call(this, stompClient, gameUID);
 }
 
 OneViewInteractActions.prototype = Object.create(InteractActions.prototype);
 OneViewInteractActions.constructor = InteractActions;
+
+/**
+ * @overrides
+ */
 OneViewInteractActions.prototype.onDrop = function (event) {
     "use strict";
     console.log("Drop onDrop");
