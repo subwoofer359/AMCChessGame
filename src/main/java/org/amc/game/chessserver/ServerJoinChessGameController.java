@@ -36,7 +36,8 @@ public class ServerJoinChessGameController {
     static final String ERROR_GAMEOVER = "Chess game is over";
     static final String ERROR_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
     static final String ERROR_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
-    static final String CHESS_PAGE = "chessGamePortal";
+    static final String TWO_VIEW_CHESS_PAGE = "chessGamePortal";
+    static final String ONE_VIEW_CHESS_PAGE = "OneViewChessGamePortal";
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
@@ -101,9 +102,9 @@ public class ServerJoinChessGameController {
         mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
         if(serverGame instanceof OneViewServerChessGame) {
-            mav.setViewName("OneViewChessGamePortal");
+            mav.setViewName(ONE_VIEW_CHESS_PAGE);
         } else {
-            mav.setViewName(CHESS_PAGE);
+            mav.setViewName(TWO_VIEW_CHESS_PAGE);
         }
     }
 

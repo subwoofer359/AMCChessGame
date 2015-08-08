@@ -124,7 +124,7 @@ public class StartPageControllerJoinGameTest {
     }
 
     private void assertModelAndViewAttributesOnSuccess(ModelAndView mav, Player player) {
-        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.CHESS_PAGE);
+        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAME_UUID);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAME);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.CHESSPLAYER);
