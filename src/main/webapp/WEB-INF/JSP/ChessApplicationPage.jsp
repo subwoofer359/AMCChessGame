@@ -88,10 +88,51 @@
         display: block;
         text-align: center;
     }
+    
+    
+    #createNewChessGamePanel {
+        display: none; 
+    }
+    
+    #createNewChessGamePanel panel-body {
+        padding-left: 30px;
+    }
+    
+    @media(min-width:992px) {
+        #createNewChessGamePanel {
+            position: absolute;
+            top: 220px;
+            left: 154px;
+            font-family: Raleway;
+            font-size: 1.8em;
+        }
+    }
+    
+    @media(max-width:992px) {
+        #createNewChessGamePanel {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-family: Raleway;
+            font-size: 1.8em;
+        }
+        
+        #createNewChessGamePanel .panel {
+            height: 100vh;
+        }
+        
+        
+    }
 </style>
 <script>
     var playerName = '<c:out value="${PLAYER.name}"/>',
     	userName = '<c:out value="${PLAYER.userName}"/>';
+    
+    $(document).ready(function () {
+        $(".create-game").click(function () {
+            $("#createNewChessGamePanel").css("display","block");
+        });
+    });
 </script>
 </head>
 <body>
@@ -100,7 +141,7 @@
 
     <tags:BottomMenu>
     	<tags:NavMenuButton id="userToggle"><span class="glyphicon glyphicon-user"></span> User List</tags:NavMenuButton>
-        <tags:FormMenuButton formaction="createGame"><span class="glyphicon glyphicon-plus"></span> Create Game</tags:FormMenuButton>   
+        <tags:NavMenuButton aclass="create-game"><span class="glyphicon glyphicon-plus"></span> Create Game</tags:NavMenuButton>   
         <tags:FormMenuButton aclass="join-button"><span class="glyphicon glyphicon-play"></span> Join Button</tags:FormMenuButton>
         <tags:NavMenuButton url="./userSearchPage"><span class="glyphicon glyphicon-search"></span> Search</tags:NavMenuButton>
        	<tags:NavMenuButton url="./logout"><span class="glyphicon glyphicon-log-out"></span> Log out</tags:NavMenuButton> 
@@ -110,9 +151,7 @@
    
     <div class="row full-height">
         <tags:SideMenu>
-            <li><button formaction="createGame/NETWORK_GAME" type="submit">Create Game(N)</button></li>
-            <li><button formaction="createGame/LOCAL_GAME" type="submit">Create Game(L)</button></li>
-            <input type="hidden" name="playersName" value="Kate Bush"/>
+            <li><button class="create-game" type="button">Create Game</button></li>
             <li><button class="join-button" type="submit">Join Game</button></li>
             <li><a class="description" href="#">Delete Game</a></li>
             <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">Search</a></li>
@@ -185,5 +224,6 @@
     
 </div>
 <%@ include file="/BootStrapFooter.jsp" %>
+<%@ include file="/WEB-INF/JSP/CreateNewChessGame.jspf" %>
 </body>
 </html>

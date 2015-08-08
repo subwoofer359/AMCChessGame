@@ -1,0 +1,59 @@
+<div id="createNewChessGamePanel" class="container col-md-5 col-xs-12">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Create New Game</h3>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+                <form id="newGameForm" class="form-horizontal" method="post" action="createGame/LOCAL_GAME">
+                    <div class="form-group">
+                        <label for="gameType" class="control-label col-xs-4">Select Game Type:</label>
+                        <div class="col-xs-7">
+                            <select id="gameType" class="form-control">
+                                <option>Local Chess Game</option>
+                                <option>Network Chess Game</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="opponentBox" class="form-group">
+                        <label for="playersName" class="control-label col-xs-4">Opponent's Name:</label>
+                            <div class="col-xs-7">
+                                <input id="playersName" name="playersName" class="form-control" type="text"/>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="pull-right" style="margin-right:51px;">
+                            <button type="submit" class="btn btn-primary">Create Game</button>
+                        </div>        
+                    </div>
+                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function () {
+     var oldplayersName = "";
+    $("#gameType").change(function(){
+        var $gameType = $("#gameType").val(),
+            $playersName = $("#playersName"),
+            $opponentBox = $("#opponentBox");
+        if ($gameType === "Network Chess Game") {
+            oldplayersName  = $playersName.val();
+            $playersName.val("");
+            $playersName.prop('disabled', true);
+            $opponentBox.css("display","none");
+            $("#newGameForm").prop("action", "createGame/NETWORK_GAME");
+            
+        } else {
+            $playersName.prop('disabled', false);
+            $playersName.val(oldplayersName);
+            $opponentBox.css("display","block");
+            $("#newGameForm").prop("action", "createGame/LOCAL_GAME");
+        }
+    });
+});
+ </script>
