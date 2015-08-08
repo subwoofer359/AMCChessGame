@@ -186,14 +186,14 @@ $(document).ready(function(){
 </head>
 <body>
     <tags:BottomMenu>
-    	<tags:NavMenuButton id="home-btn" url="${pageContext.request.contextPath}/chessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
+    	<tags:NavMenuButton id="home-btn" url="${pageContext.request.contextPath}/app/chessgamechessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
         <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
     </tags:BottomMenu>
     
     <div class="container-fluid full-height">
     <div class="row full-height">
         <tags:SideMenu>
-                <li><a href="${pageContext.request.contextPath}/chessapplication"><button id="home-btn">Home</button></a></li>
+                <li><a href="${pageContext.request.contextPath}/app/chessgame/chessapplication"><button id="home-btn">Home</button></a></li>
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 
