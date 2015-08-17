@@ -7,6 +7,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
@@ -69,23 +70,45 @@ public class StartPageControllerCreateGameTest {
     @Test
     public void testTwoViewServerGame() {
         assertSessionAttributeNull();    
-        String viewName = controller.createGame(model, whitePlayer);
+        String viewName = controller.createGame(model, whitePlayer, GameType.NETWORK_GAME, null);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
-        assertEquals(StartPageController.TWOVIEW_REDIRECT_PAGE, viewName);
+        assertEquals(StartPageController.CHESS_APPLICATION_PAGE, viewName);
     }
     
     @Test
     public void testOneViewServerGame() {
         assertSessionAttributeNull();    
-        String viewName = controller.createLocalGame(model, whitePlayer, OPPONENT );
+        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, OPPONENT);
         assertGameMapNotEmpty();
         assertPlayerIsAddedToChessGame();
         assertLongStoreInSessionAttribute();
         assertEquals(StartPageController.ONE_VIEW_CHESS_PAGE, viewName);
         assertNotNull(model.asMap().get(ServerConstants.GAME));
         assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
+    }
+    
+    @Test
+    public void testPlayersNameIsEmptyString() {
+        String invalidPlayersName = "";
+        assertSessionAttributeNull();
+        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, invalidPlayersName);
+        assertTrue(gameMap.isEmpty());
+        assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
+        assertEquals(invalidPlayersName, model.asMap().get("playersName"));
+        
+    }
+    
+    @Test
+    public void testPlayersNameIsNull() {
+        String invalidPlayersName = null;
+        assertSessionAttributeNull();
+        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, invalidPlayersName);
+        assertTrue(gameMap.isEmpty());
+        assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
+        assertEquals(invalidPlayersName, model.asMap().get("playersName"));
+        
     }
     
     private void assertSessionAttributeNull(){

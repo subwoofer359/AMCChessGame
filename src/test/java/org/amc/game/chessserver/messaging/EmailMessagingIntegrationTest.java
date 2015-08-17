@@ -83,9 +83,10 @@ public class EmailMessagingIntegrationTest {
     @Test
     public void testMove() throws Exception {
         MvcResult result = this.mockMvc
-                        .perform(post("/createGame/" + GameType.NETWORK_GAME).sessionAttr(SESSION_ATTRIBUTE, whitePlayer))
+                        .perform(post("/createGame/").sessionAttr(SESSION_ATTRIBUTE, whitePlayer)
+                        .param("gameType", GameType.NETWORK_GAME.name()))
                         .andDo(print())
-                        .andExpect(status().is3xxRedirection())
+                        .andExpect(status().isOk())
                         .andExpect(model()
                         .attributeExists(ServerConstants.GAME_UUID))
                         .andReturn();

@@ -4,9 +4,13 @@ import org.apache.log4j.Logger;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
+import org.amc.game.chessserver.spring.FullNameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.MapBindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,33 +52,56 @@ public class StartPageController {
         mav.setViewName(CHESS_APPLICATION_PAGE);
         return mav;
     }
+    
+    @RequestMapping(value = "/createGame")
+    public String createGame(Model model, @ModelAttribute("PLAYER") Player player,
+                    @RequestParam GameType gameType, @RequestParam(required=false) String playersName) {
+        
+        switch(gameType) {
+        case LOCAL_GAME:
+            return createGameLocal(model, player, playersName);
+        default:
+        case NETWORK_GAME:
+            return createGameNetwork(model, player);
+        }
+        
+    }
 
-    @RequestMapping(value = "/createGame/NETWORK_GAME")
-    public String createGame(Model model, @ModelAttribute("PLAYER") Player player) {
+    public String createGameNetwork(Model model, Player player) {
         long uuid = UUID.randomUUID().getMostSignificantBits();
         ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         
-        return TWOVIEW_REDIRECT_PAGE;
+        return CHESS_APPLICATION_PAGE;
     }
     
-    @RequestMapping(value = "/createGame/LOCAL_GAME")
-    public String createLocalGame(Model model, @ModelAttribute("PLAYER") Player player, 
-                    @RequestParam String playersName) {
-        long uuid = UUID.randomUUID().getMostSignificantBits();
-        ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
-        gameMap.put(uuid, serverGame);
-        model.addAttribute(ServerConstants.GAME_UUID, uuid);
-        model.addAttribute(ServerConstants.GAME, serverGame);
-        model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
+    public String createGameLocal(Model model, Player player, String playersName) {
         
-        Player opponent = new HumanPlayer(playersName);
-        opponent.setUserName(playersName.toLowerCase().split(" ")[0]);
-        serverGame.addOpponent(opponent);
-        initialiser.init(serverGame);
+        final String fieldName = "playersName";
+        Validator validator = new FullNameValidator(fieldName);
+        BindingResult errors = new  MapBindingResult(new HashMap<String, Object>(), fieldName);
         
-        return ONE_VIEW_CHESS_PAGE;
+        validator.validate(playersName, errors);
+        if(errors.hasErrors()) {
+            model.addAttribute(ServerConstants.ERRORS_MODEL_ATTR, errors);
+            model.addAttribute("playersName", playersName);
+            return TWOVIEW_FORWARD_PAGE;
+        } else {
+            long uuid = UUID.randomUUID().getMostSignificantBits();
+            ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
+            gameMap.put(uuid, serverGame);
+            model.addAttribute(ServerConstants.GAME_UUID, uuid);
+            model.addAttribute(ServerConstants.GAME, serverGame);
+            model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
+        
+            Player opponent = new HumanPlayer(playersName);
+            opponent.setUserName(playersName.toLowerCase().split(" ")[0]);
+            serverGame.addOpponent(opponent);
+            initialiser.init(serverGame);
+        
+            return ONE_VIEW_CHESS_PAGE;
+        }
     }
     
     /**

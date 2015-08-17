@@ -6,9 +6,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,8 +61,9 @@ public class StartPageControllerIntegrationTest {
     public void testCreateLocalGame() throws Exception {
 
         this.mockMvc.perform(
-                        post("/createGame/" + ServerChessGameFactory.GameType.LOCAL_GAME)
+                        post("/createGame/")
                                         .sessionAttr(PLAYER_SESSION_ATTR, player)
+                                        .param("gameType", GameType.LOCAL_GAME.name())
                                         .param("playersName", OPPONENT))
                          .andDo(print())
                         .andExpect(status().isOk())
@@ -76,11 +77,13 @@ public class StartPageControllerIntegrationTest {
     public void testCreateNetworkGame() throws Exception {
 
         this.mockMvc.perform(
-                        post("/createGame/" + ServerChessGameFactory.GameType.NETWORK_GAME)
-                                        .sessionAttr(PLAYER_SESSION_ATTR, player)).andDo(print())
-                        .andExpect(status().is3xxRedirection())
+                        post("/createGame/")
+                                        .sessionAttr(PLAYER_SESSION_ATTR, player)
+                                        .param("gameType", GameType.NETWORK_GAME.name()))
+                        .andDo(print())
+                        .andExpect(status().isOk())
                         .andExpect(model().attributeExists(ServerConstants.GAME_UUID))
-                        .andExpect(view().name(StartPageController.TWOVIEW_REDIRECT_PAGE))
+                        .andExpect(view().name(StartPageController.CHESS_APPLICATION_PAGE))
                         .andReturn();
 
     }
