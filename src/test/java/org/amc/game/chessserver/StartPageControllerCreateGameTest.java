@@ -96,7 +96,7 @@ public class StartPageControllerCreateGameTest {
         String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, invalidPlayersName);
         assertTrue(gameMap.isEmpty());
         assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
-        assertEquals(invalidPlayersName, model.asMap().get("playersName"));
+        assertEquals(invalidPlayersName, model.asMap().get(StartPageController.PLAYERS_NAME_FIELD));
         
     }
     
@@ -107,7 +107,7 @@ public class StartPageControllerCreateGameTest {
         String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, invalidPlayersName);
         assertTrue(gameMap.isEmpty());
         assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
-        assertEquals(invalidPlayersName, model.asMap().get("playersName"));
+        assertEquals(invalidPlayersName, model.asMap().get(StartPageController.PLAYERS_NAME_FIELD));
         
     }
     

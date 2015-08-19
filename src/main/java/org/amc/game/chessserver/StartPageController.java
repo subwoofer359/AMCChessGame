@@ -38,6 +38,7 @@ public class StartPageController {
     static final String TWOVIEW_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
     static final String TWOVIEW_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
     static final String ONE_VIEW_CHESS_PAGE = "OneViewChessGamePortal";
+    static final String PLAYERS_NAME_FIELD = "playersName";
     
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
@@ -68,7 +69,7 @@ public class StartPageController {
     }
 
     public String createGameNetwork(Model model, Player player) {
-        long uuid = UUID.randomUUID().getMostSignificantBits();
+        long uuid = getNewGameUID();
         ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
@@ -76,11 +77,13 @@ public class StartPageController {
         return CHESS_APPLICATION_PAGE;
     }
     
+    private long getNewGameUID() {
+        return UUID.randomUUID().getMostSignificantBits();
+    }
+    
     public String createGameLocal(Model model, Player player, String playersName) {
-        
-        final String fieldName = "playersName";
-        Validator validator = new FullNameValidator(fieldName);
-        BindingResult errors = new  MapBindingResult(new HashMap<String, Object>(), fieldName);
+        Validator validator = new FullNameValidator(PLAYERS_NAME_FIELD);
+        BindingResult errors = new  MapBindingResult(new HashMap<String, Object>(), PLAYERS_NAME_FIELD);
         
         validator.validate(playersName, errors);
         if(errors.hasErrors()) {
@@ -88,20 +91,31 @@ public class StartPageController {
             model.addAttribute("playersName", playersName);
             return TWOVIEW_FORWARD_PAGE;
         } else {
-            long uuid = UUID.randomUUID().getMostSignificantBits();
-            ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
-            gameMap.put(uuid, serverGame);
-            model.addAttribute(ServerConstants.GAME_UUID, uuid);
-            model.addAttribute(ServerConstants.GAME, serverGame);
-            model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
-        
-            Player opponent = new HumanPlayer(playersName);
-            opponent.setUserName(playersName.toLowerCase().split(" ")[0]);
-            serverGame.addOpponent(opponent);
-            initialiser.init(serverGame);
-        
+            ServerChessGame serverGame = createLocalGame(player, playersName);
+            setUpModel(model, serverGame.getUid(), serverGame, player);
             return ONE_VIEW_CHESS_PAGE;
         }
+    }
+    
+    private ServerChessGame createLocalGame(Player player, String playersName) {
+        long uuid = getNewGameUID();
+        ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
+        Player opponent = new HumanPlayer(playersName);
+        opponent.setUserName(generateUserName(playersName));
+        serverGame.addOpponent(opponent);
+        initialiser.init(serverGame);
+        gameMap.put(uuid, serverGame);
+        return serverGame;
+    }
+    
+    private void setUpModel(Model model, long uuid, ServerChessGame serverGame, Player player) {
+        model.addAttribute(ServerConstants.GAME_UUID, uuid);
+        model.addAttribute(ServerConstants.GAME, serverGame);
+        model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
+    }
+    
+    private String generateUserName(String fullName) {
+        return fullName.toLowerCase().split(" ")[0];
     }
     
     /**
