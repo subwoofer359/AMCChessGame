@@ -12,13 +12,34 @@ import org.amc.game.chess.SetupChessBoard;
 import org.amc.util.DefaultSubject;
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * Represents a ChessGame Application resident in a Spring container
  * 
  * @author Adrian Mclaughlin
  * @version 1.0
  */
-public class ServerChessGame extends DefaultSubject {
+@Entity
+@Table(name="chessGames")
+public class ServerChessGame extends DefaultSubject implements Serializable {
+    
+    private static final long serialVersionUID = 2147129152958398504L;
+
     public enum ServerGameStatus {
         IN_PROGRESS,
         AWAITING_PLAYER,
@@ -27,16 +48,44 @@ public class ServerChessGame extends DefaultSubject {
 
     private static final Logger logger = Logger.getLogger(ServerChessGame.class);
 
-    ChessGame chessGame = null;
-    private ServerGameStatus currentStatus;
-    private final ChessGamePlayer player;
-    ChessGamePlayer opponent;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     /**
      * The unique identifier of this game
      */
+    @Column
     private long uid;
+    
+    @Transient
+    ChessGame chessGame = null;
+    
+    @Column(nullable=false)
+    private ServerGameStatus currentStatus;
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name="player", column=@Column(name="player",nullable=false)),
+        @AttributeOverride(name="colour", column=@Column(name="player_colour",nullable=false))
+    })
+    private ChessGamePlayer player;
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name="player", column=@Column(name="opponent",nullable=true)),
+        @AttributeOverride(name="colour", column=@Column(name="opponent_colour",nullable=true))
+    })
+    private ChessGamePlayer opponent;
 
+    /**
+     * Constructor
+     */
+    
+    protected ServerChessGame() {
+        super();
+    }
+    
     /**
      * Constructor
      * 
@@ -83,7 +132,7 @@ public class ServerChessGame extends DefaultSubject {
      * 
      * @return status enum
      */
-    public final ServerGameStatus getCurrentStatus() {
+    public ServerGameStatus getCurrentStatus() {
         synchronized (this) {
             return currentStatus;
         }
@@ -94,7 +143,7 @@ public class ServerChessGame extends DefaultSubject {
      * 
      * @return Player
      */
-    public final ChessGamePlayer getPlayer() {
+    public ChessGamePlayer getPlayer() {
         return player;
     }
 
@@ -104,7 +153,7 @@ public class ServerChessGame extends DefaultSubject {
      * @param player
      * @return ChessGamePlayer represents Player
      */
-    public final ChessGamePlayer getPlayer(Player player) {
+    public ChessGamePlayer getPlayer(Player player) {
         return ComparePlayers.comparePlayers(this.player, player) ? this.player : this.opponent;
     }
 
@@ -113,7 +162,7 @@ public class ServerChessGame extends DefaultSubject {
      * 
      * @param currentStatus
      */
-    public final void setCurrentStatus(ServerGameStatus currentStatus) {
+    public void setCurrentStatus(ServerGameStatus currentStatus) {
         synchronized (this) {
             this.currentStatus = currentStatus;
         }
@@ -124,15 +173,23 @@ public class ServerChessGame extends DefaultSubject {
      * 
      * @return the ChessGame object
      */
-    public final ChessGame getChessGame() {
+    public ChessGame getChessGame() {
         return chessGame;
     }
 
     /**
      * @return Player opposing player
      */
-    public final ChessGamePlayer getOpponent() {
+    public ChessGamePlayer getOpponent() {
         return opponent;
+    }
+    
+    /**
+     * set Opponent
+     */
+    
+    void setOpponent(ChessGamePlayer opponent) {
+        this.opponent = opponent;
     }
 
     /**
@@ -147,7 +204,7 @@ public class ServerChessGame extends DefaultSubject {
      * @throws IllegalMoveException
      *             if Move is illegal
      */
-    public final void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
+    public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
         if (chessGame != null) {
             synchronized (chessGame) {
                 chessGame.move(player, move);
@@ -163,7 +220,7 @@ public class ServerChessGame extends DefaultSubject {
      * 
      * @return long Unique identifier
      */
-    public final long getUid() {
+    public long getUid() {
         return uid;
     }
 

@@ -1,14 +1,34 @@
 package org.amc.game.chess;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+
 /**
  * Decorator for Player to be used by the Chess Game class
  * @author Adrian Mclaughlin
  *
  */
-public class ChessGamePlayer implements Player {
+@Embeddable
+public class ChessGamePlayer implements Player, Serializable {
 
+    private static final long serialVersionUID = 3040542012240005856L;
+    
     private Colour colour;
-    private final Player player;
+    
+    @OneToOne(targetEntity=org.amc.game.chess.HumanPlayer.class)
+    private Player player;
+    
+    protected ChessGamePlayer() {
+        player = new HumanPlayer();
+    }
     
     public ChessGamePlayer(Player player, Colour colour) {
         this.player = player;
@@ -20,11 +40,11 @@ public class ChessGamePlayer implements Player {
         return player.getName();
     }
 
-    public final Colour getColour() {
+    public Colour getColour() {
         return colour;
     }
 
-    public final void setColour(Colour colour) {
+    public void setColour(Colour colour) {
         this.colour = colour;
     }
 
@@ -33,11 +53,11 @@ public class ChessGamePlayer implements Player {
         return String.format("%s(%s)",player.getName(),getColour().toString());
     }
 
-    @Override
     public int getId() {
         return player.getId();
     }
 
+    
     @Override
     public void setId(int uid) {
        this.player.setId(uid); 

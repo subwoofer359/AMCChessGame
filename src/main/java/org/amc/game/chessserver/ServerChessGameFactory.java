@@ -24,6 +24,7 @@ public class ServerChessGameFactory {
 		default:
 		    serverGame = new ServerChessGame(uid, player);
 		    serverGame.attachObserver(createOfflineChessGameMessager());
+		    break;
 		}
 		return serverGame;
 	}

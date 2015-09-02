@@ -7,9 +7,24 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Version;
 
-public final class OneViewServerChessGame extends ServerChessGame {
 
+@Entity
+public class OneViewServerChessGame extends ServerChessGame {
+    
+    private static final long serialVersionUID = -8769100253729854597L;
+    
+    @Version
+    @Column
+    private int version;
+    
+    public OneViewServerChessGame() {
+        super();
+    }
+    
 	public OneViewServerChessGame(long uid, Player player) {
         super(uid, player);
         
@@ -17,12 +32,10 @@ public final class OneViewServerChessGame extends ServerChessGame {
 
 	@Override
 	public void addOpponent(Player opponent) {
-		this.opponent = new ChessGamePlayer(opponent, Colour.BLACK);
+		setOpponent(new ChessGamePlayer(opponent, Colour.BLACK));
         ChessBoard board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);
-        chessGame = new ChessGame(board, getPlayer(), this.opponent);
+        this.chessGame = new ChessGame(board, getPlayer(), getOpponent());
         setCurrentStatus(ServerGameStatus.IN_PROGRESS);
 	}
-	
-	
 }

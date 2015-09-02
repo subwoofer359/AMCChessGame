@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,15 +17,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="players")
-public class HumanPlayer implements Player {
+public class HumanPlayer implements Player, Serializable {
     
+    private static final long serialVersionUID = 9137658189552898690L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @Column(name = "name", length = 50, nullable = false)
-    private String name;
+    private String name="name";
     
     @Column(name = "username" , length =50, nullable = false)
     private String userName;

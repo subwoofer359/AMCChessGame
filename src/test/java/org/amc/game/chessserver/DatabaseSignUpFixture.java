@@ -11,6 +11,8 @@ import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,9 +61,11 @@ public class DatabaseSignUpFixture {
         Query q1 = em.createNativeQuery("drop table users");
         Query q2 = em.createNativeQuery("drop table players");
         Query q3 = em.createNativeQuery("drop table authorities");
-        boolean authoritiesExist = tableExists("authorities");
+        Query q4 = em.createNativeQuery("drop table chessGames");
+        boolean authoritiesExist = tableExists("authorities"); 
         boolean playersExist = tableExists("players");
         boolean usersExist = tableExists("users");
+        boolean chessGamesExist = tableExists("chessGames");
         
         em.getTransaction().begin();
         if(authoritiesExist){
@@ -75,6 +79,11 @@ public class DatabaseSignUpFixture {
         if(usersExist){
             q1.executeUpdate();
         }
+        
+        if(chessGamesExist) {
+            q4.executeUpdate();
+        }
+        
         em.getTransaction().commit();
     }
     
@@ -86,6 +95,9 @@ public class DatabaseSignUpFixture {
             user.setEmailAddress(emailAddresses[i]);
             user.setPassword(password.toCharArray());
             DAO<User> userDAO = new DAO<>(User.class);
+            Player player = new HumanPlayer(user.getName());
+            player.setUserName(user.getUserName());
+            user.setPlayer(player);
             try {
                 userDAO.addEntity(user);
             } catch (DAOException e) {
