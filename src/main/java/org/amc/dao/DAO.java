@@ -100,7 +100,7 @@ public class DAO<T> implements Serializable {
      * @return List of all WorkEntities in the database
      * @throws DAOException
      *             if a problem occurs in the underlying database
-     * @deprecated as of 30/09/14, no replacement.
+     * 
      */
     @SuppressWarnings("unchecked")
     public List<T> findEntities() throws DAOException {
