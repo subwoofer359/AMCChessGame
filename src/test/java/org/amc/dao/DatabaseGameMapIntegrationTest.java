@@ -1,41 +1,38 @@
 package org.amc.dao;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
+import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class DatabaseGameMapIntegrationTest {
 
     private Player stephen;
     private Player laura;
     private Player nobby;
-    private Player opponent;
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private DAO<Player> playerDAO;
-    private static final long numOfEntries = 5l;
-    private List<ServerChessGame> serverChessGameList;
     private ServerChessGameFactory serverChessGamefactory;
     private DatabaseGameMap gameMap;
     private ServerChessGameDAO dao;
     
     @Before
     public void setUp() throws Exception {
-        this.serverChessGameList  = new ArrayList<>();
         this.signUpfixture.setUp();
         playerDAO = new DAO<Player>(HumanPlayer.class);
         stephen = playerDAO.findEntities("userName", "stephen").get(0);
@@ -81,7 +78,7 @@ public class DatabaseGameMapIntegrationTest {
     @Test
     public void testGameTwo() {
         
-        final long UID = 12324l;
+        final long UID = 12323334l;
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
         
         gameMap.put(UID, game);
@@ -101,5 +98,94 @@ public class DatabaseGameMapIntegrationTest {
         assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.IN_PROGRESS);
         assertTrue(ComparePlayers.comparePlayers(stephen, game.getOpponent()));
     }
+    
+    @Test
+    public void testGameThree() {
+        
+        final long UID = 12443324l;
+        final OfflineChessGameMessager offlineCGM = mock(OfflineChessGameMessager.class);
+        serverChessGamefactory.setOfflineChessGameMessagerFactory(new OfflineChessGameMessagerFactory() {
+            
+            @Override
+            public OfflineChessGameMessager createOfflineChessGameMessager() {
+                return offlineCGM;
+            }
+        });
+        
+        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
+        
+        gameMap.put(UID, game);
+        
+        game = gameMap.get(UID);
+        
+        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+        assertTrue(ComparePlayers.comparePlayers(nobby, game.getPlayer()));
+        
+        game.addOpponent(stephen);
+        
+        dao = new ServerChessGameDAO();
+        gameMap.setServerChessGameDAO(dao);
+        
+        game = gameMap.get(UID);
+        
+        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.IN_PROGRESS);
+        assertTrue(ComparePlayers.comparePlayers(stephen, game.getOpponent()));
+    }
 
+    @Test
+    public void testChessGameLocal() throws Exception{
+        final long UID = 1222334324l;
+        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
+        game.addOpponent(laura);
+        Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
+        game.move(game.getPlayer(nobby), move);
+        gameMap.put(UID, game);
+        
+        game = gameMap.get(UID);
+        
+        assertEquals(move, game.getChessGame().getTheLastMove());
+        
+    }
+    
+    @Test
+    public void testChessGameNetwork() throws Exception{
+        final long UID = 1232224l;
+        
+        final OfflineChessGameMessager offlineCGM = mock(OfflineChessGameMessager.class);
+        serverChessGamefactory.setOfflineChessGameMessagerFactory(new OfflineChessGameMessagerFactory() {
+            
+            @Override
+            public OfflineChessGameMessager createOfflineChessGameMessager() {
+                return offlineCGM;
+            }
+        });
+        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
+        game.addOpponent(laura);
+        Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
+        game.move(game.getPlayer(nobby), move);
+        gameMap.put(UID, game);
+        
+        game = gameMap.get(UID);
+        
+        assertEquals(move, game.getChessGame().getTheLastMove());
+        
+    }
+    
+    
+    @Test
+    public void testRetrieve() throws Exception {
+        final long UID = 1222334324l;
+        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
+        game.addOpponent(laura);
+        Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
+        game.move(game.getPlayer(nobby), move);
+        gameMap.put(UID, game);
+        dao.detachEntity(game);
+        dao.getEntityManager().getTransaction().begin();
+        dao.getEntityManager().flush();
+        dao.getEntityManager().getTransaction().commit();
+        game = gameMap.get(UID);
+        assertEquals(move, game.getChessGame().getTheLastMove());
+        
+    }
 }

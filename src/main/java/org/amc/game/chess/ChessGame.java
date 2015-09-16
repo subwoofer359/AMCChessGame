@@ -1,7 +1,16 @@
 package org.amc.game.chess;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 /**
  * Contains the Rules of Chess
@@ -9,14 +18,31 @@ import java.util.List;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessGame{
+@Entity
+@Table(name="chessGames")
+public class ChessGame implements Serializable{
+    private static final long serialVersionUID = 5323277982974698086L;
+    
+    @OneToOne
+    @JoinColumn(nullable=true,unique=true)
     private ChessBoard board;
+    
     private ChessGamePlayer currentPlayer;
+
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
+   
+    @OneToMany
+    @JoinColumn(name="rules_id")
     List<ChessMoveRule> chessRules;
-    private PlayerKingInCheckCondition kingInCheck;
+    
+    @Column(nullable=false)
+    private final PlayerKingInCheckCondition kingInCheck;
+    
+    @Column(nullable=false)
     private GameState gameState;
+    
+    
     List<Move> allGameMoves;
     
     public enum GameState{
@@ -58,6 +84,7 @@ public class ChessGame{
         this.currentPlayer = chessGame.getCurrentPlayer();
         this.chessRules = chessGame.chessRules;
         this.allGameMoves = copyOfChessMoves(chessGame);
+        this.kingInCheck = new PlayerKingInCheckCondition();
     }
 
     
@@ -287,7 +314,7 @@ public class ChessGame{
     public final ChessGamePlayer getBlackPlayer() {
         return blackPlayer;
     }
-    
+ 
     private List<Move> copyOfChessMoves(ChessGame chessGame) {
         return new ArrayList<Move>(chessGame.allGameMoves);
     }

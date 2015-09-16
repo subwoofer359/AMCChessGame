@@ -18,7 +18,6 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,7 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
 
 /**
  * Represents a ChessGame Application resident in a Spring container
@@ -35,7 +34,7 @@ import javax.persistence.Transient;
  * @version 1.0
  */
 @Entity
-@Table(name="chessGames")
+@Table(name="serverChessGames")
 public class ServerChessGame extends DefaultSubject implements Serializable {
     
     private static final long serialVersionUID = 2147129152958398504L;
@@ -55,10 +54,11 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
     /**
      * The unique identifier of this game
      */
-    @Column
+    @Column(unique=true, nullable=false)
     private long uid;
     
-    @Transient
+    @OneToOne
+    @JoinColumn(name="chessGame", unique=true, nullable=true)
     ChessGame chessGame = null;
     
     @Column(nullable=false)

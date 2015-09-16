@@ -2,8 +2,13 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Represents a Chess Board Responsibility is to know the position of all the
@@ -12,7 +17,12 @@ import java.util.List;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessBoard extends DefaultSubject {
+@Entity
+@Table(name="chessBoards")
+public class ChessBoard extends DefaultSubject implements Serializable{
+
+    private static final long serialVersionUID = -617533445666134173L;
+
     /**
      * Represents the Letter Coordinates of squares on a chess board
      * 
@@ -46,9 +56,8 @@ public class ChessBoard extends DefaultSubject {
     /**
      * The width of the Chess Board
      */
+    @Transient
     public static final int BOARD_WIDTH = 8;
-
-    
 
     /**
      * Creates a new chess board array and initialises the moves list.

@@ -1,14 +1,8 @@
 package org.amc.game.chess;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 
 
 /**

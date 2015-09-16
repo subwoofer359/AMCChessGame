@@ -12,6 +12,9 @@
 <class>org.amc.User</class>
 <class>org.amc.Authorities</class>
 <class>org.amc.game.chess.HumanPlayer</class>
+<class>org.amc.game.chess.ChessGamePlayer</class>
+<class>org.amc.game.chessserver.ServerChessGame</class>
+<class>org.amc.game.chessserver.OneViewServerChessGame</class>
 <properties>
       <property name="openjpa.ConnectionURL" value="jdbc:mysql://192.168.1.5/amcchessgame"/>
       <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
