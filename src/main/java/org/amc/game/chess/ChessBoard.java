@@ -48,7 +48,7 @@ public class ChessBoard extends DefaultSubject {
      */
     public static final int BOARD_WIDTH = 8;
 
-    List<Move> allGameMoves;
+    
 
     /**
      * Creates a new chess board array and initialises the moves list.
@@ -56,7 +56,6 @@ public class ChessBoard extends DefaultSubject {
     public ChessBoard() {
         super();
         board = new ChessPiece[Coordinate.values().length][BOARD_WIDTH];
-        allGameMoves = new ArrayList<>();
     }
     
     /**
@@ -69,7 +68,6 @@ public class ChessBoard extends DefaultSubject {
         for(Coordinate coord:Coordinate.values()){
             copyFile(board, coord);
         }
-        copyMoveList(board);
     }
     
     private void copyFile(ChessBoard board, Coordinate file){
@@ -86,9 +84,7 @@ public class ChessBoard extends DefaultSubject {
         }
     }
     
-    private void copyMoveList(ChessBoard board){
-        this.allGameMoves=new ArrayList<>(board.allGameMoves);
-    }
+    
 
     /**
      * Sets up the board in it's initial state
@@ -121,7 +117,7 @@ public class ChessBoard extends DefaultSubject {
         removePieceOnBoardAt(move.getStart());
         putPieceOnBoardAt(piece, move.getEnd());
         piece.moved();
-        this.allGameMoves.add(move);
+        
     }
 
     /**
@@ -179,19 +175,6 @@ public class ChessBoard extends DefaultSubject {
      */
     public ChessPiece getPieceFromBoardAt(Location location) {
         return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
-    }
-
-    /**
-     * Return the last Move make or null if no move has yet to be made
-     * 
-     * @return Move
-     */
-    public Move getTheLastMove() {
-        if (allGameMoves.isEmpty()) {
-            return Move.EMPTY_MOVE;
-        } else {
-            return allGameMoves.get(allGameMoves.size() - 1);
-        }
     }
 
     /**

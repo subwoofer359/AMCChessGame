@@ -54,75 +54,75 @@ public class CastlingTest {
 
     @Test
     public void testLeftSideCastling(){
-        assertTrue(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
+        assertTrue(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLeftLocation)));
     }
     
     @Test
     public void testRightSideCastling(){
-        assertTrue(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
+        assertTrue(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingRightLocation)));
     }
     
     @Test
     public void testKingMovedCastlingNotAllowed(){
         whiteKing.moved();
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingRightLocation)));
     }
     
     @Test
     public void testRightRookMovedCastlingNotAllowed(){
         whiteRightRook.moved();
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingRightLocation)));
     }
     
     @Test
     public void testLeftRookMovedCastlingNotAllowed(){
         whiteLeftRook.moved();
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLeftLocation)));
     }
     
     @Test
     public void testKingHasMoveOneSquare(){
         Location castlingKingLocation=new Location(F,1);
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLocation)));
     }
     
     @Test
     public void testKingHasTwoSquareUpAndAcrossTheBoard(){
         Location castlingKingLocation=new Location(G,3);
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLocation)));
     }
     
     @Test
     public void testNotLeftRook(){
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), whiteLeftRookStartPosition);
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLeftLocation)));
     }
     
     @Test
     public void testNotRightRook(){
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), whiteRightRookStartPosition);
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingRightLocation)));
     }
     
     @Test
     public void testSquareBetweenKingAndRightRookNotEmpty(){
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(F,1));
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingRightLocation)));
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), castlingKingRightLocation);
         board.removePieceOnBoardAt(new Location(F,1));
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingRightLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingRightLocation)));
     }
     
     @Test
     public void testSquareBetweenKingAndLeftRookNotEmpty(){
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(B,1));
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLeftLocation)));
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), castlingKingLeftLocation);
         board.removePieceOnBoardAt(new Location(B,1));
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLeftLocation)));
         board.removePieceOnBoardAt(castlingKingLeftLocation);
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(D,1));
-        assertFalse(gameRule.isRuleApplicable(board,new Move(whiteKingStartPosition,castlingKingLeftLocation)));
+        assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,castlingKingLeftLocation)));
     }
     
     @Test

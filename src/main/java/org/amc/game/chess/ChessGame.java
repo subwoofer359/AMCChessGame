@@ -12,11 +12,12 @@ import java.util.List;
 public class ChessGame{
     private ChessBoard board;
     private ChessGamePlayer currentPlayer;
-    private final ChessGamePlayer whitePlayer;
-    private final ChessGamePlayer blackPlayer;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     List<ChessMoveRule> chessRules;
-    private final PlayerKingInCheckCondition kingInCheck;
+    private PlayerKingInCheckCondition kingInCheck;
     private GameState gameState;
+    List<Move> allGameMoves;
     
     public enum GameState{
         RUNNING,
@@ -28,17 +29,35 @@ public class ChessGame{
     }
     
 
-    public ChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack) {
-        this.board = board;
-        this.whitePlayer = playerWhite;
-        this.blackPlayer = playerBlack;
+    public ChessGame() {
+        this.board = null;
+        this.whitePlayer = null;
+        this.blackPlayer = null;
         this.currentPlayer = this.whitePlayer;
         this.kingInCheck = new PlayerKingInCheckCondition();
         chessRules = new ArrayList<>();
         chessRules.add(new EnPassantRule());
         chessRules.add(new CastlingRule());
         chessRules.add(new PawnPromotionRule());
+        allGameMoves = new ArrayList<>();
+    }
+    
+    public ChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack) {
+        this();
+        this.board = board;
+        this.whitePlayer = playerWhite;
+        this.blackPlayer = playerBlack;
+        this.currentPlayer = this.whitePlayer;
         this.gameState=GameState.RUNNING;
+    }
+    
+    public ChessGame(ChessGame chessGame) {
+        this.board = new ChessBoard(chessGame.getChessBoard());
+        this.whitePlayer = chessGame.getWhitePlayer();
+        this.blackPlayer = chessGame.getBlackPlayer();
+        this.currentPlayer = chessGame.getCurrentPlayer();
+        this.chessRules = chessGame.chessRules;
+        this.allGameMoves = copyOfChessMoves(chessGame);
     }
 
     
@@ -119,7 +138,7 @@ public class ChessGame{
                     Move move) throws IllegalMoveException {
         if (isPlayersKingInCheck(player, board)) {
             doNormalMove(player, piece, move);
-        } else if (doesAGameRuleApply(board, move)) {
+        } else if (doesAGameRuleApply(this, move)) {
             thenApplyGameRule(player, move);
         } else {
             doNormalMove(player, piece, move);
@@ -143,17 +162,18 @@ public class ChessGame{
         }else{
             gameState=GameState.RUNNING;
             board.move(move);
+            this.allGameMoves.add(move);
         }
     }
 
     private void thenApplyGameRule(ChessGamePlayer player, Move move) throws IllegalMoveException {
         for (ChessMoveRule rule : chessRules) {
-            ChessBoard testBoard=new ChessBoard(board);
-            rule.applyRule(testBoard, move);
-            if (isPlayersKingInCheck(player, testBoard)) {
+            ChessGame testGame = new ChessGame(this);
+            rule.applyRule(testGame, move);
+            if (isPlayersKingInCheck(player, testGame.getChessBoard())) {
                 throw new IllegalMoveException("King is checked");
             }else{
-                rule.applyRule(board, move);  
+                rule.applyRule(this, move);  
             }
         }
     }
@@ -210,13 +230,26 @@ public class ChessGame{
      * @param move
      * @return Boolean true if a Game rule applies to the Player's move
      */
-    boolean doesAGameRuleApply(ChessBoard board, Move move) {
+    boolean doesAGameRuleApply(ChessGame game, Move move) {
         for (ChessMoveRule rule : chessRules) {
-            if (rule.isRuleApplicable(board, move)) {
+            if (rule.isRuleApplicable(game, move)) {
                 return true;
             }
         }
         return false;
+    }
+    
+    /**
+     * Return the last Move make or null if no move has yet to be made
+     * 
+     * @return Move
+     */
+    public Move getTheLastMove() {
+        if (allGameMoves.isEmpty()) {
+            return Move.EMPTY_MOVE;
+        } else {
+            return allGameMoves.get(allGameMoves.size() - 1);
+        }
     }
 
     void setGameRules(List<ChessMoveRule> rules) {
@@ -255,5 +288,7 @@ public class ChessGame{
         return blackPlayer;
     }
     
-    
+    private List<Move> copyOfChessMoves(ChessGame chessGame) {
+        return new ArrayList<Move>(chessGame.allGameMoves);
+    }
 }

@@ -11,13 +11,13 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
 public class CastlingRule implements ChessMoveRule {
 
     /**
-     * @see ChessMoveRule#applyRule(ChessBoard, Move)
+     * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
     @Override
-    public void applyRule(ChessBoard board, Move move) {
-        if (isRuleApplicable(board, move)) {
-            board.move(move);
-            moveRook(board, move);
+    public void applyRule(ChessGame chessGame, Move move) {
+        if (isRuleApplicable(chessGame, move)) {
+            chessGame.getChessBoard().move(move);
+            moveRook(chessGame.getChessBoard(), move);
         }
     }
 
@@ -57,16 +57,16 @@ public class CastlingRule implements ChessMoveRule {
     }
 
     /**
-     * @see ChessMoveRule#isRuleApplicable(ChessBoard, Move)
+     * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
      */
     @Override
-    public boolean isRuleApplicable(ChessBoard board, Move move) {
-        if (isCastlingMove(board, move)) {
+    public boolean isRuleApplicable(ChessGame game, Move move) {
+        if (isCastlingMove(game.getChessBoard(), move)) {
             int rank = move.getStart().getNumber();
             if (isKingCastlingToTheRight(move)) {
-                return canKingCastleToTheRight(board, rank);
+                return canKingCastleToTheRight(game.getChessBoard(), rank);
             } else {
-                return canKingCastleToTheLeft(board, rank);
+                return canKingCastleToTheLeft(game.getChessBoard(), rank);
             }
         } else {
             return false;

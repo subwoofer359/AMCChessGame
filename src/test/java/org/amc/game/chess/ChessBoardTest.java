@@ -16,8 +16,7 @@ public class ChessBoardTest {
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
     private ChessBoard board;
-    private Location endLocation;
-    private Location startLocation;
+  
     private ChessBoardFactory factory;
 
     @Before
@@ -26,30 +25,13 @@ public class ChessBoardTest {
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         board = new ChessBoard();
-        startLocation = new Location(A, 8);
-        endLocation = new Location(B, 7);
     }
 
     @After
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void testMovesAreSaved() throws IllegalMoveException {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(bishop, startLocation);
-        Move move = new Move(startLocation, endLocation);
-        board.move(move);
-        Move lastMove = board.getTheLastMove();
-        assertEquals(lastMove.getStart(), startLocation);
-        assertEquals(lastMove.getEnd(), endLocation);
-    }
-
-    @Test
-    public void getEmptyMove() {
-        Move move = board.getTheLastMove();
-        assertTrue(move instanceof EmptyMove);
-    }
+   
 
     @Test
     public void testInitialse() {
@@ -98,13 +80,6 @@ public class ChessBoardTest {
             }
         }
 
-    }
-
-    @Test
-    public void CloneConstuctorMoveListCopyTest() {
-        board.initialise();
-        ChessBoard clone = new ChessBoard(board);
-        assertTrue(board.getTheLastMove().equals(clone.getTheLastMove()));
     }
 
     @Test

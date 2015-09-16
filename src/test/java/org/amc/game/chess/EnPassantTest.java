@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.text.ParseException;
 
 public class EnPassantTest {
+    private ChessGame chessGame;
     private ChessBoard board;
     private EnPassantRule enPassantRule;
     private ChessBoardFactory factory;
@@ -24,6 +25,7 @@ public class EnPassantTest {
         board = new ChessBoard();
         enPassantRule = new EnPassantRule();
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
+        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
     }
 
     @Test
@@ -39,8 +41,8 @@ public class EnPassantTest {
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.F, 6));
 
-        board.allGameMoves.add(blackMove);
-        assertTrue(enPassantRule.isEnPassantCapture(board, whiteEnPassantMove));
+        chessGame.allGameMoves.add(blackMove);
+        assertTrue(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
     }
 
     @Test
@@ -56,8 +58,8 @@ public class EnPassantTest {
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.F, 6));
 
-        board.allGameMoves.add(blackMove);
-        assertFalse(enPassantRule.isEnPassantCapture(board, whiteEnPassantMove));
+        chessGame.allGameMoves.add(blackMove);
+        assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
     }
 
     @Test
@@ -73,8 +75,8 @@ public class EnPassantTest {
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.F, 6));
 
-        board.allGameMoves.add(blackMove);
-        assertFalse(enPassantRule.isEnPassantCapture(board, whiteEnPassantMove));
+        chessGame.allGameMoves.add(blackMove);
+        assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
     }
 
     @Test
@@ -90,8 +92,8 @@ public class EnPassantTest {
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.D, 6));
 
-        board.allGameMoves.add(blackMove);
-        assertFalse(enPassantRule.isEnPassantCapture(board, whiteEnPassantMove));
+        chessGame.allGameMoves.add(blackMove);
+        assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
     }
 
     @Test
@@ -107,8 +109,8 @@ public class EnPassantTest {
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.D, 6));
 
-        board.allGameMoves.add(blackMove);
-        assertFalse(enPassantRule.isEnPassantCapture(board, whiteEnPassantMove));
+        chessGame.allGameMoves.add(blackMove);
+        assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
     }
 
     @Test
@@ -125,9 +127,9 @@ public class EnPassantTest {
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(F, 6));
 
-        board.allGameMoves.add(blackMove);
+        chessGame.allGameMoves.add(blackMove);
 
-        enPassantRule.applyRule(board, whiteEnPassantMove);
+        enPassantRule.applyRule(chessGame, whiteEnPassantMove);
         assertTrue(board.getPieceFromBoardAt(whitePawnEndPosition).equals(whitePawn));
         assertNull(board.getPieceFromBoardAt(blackPawnEndPosition));
     }
@@ -146,9 +148,9 @@ public class EnPassantTest {
         Move blackEnPassantMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
         Move whiteMove = new Move(whitePawnStartPosition, whitePawnEndPosition);
 
-        board.allGameMoves.add(whiteMove);
+        chessGame.allGameMoves.add(whiteMove);
 
-        enPassantRule.applyRule(board, blackEnPassantMove);
+        enPassantRule.applyRule(chessGame, blackEnPassantMove);
         assertTrue(board.getPieceFromBoardAt(blackPawnEndPosition).equals(blackPawn));
         assertNull(board.getPieceFromBoardAt(whitePawnEndPosition));
     }
@@ -163,7 +165,7 @@ public class EnPassantTest {
         board.putPieceOnBoardAt(bishop, startSquare);
         EnPassantRule rule = new EnPassantRule();
 
-        assertFalse(rule.isEnPassantCapture(board, move));
+        assertFalse(rule.isEnPassantCapture(chessGame, move));
 
     }
 

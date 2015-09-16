@@ -70,7 +70,7 @@ public class ChessGameTest {
         Location rookStartPosition = new Location(H, 1);
         Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(G, 1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
-        assertTrue(chessGame.doesAGameRuleApply(board, move));
+        assertTrue(chessGame.doesAGameRuleApply(chessGame, move));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ChessGameTest {
         Location rookStartPosition = new Location(H, 1);
         Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
-        assertFalse(chessGame.doesAGameRuleApply(board, move));
+        assertFalse(chessGame.doesAGameRuleApply(chessGame, move));
     }
 
     @Test
@@ -89,6 +89,31 @@ public class ChessGameTest {
         Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
         board.putPieceOnBoardAt(rook, rookStartPosition);
         chessGame.move(whitePlayer, move);
+    }
+    
+    @Test
+    public void testMovesAreSaved() throws IllegalMoveException {
+        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        board.putPieceOnBoardAt(bishop, startLocation);
+        Move move = new Move(startLocation, endLocation);
+        chessGame.changePlayer();
+        chessGame.move(blackPlayer, move);
+        Move lastMove = chessGame.getTheLastMove();
+        assertEquals(lastMove.getStart(), startLocation);
+        assertEquals(lastMove.getEnd(), endLocation);
+    }
+
+    @Test
+    public void getEmptyMove() {
+        Move move = chessGame.getTheLastMove();
+        assertTrue(move instanceof EmptyMove);
+    }
+    
+    @Test
+    public void CloneConstuctorMoveListCopyTest() {
+        board.initialise();
+        ChessGame clone = new ChessGame(chessGame);
+        assertTrue(chessGame.getTheLastMove().equals(clone.getTheLastMove()));
     }
 
     /**

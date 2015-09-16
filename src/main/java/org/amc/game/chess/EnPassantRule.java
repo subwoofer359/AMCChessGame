@@ -7,15 +7,15 @@ package org.amc.game.chess;
  */
 public class EnPassantRule extends PawnPieceRule{
     /**
-     * @see ChessMoveRule#applyRule(ChessBoard, Move)
+     * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
     @Override
-    public void applyRule(ChessBoard board, Move move) {
-        if(isEnPassantCapture(board,move)){
+    public void applyRule(ChessGame chessGame, Move move) {
+        if(isEnPassantCapture(chessGame,move)){
             Location endSquare=move.getEnd();
-            ChessPiece piece=board.getPieceFromBoardAt(move.getStart());
-            board.move(move);
-            removeCapturedPawnFromTheChessBoard(board, piece, endSquare);
+            ChessPiece piece=chessGame.getChessBoard().getPieceFromBoardAt(move.getStart());
+            chessGame.getChessBoard().move(move);
+            removeCapturedPawnFromTheChessBoard(chessGame.getChessBoard(), piece, endSquare);
                 
         }
     }
@@ -39,10 +39,10 @@ public class EnPassantRule extends PawnPieceRule{
      * @param move
      * @return true if it's a valid en passant move
      */
-    boolean isEnPassantCapture(ChessBoard board, Move move) {
-        Move opponentsMove = board.getTheLastMove();
-        ChessPiece opponentsPiece = getOpponentsChessPieceThatMovedLast(board, opponentsMove);
-        if (isEndSquareNotEmpty(board, move)) {
+    boolean isEnPassantCapture(ChessGame game, Move move) {
+        Move opponentsMove = game.getTheLastMove();
+        ChessPiece opponentsPiece = getOpponentsChessPieceThatMovedLast(game.getChessBoard(), opponentsMove);
+        if (isEndSquareNotEmpty(game.getChessBoard(), move)) {
             return false;
         }
         return isPawnChessPiece(opponentsPiece) && 
@@ -64,10 +64,10 @@ public class EnPassantRule extends PawnPieceRule{
     }
 
     /**
-     * @see ChessMoveRule#isRuleApplicable(ChessBoard, Move)
+     * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
      */
     @Override
-    public boolean isRuleApplicable(ChessBoard board, Move move) {
-        return isEnPassantCapture(board, move);
+    public boolean isRuleApplicable(ChessGame game, Move move) {
+        return isEnPassantCapture(game, move);
     }
 }

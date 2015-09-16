@@ -16,10 +16,13 @@ import java.util.Collection;
 @RunWith(Parameterized.class)
 public class PawnIsPromotedTest {
 
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
     private ChessBoard board;
     private ChessPiece piece;
     private ChessMoveRule promotion;
     private Move move;
+    private ChessGame chessGame;
 
     public PawnIsPromotedTest(ChessPiece piece, Move move) {
         this.piece = piece;
@@ -34,6 +37,7 @@ public class PawnIsPromotedTest {
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         this.promotion = new PawnPromotionRule();
+        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
     }
 
     @Parameters
@@ -49,8 +53,8 @@ public class PawnIsPromotedTest {
     @Test
     public void test() {
         board.putPieceOnBoardAt(piece, move.getStart());
-        assertTrue(promotion.isRuleApplicable(board, move));
-        promotion.applyRule(board, move);
+        assertTrue(promotion.isRuleApplicable(chessGame,  move));
+        promotion.applyRule(chessGame, move);
         ChessPiece piece = board.getPieceFromBoardAt(move.getEnd());
         assertNotNull(piece);
         assertFalse(piece instanceof PawnPiece);
