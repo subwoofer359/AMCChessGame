@@ -33,7 +33,7 @@ public class ChessGameMoveTest {
         when(chessPiece.getColour()).thenReturn(Colour.WHITE);
 
         when(board.getPieceFromBoardAt(any(Location.class))).thenReturn(chessPiece);
-        when(board.getTheLastMove()).thenReturn(move);
+        when(chessGame.getTheLastMove()).thenReturn(move);
 
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
 
@@ -54,13 +54,13 @@ public class ChessGameMoveTest {
 
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(false).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
-        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
+        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessGame.class),
                         any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
 
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
-        verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
+        verify(spyChessGame, times(1)).doesAGameRuleApply(chessGame, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
 
     }
@@ -71,13 +71,13 @@ public class ChessGameMoveTest {
 
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(true).doReturn(false).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
-        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
+        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessGame.class),
                         any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
 
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
-        verify(spyChessGame, times(0)).doesAGameRuleApply(board, move);
+        verify(spyChessGame, times(0)).doesAGameRuleApply(chessGame, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
         verify(board, times(1)).move(move);
     }
@@ -88,13 +88,13 @@ public class ChessGameMoveTest {
 
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(false).doReturn(true).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
-        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
+        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessGame.class),
                         any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
 
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
-        verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
+        verify(spyChessGame, times(1)).doesAGameRuleApply(chessGame, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
         verify(board, times(0)).move(move);
     }
@@ -105,7 +105,7 @@ public class ChessGameMoveTest {
 
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(true).doReturn(true).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
-        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
+        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessGame.class),
                         any(Move.class));
 
         try {
@@ -115,7 +115,7 @@ public class ChessGameMoveTest {
         }
 
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
-        verify(spyChessGame, times(0)).doesAGameRuleApply(board, move);
+        verify(spyChessGame, times(0)).doesAGameRuleApply(chessGame, move);
         verify(chessPiece, times(1)).isValidMove(board, move);
         verify(board, times(1)).move(move);
     }
@@ -126,7 +126,7 @@ public class ChessGameMoveTest {
 
         when(chessPiece.isValidMove(board, move)).thenReturn(false);
         doReturn(true).doReturn(true).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
-        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessBoard.class),
+        doReturn(false).when(spyChessGame).doesAGameRuleApply(any(ChessGame.class),
                         any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
@@ -139,12 +139,12 @@ public class ChessGameMoveTest {
         when(chessPiece.isValidMove(board, move)).thenReturn(true);
         doReturn(false).doReturn(false).when(spyChessGame).isPlayersKingInCheck(whitePlayer, board);
         doReturn(true).when(spyChessGame)
-                        .doesAGameRuleApply(any(ChessBoard.class), any(Move.class));
+                        .doesAGameRuleApply(any(ChessGame.class), any(Move.class));
 
         spyChessGame.move(whitePlayer, move);
 
         verify(spyChessGame, times(2)).isPlayersKingInCheck(whitePlayer, board);
-        verify(spyChessGame, times(1)).doesAGameRuleApply(board, move);
+        verify(spyChessGame, times(1)).doesAGameRuleApply(chessGame, move);
         verify(chessPiece, times(0)).isValidMove(board, move);
         verify(board, times(0)).move(move);
     }

@@ -84,7 +84,7 @@ public class ChessBoardSVGFactory {
         blankChessBoardFactory = new SVGBlankChessBoard(document, svgNS);
         setUpSVGChessPieceFactory();
         blankChessBoardFactory.createBlankChessBoard(layer);
-        blankChessBoardFactory.markMove(layer, serverChessGame.getChessGame().getChessBoard().getTheLastMove());
+        blankChessBoardFactory.markMove(layer, serverChessGame.getChessGame().getTheLastMove());
         addChessPieces();
     }
 

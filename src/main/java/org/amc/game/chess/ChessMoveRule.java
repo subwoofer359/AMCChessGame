@@ -11,18 +11,18 @@ public interface ChessMoveRule {
     /**
      * Apply the rule to the board
      * 
-     * @param board ChessBoard
+     * @param chessGame ChessBoard
      * @param move Move
      */
-    void applyRule(ChessBoard board,Move move);
+    void applyRule(ChessGame chessGame,Move move);
 
     /**
      * Is the rule valid for the move and current chess board configuartion
      * 
-     * @param board ChessBoard
+     * @param game ChessBoard
      * @param move Move
      * @return Boolean
      */
-    boolean isRuleApplicable(ChessBoard board,Move move);
+    boolean isRuleApplicable(ChessGame game,Move move);
 
 }

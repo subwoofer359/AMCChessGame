@@ -13,38 +13,51 @@ import java.text.ParseException;
  */
 public class SimpleInputParser implements InputParser {
 
-    private static final String errorMessage = "Move must be enter like so: A1B2";
-    private static final int INPUT_LENGTH = 4;
+    private static final String errorMoveMessage = "Move must be enter like so: A1B2";
+    private static final String errorLocationMessage = "Move must be enter like so: A1";
+    private static final int INPUT_MOVE_LENGTH = 4;
+    private static final int INPUT_LOCATION_LENGTH = 2;
 
     /**
      * @see InputParser#parseMoveString(String)
      */
     @Override
     public Move parseMoveString(String moveString) throws ParseException {
-        if (inputCorrectLength(moveString)) {
+        if (inputCorrectMoveLength(moveString)) {
             String startCoordinate = moveString.substring(0, 2);
             String endCoordinate = moveString.substring(2, 4);
             try {
                 return createMove(startCoordinate, endCoordinate);
             } catch (IllegalArgumentException iae) {
-                throw new ParseException(errorMessage, 0);
+                throw new ParseException(errorMoveMessage, 0);
             }
         } else {
-            throw new ParseException(errorMessage, 0);
+            throw new ParseException(errorMoveMessage, 0);
         }
     }
 
-    private boolean inputCorrectLength(String moveString) {
-        return moveString.length() == INPUT_LENGTH;
+    private boolean inputCorrectMoveLength(String moveString) {
+        return moveString.length() == INPUT_MOVE_LENGTH;
+    }
+    
+    private boolean inputCorrectLocationLength(String locationString) {
+        return locationString.length() == INPUT_LOCATION_LENGTH;
     }
 
-    private Move createMove(String startCoordinate, String endCoordinate) {
-        Location startSquare = new Location(Coordinate.valueOf(String.valueOf(startCoordinate
-                        .charAt(0))), Integer.parseInt(String.valueOf(startCoordinate.charAt(1))));
-        Location endSquare = new Location(
-                        Coordinate.valueOf(String.valueOf(endCoordinate.charAt(0))),
-                        Integer.parseInt(String.valueOf(endCoordinate.charAt(1))));
+    private Move createMove(String startCoordinate, String endCoordinate) throws ParseException{
+        Location startSquare = parseLocationString(startCoordinate);
+        Location endSquare = parseLocationString(endCoordinate);
         return new Move(startSquare, endSquare);
+    }
+    
+    public Location parseLocationString(String locationString) throws ParseException {
+        if(inputCorrectLocationLength(locationString)) {
+            Location location = new Location(Coordinate.valueOf(String.valueOf(locationString
+                            .charAt(0))), Integer.parseInt(String.valueOf(locationString.charAt(1))));
+            return location;
+        } else {
+            throw new ParseException(errorLocationMessage,0);
+        }
     }
 
 }

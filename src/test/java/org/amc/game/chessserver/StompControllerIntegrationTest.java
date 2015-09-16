@@ -126,7 +126,7 @@ public class StompControllerIntegrationTest {
     }
     
     private void verifyMove(ServerChessGame scg, String moveString) {
-        Move actualMove = scg.getChessGame().getChessBoard().getTheLastMove();
+        Move actualMove = scg.getChessGame().getTheLastMove();
         MoveEditor editor = new MoveEditor();
         editor.setAsText(moveString);
         Move expectedMove = (Move)editor.getValue();
@@ -169,7 +169,7 @@ public class StompControllerIntegrationTest {
     }
     
     private void assertEmptyMove(ServerChessGame scg) {
-        assertEquals(Move.EMPTY_MOVE, scg.getChessGame().getChessBoard().getTheLastMove());
+        assertEquals(Move.EMPTY_MOVE, scg.getChessGame().getTheLastMove());
     }
     
     @Test
