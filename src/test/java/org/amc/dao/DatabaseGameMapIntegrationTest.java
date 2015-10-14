@@ -3,6 +3,7 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Location;
@@ -177,8 +178,11 @@ public class DatabaseGameMapIntegrationTest {
         final long UID = 1222334324l;
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
         game.addOpponent(laura);
-        Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
-        game.move(game.getPlayer(nobby), move);
+        game.move(game.getPlayer(nobby), new Move("A2-A3"));
+        game.move(game.getPlayer(laura), new Move("A7-A6"));
+        game.move(game.getPlayer(nobby), new Move("B2-B3"));
+        Move move = new Move("B7-B6");
+        game.move(game.getPlayer(laura), move);
         gameMap.put(UID, game);
         dao.detachEntity(game);
         dao.getEntityManager().getTransaction().begin();
