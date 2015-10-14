@@ -1,8 +1,12 @@
 package org.amc.game.chess;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -11,10 +15,13 @@ import javax.persistence.OneToOne;
  *
  */
 @Embeddable
+@Entity
+@Table(name="ChessGamePlayers")
 public class ChessGamePlayer implements Player, Serializable {
 
     private static final long serialVersionUID = 3040542012240005856L;
     
+    @Column(nullable=false)
     private Colour colour;
     
     @OneToOne(targetEntity=org.amc.game.chess.HumanPlayer.class)
