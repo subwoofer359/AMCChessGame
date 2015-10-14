@@ -35,7 +35,7 @@ public class ChessBoardDAOTest {
 
     @Test
     public void test() throws Exception {
-        ChessBoard board = cbFactory.getChessBoard("Kf8:bf7:kf6");;
+        ChessBoard board = cbFactory.getChessBoard("Kf8:bf7:kf6:Qa1:qb2:rh8");;
         chessBoardDAO.addEntity(board);
         ChessBoard board2 = chessBoardDAO.findEntities().get(0);
         KingPiece king = (KingPiece)board2.getPieceFromBoardAt(new Location("F8")); 

@@ -1,6 +1,7 @@
 package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
+import org.apache.openjpa.persistence.Externalizer;
 import org.apache.openjpa.persistence.PersistentCollection;
 
 import java.io.Serializable;
@@ -53,6 +54,7 @@ public class ChessBoard extends DefaultSubject implements Serializable{
      * 2 Dimensional array representing the squares on a chess board
      */
     @PersistentCollection
+    @Externalizer("org.amc.dao.ChessBoardExternalizer.getChessBoardString")
     private ChessPiece[][] board;
 
     /**
