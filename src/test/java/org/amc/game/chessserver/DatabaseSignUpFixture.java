@@ -33,6 +33,9 @@ public class DatabaseSignUpFixture {
     private static final String[] emailAddresses = {"nobby@adrianmclaughlin.ie", "laura@adrianmclaughlin.ie",
                     "stephen@adrianmclaughlin.ie" };
     private static final String password = "C4096cr";
+    
+    private static final String[] TABLES= { "users", "players", "authorities", "serverChessGames", 
+        "chessGames", "chessBoards" };
 
     public DatabaseSignUpFixture() {
 
@@ -58,32 +61,18 @@ public class DatabaseSignUpFixture {
     }
     
     private void deleteUserPlayerTables() {
-        Query q1 = em.createNativeQuery("drop table users");
-        Query q2 = em.createNativeQuery("drop table players");
-        Query q3 = em.createNativeQuery("drop table authorities");
-        Query q4 = em.createNativeQuery("drop table chessGames");
-        boolean authoritiesExist = tableExists("authorities"); 
-        boolean playersExist = tableExists("players");
-        boolean usersExist = tableExists("users");
-        boolean chessGamesExist = tableExists("chessGames");
-        
-        em.getTransaction().begin();
-        if(authoritiesExist){
-            q3.executeUpdate();
+        if(em.getTransaction().isActive()) {
+            em.joinTransaction();
+        } else
+        {
+            em.getTransaction().begin();
         }
-        
-        if(playersExist){
-            q2.executeUpdate();
+        for(String table : TABLES) {
+            if(tableExists(table)) {
+                Query q1 = em.createNativeQuery("drop table " + table);
+                q1.executeUpdate();
+            }
         }
-        
-        if(usersExist){
-            q1.executeUpdate();
-        }
-        
-        if(chessGamesExist) {
-            q4.executeUpdate();
-        }
-        
         em.getTransaction().commit();
     }
     
@@ -109,15 +98,12 @@ public class DatabaseSignUpFixture {
 
     public boolean tableExists(String tableName) {
         Query tableExists = em.createNativeQuery("SHOW TABLES");
-        em.getTransaction().begin();
         tableExists.executeUpdate();
         List<?> tables = tableExists.getResultList();
         boolean result = false;
         if (tables.contains(tableName)) {
             result = true;
         }
-        em.getTransaction().commit();
-
         return result;
     }
 
