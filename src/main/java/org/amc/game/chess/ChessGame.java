@@ -1,21 +1,22 @@
 package org.amc.game.chess;
 
+import org.apache.openjpa.persistence.Externalizer;
+import org.apache.openjpa.persistence.Factory;
+import org.apache.openjpa.persistence.PersistentCollection;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -58,7 +59,10 @@ public class ChessGame implements Serializable{
     @Column(nullable=false)
     private GameState gameState;
     
-    @Transient
+    @PersistentCollection(elementType=Move.class)
+    @Externalizer("org.amc.dao.MoveListExternalizer.stringOfAllMoves")
+    @Factory("org.amc.dao.MoveListExternalizer.listOfMovesFromString")
+    @Column(length=1000)
     List<Move> allGameMoves;
     
     public enum GameState{
