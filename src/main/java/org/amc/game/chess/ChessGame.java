@@ -4,12 +4,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -23,26 +32,33 @@ import javax.persistence.Table;
 public class ChessGame implements Serializable{
     private static final long serialVersionUID = 5323277982974698086L;
     
-    @OneToOne
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(nullable=true,unique=true)
     private ChessBoard board;
     
+    @OneToOne(cascade=CascadeType.ALL)
     private ChessGamePlayer currentPlayer;
-
+    
+    @OneToOne(cascade=CascadeType.ALL)
     private ChessGamePlayer whitePlayer;
+    
+    @OneToOne(cascade=CascadeType.ALL)
     private ChessGamePlayer blackPlayer;
    
-    @OneToMany
-    @JoinColumn(name="rules_id")
+    @Transient
     List<ChessMoveRule> chessRules;
     
-    @Column(nullable=false)
+    @Transient
     private final PlayerKingInCheckCondition kingInCheck;
     
     @Column(nullable=false)
     private GameState gameState;
     
-    
+    @Transient
     List<Move> allGameMoves;
     
     public enum GameState{
@@ -87,8 +103,14 @@ public class ChessGame implements Serializable{
         this.kingInCheck = new PlayerKingInCheckCondition();
     }
 
+    /**
+     * Unique Integer used for identification and persistence
+     * @return unique Integer
+     */
+    public int getId() {
+        return id;
+    }
     
-
     /**
      * Returns the Player who is waiting for their turn
      * 
