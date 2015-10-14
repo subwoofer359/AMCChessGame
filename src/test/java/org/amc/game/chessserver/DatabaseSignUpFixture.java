@@ -35,7 +35,7 @@ public class DatabaseSignUpFixture {
     private static final String password = "C4096cr";
     
     private static final String[] TABLES= { "users", "players", "authorities", "serverChessGames", 
-        "chessGames", "chessBoards" };
+        "chessGames", "chessBoards", "ChessGamePlayers" };
 
     public DatabaseSignUpFixture() {
 
