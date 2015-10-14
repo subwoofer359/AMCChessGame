@@ -6,9 +6,7 @@ import org.apache.openjpa.persistence.PersistentCollection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
