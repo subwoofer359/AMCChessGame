@@ -32,10 +32,9 @@ public class OneViewServerChessGame extends ServerChessGame {
 
 	@Override
 	public void addOpponent(Player opponent) {
-		setOpponent(new ChessGamePlayer(opponent, Colour.BLACK));
         ChessBoard board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);
-        this.chessGame = new ChessGame(board, getPlayer(), getOpponent());
+        this.chessGame = new ChessGame(board, getPlayer(), new ChessGamePlayer(opponent, Colour.BLACK));
         setCurrentStatus(ServerGameStatus.IN_PROGRESS);
 	}
 }

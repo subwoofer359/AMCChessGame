@@ -16,6 +16,7 @@ import java.io.Serializable;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -57,7 +58,7 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
     @Column(unique=true, nullable=false)
     private long uid;
     
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="chessGame", unique=true, nullable=true)
     ChessGame chessGame = null;
     
@@ -71,13 +72,6 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
     })
     private ChessGamePlayer player;
     
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name="player", column=@Column(name="opponent",nullable=true)),
-        @AttributeOverride(name="colour", column=@Column(name="opponent_colour",nullable=true))
-    })
-    private ChessGamePlayer opponent;
-
     /**
      * Constructor
      */
@@ -118,8 +112,8 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
             	ChessBoard board = new ChessBoard();
         		SetupChessBoard.setUpChessBoardToDefault(board);
             	synchronized (this) {
-            		this.opponent = new ChessGamePlayer(opponent, Colour.BLACK);
-            		this.chessGame = new ChessGame(board, this.player, this.opponent);
+            		this.chessGame = new ChessGame(board, this.player, 
+            		                new ChessGamePlayer(opponent, Colour.BLACK));
             		this.currentStatus = ServerGameStatus.IN_PROGRESS;
             	}
             	notifyObservers(opponent);
@@ -154,7 +148,13 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
      * @return ChessGamePlayer represents Player
      */
     public ChessGamePlayer getPlayer(Player player) {
-        return ComparePlayers.comparePlayers(this.player, player) ? this.player : this.opponent;
+        if(ComparePlayers.comparePlayers(this.player, player)) {
+            return this.player;
+        } else if(this.chessGame == null) {
+            return null;
+        } else {
+            return this.chessGame.getBlackPlayer();
+        } 
     }
 
     /**
@@ -181,16 +181,19 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
      * @return Player opposing player
      */
     public ChessGamePlayer getOpponent() {
-        return opponent;
+        if(this.chessGame == null) {
+            return null;
+        }
+        return this.chessGame.getBlackPlayer();
     }
     
     /**
      * set Opponent
      */
     
-    void setOpponent(ChessGamePlayer opponent) {
-        this.opponent = opponent;
-    }
+//    void setOpponent(ChessGamePlayer opponent) {
+//        this.opponent = opponent;
+//    }
 
     /**
      * Sends a move to the ChessGame
@@ -257,7 +260,6 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
     public void destory() {
         setCurrentStatus(ServerGameStatus.FINISHED);
         removeAllObservers();
-        this.opponent = null;
         this.chessGame = null;
     }
     
