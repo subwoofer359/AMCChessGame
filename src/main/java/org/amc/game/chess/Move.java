@@ -1,12 +1,14 @@
 package org.amc.game.chess;
 
+import java.io.Serializable;
+
 /**
  * Represents an immutable move in the game of chess
  * 
  * @author Adrian Mclaughlin
  *
  */
-public class Move {
+public class Move implements Serializable {
     private final Location start;
     private final Location end;
     public static final EmptyMove EMPTY_MOVE = new EmptyMove();

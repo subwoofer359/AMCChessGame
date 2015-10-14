@@ -2,13 +2,15 @@ package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 
+import java.io.Serializable;
+
 /**
  * Represents an immutable square location on a Chess board
  * 
  * @author Adrian Mclaughlin
  *
  */
-public final class Location implements Comparable<Location> {
+public final class Location implements Comparable<Location>, Serializable {
     private final Coordinate letter;
     private final int number;
 

@@ -2,9 +2,10 @@ package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PlayerKingInCheckCondition {
+public class PlayerKingInCheckCondition implements Serializable {
     /**
      * Checks to see if the opponent's ChessPieces are attacking the Player's king
      * @param player Player who King might be under attack

@@ -2,6 +2,7 @@ package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ import java.util.Set;
  * @author Adrian Mclaughlin
  *
  */
-abstract class SimplePiece implements ChessPiece {
+abstract class SimplePiece implements ChessPiece, Serializable {
     private final Colour colour;
     private boolean hasMoved = false;
 

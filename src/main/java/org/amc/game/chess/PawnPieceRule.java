@@ -1,6 +1,8 @@
 package org.amc.game.chess;
 
-abstract class PawnPieceRule implements ChessMoveRule {
+import java.io.Serializable;
+
+abstract class PawnPieceRule implements ChessMoveRule, Serializable {
     
     boolean isPawnChessPiece(ChessPiece piece) {
         return piece instanceof PawnPiece;

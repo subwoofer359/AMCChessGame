@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import java.io.Serializable;
+
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 /**
@@ -8,7 +10,7 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  * @author Adrian Mclaughlin
  *
  */
-public class CastlingRule implements ChessMoveRule {
+public class CastlingRule implements ChessMoveRule, Serializable {
 
     /**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
