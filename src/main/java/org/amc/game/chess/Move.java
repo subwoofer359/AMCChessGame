@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import org.amc.game.chessserver.MoveEditor;
-
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -15,7 +13,7 @@ import java.io.Serializable;
  *
  */
 public class Move implements Serializable {
-    
+    private static final long serialVersionUID = -7511044104434383204L;
     private final Location start;
     private final Location end;
     public static final EmptyMove EMPTY_MOVE = new EmptyMove();
@@ -27,14 +25,14 @@ public class Move implements Serializable {
     }
 
     public Move(String moveString) throws IllegalArgumentException {
-        if(moveString.length() == 5) {
-            this.start = new Location(moveString.substring(0,2));
-            this.end = new Location(moveString.substring(3,5));
+        if (moveString.length() == 5) {
+            this.start = new Location(moveString.substring(0, 2));
+            this.end = new Location(moveString.substring(3, 5));
         } else {
             throw new IllegalArgumentException("Not a valid move string");
         }
     }
-    
+
     /**
      * @return the start Location
      */
@@ -91,7 +89,7 @@ public class Move implements Serializable {
     public String asString() {
         return start.asString() + MOVE_SEPARATOR + end.asString();
     }
-    
+
     /**
      * @see Object#toString()
      */
@@ -149,45 +147,42 @@ public class Move implements Serializable {
         Move other = (Move) obj;
         return other.start.equals(start) && other.end.equals(end);
     }
-    
+
     private Object writeReplace() {
         return new MoveSerializedProxy(this);
     }
-    
+
     private void readObject(ObjectInputStream stream) throws InvalidObjectException {
         throw new InvalidObjectException("Proxy required");
     }
-    
+
     private static class MoveSerializedProxy implements Serializable {
         private static final long serialVersionUID = 3118097389735009346L;
         private transient Location start;
         private transient Location end;
-        
+
         public MoveSerializedProxy(Move move) {
             this.start = move.start;
             this.end = move.end;
         }
-        
+
         private Object readResolve() {
             return new Move(start, end);
         }
-        
-        private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        private void readObject(ObjectInputStream stream) throws IOException,
+                        ClassNotFoundException {
             stream.defaultReadObject();
             String moveStr = stream.readUTF();
-            MoveEditor e = new MoveEditor();
-            e.setAsText(moveStr);
-            Move m = (Move)e.getValue();
+            Move m = new Move(moveStr);
             this.start = m.start;
             this.end = m.end;
-            
+
         }
-        
+
         private void writeObject(ObjectOutputStream stream) throws IOException {
             stream.defaultWriteObject();
-            MoveEditor e = new MoveEditor();
-            e.setValue(new Move(start, end));
-            stream.writeUTF(e.getAsText());
+            stream.writeUTF(new Move(start, end).asString());
         }
     }
 }
