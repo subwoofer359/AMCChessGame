@@ -89,7 +89,7 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
 
     private ChessPieceLocation parseGroup(String group) throws ParseException {
         ChessPiece piece = getChessPiece(group.substring(0, 1));
-        Location location = getChessPieceLocation(group.substring(1, 3));
+        Location location = new Location(group.substring(1, 3));
         return new ChessPieceLocation(piece, location);
     }
 
@@ -123,12 +123,5 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
         default:
             return null;
         }
-    }
-
-    private Location getChessPieceLocation(String locationStr) throws ParseException {
-        String coordinateStr = locationStr.substring(0, 1).toUpperCase();
-        String numberStr = locationStr.substring(1, 2);
-
-        return new Location(Coordinate.valueOf(coordinateStr), Integer.parseInt(numberStr));
     }
 }
