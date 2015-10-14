@@ -2,9 +2,13 @@ package org.amc.dao;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
+import org.amc.game.chess.Colour;
+import org.amc.game.chess.KingPiece;
+import org.amc.game.chess.Location;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
@@ -33,6 +37,11 @@ public class ChessBoardDAOTest {
     public void test() throws Exception {
         ChessBoard board = cbFactory.getChessBoard("Kf8:bf7:kf6");;
         chessBoardDAO.addEntity(board);
+        ChessBoard board2 = chessBoardDAO.findEntities().get(0);
+        KingPiece king = (KingPiece)board2.getPieceFromBoardAt(new Location("F8")); 
+        assertTrue(king.getColour().equals(Colour.BLACK));
+        BishopPiece bishop = (BishopPiece) board2.getPieceFromBoardAt(new Location("F7"));
+        assertTrue(bishop.getColour().equals(Colour.WHITE));
     }
 
 }
