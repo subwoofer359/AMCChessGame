@@ -86,4 +86,36 @@ public class MoveTest {
         assertTrue(Move.isDiagonalMove(new Move(start, new Location(Coordinate.C, 3))));
     }
 
+    
+    @Test
+    public void testMoveString() {
+        Move move = new Move("A1-B2");
+        assertTrue(move.getStart().getLetter().equals(Coordinate.A));
+        assertEquals(move.getStart().getNumber(), 1);
+        assertTrue(move.getEnd().getLetter().equals(Coordinate.B));
+        assertEquals(move.getEnd().getNumber(), 2);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testMoveStringMissingDash() {
+        new Move("A1B2");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidMoveString() {
+        new Move("A1K2");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidMoveString2() {
+        new Move("\"\"-a2");
+    }
+    
+    @Test
+    public void testAsString() {
+        final String moveStr = "A1-B2";
+        Move move = new Move(moveStr);
+        String storedMoveStr = move.asString();
+        assertEquals(moveStr, storedMoveStr);
+    }
 }
