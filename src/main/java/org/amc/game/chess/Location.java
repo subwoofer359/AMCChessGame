@@ -2,15 +2,13 @@ package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 
-import java.io.Serializable;
-
 /**
  * Represents an immutable square location on a Chess board
  * 
  * @author Adrian Mclaughlin
  *
  */
-public final class Location implements Comparable<Location>, Serializable {
+public final class Location implements Comparable<Location> {
     private final Coordinate letter;
     private final int number;
 
@@ -29,6 +27,24 @@ public final class Location implements Comparable<Location>, Serializable {
         this.letter = letter;
         checkNumber(number);
         this.number = number;
+    }
+    
+    /**
+     * Creates a new Location from a String
+     * 
+     * @param location String in the from "A1" or "a1"
+     * @throws IllegalArgumentException if not a valid location string
+     */
+    public Location(String location) throws IllegalArgumentException {
+        if(location.length() == 2) {
+            this.letter = Coordinate.valueOf(location.substring(0, 1).toUpperCase());
+            int tempNumber = Integer.parseInt(location.substring(1, 2));
+            checkNumber(tempNumber);
+            this.number = tempNumber;
+        } else
+        {
+            throw new IllegalArgumentException("Not a valid Location");
+        }
     }
 
     private void checkNumber(Integer number) {
@@ -52,6 +68,13 @@ public final class Location implements Comparable<Location>, Serializable {
         return this.number;
     }
 
+    /**
+     * @return String representation of the Location 
+     */
+    public String asString() {
+        return this.letter.name() + this.number;
+    }
+    
     /**
      * @see Object#toString()
      */
