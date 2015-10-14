@@ -2,18 +2,15 @@ package org.amc.dao;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessBoardFactory;
-import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.SimpleChessBoardSetupNotation;
+import org.amc.game.chess.SimpleInputParser;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
-import org.amc.game.chessserver.MoveEditor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,10 +24,14 @@ public class ChessGameDAOTest {
     private Player nobby;
     private DAO<Player> playerDAO;
     private ChessGame game;
+    private SimpleInputParser mlParser;
+    private int id;
  
     @Before
     public void setUp() throws Exception {
         this.signUpfixture.setUp();
+        this.mlParser = new SimpleInputParser();
+        
         chessGameDAO = new DAO<>(ChessGame.class);
         cgFixture = new ChessGameFixture();
         
@@ -39,7 +40,12 @@ public class ChessGameDAOTest {
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
         game = new ChessGame(cgFixture.getBoard(), new ChessGamePlayer(nobby, Colour.WHITE),
                         new ChessGamePlayer(laura, Colour.BLACK));
-        
+        cgFixture.getBoard().initialise();
+        game.move(game.getCurrentPlayer(), mlParser.parseMoveString("A2A3"));
+        game.changePlayer();
+        game.move(game.getCurrentPlayer(), mlParser.parseMoveString("A7A6"));
+        chessGameDAO.addEntity(game);
+        id = game.getId();
     }
 
     @After
@@ -49,10 +55,9 @@ public class ChessGameDAOTest {
 
     @Test
     public void test() throws Exception {
-        
-        cgFixture.getBoard().initialise();
-        game.move(game.getCurrentPlayer(),);
-        chessGameDAO.addEntity(game);
+        ChessGame game = chessGameDAO.getEntity(id);
+        assertTrue(ComparePlayers.comparePlayers(game.getCurrentPlayer(), laura));
+        assertTrue(ComparePlayers.comparePlayers(game.getBlackPlayer(), laura));
+        assertTrue(ComparePlayers.comparePlayers(game.getWhitePlayer(), nobby));
     }
-
 }
