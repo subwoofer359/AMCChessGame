@@ -1,7 +1,6 @@
 package org.amc.game.chess;
 
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
-import org.amc.game.chess.ChessBoard.Coordinate;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,33 +18,6 @@ import java.util.regex.Pattern;
  */
 public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
 
-    enum ChessPieceNotation {
-        /** black king */
-        K,
-        /** black queen */
-        Q,
-        /** black bishop */
-        B,
-        /** black knight */
-        N,
-        /** black rook */
-        R,
-        /** black pawn */
-        P,
-        /** white king */
-        k,
-        /** white queen */
-        q,
-        /** white bishop */
-        b,
-        /** white rook */
-        r,
-        /** white knight */
-        n,
-        /** white pawn */
-        p;
-    }
-
     /**
      * Regex used for matching the components of the string input
      */
@@ -62,7 +34,7 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
      * @param setupNotation
      * @return boolean True if the string can be parsed
      */
-    boolean isInputValid(String setupNotation) {
+    public boolean isInputValid(String setupNotation) {
         return wholePattern.matcher(setupNotation).matches();
 
     }
