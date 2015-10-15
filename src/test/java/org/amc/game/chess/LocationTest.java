@@ -6,8 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import jdk.nashorn.internal.AssertsEnabled;
-
 public class LocationTest {
 
     @Before
@@ -39,17 +37,17 @@ public class LocationTest {
     
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void testStringTooLong() {
-        Location location = new Location("A1B1");
+        new Location("A1B1");
     }
     
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void testStringWrongLetterCoordinate() {
-        Location location = new Location("K1");
+        new Location("K1");
     }
     
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void testStringWrongNumberCoordinate() {
-        Location location = new Location("A9");
+        new Location("A9");
     }
 
     
