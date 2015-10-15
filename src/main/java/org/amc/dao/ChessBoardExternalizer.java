@@ -25,16 +25,22 @@ public class ChessBoardExternalizer {
         
     }
 
-    
-    public static String getChessBoardString(ChessPiece[][] board) {
+    /**
+     * Creates a String which represents the ChessBoard in SimpleChessBoardSetupNotation
+     * Location coordinates are converted to lower case
+     * 
+     * @param board ChessBoard
+     * @return String representation of the ChessBoard
+     */
+    public static String getChessBoardString(ChessBoard board) {
         StringBuilder sb = new StringBuilder();
-        for(int t = 0; t < Coordinate.values().length; t++) {
+        for(Coordinate coord : Coordinate.values()) {
             for(int i = 0; i < ChessBoard.BOARD_WIDTH; i++) {
-                ChessPiece piece = board[t][i];
+                Location location = new Location(coord, ChessBoard.BOARD_WIDTH - i);
+                ChessPiece piece = board.getPieceFromBoardAt(location);
                 if(piece != null) {
-                    Location location = new Location(Coordinate.values()[t], ChessBoard.BOARD_WIDTH-i);
                     sb.append(getChessPieceSymbol(piece));
-                    sb.append(location.asString());
+                    sb.append(location.asString().toLowerCase());
                 }
             }
         }
@@ -76,9 +82,16 @@ public class ChessBoardExternalizer {
         }
     }
     
-    public static ChessPiece[][] getChessBoard(String chessBoardStr) throws ParseException {
+    /**
+     * Given a String representation of ChessBoard in SimpleChessBoardSetupNotation
+     * returns a configured ChessBoard
+     *  
+     * @param chessBoardStr String in SimpleChessBoardSetupNotation
+     * @return ChessBoard
+     * @throws ParseException if String is not valid SimpleChessBoardSetupNotation
+     */
+    public static ChessBoard getChessBoard(String chessBoardStr) throws ParseException {
         ChessBoardFactory factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-        factory.getChessBoard(chessBoardStr);
-        return null;
+        return factory.getChessBoard(chessBoardStr);
     }
 }

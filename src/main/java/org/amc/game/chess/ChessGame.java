@@ -2,6 +2,7 @@ package org.amc.game.chess;
 
 import org.apache.openjpa.persistence.Externalizer;
 import org.apache.openjpa.persistence.Factory;
+import org.apache.openjpa.persistence.Persistent;
 import org.apache.openjpa.persistence.PersistentCollection;
 
 import java.io.Serializable;
@@ -14,7 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -35,8 +35,10 @@ public class ChessGame implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(nullable=true,unique=true)
+    @Persistent
+    @Externalizer("org.amc.dao.ChessBoardExternalizer.getChessBoardString")
+    @Factory("org.amc.dao.ChessBoardExternalizer.getChessBoard")
+    @Column(length=96)
     private ChessBoard board;
     
     @OneToOne(cascade=CascadeType.ALL)
