@@ -14,7 +14,7 @@ import javax.annotation.PreDestroy;
  * @version 1.0
  *
  */
-public class GameMapFactoryBean{
+public class MemoryGameMapFactoryBean{
 
     private Map<Long, ServerChessGame> gameMap;
     

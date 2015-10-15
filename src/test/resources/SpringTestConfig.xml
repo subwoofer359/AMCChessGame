@@ -42,7 +42,7 @@
 		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
 	</bean>
 
-	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
+	<bean id="gameMapFactory" class="org.amc.game.chessserver.MemoryGameMapFactoryBean" />
 	
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
 	

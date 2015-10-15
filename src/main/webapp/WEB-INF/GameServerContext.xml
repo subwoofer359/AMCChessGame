@@ -38,7 +38,7 @@
 		scope="singleton">
 	</bean>
 
-	<bean id="gameMapFactory" class="org.amc.game.chessserver.GameMapFactoryBean" />
+	<bean id="gameMapFactory" class="org.amc.game.chessserver.MemoryGameMapFactoryBean" />
 	
 	<bean class="org.amc.game.chessserver.ServerChessGameFactory">
 		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
