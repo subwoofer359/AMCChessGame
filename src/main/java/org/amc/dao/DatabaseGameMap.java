@@ -5,6 +5,7 @@ import org.amc.game.chessserver.ServerChessGame;
 import org.apache.log4j.Logger;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -142,7 +143,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
         } catch(DAOException de) {
             logger.error(de);
         }
-        return null;
+        return new ArrayList<ServerChessGame>();
     }
 
     @Override

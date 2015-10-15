@@ -28,18 +28,18 @@ public class DatabaseGameMapTest {
     private Player player = new HumanPlayer("Ted");
     private DatabaseGameMap gameMap;
     private ServerChessGame game;
-    
+
     @Before
     public void setUp() throws Exception {
-        game = new ServerChessGameFactory().getServerChessGame(GameType.LOCAL_GAME, 
-                        gameUid , player);
-        
-        chessGameDAO = mock (ServerChessGameDAO.class);
+        game = new ServerChessGameFactory()
+                        .getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+
+        chessGameDAO = mock(ServerChessGameDAO.class);
         chessGamesList = Arrays.asList(game);
         when(chessGameDAO.findEntities()).thenReturn(chessGamesList);
         when(chessGameDAO.findEntities(eq("uid"), eq(gameUid))).thenReturn(Arrays.asList(game));
         when(chessGameDAO.getGameUids()).thenReturn(Sets.newSet(gameUid));
-        
+
         gameMap = new DatabaseGameMap();
         gameMap.setServerChessGameDAO(chessGameDAO);
     }
@@ -52,34 +52,70 @@ public class DatabaseGameMapTest {
     public void sizeTest() {
         assertEquals(chessGamesList.size(), gameMap.size());
     }
-    
+
+    @Test
+    public void sizeThrowsExceptionTest() throws DAOException {
+        when(chessGameDAO.findEntities()).thenThrow(new DAOException("sizeThrowsExceptionTest"));
+        assertEquals(0, gameMap.size());
+    }
+
     @Test
     public void isEmptyTest() {
         assertFalse(gameMap.isEmpty());
     }
-    
+
+    @Test
+    public void isEmptyTestThrowsDAOException() throws DAOException {
+        when(chessGameDAO.findEntities()).thenThrow(
+                        new DAOException("isEmptyTestThrowsDAOException"));
+        assertTrue(gameMap.isEmpty());
+    }
+
     @Test
     public void containsKeyTest() {
         assertTrue(gameMap.containsKey(gameUid));
     }
-    
+
     @Test
     public void doesNotContainsKeyTest() {
         assertFalse(gameMap.containsKey(23445L));
     }
+
+    @Test
+    public void doesNotContainsNonLongKeyTest() {
+        assertFalse(gameMap.containsKey("key"));
+    }
     
+    @Test
+    public void containsNullKeyTest() {
+        assertFalse(gameMap.containsKey(null));
+    }
+
+    @Test
+    public void containsKeyThrowsDAOExceptionTest() throws DAOException {
+        when(chessGameDAO.findEntities(eq("uid"), anyObject())).thenThrow(
+                        new DAOException("containsKeyThrowsDAOExceptionTest"));
+        this.gameMap.setServerChessGameDAO(chessGameDAO);
+        assertFalse(gameMap.containsKey(3234L));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void containsValue() {
+        gameMap.containsValue(null);
+    }
+
     @Test
     public void getTest() {
         ServerChessGame retrievedChessGame = gameMap.get(gameUid);
         assertEquals(game, retrievedChessGame);
     }
-    
+
     @Test
     public void getTestNull() {
         ServerChessGame retrievedChessGame = gameMap.get(2343L);
         assertNull(retrievedChessGame);
     }
-    
+
     @Test
     public void getKeyNotLongNull() {
         ServerChessGame retrievedChessGame = gameMap.get(null);
@@ -87,20 +123,66 @@ public class DatabaseGameMapTest {
     }
     
     @Test
+    public void getKeyNotLong() {
+        ServerChessGame retrievedChessGame = gameMap.get("key");
+        assertNull(retrievedChessGame);
+    }
+
+    @Test
+    public void getThrowsDAOException() throws DAOException {
+        when(chessGameDAO.findEntities(eq("uid"), anyObject())).thenThrow(
+                        new DAOException("getThrowsDAOException"));
+        ServerChessGame retrievedChessGame = gameMap.get(2343L);
+        assertNull(retrievedChessGame);
+    }
+
+    @Test
     public void putTest() throws DAOException {
         final Long newUid = 1000L;
-        final ServerChessGame newGame = new ServerChessGameFactory().getServerChessGame(GameType.LOCAL_GAME, 
-                        newUid , player);
+        final ServerChessGame newGame = new ServerChessGameFactory().getServerChessGame(
+                        GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
     }
-    
+
+    @Test
+    public void putTestThrowsDAOException() throws DAOException {
+        doThrow(new DAOException("putTestThrowsDAOException")).when(chessGameDAO).addEntity(
+                        any(ServerChessGame.class));
+        final Long newUid = 1000L;
+        final ServerChessGame newGame = new ServerChessGameFactory().getServerChessGame(
+                        GameType.LOCAL_GAME, newUid, player);
+        gameMap.put(newUid, newGame);
+        verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
+
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void putAllTest() {
+        gameMap.putAll(null);
+    }
+
     @Test
     public void removeTest() throws DAOException {
         gameMap.remove(gameUid);
         verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
     }
-    
+
+    @Test
+    public void removeThrowDAOExceptionTest() throws DAOException {
+        doThrow(new DAOException("removeThrowDAOExceptionTest")).when(chessGameDAO).deleteEntity(
+                        any(ServerChessGame.class));
+        gameMap.remove(gameUid);
+        verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
+    }
+
+    @Test
+    public void removeNullTest() throws DAOException {
+        assertNull(gameMap.remove(null));
+        verify(this.chessGameDAO, times(0)).deleteEntity(eq(game));
+
+    }
+
     @Test
     public void keySetTest() {
         Set<Long> gameUids = gameMap.keySet();
@@ -112,10 +194,30 @@ public class DatabaseGameMapTest {
         Collection<ServerChessGame> games = gameMap.values();
         assertTrue(games.contains(game));
     }
-    
+
+    @Test
+    public void valuesTestThrowsException() throws DAOException {
+        when(chessGameDAO.findEntities()).thenThrow(new DAOException("valuesTestThrowsException"));
+        Collection<ServerChessGame> games = gameMap.values();
+        assertFalse(games.contains(game));
+    }
+
     @Test
     public void entrySetTest() {
         Set<Map.Entry<Long, ServerChessGame>> entries = gameMap.entrySet();
         assertFalse(entries.isEmpty());
+    }
+
+    @Test
+    public void entrySetThrowsExceptionTest() throws DAOException {
+        when(chessGameDAO.findEntities())
+                        .thenThrow(new DAOException("entrySetThrowsExceptionTest"));
+        Set<Map.Entry<Long, ServerChessGame>> entries = gameMap.entrySet();
+        assertTrue(entries.isEmpty());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void clearTest() {
+        gameMap.clear();
     }
 }
