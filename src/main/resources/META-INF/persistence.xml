@@ -13,7 +13,6 @@
 <class>org.amc.Authorities</class>
 <class>org.amc.game.chess.HumanPlayer</class>
 <class>org.amc.game.chess.ChessGamePlayer</class>
-<class>org.amc.game.chess.ChessBoard</class>
 <class>org.amc.game.chess.ChessGame</class>
 <class>org.amc.game.chessserver.ServerChessGame</class>
 <class>org.amc.game.chessserver.OneViewServerChessGame</class>
@@ -25,7 +24,7 @@
       <property name="openjpa.ConnectionProperties" value="validationQuery=select 1"/>
       <!-- Turn off OpenJPA bytecode Enhancer -->
       <!-- causing a lot of problems -->
-      <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+      <property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>
       <property name="jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
       <!-- <property name="openjpa.Log" value="Runtime=TRACE, SQL=TRACE"/>  --> 
       
