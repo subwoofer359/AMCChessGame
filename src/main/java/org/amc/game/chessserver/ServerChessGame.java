@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.GameSubject;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
@@ -9,7 +10,6 @@ import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
-import org.amc.util.DefaultSubject;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -20,12 +20,18 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 /**
@@ -36,7 +42,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="serverChessGames")
-public class ServerChessGame extends DefaultSubject implements Serializable {
+
+@NamedQuery(name="serverChessGameByUid", query="SELECT x FROM ServerChessGame x where x.uid = ?1")
+public class ServerChessGame extends GameSubject implements Serializable {
     
     private static final long serialVersionUID = 2147129152958398504L;
 
@@ -71,6 +79,9 @@ public class ServerChessGame extends DefaultSubject implements Serializable {
         @AttributeOverride(name="colour", column=@Column(name="player_colour",nullable=false))
     })
     private ChessGamePlayer player;
+    
+    @Version
+    private int version;
     
     /**
      * Constructor
