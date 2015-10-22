@@ -2,6 +2,7 @@ package org.amc.game.chess;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class ChessGamePlayer implements Player, Serializable {
     @Column(nullable=false)
     private Colour colour;
     
-    @OneToOne(targetEntity=org.amc.game.chess.HumanPlayer.class)
+    @OneToOne(cascade=CascadeType.ALL,targetEntity=org.amc.game.chess.HumanPlayer.class)
     private Player player;
     
     protected ChessGamePlayer() {
