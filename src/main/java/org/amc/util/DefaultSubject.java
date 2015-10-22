@@ -9,7 +9,8 @@ import java.util.List;
  */
 
 public class DefaultSubject implements Subject {
-    private final List<Observer> observers;
+    
+    private List<Observer> observers;
 
     /**
      * 
@@ -38,6 +39,10 @@ public class DefaultSubject implements Subject {
         }
         copy.clear();
     }
+    
+    public int getNoOfObservers() {
+        return this.observers.size();
+    }
 
     public void removeObserver(Observer O) {
         observers.remove(O);
@@ -47,6 +52,4 @@ public class DefaultSubject implements Subject {
     public void removeAllObservers() {
         observers.clear();
     }
-    
-    
 }
