@@ -17,10 +17,6 @@ public class OneViewServerChessGame extends ServerChessGame {
     
     private static final long serialVersionUID = -8769100253729854597L;
     
-    @Version
-    @Column
-    private int version;
-    
     public OneViewServerChessGame() {
         super();
     }
