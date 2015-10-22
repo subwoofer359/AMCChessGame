@@ -11,6 +11,7 @@
 <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 <class>org.amc.User</class>
 <class>org.amc.Authorities</class>
+<class>org.amc.game.GameSubject</class>
 <class>org.amc.game.chess.HumanPlayer</class>
 <class>org.amc.game.chess.ChessGamePlayer</class>
 <class>org.amc.game.chess.ChessGame</class>
@@ -27,6 +28,7 @@
       <property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>
       <property name="jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
       <property name="openjpa.Log" value="Runtime=TRACE, SQL=TRACE"/> 
+      <property name="openjpa.FlushBeforeQueries" value="true"/>
       <!--  <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict,
     FieldStrategies='org.mag.data.InfoStruct=org.mag.mapping.InfoStructHandler'"/>-->
  </properties>

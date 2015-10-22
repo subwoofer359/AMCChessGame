@@ -11,6 +11,7 @@
 <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 <class>org.amc.User</class>
 <class>org.amc.Authorities</class>
+<class>org.amc.game.GameSubject</class>
 <class>org.amc.game.chess.HumanPlayer</class>
 <class>org.amc.game.chess.ChessGamePlayer</class>
 <class>org.amc.game.chess.ChessGame</class>
@@ -22,6 +23,7 @@
       <property name="openjpa.ConnectionUserName" value="adrian"/>
       <property name="openjpa.ConnectionPassword" value="cr2032ux"></property>
       <property name="openjpa.ConnectionProperties" value="validationQuery=select 1"/>
+      <property name="openjpa.FlushBeforeQueries" value="true"/>
       <!-- Turn off OpenJPA bytecode Enhancer -->
       <!-- causing a lot of problems -->
       <property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>
