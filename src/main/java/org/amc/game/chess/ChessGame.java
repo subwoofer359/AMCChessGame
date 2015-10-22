@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 
 /**
@@ -28,14 +29,14 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="chessGames")
-public class ChessGame implements Serializable{
+public class ChessGame implements Serializable {
     private static final long serialVersionUID = 5323277982974698086L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Persistent
+    @Persistent(cascade=CascadeType.ALL)
     @Externalizer("org.amc.dao.ChessBoardExternalizer.getChessBoardString")
     @Factory("org.amc.dao.ChessBoardExternalizer.getChessBoard")
     @Column(length=96)
@@ -59,7 +60,10 @@ public class ChessGame implements Serializable{
     @Column(nullable=false)
     private GameState gameState;
     
-    @PersistentCollection(elementType=Move.class)
+    @Version
+    private int version;
+    
+    @PersistentCollection(elementCascade=CascadeType.ALL, elementType=Move.class)
     @Externalizer("org.amc.dao.MoveListExternalizer.stringOfAllMoves")
     @Factory("org.amc.dao.MoveListExternalizer.listOfMovesFromString")
     @Column(length=1000)
