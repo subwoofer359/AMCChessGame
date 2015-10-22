@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGame.GameState;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
@@ -11,7 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameStateListener implements Observer {
+public class GameStateListener extends GameObserver {
 
     private static final Logger logger = Logger.getLogger(GameStateListener.class);
     

@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
 
+import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessGame;
@@ -9,7 +10,6 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
-import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,7 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonChessGameView implements Observer {
+public class JsonChessGameView extends GameObserver {
 
     private static final Logger logger = Logger.getLogger(JsonChessGameView.class);
 

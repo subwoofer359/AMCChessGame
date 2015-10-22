@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.GameObserver;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
  */
 @Component
 @Scope("prototype")
-public class GameFinishedListener implements Observer {
+public class GameFinishedListener extends GameObserver {
 
     /**
      * Time in seconds to wait before deleting the chessGame from the gameMap.
