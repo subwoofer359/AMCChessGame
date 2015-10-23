@@ -32,17 +32,21 @@
     
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
+		<property name="sCGInitialiser" ref="sCGInitialiser"></property>
 	</bean>
 	
-	<bean class="org.amc.game.chessserver.ServerChessGameFactory">
+	<bean id="serverChessGameFactory" class="org.amc.game.chessserver.ServerChessGameFactory">
 		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
 	</bean>
 	
 	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
 		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
+		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"></property>
 	</bean>
 
-	<bean id="gameMapFactory" class="org.amc.game.chessserver.MemoryGameMapFactoryBean" />
+	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
+		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
+	</bean>
 	
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
 	
@@ -61,7 +65,7 @@
 	
 	<bean id="userSearchController" class="org.amc.game.chessserver.UserSearchController" />
 	
-	<bean id="gameFinishListener" class="org.amc.game.chessserver.GameFinishedListener"/>
+	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
 
 	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
 
@@ -82,6 +86,8 @@
 			<value type="java.lang.Class">org.amc.Authorities</value>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO"></bean>
 	
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
     	<property name="customEditors">
