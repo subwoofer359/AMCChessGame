@@ -4,6 +4,9 @@ import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import org.amc.EntityManagerThreadLocal;
+import org.amc.dao.DAO;
+import org.amc.dao.DatabaseGameMap;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -12,12 +15,16 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.view.ChessGameTextView;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
@@ -31,9 +38,11 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityManagerFactory;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/SpringTestConfig.xml","/GameServerSecurity.xml",  "/GameServerWebSockets.xml"})
+@ContextConfiguration({"/SpringTestConfig.xml", "/GameServerSecurity.xml",  "/GameServerWebSockets.xml"})
 
 public class StompControllerIntegrationTest {
     
@@ -63,13 +72,6 @@ public class StompControllerIntegrationTest {
 
     private TestChannelInterceptor brokerChannelInterceptor;
 
-
-    private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"),
-                    Colour.WHITE);
-
-    private ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Chris"),
-                    Colour.BLACK);
-
     private long gameUUID = 1234L;
     
     private long oneViewChessGameUUID = 4321L;
@@ -80,8 +82,28 @@ public class StompControllerIntegrationTest {
     
     private String[] moves = {"A2-A3", "A7-A6", "B1-C3", "E7-E6"};
 
+    private DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    
+    private DAO<Player> playerDAO;
+    
+    private Player stephen;
+    
+    private Player nobby;
+    
+    private Map<Long, ServerChessGame> gameMap;
+    
+    private JsonChessGameView view;
+    
+    private SimpMessagingTemplate template;
+    
     @Before
-    public void setup() {
+    public void setup() throws Exception {
+       fixture.setUp();
+       
+       playerDAO = new DAO<Player>(HumanPlayer.class);
+       stephen = playerDAO.findEntities("userName", "stephen").get(0);
+       nobby = playerDAO.findEntities("userName", "nobby").get(0);
+       
         this.brokerChannelInterceptor = new TestChannelInterceptor();
         this.brokerChannelInterceptor.setIncludedDestinations("/user/**");
         this.brokerChannel.addInterceptor(this.brokerChannelInterceptor);
@@ -90,8 +112,8 @@ public class StompControllerIntegrationTest {
         this.clientOutboundChannelInterceptor.setIncludedDestinations(MESSAGE_DESTINATION);
         this.clientOutboundChannel.addInterceptor(this.clientOutboundChannelInterceptor);
         
-        @SuppressWarnings("unchecked")
-        Map<Long, ServerChessGame> gameMap = (Map<Long, ServerChessGame>) wac.getBean("gameMap");
+        
+        gameMap = (Map<Long, ServerChessGame>) wac.getBean("gameMap");
           
         ServerChessGameFactory scgfactory = new ServerChessGameFactory();
         OfflineChessGameMessagerFactory ocgFactory = new OfflineChessGameMessagerFactory() {
@@ -105,13 +127,26 @@ public class StompControllerIntegrationTest {
         scgfactory.setOfflineChessGameMessagerFactory(ocgFactory);
         
         
-        scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, whitePlayer);
-        scg.addOpponent(blackPlayer);
-        gameMap.put(gameUUID, scg);
+        scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, stephen);
+        scg.addOpponent(nobby);
+        scg = gameMap.put(gameUUID, scg);
         
-        oneViewChessGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, oneViewChessGameUUID, whitePlayer);
-        oneViewChessGame.addOpponent(blackPlayer);
+        oneViewChessGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, oneViewChessGameUUID, stephen);
+        oneViewChessGame.addOpponent(nobby);
+        
+        
+        
         gameMap.put(oneViewChessGameUUID, oneViewChessGame);
+        oneViewChessGame = gameMap.get(oneViewChessGameUUID);
+        
+        template = mock(SimpMessagingTemplate.class);
+        view = new JsonChessGameView(oneViewChessGame, template);
+    }
+    
+    @After
+    public void tearDown() throws Exception {
+        this.gameMap.clear();
+        this.fixture.tearDown();
     }
 
     @Test
@@ -119,6 +154,7 @@ public class StompControllerIntegrationTest {
         subscribe();
         
         for(int i = 0; i < moves.length; i++) {
+            scg = gameMap.get(gameUUID);
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
             testInfoMessageSent();
             verifyMove(scg, moves[i]);
@@ -152,12 +188,17 @@ public class StompControllerIntegrationTest {
     @Test
     public void OneViewChessGameMove() throws Exception {
         subscribe();
+        ArgumentCaptor<Object> jsonBoard = ArgumentCaptor.forClass(Object.class);
+        
         
         for(int i = 0; i < moves.length; i++) {
             oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID, moves[i]);
             testInfoMessageSent();
             verifyMove(oneViewChessGame, moves[i]);
+            //verify(template).convertAndSend(anyString(), jsonBoard.capture(), anyMap());
+            //System.out.println(jsonBoard.getValue());
         }
+        
     }
     
     @Test
