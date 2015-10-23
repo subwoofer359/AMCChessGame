@@ -1,10 +1,12 @@
-package org.amc.game.chessserver;
+package org.amc.game.chessserver.observers;
 
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

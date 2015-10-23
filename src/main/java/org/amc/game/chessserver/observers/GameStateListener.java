@@ -1,8 +1,11 @@
-package org.amc.game.chessserver;
+package org.amc.game.chessserver.observers;
 
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chessserver.MessageType;
+import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.StompConstants;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.util.Observer;
 import org.amc.util.Subject;

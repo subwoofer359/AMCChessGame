@@ -1,4 +1,4 @@
-package org.amc.game.chessserver;
+package org.amc.game.chessserver.observers;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -7,6 +7,8 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.observers.GameStateListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -50,10 +50,10 @@ public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
         board = boardFactory
                         .getChessBoard("ra8:nc8:rc6:pd3:pb2:pe2:pf2:ph2:nb1:ke1:Pf7:Pg6:Ph6:Ka5:Pc3");
         new ChessBoardView(board);
-        serverChessGame = new ServerChessGame(0l, whitePlayer);
+        
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.setChessBoard(board);
-        serverChessGame.chessGame = chessGame;
+        serverChessGame = new ServerChessGame(0l, chessGame);
     }
 
     @After

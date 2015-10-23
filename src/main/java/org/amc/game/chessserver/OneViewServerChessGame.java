@@ -7,9 +7,8 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SetupChessBoard;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Version;
+
 
 
 @Entity
@@ -30,7 +29,7 @@ public class OneViewServerChessGame extends ServerChessGame {
 	public void addOpponent(Player opponent) {
         ChessBoard board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);
-        this.chessGame = new ChessGame(board, getPlayer(), new ChessGamePlayer(opponent, Colour.BLACK));
+        setChessGame(new ChessGame(board, getPlayer(), new ChessGamePlayer(opponent, Colour.BLACK)));
         setCurrentStatus(ServerGameStatus.IN_PROGRESS);
 	}
 }

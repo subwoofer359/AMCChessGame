@@ -1,5 +1,7 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.chessserver.observers.GameStateListener;
+import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 

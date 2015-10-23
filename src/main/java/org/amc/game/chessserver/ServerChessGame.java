@@ -20,16 +20,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -68,7 +65,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
     
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="chessGame", unique=true, nullable=true)
-    ChessGame chessGame = null;
+    private ChessGame chessGame = null;
     
     @Column(nullable=false)
     private ServerGameStatus currentStatus;
@@ -104,6 +101,22 @@ public class ServerChessGame extends GameSubject implements Serializable {
         this.uid = uid;
         this.player = new ChessGamePlayer(player, Colour.WHITE);
         this.currentStatus = ServerGameStatus.AWAITING_PLAYER;
+    }
+    
+    /**
+     * Constructor 
+     * 
+     * Use a ChessGame Instance to create ServerChessGame
+     * 
+     * @param uid
+     * @param chessGame Already initialise chess game
+     */
+    public ServerChessGame(long uid, ChessGame chessGame) {
+        super();
+        this.uid = uid;
+        this.player = chessGame.getWhitePlayer();
+        this.currentStatus = ServerGameStatus.IN_PROGRESS;
+        this.chessGame = chessGame;
     }
 
     /**
@@ -178,6 +191,16 @@ public class ServerChessGame extends GameSubject implements Serializable {
             this.currentStatus = currentStatus;
         }
         notifyObservers(this.currentStatus);
+    }
+    
+    
+    /**
+     * Set the ChessGame game object
+     * 
+     * @param chessGame 
+     */
+    protected void setChessGame(ChessGame chessGame) {
+        this.chessGame = chessGame;
     }
 
     /**

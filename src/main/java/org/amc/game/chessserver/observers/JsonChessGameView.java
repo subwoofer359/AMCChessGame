@@ -1,4 +1,4 @@
-package org.amc.game.chessserver;
+package org.amc.game.chessserver.observers;
 
 import com.google.gson.Gson;
 
@@ -10,6 +10,9 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
+import org.amc.game.chessserver.MessageType;
+import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.StompConstants;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

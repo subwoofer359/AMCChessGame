@@ -1,4 +1,4 @@
-package org.amc.game.chessserver;
+package org.amc.game.chessserver.observers;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -25,13 +25,19 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
-import org.amc.game.chessserver.JsonChessGameView.JsonChessGame;
+import org.amc.game.chessserver.MessageType;
+import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.StompConstants;
+import org.amc.game.chessserver.observers.JsonChessGameView;
+import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+import com.sun.net.httpserver.Headers;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -74,9 +80,7 @@ public class JsonChessBoardViewTest {
         messageArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
         
-        serverGame = new ServerChessGame(GAME_UID, whitePlayer);
-        serverGame.addOpponent(blackPlayer);
-        serverGame.chessGame=chessGame;
+        serverGame = new ServerChessGame(GAME_UID, chessGame);
         
         gson = new GsonBuilder();
         gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
