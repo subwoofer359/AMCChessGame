@@ -37,8 +37,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import com.sun.net.httpserver.Headers;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -85,7 +83,7 @@ public class JsonChessBoardViewTest {
         gson = new GsonBuilder();
         gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
         
-        new JsonChessGameView(serverGame, template);
+        new JsonChessGameView(template).setGameToObserver(serverGame);
         
     }
 

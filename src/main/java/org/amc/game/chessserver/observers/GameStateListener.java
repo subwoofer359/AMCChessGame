@@ -7,7 +7,6 @@ import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.StompConstants;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
-import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -29,9 +28,8 @@ public class GameStateListener extends GameObserver {
      */
     static final String MESSAGE_DESTINATION = "/topic/updates";
     
-    public GameStateListener(ServerChessGame chessGame, SimpMessagingTemplate template) {
+    public GameStateListener(SimpMessagingTemplate template) {
         this.template = template;
-        chessGame.attachObserver(this);
     }
     
     /**

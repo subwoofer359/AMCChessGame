@@ -23,11 +23,11 @@ public abstract class DefaultSCGInitialiser extends SCGInitialiser {
 	}
 	
     private void addView() {
-        new JsonChessGameView(chessGame, template);
+        new JsonChessGameView(template).setGameToObserver(chessGame);
     }
 
     private void addGameListener() {
-        new GameStateListener(chessGame, template);
+        new GameStateListener(template).setGameToObserver(chessGame);
         createGameFinishedListener().addServerChessGame(chessGame);
     }
 }

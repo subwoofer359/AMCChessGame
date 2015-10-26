@@ -44,7 +44,8 @@ public class GameStateListenerTest {
 
     @Test
     public void test() {
-        listener = new GameStateListener(serverGame, template);
+        listener = new GameStateListener(template);
+        listener.setGameToObserver(serverGame);
         listener.update(serverGame, ChessGame.GameState.RUNNING);
         verify(template).convertAndSend(destinationArgument.capture(),messageArgument.capture(),anyMap());
         assertEquals(String.format(GameStateListener.MESSAGE_DESTINATION + "/%d",serverGame.getUid()), 
@@ -55,14 +56,16 @@ public class GameStateListenerTest {
     
     @Test
     public void testSendCheckMateMessage() {
-        listener = new GameStateListener(serverGame, template);
+        listener = new GameStateListener(template);
+        listener.setGameToObserver(serverGame);
         listener.update(serverGame, ServerChessGame.ServerGameStatus.FINISHED);
         verify(template, times(1)).convertAndSend(anyString(),anyObject(),anyMap());
     }
     
     @Test
     public void testMessageIsIgnored() {
-        listener = new GameStateListener(serverGame, template);
+        listener = new GameStateListener(template);
+        listener.setGameToObserver(serverGame);
         listener.update(serverGame, null);
         verify(template, never()).convertAndSend(anyString(),anyObject(),anyMap());
         

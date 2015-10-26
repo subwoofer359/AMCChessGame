@@ -39,9 +39,8 @@ public class JsonChessGameView extends GameObserver {
      * @param chessGame to Observe
      * @param template Stomp message template
      */
-    public JsonChessGameView(ServerChessGame chessGame, SimpMessagingTemplate template) {
+    public JsonChessGameView(SimpMessagingTemplate template) {
         this.template = template;
-        chessGame.attachObserver(this);
     }
 
     /**
