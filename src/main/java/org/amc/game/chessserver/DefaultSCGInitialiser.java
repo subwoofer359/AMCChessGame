@@ -28,6 +28,6 @@ public abstract class DefaultSCGInitialiser extends SCGInitialiser {
 
     private void addGameListener() {
         new GameStateListener(template).setGameToObserver(chessGame);
-        createGameFinishedListener().addServerChessGame(chessGame);
+        createGameFinishedListener().setGameToObserver(chessGame);
     }
 }

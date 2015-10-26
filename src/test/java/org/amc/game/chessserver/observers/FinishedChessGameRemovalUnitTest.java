@@ -33,7 +33,7 @@ public class FinishedChessGameRemovalUnitTest {
         player.setUserName("adrian");
         chessGame = new ServerChessGame(uid, player);
         listener = new GameFinishedListener();
-        listener.addServerChessGame(chessGame);
+        listener.setGameToObserver(chessGame);
         listener.setGameMap(gameMap);
         listener.setTaskScheduler(scheduler);
         listener.setDelayTime(1);

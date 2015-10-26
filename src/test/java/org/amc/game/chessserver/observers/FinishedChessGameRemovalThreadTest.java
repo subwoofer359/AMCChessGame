@@ -46,7 +46,7 @@ public class FinishedChessGameRemovalThreadTest {
             chessGames[i] = new ServerChessGame(uids[i], player);
             GameFinishedListener listener =new GameFinishedListener();
             listener.setGameMap(gameMap);
-            listener.addServerChessGame(chessGames[i]);
+            listener.setGameToObserver(chessGames[i]);
             listener.setTaskScheduler(scheduler);
             listener.setDelayTime(1);
             gameMap.put(uids[i], chessGames[i]);

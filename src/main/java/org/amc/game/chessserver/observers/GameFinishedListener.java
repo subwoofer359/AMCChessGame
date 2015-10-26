@@ -3,7 +3,6 @@ package org.amc.game.chessserver.observers;
 import org.amc.game.GameObserver;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
-import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
@@ -38,10 +37,6 @@ public class GameFinishedListener extends GameObserver {
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
     public GameFinishedListener() {
-    }
-
-    public void addServerChessGame(ServerChessGame chessGame) {
-        chessGame.attachObserver(this);
     }
 
     @Resource(name = "gameMap")
