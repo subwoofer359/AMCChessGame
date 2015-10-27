@@ -11,11 +11,13 @@ import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,9 +30,13 @@ public class DatabaseGameMapTest {
     private Player player = new HumanPlayer("Ted");
     private DatabaseGameMap gameMap;
     private ServerChessGame game;
+    
+    private Map<Long, ServerChessGame> hashMap;
 
     @Before
     public void setUp() throws Exception {
+        hashMap = mock(HashMap.class);
+        
         game = new ServerChessGameFactory()
                         .getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
 
@@ -39,6 +45,7 @@ public class DatabaseGameMapTest {
         when(chessGameDAO.findEntities()).thenReturn(chessGamesList);
         when(chessGameDAO.findEntities(eq("uid"), eq(gameUid))).thenReturn(Arrays.asList(game));
         when(chessGameDAO.getGameUids()).thenReturn(Sets.newSet(gameUid));
+        when(chessGameDAO.getServerChessGame(eq(gameUid))).thenReturn(game);
 
         gameMap = new DatabaseGameMap();
         gameMap.setServerChessGameDAO(chessGameDAO);
@@ -73,7 +80,9 @@ public class DatabaseGameMapTest {
 
     @Test
     public void containsKeyTest() {
+        gameMap.setDatabaseHashMap(hashMap);
         assertTrue(gameMap.containsKey(gameUid));
+        verify(hashMap, times(1)).containsKey(eq(gameUid));
     }
 
     @Test
@@ -106,8 +115,10 @@ public class DatabaseGameMapTest {
 
     @Test
     public void getTest() {
+        gameMap.setDatabaseHashMap(hashMap);
         ServerChessGame retrievedChessGame = gameMap.get(gameUid);
         assertEquals(game, retrievedChessGame);
+        verify(hashMap, times(1)).get(eq(gameUid));
     }
 
     @Test
@@ -130,7 +141,7 @@ public class DatabaseGameMapTest {
 
     @Test
     public void getThrowsDAOException() throws DAOException {
-        when(chessGameDAO.findEntities(eq("uid"), anyObject())).thenThrow(
+        when(chessGameDAO.getServerChessGame(anyLong())).thenThrow(
                         new DAOException("getThrowsDAOException"));
         ServerChessGame retrievedChessGame = gameMap.get(2343L);
         assertNull(retrievedChessGame);
@@ -139,10 +150,12 @@ public class DatabaseGameMapTest {
     @Test
     public void putTest() throws DAOException {
         final Long newUid = 1000L;
+        gameMap.setDatabaseHashMap(hashMap);
         final ServerChessGame newGame = new ServerChessGameFactory().getServerChessGame(
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
+        verify(this.hashMap, times(1)).put(newUid, newGame);
     }
 
     @Test
@@ -164,8 +177,10 @@ public class DatabaseGameMapTest {
 
     @Test
     public void removeTest() throws DAOException {
+        gameMap.setDatabaseHashMap(hashMap);
         gameMap.remove(gameUid);
         verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
+        verify(this.hashMap, times(1)).remove(eq(gameUid));
     }
 
     @Test
@@ -216,6 +231,7 @@ public class DatabaseGameMapTest {
         assertTrue(entries.isEmpty());
     }
 
+    @Ignore
     @Test(expected = UnsupportedOperationException.class)
     public void clearTest() {
         gameMap.clear();
