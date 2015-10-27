@@ -3,7 +3,6 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Location;
@@ -16,13 +15,31 @@ import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.amc.game.chessserver.observers.JsonChessGameView;
+import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Set;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+@ContextConfiguration({"/GameServerWebSockets.xml", "/GameObservers.xml"})
 public class DatabaseGameMapIntegrationTest {
 
+    @Autowired
+    private WebApplicationContext wac;
+    
     private Player stephen;
     private Player laura;
     private Player nobby;
@@ -43,6 +60,9 @@ public class DatabaseGameMapIntegrationTest {
         
         gameMap = new DatabaseGameMap();
         dao = new ServerChessGameDAO();
+        ObserverFactoryChain chain = (ObserverFactoryChain) wac.getBean("defaultObserverFactoryChain");
+        dao.setObserverFactoryChain(chain);
+        
         gameMap.setServerChessGameDAO(dao);
     }
 
@@ -59,6 +79,8 @@ public class DatabaseGameMapIntegrationTest {
         
         gameMap.put(UID, game);
         
+        gameMap.gameMap.remove(UID);
+        
         game = gameMap.get(UID);
         
         assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
@@ -74,6 +96,8 @@ public class DatabaseGameMapIntegrationTest {
         
         game = gameMap.get(UID);
         assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.FINISHED);
+        
+        gameMap.put(UID, game);
     }
     
     @Test
@@ -152,7 +176,8 @@ public class DatabaseGameMapIntegrationTest {
     public void testChessGameNetwork() throws Exception{
         final long UID = 1232224l;
         
-        final OfflineChessGameMessager offlineCGM = mock(OfflineChessGameMessager.class);
+        final OfflineChessGameMessager offlineCGM = mock(OfflineChessGameMessager.class); 
+        
         serverChessGamefactory.setOfflineChessGameMessagerFactory(new OfflineChessGameMessagerFactory() {
             
             @Override
@@ -162,13 +187,20 @@ public class DatabaseGameMapIntegrationTest {
         });
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
         game.addOpponent(laura);
+        JsonChessGameView view = new JsonChessGameView(mock(SimpMessagingTemplate.class));
+        view.setGameToObserver(game);
+        
         Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
         game.move(game.getPlayer(nobby), move);
         gameMap.put(UID, game);
         
+        gameMap.gameMap.remove(UID);
+//        dao.detachEntity(game);
+        
         game = gameMap.get(UID);
         
         assertEquals(move, game.getChessGame().getTheLastMove());
+        assertEquals(1, game.getNoOfObservers());
         
     }
     
@@ -191,5 +223,26 @@ public class DatabaseGameMapIntegrationTest {
         game = gameMap.get(UID);
         assertEquals(move, game.getChessGame().getTheLastMove());
         
+    }
+    
+    @Test 
+    public void  keySet() {
+        final long UID1 = 1222334324l;
+        final long UID2 = 1395l;
+        ServerChessGame game1 = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID1, nobby);
+        game1.addOpponent(laura);
+        
+        ServerChessGame game2 = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID2, laura);
+        game2.addOpponent(nobby);
+        
+        gameMap.put(UID1, game1);
+        gameMap.put(UID2, game2);
+        
+        Set<Long> keys = gameMap.keySet();
+        
+        
+        assertEquals(2, keys.size());
+        assertTrue(keys.contains(UID1));
+        assertTrue(keys.contains(UID2));
     }
 }
