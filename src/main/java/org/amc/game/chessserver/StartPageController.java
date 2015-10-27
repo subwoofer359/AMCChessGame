@@ -42,7 +42,6 @@ public class StartPageController {
     
     private Map<Long, ServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
-    private SCGInitialiser initialiser;
     private ServerChessGameFactory scgFactory;
     
 
@@ -103,7 +102,6 @@ public class StartPageController {
         Player opponent = new HumanPlayer(playersName);
         opponent.setUserName(generateUserName(playersName));
         serverGame.addOpponent(opponent);
-        initialiser.init(serverGame);
         gameMap.put(uuid, serverGame);
         return serverGame;
     }
@@ -140,10 +138,5 @@ public class StartPageController {
     @Autowired
     public void setServerChessGameFactory(ServerChessGameFactory scgFactory) {
         this.scgFactory = scgFactory;
-    }
-    
-    @Resource(name = "sCGInitialiser")
-    public void setSCGInitialiser(SCGInitialiser initialiser) {
-        this.initialiser = initialiser;
     }
 }

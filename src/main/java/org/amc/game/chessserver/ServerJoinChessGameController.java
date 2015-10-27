@@ -28,8 +28,6 @@ public class ServerJoinChessGameController {
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
 
     private Map<Long, ServerChessGame> gameMap;
-    
-    private SCGInitialiser initialiser;
 
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
@@ -78,7 +76,6 @@ public class ServerJoinChessGameController {
         if (canPlayerJoinGame(chessGame, player)) {
             if (inAwaitingPlayerState(chessGame)) {
                 addPlayerToGame(chessGame, player);
-                initialiser.init(chessGame);
             }
             setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
         } else {
@@ -101,7 +98,7 @@ public class ServerJoinChessGameController {
         mav.getModel().put(ServerConstants.GAME, serverGame);
         mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
-        if(serverGame instanceof OneViewServerChessGame) {
+        if (serverGame instanceof OneViewServerChessGame) {
             mav.setViewName(ONE_VIEW_CHESS_PAGE);
         } else {
             mav.setViewName(TWO_VIEW_CHESS_PAGE);
@@ -183,10 +180,5 @@ public class ServerJoinChessGameController {
     public String handleMissingSessionAttributes(HttpSessionRequiredException hsre) {
         logger.error("HttpSessionRequiredException:" + hsre.getMessage());
         return ERROR_REDIRECT_PAGE;
-    }
-
-    @Resource(name = "sCGInitialiser")
-    public void setSCGInitialiser(SCGInitialiser initialiser) {
-    	this.initialiser = initialiser;
     }
 }

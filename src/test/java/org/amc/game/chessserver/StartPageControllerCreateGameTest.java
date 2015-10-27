@@ -9,7 +9,6 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
-import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -29,7 +28,6 @@ public class StartPageControllerCreateGameTest {
     private StartPageController controller;
     private ServerChessGameFactory scgFactory;
     private static final String OPPONENT ="Kate Bush";
-    private SCGInitialiser initialiser;
     
 
     
@@ -41,13 +39,7 @@ public class StartPageControllerCreateGameTest {
         gameMap =new ConcurrentHashMap<>();
         whitePlayer=new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         controller=new StartPageController();
-        initialiser = new DefaultSCGInitialiser() {
-            
-            @Override
-            protected GameFinishedListener createGameFinishedListener() {
-                return new GameFinishedListener();
-            }
-        };
+        
         OfflineChessGameMessagerFactory factory =new OfflineChessGameMessagerFactory() {
 
             @Override
@@ -61,7 +53,6 @@ public class StartPageControllerCreateGameTest {
         controller.setGameMap(gameMap);
         scgFactory.setOfflineChessGameMessagerFactory(factory);
         controller.setServerChessGameFactory(scgFactory);
-        controller.setSCGInitialiser(initialiser);
     }
 
     @After
