@@ -6,6 +6,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
