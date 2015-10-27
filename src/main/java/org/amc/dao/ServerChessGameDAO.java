@@ -2,11 +2,13 @@ package org.amc.dao;
 
 import org.amc.DAOException;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -20,6 +22,8 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
     private static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
     
     private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
+    
+    private ObserverFactoryChain chain;
     
     public ServerChessGameDAO() {
         super(ServerChessGame.class);
@@ -38,8 +42,8 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY, SCGObservers.class);
         query.setParameter(1, serverChessGame.getUid());
         try {
-            SCGObservers scgOberversStr = (SCGObservers)query.getSingleResult();
-            System.out.println(scgOberversStr);
+            SCGObservers scgObervers = (SCGObservers)query.getSingleResult();
+            chain.addObserver(scgObervers.getObservers(), serverChessGame);
         } catch(NoResultException nre) {
             logger.error(nre);
         }
@@ -56,6 +60,11 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         addObservers(scg);
         
         return scg;
+    }
+    
+    @Resource(name="defaultObserverFactoryChain")
+    public void setObserverFactoryChain(ObserverFactoryChain chain) {
+        this.chain = chain;
     }
 
     public static class SCGObservers {
