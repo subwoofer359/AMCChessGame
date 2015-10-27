@@ -30,8 +30,8 @@ public class DatabaseSignUpFixture {
     private EntityManagerFactory factory;
     private static final String[] userNames = { "nobby", "laura", "stephen" };
     private static final String[] fullNames = { "Nobby Squeal", "Laura O'Neill", "Stephen Moran" };
-    private static final String[] emailAddresses = {"nobby@adrianmclaughlin.ie", "laura@adrianmclaughlin.ie",
-                    "stephen@adrianmclaughlin.ie" };
+    private static final String[] emailAddresses = {"subwoofer359@gmail.com", "laura@adrianmclaughlin.ie",
+                    "subwoofer359@gmail.com" };
     private static final String password = "C4096cr";
     
     private static final String[] TABLES= { "users", "players", "authorities", "serverChessGames", 
