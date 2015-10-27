@@ -4,6 +4,9 @@ import org.amc.game.chessserver.ServerChessGame;
 
 public class ObserverFactoryChainImpl extends ObserverFactoryChain {
 
+    /**
+     * @see ObserverFactoryChain#addObserver(String, ServerChessGame)
+     */
     @Override
     public void addObserver(String observerList, ServerChessGame serverChessGame) {
         if(observerList != null && observerList.contains(getObserverFactory().forObserverClass().getSimpleName())) {

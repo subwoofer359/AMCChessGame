@@ -1,6 +1,5 @@
 package org.amc.game.chessserver.observers;
 
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 import org.amc.game.GameObserver;
@@ -26,6 +25,7 @@ public class ObserverFactoryChainImplTest {
     @Before
     public void setUp() throws Exception {
         chessGame = mock(ServerChessGame.class);
+        
         final SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
         chains = new ArrayList<>();
        
@@ -55,8 +55,7 @@ public class ObserverFactoryChainImplTest {
     public void test() {
         observerStr = JsonChessGameView.class.getSimpleName();
         chain.addObserver(observerStr, chessGame);
-        verify(chessGame,times(1)).attachObserver(any(GameObserver.class));
-        verify(chain, times(1)).doChain(eq(observerStr), eq(chessGame));
+        verify(chessGame, times(1)).attachObserver(any(GameObserver.class));    
     }
     
     @Test
@@ -64,7 +63,6 @@ public class ObserverFactoryChainImplTest {
         observerStr = JsonChessGameView.class.getSimpleName() + GameFinishedListener.class.getSimpleName();
         chain.addObserver(observerStr, chessGame);
         verify(chessGame,times(2)).attachObserver(any(GameObserver.class));
-        verify(chain, times(1)).doChain(eq(observerStr), eq(chessGame));
     }
     
     @Test
@@ -73,7 +71,6 @@ public class ObserverFactoryChainImplTest {
                         GameStateListener.class.getSimpleName();
         chain.addObserver(observerStr, chessGame);
         verify(chessGame,times(3)).attachObserver(any(GameObserver.class));
-        verify(chain, times(1)).doChain(eq(observerStr), eq(chessGame));
     }
 
 }
