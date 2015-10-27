@@ -39,16 +39,16 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
     
     private void addObservers(ServerChessGame serverChessGame) throws DAOException {
         EntityManager entityManager = getEntityManager();
-        Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY, SCGObservers.class);
-        query.setParameter(1, serverChessGame.getUid());
-        try {
-            SCGObservers scgObervers = (SCGObservers)query.getSingleResult();
-            chain.addObserver(scgObervers.getObservers(), serverChessGame);
-        } catch(NoResultException nre) {
-            logger.error(nre);
+        if(serverChessGame.getNoOfObservers() == 0) {
+            Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY, SCGObservers.class);
+            query.setParameter(1, serverChessGame.getUid());
+            try {
+                SCGObservers scgObervers = (SCGObservers)query.getSingleResult();
+                chain.addObserver(scgObervers.getObservers(), serverChessGame);
+            } catch(NoResultException nre) {
+                logger.error(nre);
+            }
         }
-            
-        
     }
     
     public ServerChessGame getServerChessGame(long uid) throws DAOException {
