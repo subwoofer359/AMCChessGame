@@ -143,14 +143,8 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
      */
     @Override
     public void clear() {
-        chessGameDAO.getEntityManager().getTransaction().begin();
-        for(ServerChessGame game : gameMap.values()) {
-            chessGameDAO.getEntityManager().merge(game);
-        }
-        chessGameDAO.getEntityManager().getTransaction().commit();
-        gameMap.clear();
         logger.error("DatabaseGameMap.clear() is not implemented");
-        //throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

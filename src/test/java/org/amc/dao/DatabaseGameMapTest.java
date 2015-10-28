@@ -234,7 +234,6 @@ public class DatabaseGameMapTest {
         assertTrue(entries.isEmpty());
     }
 
-    @Ignore
     @Test(expected = UnsupportedOperationException.class)
     public void clearTest() {
         gameMap.clear();
