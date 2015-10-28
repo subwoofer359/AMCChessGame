@@ -32,8 +32,6 @@ public class StartPageControllerChessAppPageTest {
         
         controller.setGameMap(gameMap);
         controller.setServerChessGameFactory(scgFactory);
-        scgFactory.setOfflineChessGameMessagerFactory(
-                        MockOfflineChessGameMessageFactory.getOfflineChessGameMessageFactory());
         whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
     }
 

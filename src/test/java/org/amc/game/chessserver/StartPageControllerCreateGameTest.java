@@ -38,8 +38,6 @@ public class StartPageControllerCreateGameTest {
         whitePlayer=new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         controller=new StartPageController();    
         controller.setGameMap(gameMap);
-        scgFactory.setOfflineChessGameMessagerFactory(
-                        MockOfflineChessGameMessageFactory.getOfflineChessGameMessageFactory());
         scgFactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         controller.setServerChessGameFactory(scgFactory);
     }

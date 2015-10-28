@@ -42,7 +42,6 @@
 	</bean>
 	
 	<bean id="serverChessGameFactory" class="org.amc.game.chessserver.ServerChessGameFactory">
-		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain" />
 	</bean>
 	
@@ -50,10 +49,6 @@
 	
 	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
 		<property name="gameMap" ref="gameMap"></property>
-	</bean>
-	
-	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
-		<lookup-method name="createObserver" bean="offlineChessGameMessager"/>
 	</bean>
 	
 	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">

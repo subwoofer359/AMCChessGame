@@ -29,8 +29,6 @@ public class ServerChessGameFactoryTest {
     public void setUp() throws Exception {
         scgfactory = new ServerChessGameFactory();
         whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
-        scgfactory.setOfflineChessGameMessagerFactory(
-                        MockOfflineChessGameMessageFactory.getOfflineChessGameMessageFactory());
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         
     }

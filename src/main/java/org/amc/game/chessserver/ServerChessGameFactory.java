@@ -1,15 +1,13 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.GameObserver;
+
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
-import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 
 import javax.annotation.Resource;
 
 public class ServerChessGameFactory {
 	
-    private OfflineChessGameMessagerFactory offlineChessGameMessagerFactory;
     private ObserverFactoryChain observerFactoryChain;
     
     private static final String LOCAL_OBSERVERS = "JsonChessGameView|GameFinishedListener|GameStateListener";
@@ -31,7 +29,6 @@ public class ServerChessGameFactory {
 		case NETWORK_GAME:
 		default:
 		    serverChessGame = new ServerChessGame(uid, player);
-		    serverChessGame.attachObserver(createOfflineChessGameMessager());
 		    observerStr = NETWORK_OBSERVERS;
 		    break;
 		}
@@ -39,18 +36,6 @@ public class ServerChessGameFactory {
 		observerFactoryChain.addObserver(observerStr, serverChessGame);
 		return serverChessGame;
 	}
-	
-	
-
-	
-	@Resource(name="offlineChessGameMessagerFactory")
-    public void setOfflineChessGameMessagerFactory(OfflineChessGameMessagerFactory factory) {
-        this.offlineChessGameMessagerFactory = factory;
-    }
-	
-	private GameObserver createOfflineChessGameMessager() {
-        return offlineChessGameMessagerFactory.createObserver();
-    }
 	
 	@Resource(name = "defaultObserverFactoryChain")
 	public void setObserverFactoryChain(ObserverFactoryChain observerFactoryChain) {

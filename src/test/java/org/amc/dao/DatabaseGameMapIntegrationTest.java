@@ -9,12 +9,10 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
-import org.amc.game.chessserver.MockOfflineChessGameMessageFactory;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
-import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
 import org.junit.After;
@@ -32,12 +30,11 @@ import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameServerSecurity.xml"})
+@ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml"})
 public class DatabaseGameMapIntegrationTest {
 
     @Autowired
     private WebApplicationContext wac;
-    private OfflineChessGameMessager offlineCGM;
     
     private Player stephen;
     private Player laura;
@@ -57,9 +54,6 @@ public class DatabaseGameMapIntegrationTest {
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
         serverChessGamefactory = new ServerChessGameFactory();
         serverChessGamefactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
-        
-        serverChessGamefactory.setOfflineChessGameMessagerFactory(
-                        MockOfflineChessGameMessageFactory.getOfflineChessGameMessageFactory());
         
         gameMap = new DatabaseGameMap();
         dao = new ServerChessGameDAO();
