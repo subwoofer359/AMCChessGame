@@ -138,15 +138,20 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * Not implemented
-     */
     @Override
     public void clear() {
         logger.error("DatabaseGameMap.clear() is not implemented");
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Clears the cache. 
+     * ServerChessGames in the cache may not be persisted to the database.
+     */
+    public void clearCache() {
+        gameMap.clear();
+    }
+    
     @Override
     public Set<Long> keySet() {
         return chessGameDAO.getGameUids();
@@ -160,6 +165,14 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
             logger.error(de);
         }
         return new ArrayList<ServerChessGame>();
+    }
+    
+    /**
+     * Retrieve a collection of ServerChessGames from the cache
+     * @return Collection of ServerChessGames
+     */
+    public Collection<ServerChessGame> cacheValues() {
+        return gameMap.values();
     }
 
     @Override

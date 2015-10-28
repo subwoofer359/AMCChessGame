@@ -17,6 +17,7 @@
 	<context:component-scan  base-package="org.amc.game.chessserver.messaging." />
 	<mvc:annotation-driven/>
 	
+	<import resource="/EntityManagerFactory.xml"/>
 	<import resource="/GameObservers.xml"/>
 	
 	<!-- creates Properties configuration values -->
@@ -37,6 +38,7 @@
 	
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
 		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
+		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"/>
 	</bean>
 	
 	<bean id="serverChessGameFactory" class="org.amc.game.chessserver.ServerChessGameFactory">

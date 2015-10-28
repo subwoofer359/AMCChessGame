@@ -4,6 +4,7 @@ import org.amc.dao.ChessGameDAOTest;
 import org.amc.dao.DatabaseGameMapIntegrationTest;
 import org.amc.dao.ServerChessGameDAOTest;
 import org.amc.dao.UserSearchDAOTest;
+import org.amc.game.chessserver.DBGameMapFactoryTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerIntegrationTest;
 import org.amc.game.chessserver.SignUpControllerIntegrationTest;
 import org.amc.game.chessserver.StartPageControllerIntegrationTest;
@@ -33,7 +34,8 @@ import org.junit.runners.Suite.SuiteClasses;
     EmailMessagingIntegrationTest.class,
     MoveUpdateEmailTest.class,
     FinishedChessGameRemovalThreadTest.class,
-    ObserverFactoryChainIntegrationTest.class
+    ObserverFactoryChainIntegrationTest.class,
+    DBGameMapFactoryTest.class
 })
 
 public class IntegrationTestSuite {

@@ -66,6 +66,7 @@ public class DatabaseSignUpFixture {
         } else
         {
             em.getTransaction().begin();
+            em.clear();
         }
         for(String table : TABLES) {
             if(tableExists(table)) {
