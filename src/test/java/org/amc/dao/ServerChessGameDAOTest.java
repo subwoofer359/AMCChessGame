@@ -21,7 +21,7 @@ import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/GameServerWebSockets.xml", "/GameObservers.xml"})
+@ContextConfiguration({"/SpringTestConfig.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml", "/GameObservers.xml"})
 public class ServerChessGameDAOTest {
 
     @Autowired

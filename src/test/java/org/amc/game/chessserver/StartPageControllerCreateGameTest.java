@@ -9,6 +9,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -52,6 +53,7 @@ public class StartPageControllerCreateGameTest {
         
         controller.setGameMap(gameMap);
         scgFactory.setOfflineChessGameMessagerFactory(factory);
+        scgFactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         controller.setServerChessGameFactory(scgFactory);
     }
 

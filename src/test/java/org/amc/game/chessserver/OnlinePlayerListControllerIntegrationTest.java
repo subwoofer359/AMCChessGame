@@ -32,7 +32,7 @@ import javax.servlet.http.HttpSession;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations={"/SpringTestConfig.xml","/GameServerSecurity.xml", "/GameServerWebSockets.xml"})
+@ContextConfiguration(locations={"/SpringTestConfig.xml", "/UserLogging.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml"})
 @WithUserDetails("adrian")
 public class OnlinePlayerListControllerIntegrationTest {
 

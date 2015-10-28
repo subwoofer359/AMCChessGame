@@ -17,7 +17,10 @@
 	</bean>
 	
 	<bean id="gameFinishedListenerFactory" class="org.amc.game.chessserver.observers.GameFinishedListenerFactory">
+		<lookup-method name="createObserver" bean="gameFinishListener"/>
 	</bean>
+	
+	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
 	
 	<bean id="defaultObserverFactoryChain" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
 		<property name="observerFactory" ref="jsonChessGameViewFactory"/>

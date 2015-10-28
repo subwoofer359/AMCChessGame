@@ -4,15 +4,12 @@ import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.DAO;
-import org.amc.dao.DatabaseGameMap;
-import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.Colour;
+
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.view.ChessGameTextView;
+
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.JsonChessGameView;
@@ -38,11 +35,10 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/SpringTestConfig.xml", "/GameServerSecurity.xml",  "/GameServerWebSockets.xml"})
+@ContextConfiguration({"/SpringTestConfig.xml", "/GameServerSecurity.xml",  "/GameServerWebSockets.xml", "/EmailServiceContext.xml"})
 
 public class StompControllerIntegrationTest {
     
@@ -115,17 +111,7 @@ public class StompControllerIntegrationTest {
         
         gameMap = (Map<Long, ServerChessGame>) wac.getBean("gameMap");
           
-        ServerChessGameFactory scgfactory = new ServerChessGameFactory();
-        OfflineChessGameMessagerFactory ocgFactory = new OfflineChessGameMessagerFactory() {
-            
-            @Override
-            public OfflineChessGameMessager createOfflineChessGameMessager() {
-                return mock(OfflineChessGameMessager.class);
-            }
-        };
-        
-        scgfactory.setOfflineChessGameMessagerFactory(ocgFactory);
-        
+        ServerChessGameFactory scgfactory = (ServerChessGameFactory)wac.getBean("serverChessGameFactory");        
         
         scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, stephen);
         scg.addOpponent(nobby);
@@ -140,7 +126,8 @@ public class StompControllerIntegrationTest {
         oneViewChessGame = gameMap.get(oneViewChessGameUUID);
         
         template = mock(SimpMessagingTemplate.class);
-        view = new JsonChessGameView(oneViewChessGame, template);
+        view = new JsonChessGameView(template);
+        view.setGameToObserver(oneViewChessGame);
     }
     
     @After

@@ -14,9 +14,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	<context:component-scan  base-package="org.amc.game.chessserver." use-default-filters="false" />
-	
+	<context:component-scan  base-package="org.amc.game.chessserver.messaging." />
 	<mvc:annotation-driven/>
 	
+	<import resource="/GameObservers.xml"/>
 	
 	<!-- creates Properties configuration values -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -32,20 +33,15 @@
     
     <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
 		scope="singleton">
-		<property name="sCGInitialiser" ref="sCGInitialiser"></property>
+	</bean>
+	
+	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
+		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
 	</bean>
 	
 	<bean id="serverChessGameFactory" class="org.amc.game.chessserver.ServerChessGameFactory">
 		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
-	</bean>
-	
-	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
-		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
-		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"></property>
-	</bean>
-
-	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
-		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
+		<property name="observerFactoryChain" ref="defaultObserverFactoryChain" />
 	</bean>
 	
 	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
@@ -60,12 +56,11 @@
 	
 	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">
 		<property name="gameMap" ref="gameMap"></property>
-		<property name="sCGInitialiser" ref="sCGInitialiser"></property>
 	</bean>
 	
 	<bean id="userSearchController" class="org.amc.game.chessserver.UserSearchController" />
 	
-	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
+	
 
 	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
 
@@ -87,7 +82,9 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO"></bean>
+	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
+		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
+	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
     	<property name="customEditors">
@@ -107,15 +104,7 @@
 	<!--  <task:executor id="myExecutor" pool-size="20" rejection-policy="DISCARD_OLDEST"/> -->
 	<task:scheduler id="myScheduler" pool-size="10"/>
 
-	<bean class="org.amc.game.chessserver.spring.UserLoggedInListener">
-		<property name="messager" ref="mockPlayerListMessager"/>
-	</bean>
 	
-	<bean class="org.amc.game.chessserver.spring.UserLoggedOutListener">
-		<property name="messager" ref="mockPlayerListMessager"/>
-	</bean>
-
-	<bean id="mockPlayerListMessager" class="org.amc.game.chessserver.MockPlayerListMessager"/>
 
 	<bean class="org.amc.game.chessserver.SignUpController">
 		<property name="passwordEncoder" ref="myPasswordEncoder"/>

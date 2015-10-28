@@ -17,6 +17,7 @@ import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
+import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +35,7 @@ import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/GameServerWebSockets.xml", "/GameObservers.xml"})
+@ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameServerSecurity.xml"})
 public class DatabaseGameMapIntegrationTest {
 
     @Autowired
@@ -57,6 +58,7 @@ public class DatabaseGameMapIntegrationTest {
         laura = playerDAO.findEntities("userName", "laura").get(0);
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
         serverChessGamefactory = new ServerChessGameFactory();
+        serverChessGamefactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         
         gameMap = new DatabaseGameMap();
         dao = new ServerChessGameDAO();
@@ -187,20 +189,18 @@ public class DatabaseGameMapIntegrationTest {
         });
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
         game.addOpponent(laura);
-        JsonChessGameView view = new JsonChessGameView(mock(SimpMessagingTemplate.class));
-        view.setGameToObserver(game);
         
         Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
         game.move(game.getPlayer(nobby), move);
         gameMap.put(UID, game);
         
         gameMap.gameMap.remove(UID);
-//        dao.detachEntity(game);
+        dao.detachEntity(game);
         
         game = gameMap.get(UID);
         
         assertEquals(move, game.getChessGame().getTheLastMove());
-        assertEquals(1, game.getNoOfObservers());
+        assertEquals(4, game.getNoOfObservers());
         
     }
     

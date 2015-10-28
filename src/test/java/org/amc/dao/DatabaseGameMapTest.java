@@ -9,6 +9,7 @@ import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
+import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -28,6 +29,7 @@ public class DatabaseGameMapTest {
     private List<ServerChessGame> chessGamesList;
     private Long gameUid = 1234L;
     private Player player = new HumanPlayer("Ted");
+    private ServerChessGameFactory scgfactory;
     private DatabaseGameMap gameMap;
     private ServerChessGame game;
     
@@ -37,9 +39,10 @@ public class DatabaseGameMapTest {
     public void setUp() throws Exception {
         hashMap = mock(HashMap.class);
         
-        game = new ServerChessGameFactory()
-                        .getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+        scgfactory = new ServerChessGameFactory();
+        scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
 
+        game = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
         chessGameDAO = mock(ServerChessGameDAO.class);
         chessGamesList = Arrays.asList(game);
         when(chessGameDAO.findEntities()).thenReturn(chessGamesList);
@@ -151,7 +154,7 @@ public class DatabaseGameMapTest {
     public void putTest() throws DAOException {
         final Long newUid = 1000L;
         gameMap.setDatabaseHashMap(hashMap);
-        final ServerChessGame newGame = new ServerChessGameFactory().getServerChessGame(
+        final ServerChessGame newGame = scgfactory.getServerChessGame(
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
@@ -163,7 +166,7 @@ public class DatabaseGameMapTest {
         doThrow(new DAOException("putTestThrowsDAOException")).when(chessGameDAO).addEntity(
                         any(ServerChessGame.class));
         final Long newUid = 1000L;
-        final ServerChessGame newGame = new ServerChessGameFactory().getServerChessGame(
+        final ServerChessGame newGame = scgfactory.getServerChessGame(
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));

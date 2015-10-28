@@ -13,6 +13,7 @@ import org.amc.game.chessserver.observers.GameFinishedListenerFactory;
 import org.amc.game.chessserver.observers.GameStateListenerFactory;
 import org.amc.game.chessserver.observers.JsonChessGameViewFactory;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
+import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
 import org.amc.game.chessserver.observers.ObserverFactoryChainImpl;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.amc.util.Observer;
@@ -45,28 +46,11 @@ public class ServerChessGameFactoryTest {
             
         };
         scgfactory.setOfflineChessGameMessagerFactory(factory);
-        scgfactory.setObserverFactoryChain(getUpObserverFactoryChain());
+        scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         
     }
     
-    public ObserverFactoryChain getUpObserverFactoryChain() {
-        JsonChessGameViewFactory jsonviewFactory = new JsonChessGameViewFactory();
-        GameFinishedListenerFactory gameFinishedListenerFactory = new GameFinishedListenerFactory();
-        GameStateListenerFactory gameStateListenerFactory = new GameStateListenerFactory();
-        
-        ObserverFactoryChain jsonViewChain = new ObserverFactoryChainImpl();
-        jsonViewChain.setObserverFactory(jsonviewFactory);
-        
-        ObserverFactoryChain gFLChain = new ObserverFactoryChainImpl();
-        gFLChain.setObserverFactory(gameFinishedListenerFactory);
-        
-        ObserverFactoryChain gSLChain = new ObserverFactoryChainImpl();
-        gSLChain.setObserverFactory(gameStateListenerFactory);
-        
-        jsonViewChain.setSuccessor(gFLChain);
-        gFLChain.setSuccessor(gSLChain);
-        return jsonViewChain;
-    }
+    
 
     @After
     public void tearDown() throws Exception {
