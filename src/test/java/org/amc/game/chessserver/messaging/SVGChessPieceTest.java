@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,13 +30,12 @@ import org.amc.game.chessserver.messaging.svg.SVGRookPiece;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
 
 public class SVGChessPieceTest {
 	
@@ -64,9 +62,6 @@ public class SVGChessPieceTest {
 		}
     }
     
-    //@Rule
-    //public Timeout timeout =new Timeout(10, TimeUnit.SECONDS);
-    
     @Before
     public void setUp() throws Exception {
     	svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
@@ -80,7 +75,7 @@ public class SVGChessPieceTest {
         svgRoot.appendChild(layer);
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testSVGPawnPiece() throws Exception{
     	SVGChessPiece piece = new SVGPawnPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.BLACK);
@@ -88,7 +83,7 @@ public class SVGChessPieceTest {
     	assertTrue(isvalidElement());
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testSVGRookPiece() throws Exception{
     	SVGChessPiece piece = new SVGRookPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
@@ -96,7 +91,7 @@ public class SVGChessPieceTest {
     	assertTrue(isvalidElement());
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testSVGBishopPiece() throws Exception{
     	SVGChessPiece piece = new SVGBishopPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
@@ -104,7 +99,7 @@ public class SVGChessPieceTest {
     	assertTrue(isvalidElement());
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testSVGKnightPiece() throws Exception{
     	SVGChessPiece piece = new SVGKnightPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
@@ -112,7 +107,7 @@ public class SVGChessPieceTest {
     	assertTrue(isvalidElement());
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testSVGQueenPiece() throws Exception{
     	SVGChessPiece piece = new SVGQueenPiece(document, svgNS);
     	Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
@@ -120,6 +115,7 @@ public class SVGChessPieceTest {
     	assertTrue(isvalidElement());
     }
     
+    @Test(timeout=10000)
     public void testSVGKingPiece() throws Exception{
         SVGChessPiece piece = new SVGKingPiece(document, svgNS);
         Element element = piece.getChessPieceElement("test", new Location(Coordinate.A ,1), Colour.WHITE);
@@ -127,14 +123,14 @@ public class SVGChessPieceTest {
         assertTrue(isvalidElement());
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testBlankChessBoard() throws Exception {
     	SVGBlankChessBoard board = new SVGBlankChessBoard(document, svgNS);
     	board.createBlankChessBoard(layer);
     	assertTrue(isvalidElement());
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testMarkBlankChessBoard() throws Exception {
     	Move move = new Move(new Location(Coordinate.A,1), new Location(Coordinate.E, 8));
     	List<String> locationStr = Arrays.asList("A1","E8");
@@ -159,7 +155,7 @@ public class SVGChessPieceTest {
     	}
     }
     
-    @Test
+    @Test(timeout=10000)
     public void testMarkEmptyMoveBlankChessBoard() throws Exception {
     	Move move = Move.EMPTY_MOVE;
     	
