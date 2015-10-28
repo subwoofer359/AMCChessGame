@@ -17,7 +17,16 @@ public abstract class EmailTemplate {
     
     static final String BACKGROUND_IMAGE_RESOURCE = "background";
     
-    String backgroundImagePath = "webapps/AMCChessGame/img/1700128.jpg";
+    static final String backgroundImagePath;
+    
+    static {
+        if("/home/adrian".equals(System.getenv("HOME"))) {
+            
+            backgroundImagePath = "src/main/webapp/img/1700128.jpg";
+        } else {
+            backgroundImagePath = "webapps/AMCChessGame/img/1700128.jpg";
+        }
+    }
 
 	private static final String IMAGE_TYPE = "image/jpg";
 	

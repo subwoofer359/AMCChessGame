@@ -53,11 +53,9 @@ public class EmailMessagingIntegrationTest {
 
     private static final String MESSAGE_DESTINATION = "/app/move/";
 
-    private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"),
-                    Colour.WHITE);
+    private ChessGamePlayer whitePlayer;
 
-    private ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Chris"),
-                    Colour.BLACK);
+    private ChessGamePlayer blackPlayer;
 
     private long gameUUID;
 
@@ -73,6 +71,15 @@ public class EmailMessagingIntegrationTest {
     public void setUp() throws Exception {
     	this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        Player stephen = new HumanPlayer("Stephen");
+        stephen.setUserName("stephen");
+        Player nobby = new HumanPlayer("Nobby");
+        nobby.setUserName("nobby");
+        whitePlayer = new ChessGamePlayer(stephen, Colour.WHITE);
+        
+        blackPlayer = new ChessGamePlayer(nobby, Colour.BLACK);
+        
+        
     }
     
     @After
@@ -109,10 +116,9 @@ public class EmailMessagingIntegrationTest {
                         .andDo(print())
                         .andReturn();
       
-        final String backgroundImagePath = "src/main/webapp/img/1700128.jpg";
+        
         EmailTemplateFactory factory = (EmailTemplateFactory)wac.getBean("emailTemplateFactory");
         EmailTemplate template = factory.getEmailTemplate(ChessGame.class);
-        template.backgroundImagePath = backgroundImagePath;
         template.setPlayer(whitePlayer);
         
         EmailTemplate playerJoinedGameEmail = factory.getEmailTemplate(Player.class);
@@ -120,9 +126,6 @@ public class EmailMessagingIntegrationTest {
         
         playerJoinedGameEmail.setPlayer(blackPlayer);
         playerQuitGameEmail.setPlayer(blackPlayer);
-        playerJoinedGameEmail.backgroundImagePath = backgroundImagePath;
-        playerQuitGameEmail.backgroundImagePath = backgroundImagePath;
-        
         
         ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("Ka6:kc6:qb1");
         Move queenMove = new Move(new Location(B, 1), new Location(B, 6));

@@ -5,12 +5,11 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.amc.dao.DAO;
-
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
+import org.amc.game.chessserver.messaging.EmailTemplate;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
@@ -132,7 +131,6 @@ public class StompControllerIntegrationTest {
     
     @After
     public void tearDown() throws Exception {
-        this.gameMap.clear();
         this.fixture.tearDown();
     }
 
