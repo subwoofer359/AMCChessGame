@@ -53,7 +53,7 @@
 	</bean>
 	
 	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
-		<lookup-method name="createOfflineChessGameMessager" bean="offlineChessGameMessager"/>
+		<lookup-method name="createObserver" bean="offlineChessGameMessager"/>
 	</bean>
 	
 	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">

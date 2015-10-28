@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.GameObserver;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 
@@ -48,8 +48,8 @@ public class ServerChessGameFactory {
         this.offlineChessGameMessagerFactory = factory;
     }
 	
-	private OfflineChessGameMessager createOfflineChessGameMessager() {
-        return offlineChessGameMessagerFactory.createOfflineChessGameMessager();
+	private GameObserver createOfflineChessGameMessager() {
+        return offlineChessGameMessagerFactory.createObserver();
     }
 	
 	@Resource(name = "defaultObserverFactoryChain")

@@ -3,11 +3,11 @@ package org.amc.game.chessserver.messaging;
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
-import org.amc.util.Observer;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
-public class OfflineChessGameMessager implements Observer {
+public class OfflineChessGameMessager extends GameObserver {
 
     @Autowired
     private WebApplicationContext springContext;

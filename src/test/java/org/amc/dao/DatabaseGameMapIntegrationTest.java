@@ -1,7 +1,6 @@
 package org.amc.dao;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
@@ -10,21 +9,19 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.MockOfflineChessGameMessageFactory;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
-import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
-import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -40,6 +37,7 @@ public class DatabaseGameMapIntegrationTest {
 
     @Autowired
     private WebApplicationContext wac;
+    private OfflineChessGameMessager offlineCGM;
     
     private Player stephen;
     private Player laura;
@@ -59,6 +57,9 @@ public class DatabaseGameMapIntegrationTest {
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
         serverChessGamefactory = new ServerChessGameFactory();
         serverChessGamefactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
+        
+        serverChessGamefactory.setOfflineChessGameMessagerFactory(
+                        MockOfflineChessGameMessageFactory.getOfflineChessGameMessageFactory());
         
         gameMap = new DatabaseGameMap();
         dao = new ServerChessGameDAO();
@@ -130,14 +131,6 @@ public class DatabaseGameMapIntegrationTest {
     public void testGameThree() {
         
         final long UID = 12443324l;
-        final OfflineChessGameMessager offlineCGM = mock(OfflineChessGameMessager.class);
-        serverChessGamefactory.setOfflineChessGameMessagerFactory(new OfflineChessGameMessagerFactory() {
-            
-            @Override
-            public OfflineChessGameMessager createOfflineChessGameMessager() {
-                return offlineCGM;
-            }
-        });
         
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
         
@@ -178,15 +171,6 @@ public class DatabaseGameMapIntegrationTest {
     public void testChessGameNetwork() throws Exception{
         final long UID = 1232224l;
         
-        final OfflineChessGameMessager offlineCGM = mock(OfflineChessGameMessager.class); 
-        
-        serverChessGamefactory.setOfflineChessGameMessagerFactory(new OfflineChessGameMessagerFactory() {
-            
-            @Override
-            public OfflineChessGameMessager createOfflineChessGameMessager() {
-                return offlineCGM;
-            }
-        });
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
         game.addOpponent(laura);
         

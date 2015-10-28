@@ -9,13 +9,8 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
-import org.amc.game.chessserver.observers.GameFinishedListenerFactory;
-import org.amc.game.chessserver.observers.GameStateListenerFactory;
-import org.amc.game.chessserver.observers.JsonChessGameViewFactory;
-import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
-import org.amc.game.chessserver.observers.ObserverFactoryChainImpl;
-import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
+
 import org.amc.util.Observer;
 import org.junit.After;
 import org.junit.Before;
@@ -32,20 +27,10 @@ public class ServerChessGameFactoryTest {
     
     @Before
     public void setUp() throws Exception {
-        final OfflineChessGameMessager ocgMessager = mock(OfflineChessGameMessager.class);
         scgfactory = new ServerChessGameFactory();
         whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
-        
-        OfflineChessGameMessagerFactory factory =new OfflineChessGameMessagerFactory() {
-
-            @Override
-            public OfflineChessGameMessager createOfflineChessGameMessager() {
-                
-                return ocgMessager;
-            }
-            
-        };
-        scgfactory.setOfflineChessGameMessagerFactory(factory);
+        scgfactory.setOfflineChessGameMessagerFactory(
+                        MockOfflineChessGameMessageFactory.getOfflineChessGameMessageFactory());
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         
     }
