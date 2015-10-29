@@ -53,7 +53,7 @@ public abstract class EmailTemplateFactory {
 
 	public static class FactoryInstantinationException extends RuntimeException {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 5174849128024896037L;
 
 	}
 }

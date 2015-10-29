@@ -2,7 +2,6 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,7 @@ import java.util.List;
  * @author Adrian Mclaughlin
  *
  */
-public class ChessBoard extends DefaultSubject implements Serializable{
-
-    private static final long serialVersionUID = -617533445666134173L;
+public class ChessBoard extends DefaultSubject {
 
     /**
      * Represents the Letter Coordinates of squares on a chess board

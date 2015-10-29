@@ -16,8 +16,6 @@ import javax.persistence.Query;
  */
 public class UserSearchDAO extends DAO<User> {
 
-    private static final long serialVersionUID = 1L;
-
     public UserSearchDAO() {
         super(User.class);
     }

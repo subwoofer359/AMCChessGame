@@ -17,8 +17,6 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
     
-    private static final long serialVersionUID = 1853960541217545162L;
-    
     private static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
     
     private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";

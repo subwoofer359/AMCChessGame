@@ -5,7 +5,6 @@ import org.amc.EntityManagerThreadLocal;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -23,11 +22,7 @@ import javax.persistence.Query;
  * @version 1
  * @param <T> WorkEntity
  */
-public class DAO<T> implements Serializable {
-    /**
-     * Serializable
-     */
-    private static final long serialVersionUID = 854157422459241714L;
+public class DAO<T> {
 
     /**
      * Logger used by the object

@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import java.io.Serializable;
 
 /**
  * Represents a piece which can't lift off the board to complete it's move and
@@ -9,7 +8,7 @@ import java.io.Serializable;
  * @author Adrian Mclaughlin
  *
  */
-public abstract class ComplexPiece extends SimplePiece implements Serializable {
+public abstract class ComplexPiece extends SimplePiece {
 
     public ComplexPiece(Colour colour) {
         super(colour);
