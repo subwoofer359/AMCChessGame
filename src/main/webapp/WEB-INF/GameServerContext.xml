@@ -13,6 +13,8 @@
 	<context:component-scan base-package="org.amc.game.chessserver.spring."/>
 	<mvc:annotation-driven />
 	
+	<import resource="/GameObservers.xml"/>
+	
 	<!-- creates Properties configuration values -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -40,20 +42,11 @@
 
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
 		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
+		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"/>
 	</bean>
 	
 	<bean class="org.amc.game.chessserver.ServerChessGameFactory">
-		<property name="offlineChessGameMessagerFactory" ref="offlineChessGameMessagerFactory"/>
-	</bean>
-	
-	<bean id="sCGInitialiser" class="org.amc.game.chessserver.DefaultSCGInitialiser">
-		<lookup-method name="createGameFinishedListener" bean="gameFinishListener"/>
-	</bean>
-	
-	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener" scope="prototype"/>
-	
-	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
-		<lookup-method name="createOfflineChessGameMessager" bean="offlineChessGameMessager"/>
+		<property name="observerFactoryChain" ref="defaultObserverFactoryChain" />
 	</bean>
 	
 	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>

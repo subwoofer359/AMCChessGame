@@ -8,6 +8,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 	<mvc:annotation-driven />
+	<context:component-scan base-package="org.amc.game.chessserver.observers."/>
 	
 	<bean id="jsonChessGameViewFactory" class="org.amc.game.chessserver.observers.JsonChessGameViewFactory">
 	</bean>
@@ -16,6 +17,13 @@
 	</bean>
 	
 	<bean id="gameFinishedListenerFactory" class="org.amc.game.chessserver.observers.GameFinishedListenerFactory">
+		<lookup-method name="createObserver" bean="gameFinishListener"/>
+	</bean>
+	
+	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
+	
+	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
+		<lookup-method name="createObserver" bean="offlineChessGameMessager"/>
 	</bean>
 	
 	<bean id="defaultObserverFactoryChain" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
@@ -30,7 +38,11 @@
 	
 	<bean id="gameStateListenerFilter" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
 		<property name="observerFactory" ref="gameStateListenerFactory" />
+		<property name="successor" ref="offlineChessGameMessagerFilter"/>
 	</bean>
+	
+	<bean id="offlineChessGameMessagerFilter" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
+		<property name="observerFactory" ref="offlineChessGameMessagerFactory" />
+	</bean>
+
 	</beans>
-	
-	
