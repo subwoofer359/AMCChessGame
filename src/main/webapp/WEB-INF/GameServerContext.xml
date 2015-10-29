@@ -13,6 +13,7 @@
 	<context:component-scan base-package="org.amc.game.chessserver.spring."/>
 	<mvc:annotation-driven />
 	
+	<import resource="/GameDAOs.xml"/>
 	<import resource="/GameObservers.xml"/>
 	
 	<!-- creates Properties configuration values -->
@@ -48,27 +49,4 @@
 	<bean class="org.amc.game.chessserver.ServerChessGameFactory">
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain" />
 	</bean>
-	
-	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
-
-	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
-		<constructor-arg>
-			<value type="java.lang.Class">org.amc.User</value>
-		</constructor-arg>
-	</bean>
-
-	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
-		<constructor-arg>
-			<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
-		</constructor-arg>
-	</bean>
-
-	<bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
-		<constructor-arg>
-			<value type="java.lang.Class">org.amc.Authorities</value>
-		</constructor-arg>
-	</bean>
-	
-	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO"></bean>
-	
 </beans>
