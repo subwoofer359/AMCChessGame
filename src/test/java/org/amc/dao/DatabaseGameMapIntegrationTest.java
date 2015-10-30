@@ -2,6 +2,7 @@ package org.amc.dao;
 
 import static org.junit.Assert.*;
 
+import org.amc.DAOException;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Location;
@@ -75,8 +76,6 @@ public class DatabaseGameMapIntegrationTest {
         ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, laura);
         
         gameMap.put(UID, game);
-        
-        gameMap.gameMap.remove(UID);
         
         game = gameMap.get(UID);
         
@@ -172,7 +171,6 @@ public class DatabaseGameMapIntegrationTest {
         game.move(game.getPlayer(nobby), move);
         gameMap.put(UID, game);
         
-        gameMap.gameMap.remove(UID);
         dao.detachEntity(game);
         
         game = gameMap.get(UID);
@@ -222,5 +220,18 @@ public class DatabaseGameMapIntegrationTest {
         assertEquals(2, keys.size());
         assertTrue(keys.contains(UID1));
         assertTrue(keys.contains(UID2));
+    }
+    
+    @Test
+    public void testPlayerIsNotRemovedOnServerChessGameRemove() throws DAOException {
+    	ServerChessGameTestDatabaseEntity scEntity = new ServerChessGameTestDatabaseEntity();
+    	checkPlayerExistsInTheDatabase(scEntity.getWhitePlayer().getUserName());
+    	ServerChessGame game = gameMap.get(scEntity.getUID());
+    	gameMap.remove(game.getUid());
+    	checkPlayerExistsInTheDatabase(scEntity.getWhitePlayer().getUserName());
+    }
+    	
+    private void checkPlayerExistsInTheDatabase(String userName) throws DAOException {
+    	assertTrue(playerDAO.findEntities("userName", userName).size() ==1);
     }
 }
