@@ -3,6 +3,8 @@ package org.amc;
 import org.amc.game.chessserver.EntityManagerFilter;
 import org.apache.log4j.Logger;
 
+import com.sun.xml.internal.stream.Entity;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -54,6 +56,10 @@ public final class EntityManagerThreadLocal {
      * Called to tidy up and release resources held by the EntityManager
      */
     public static void closeEntityManager() {
+    	EntityManager emManager = ENTITYMANAGER.get();
+    	emManager.getTransaction().begin();
+    	ENTITYMANAGER.get().flush();
+    	emManager.getTransaction().commit();
         ENTITYMANAGER.get().close();
         ENTITYMANAGER.remove();
         logger.debug("EntityManager closed");
