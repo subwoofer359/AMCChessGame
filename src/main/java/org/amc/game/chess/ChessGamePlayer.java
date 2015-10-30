@@ -2,7 +2,6 @@ package org.amc.game.chess;
 
 import java.io.Serializable;
 
-import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -22,7 +21,7 @@ import javax.persistence.Version;
  */
 @Embeddable
 @Entity
-@Table(name="ChessGamePlayers")
+@Table(name="chessGamePlayers")
 public class ChessGamePlayer implements Player, Serializable {
 
     private static final long serialVersionUID = 3040542012240005856L;
