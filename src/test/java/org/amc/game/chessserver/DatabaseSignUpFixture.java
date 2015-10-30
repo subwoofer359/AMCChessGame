@@ -25,8 +25,7 @@ import org.apache.log4j.Logger;
  */
 public class DatabaseSignUpFixture {
     private static final Logger logger = Logger.getLogger(DatabaseSignUpFixture.class);
-    
-    private EntityManager em;
+ 
     private EntityManagerFactory factory;
     private static final String[] userNames = { "nobby", "laura", "stephen" };
     private static final String[] fullNames = { "Nobby Squeal", "Laura O'Neill", "Stephen Moran" };
@@ -44,7 +43,10 @@ public class DatabaseSignUpFixture {
     public void setUpEntitiyManagerFactory() {
         factory = Persistence.createEntityManagerFactory("myDatabaseTest");
         EntityManagerThreadLocal.setEntityManagerFactory(factory);
-        em = EntityManagerThreadLocal.getEntityManager();
+    }
+    
+    private EntityManager getEntityManager() {
+    	return EntityManagerThreadLocal.getEntityManager();
     }
     
     public void setUp() {
@@ -61,7 +63,8 @@ public class DatabaseSignUpFixture {
     }
     
     private void deleteUserPlayerTables() {
-        if(em.getTransaction().isActive()) {
+        EntityManager em = getEntityManager();
+    	if(em.getTransaction().isActive()) {
             em.joinTransaction();
         } else
         {
@@ -98,7 +101,8 @@ public class DatabaseSignUpFixture {
     }
 
     public boolean tableExists(String tableName) {
-        Query tableExists = em.createNativeQuery("SHOW TABLES");
+    	EntityManager em = getEntityManager();
+    	Query tableExists = em.createNativeQuery("SHOW TABLES");
         tableExists.executeUpdate();
         List<?> tables = tableExists.getResultList();
         boolean result = false;
