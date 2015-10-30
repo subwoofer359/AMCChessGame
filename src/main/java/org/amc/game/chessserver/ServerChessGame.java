@@ -70,11 +70,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
     @Column(nullable=false)
     private ServerGameStatus currentStatus;
     
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name="player", column=@Column(name="player",nullable=false)),
-        @AttributeOverride(name="colour", column=@Column(name="player_colour",nullable=false))
-    })
+    @OneToOne(cascade=CascadeType.ALL)
     private ChessGamePlayer player;
     
     @Version

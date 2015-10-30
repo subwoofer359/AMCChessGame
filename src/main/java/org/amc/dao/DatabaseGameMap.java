@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DatabaseGameMap implements Map<Long, ServerChessGame> {
 
@@ -18,10 +17,8 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     
     private static final Logger logger = Logger.getLogger(DatabaseGameMap.class);
     
-    Map<Long, ServerChessGame> gameMap;
     
     public DatabaseGameMap() {
-        gameMap = new ConcurrentHashMap<>();
     }
     
     @Override
@@ -51,15 +48,10 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     public boolean containsKey(Object key) {
         try {
             if(key != null && key instanceof Long){
-                if(gameMap.containsKey(key)) {
-                    return true;
-                } else {
-                    return this.chessGameDAO.findEntities("uid", (Long)key).size() == 1;
-                }
+                return this.chessGameDAO.findEntities("uid", (Long)key).size() == 1;
             } else {
                 return false;
             }
-            
         } catch (DAOException de) {
             logger.error(de);
             return false;
@@ -79,18 +71,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     public ServerChessGame get(Object key) {
         try {
             if (key != null && key instanceof Long) {
-                ServerChessGame game = gameMap.get(key);
-                if (game == null) {
-                    synchronized (this) {
-                        game = this.chessGameDAO.getServerChessGame((Long) key);
-                        if (game == null) {
-                            logger.error("ServerChessGame with uid:" + key + " doesn't exist!");
-                            return null;
-                        } else {
-                            gameMap.put((Long) key, game);
-                        }
-                    }
-                }
+            	ServerChessGame game = this.chessGameDAO.getServerChessGame((Long) key);
                 return game;
             } else {
                 return null;
@@ -104,7 +85,6 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     @Override
     public ServerChessGame put(Long key, ServerChessGame value) {
         try {
-            gameMap.put(key, value);
             chessGameDAO.addEntity(value);
         } catch(DAOException de) {
             logger.error(de);
@@ -119,7 +99,6 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
             logger.debug("No ServerChessGame to remove");
         } else {
             try {
-                gameMap.remove(key);
                 chessGameDAO.deleteEntity(gameToDelete);
             } catch (DAOException de) {
                 logger.error(de);
@@ -143,14 +122,6 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
         logger.error("DatabaseGameMap.clear() is not implemented");
         throw new UnsupportedOperationException();
     }
-
-    /**
-     * Clears the cache. 
-     * ServerChessGames in the cache may not be persisted to the database.
-     */
-    public void clearCache() {
-        gameMap.clear();
-    }
     
     @Override
     public Set<Long> keySet() {
@@ -166,14 +137,6 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
         }
         return new ArrayList<ServerChessGame>();
     }
-    
-    /**
-     * Retrieve a collection of ServerChessGames from the cache
-     * @return Collection of ServerChessGames
-     */
-    public Collection<ServerChessGame> cacheValues() {
-        return gameMap.values();
-    }
 
     @Override
     public Set<java.util.Map.Entry<Long, ServerChessGame>> entrySet() {
@@ -187,13 +150,5 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     
     public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
         this.chessGameDAO = serverChessGameDAO;
-    }
-    
-    /**
-     * Use for testing purposes only
-     */
-    
-    void setDatabaseHashMap(Map<Long, ServerChessGame> hashMap) {
-        this.gameMap = hashMap;
     }
 }

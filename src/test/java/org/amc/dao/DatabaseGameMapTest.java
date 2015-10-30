@@ -32,12 +32,9 @@ public class DatabaseGameMapTest {
     private ServerChessGameFactory scgfactory;
     private DatabaseGameMap gameMap;
     private ServerChessGame game;
-    
-    private Map<Long, ServerChessGame> hashMap;
 
     @Before
     public void setUp() throws Exception {
-        hashMap = mock(HashMap.class);
         
         scgfactory = new ServerChessGameFactory();
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
@@ -82,10 +79,9 @@ public class DatabaseGameMapTest {
     }
 
     @Test
-    public void containsKeyTest() {
-        gameMap.setDatabaseHashMap(hashMap);
+    public void containsKeyTest() throws DAOException {
         assertTrue(gameMap.containsKey(gameUid));
-        verify(hashMap, times(1)).containsKey(eq(gameUid));
+        verify(chessGameDAO, times(1)).findEntities(eq("uid"), eq(gameUid));
     }
 
     @Test
@@ -117,11 +113,10 @@ public class DatabaseGameMapTest {
     }
 
     @Test
-    public void getTest() {
-        gameMap.setDatabaseHashMap(hashMap);
+    public void getTest() throws DAOException {
         ServerChessGame retrievedChessGame = gameMap.get(gameUid);
         assertEquals(game, retrievedChessGame);
-        verify(hashMap, times(1)).get(eq(gameUid));
+        verify(chessGameDAO, times(1)).getServerChessGame(eq(gameUid));
     }
 
     @Test
@@ -153,12 +148,10 @@ public class DatabaseGameMapTest {
     @Test
     public void putTest() throws DAOException {
         final Long newUid = 1000L;
-        gameMap.setDatabaseHashMap(hashMap);
         final ServerChessGame newGame = scgfactory.getServerChessGame(
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
-        verify(this.hashMap, times(1)).put(newUid, newGame);
     }
 
     @Test
@@ -180,10 +173,8 @@ public class DatabaseGameMapTest {
 
     @Test
     public void removeTest() throws DAOException {
-        gameMap.setDatabaseHashMap(hashMap);
         gameMap.remove(gameUid);
         verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
-        verify(this.hashMap, times(1)).remove(eq(gameUid));
     }
 
     @Test

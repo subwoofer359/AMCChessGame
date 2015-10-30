@@ -33,7 +33,8 @@ public class ChessGamePlayer implements Player, Serializable {
     @Column(nullable=false)
     private Colour colour;
     
-    @OneToOne(cascade=CascadeType.ALL,targetEntity=org.amc.game.chess.HumanPlayer.class)
+    @OneToOne(cascade={CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH},
+    		targetEntity=org.amc.game.chess.HumanPlayer.class)
     private Player player;
     
     @Version
@@ -86,6 +87,4 @@ public class ChessGamePlayer implements Player, Serializable {
         this.player.setUserName(userName);
 
     }
-    
-    
 }
