@@ -56,7 +56,7 @@ $(document).ready(function () {
                 if (data.hasOwnProperty(gameUUID)) {
                     tempEntry = '<tr><td>' + gameUUID.toString().slice(-5) + '</td><td>' +
                         data[gameUUID].player.player.userName +
-                        '</td><td>' + (data[gameUUID].opponent ? data[gameUUID].opponent.player.userName : "") +
+                        '</td><td>' + (data[gameUUID].chessGame ? data[gameUUID].chessGame.blackPlayer.player.userName : "") +
                         '</td><td>' + getStatusSymbol(data[gameUUID].currentStatus) +
                         '</td><td><input type="checkbox" name="gameUUID" value="' +
                         gameUUID + '"></td></tr>';
