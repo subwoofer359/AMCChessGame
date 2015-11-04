@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class DatabaseGameMap implements Map<Long, ServerChessGame> {
 
-    ServerChessGameDAO chessGameDAO;
+    ServerChessGameDAO serverChessGameDAO;
     
     private static final Logger logger = Logger.getLogger(DatabaseGameMap.class);
     
@@ -24,7 +24,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     @Override
     public int size() {
         try {
-            return this.chessGameDAO.findEntities().size();
+            return this.serverChessGameDAO.findEntities().size();
         } catch (DAOException de) {
             logger.error(de);
             return 0;
@@ -37,7 +37,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     @Override
     public boolean isEmpty() {
         try {
-            return this.chessGameDAO.findEntities().isEmpty();
+            return this.serverChessGameDAO.findEntities().isEmpty();
         } catch (DAOException de) {
             logger.error(de);
             return true;
@@ -48,7 +48,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     public boolean containsKey(Object key) {
         try {
             if(key != null && key instanceof Long){
-                return this.chessGameDAO.findEntities("uid", (Long)key).size() == 1;
+                return this.serverChessGameDAO.findEntities("uid", (Long)key).size() == 1;
             } else {
                 return false;
             }
@@ -71,7 +71,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     public ServerChessGame get(Object key) {
         try {
             if (key != null && key instanceof Long) {
-            	ServerChessGame game = this.chessGameDAO.getServerChessGame((Long) key);
+            	ServerChessGame game = this.serverChessGameDAO.getServerChessGame((Long) key);
                 return game;
             } else {
                 return null;
@@ -85,7 +85,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     @Override
     public ServerChessGame put(Long key, ServerChessGame value) {
         try {
-            chessGameDAO.addEntity(value);
+            serverChessGameDAO.addEntity(value);
         } catch(DAOException de) {
             logger.error(de);
         }
@@ -99,7 +99,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
             logger.debug("No ServerChessGame to remove");
         } else {
             try {
-                chessGameDAO.deleteEntity(gameToDelete);
+                serverChessGameDAO.deleteEntity(gameToDelete);
             } catch (DAOException de) {
                 logger.error(de);
             }
@@ -125,13 +125,13 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     
     @Override
     public Set<Long> keySet() {
-        return chessGameDAO.getGameUids();
+        return serverChessGameDAO.getGameUids();
     }
 
     @Override
     public Collection<ServerChessGame> values() {
         try {
-            return chessGameDAO.findEntities();
+            return serverChessGameDAO.findEntities();
         } catch(DAOException de) {
             logger.error(de);
         }
@@ -149,6 +149,6 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     }
     
     public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
-        this.chessGameDAO = serverChessGameDAO;
+        this.serverChessGameDAO = serverChessGameDAO;
     }
 }
