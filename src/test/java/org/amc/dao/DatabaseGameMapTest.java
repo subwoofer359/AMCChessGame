@@ -32,10 +32,11 @@ public class DatabaseGameMapTest {
     private ServerChessGameFactory scgfactory;
     private DatabaseGameMap gameMap;
     private ServerChessGame game;
+    private Map<Long, ServerChessGame> hashMap;
 
     @Before
     public void setUp() throws Exception {
-        
+        hashMap = mock(HashMap.class);
         scgfactory = new ServerChessGameFactory();
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
 
@@ -49,6 +50,7 @@ public class DatabaseGameMapTest {
 
         gameMap = new DatabaseGameMap();
         gameMap.setServerChessGameDAO(chessGameDAO);
+        gameMap.setInternalHashMap(hashMap);
     }
 
     @After
@@ -81,6 +83,7 @@ public class DatabaseGameMapTest {
     @Test
     public void containsKeyTest() throws DAOException {
         assertTrue(gameMap.containsKey(gameUid));
+        verify(hashMap,times(1)).containsKey(eq(gameUid));
         verify(chessGameDAO, times(1)).findEntities(eq("uid"), eq(gameUid));
     }
 
@@ -116,7 +119,9 @@ public class DatabaseGameMapTest {
     public void getTest() throws DAOException {
         ServerChessGame retrievedChessGame = gameMap.get(gameUid);
         assertEquals(game, retrievedChessGame);
+        verify(hashMap, times(1)).get(eq(gameUid));
         verify(chessGameDAO, times(1)).getServerChessGame(eq(gameUid));
+        verify(hashMap, times(1)).put(eq(gameUid), eq(retrievedChessGame));
     }
 
     @Test
@@ -152,6 +157,7 @@ public class DatabaseGameMapTest {
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
+        verify(hashMap, never()).put(eq(gameUid), eq(newGame));
     }
 
     @Test
@@ -174,6 +180,7 @@ public class DatabaseGameMapTest {
     @Test
     public void removeTest() throws DAOException {
         gameMap.remove(gameUid);
+        verify(hashMap, times(1)).remove(eq(gameUid));
         verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
     }
 
@@ -182,13 +189,15 @@ public class DatabaseGameMapTest {
         doThrow(new DAOException("removeThrowDAOExceptionTest")).when(chessGameDAO).deleteEntity(
                         any(ServerChessGame.class));
         gameMap.remove(gameUid);
+        verify(hashMap,times(1)).remove(eq(gameUid));
         verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
     }
 
     @Test
     public void removeNullTest() throws DAOException {
         assertNull(gameMap.remove(null));
-        verify(this.chessGameDAO, times(0)).deleteEntity(eq(game));
+        verify(this.chessGameDAO, never()).deleteEntity(eq(game));
+        verify(this.hashMap, never()).remove(null);
 
     }
 
