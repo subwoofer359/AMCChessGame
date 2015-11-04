@@ -7,6 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Utility class used by OpenJPA to convert a move into a String
+ * 
+ * @author Adrian Mclaughlin
+ * 
+ */
 public class MoveListExternalizer {
 
     private MoveListExternalizer() {
