@@ -4,17 +4,21 @@ import org.amc.DAOException;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
-import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+/**
+ * A DAO for ServerChessGames persisted to a database
+ * 
+ * @author Adrian Mclaughlin
+ *
+ */
 public class ServerChessGameDAO extends DAO<ServerChessGame> {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
@@ -51,6 +55,12 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         }
     }
     
+    /**
+     * 
+     * @param uid unique identifier of the ServerChessGame to be retrieved
+     * @return ServerChessGame with Observers attached
+     * @throws DAOException if the ServerChessGame can't be retrieved
+     */
     public ServerChessGame getServerChessGame(long uid) throws DAOException {
         EntityManager entityManager = getEntityManager();
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
@@ -60,14 +70,6 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         
         addObservers(scg);
         
-        if(entityManager instanceof OpenJPAEntityManager) {
-            if(scg.getChessGame() != null) {
-                ((OpenJPAEntityManager)getEntityManager()).dirty(scg.getChessGame(), "board");
-            }
-        } else {
-            throw new DAOException("Not an OpenJPA entity manager: changes to chessboard won't be saved");
-        }
-        
         return scg;
     }
     
@@ -76,6 +78,12 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         this.chain = chain;
     }
 
+    /**
+     * Helper Class to retrieve the list of observers in String
+     * format in the database
+     * @author Adrian Mclaughlin
+     *
+     */
     public static class SCGObservers {
         private String observers;
         private Long uid;
