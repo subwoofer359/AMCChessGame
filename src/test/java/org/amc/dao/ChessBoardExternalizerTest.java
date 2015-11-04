@@ -3,10 +3,8 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessBoardUtilities;
-import org.amc.game.chess.ChessPiece;
-import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,5 +39,16 @@ public class ChessBoardExternalizerTest {
         String boardStr = ChessBoardExternalizer.getChessBoardString(board);
         ChessBoard secondChessBoard = ChessBoardExternalizer.getChessBoard(boardStr);
         ChessBoardUtilities.compareBoards(board, secondChessBoard);
+    }
+    
+    @Test
+    public void testDifferentConfigurationChessBoard() {
+        board = new ChessBoard();
+        board.initialise();
+        board.move(new Move("A2-A3"));
+        String boardStr = ChessBoardExternalizer.getChessBoardString(board);
+        assertTrue(boardStr.contains("pa3"));
+        assertFalse(boardStr.contains("pa2"));
+        
     }
 }
