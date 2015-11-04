@@ -1,9 +1,6 @@
 package org.amc;
 
-import org.amc.game.chessserver.EntityManagerFilter;
 import org.apache.log4j.Logger;
-
-import com.sun.xml.internal.stream.Entity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,21 +45,24 @@ public final class EntityManagerThreadLocal {
      * @return an JPA EntityManager
      */
     public static EntityManager getEntityManager() {
-        logger.debug("Object retrieved EntityManager instance with get");
-        return ENTITYMANAGER.get();
+        EntityManager emManager = ENTITYMANAGER.get(); 
+        logger.debug("Object retrieved EntityManager(" + emManager + ")instance with get");
+        return emManager;
     }
 
     /**
      * Called to tidy up and release resources held by the EntityManager
      */
     public static void closeEntityManager() {
-    	EntityManager emManager = ENTITYMANAGER.get();
-    	emManager.getTransaction().begin();
-    	ENTITYMANAGER.get().flush();
-    	emManager.getTransaction().commit();
-        ENTITYMANAGER.get().close();
+    	EntityManager em = ENTITYMANAGER.get();
+    	synchronized (em) {
+    	    em.getTransaction().begin();
+            em.flush();
+            em.getTransaction().commit();
+            em.close();   
+        }
+    	logger.debug("EntityManager (" + ENTITYMANAGER.get() + ") closed");
         ENTITYMANAGER.remove();
-        logger.debug("EntityManager closed");
     }
 
     /**
