@@ -12,6 +12,8 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  */
 public class CastlingRule implements ChessMoveRule, Serializable {
 
+    private static final long serialVersionUID = -3542422983476763664L;
+
     /**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
