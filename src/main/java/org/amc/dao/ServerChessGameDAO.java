@@ -4,12 +4,14 @@ import org.amc.DAOException;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
+import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -55,7 +57,16 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         query.setParameter(1, uid);
         
         ServerChessGame scg = (ServerChessGame)query.getSingleResult();
+        
         addObservers(scg);
+        
+        if(entityManager instanceof OpenJPAEntityManager) {
+            if(scg.getChessGame() != null) {
+                ((OpenJPAEntityManager)getEntityManager()).dirty(scg.getChessGame(), "board");
+            }
+        } else {
+            throw new DAOException("Not an OpenJPA entity manager: changes to chessboard won't be saved");
+        }
         
         return scg;
     }
