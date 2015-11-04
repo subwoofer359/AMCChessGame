@@ -2,18 +2,21 @@ package org.amc.dao;
 
 import static org.junit.Assert.*;
 
+import org.amc.EntityManagerThreadLocal;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardUtilities;
 import org.amc.game.chess.ChessGame;
-
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleInputParser;
+import org.amc.game.chess.view.ChessBoardView;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class ChessGameDAOTest {
 
@@ -25,7 +28,7 @@ public class ChessGameDAOTest {
     private ChessGame game;
     private SimpleInputParser mlParser;
     private int id;
-    private static final String[] MOVES = {"A2A3", "A7A6"};
+    private static final String[] MOVES = {"A2A3", "A7A6", "B1C3"};
  
     @Before
     public void setUp() throws Exception {
@@ -35,7 +38,7 @@ public class ChessGameDAOTest {
         laura = serverChessGamesfixture.getBlackPlayer();
         nobby = serverChessGamesfixture.getWhitePlayer();
         game = serverChessGamesfixture.getChessGame();
-        chessGameDAO = new DAO<>(ChessGame.class);  
+        chessGameDAO = new ChessGameDAO();
         
         id = game.getId();
     }
@@ -49,6 +52,9 @@ public class ChessGameDAOTest {
     public void test() throws Exception {
         ChessGame game = chessGameDAO.getEntity(id);
         game.changePlayer();
+        
+        EntityManagerThreadLocal.closeEntityManager();
+        
         assertTrue(ComparePlayers.comparePlayers(game.getCurrentPlayer(), laura));
         assertTrue(ComparePlayers.comparePlayers(game.getBlackPlayer(), laura));
         assertTrue(ComparePlayers.comparePlayers(game.getWhitePlayer(), nobby));
@@ -61,6 +67,7 @@ public class ChessGameDAOTest {
         ChessBoard newBoard = new ChessBoard();
         newBoard.initialise();
         
+        new ChessBoardView(game.getChessBoard());
         ChessBoardUtilities.compareBoards(newBoard, game.getChessBoard());
         
         for(String move : MOVES) {
@@ -70,6 +77,9 @@ public class ChessGameDAOTest {
             newBoard.move(gameMove);
         }
         
+        EntityManagerThreadLocal.closeEntityManager();
+        
+        game = chessGameDAO.getEntity(id);
         ChessBoardUtilities.compareBoards(newBoard, game.getChessBoard());
     }
 }
