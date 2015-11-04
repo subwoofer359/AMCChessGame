@@ -19,7 +19,6 @@ import javax.persistence.Version;
  * @author Adrian Mclaughlin
  *
  */
-@Embeddable
 @Entity
 @Table(name="chessGamePlayers")
 public class ChessGamePlayer implements Player, Serializable {
