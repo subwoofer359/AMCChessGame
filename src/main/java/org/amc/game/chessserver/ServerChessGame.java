@@ -14,11 +14,8 @@ import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 import javax.persistence.GeneratedValue;
@@ -287,7 +284,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
      * Sets Status to FINISHED
      * Tidys up references
      */
-    public void destory() {
+    public void destroy() {
         setCurrentStatus(ServerGameStatus.FINISHED);
         removeAllObservers();
         this.chessGame = null;

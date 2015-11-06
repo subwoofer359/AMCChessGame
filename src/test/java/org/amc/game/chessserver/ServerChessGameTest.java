@@ -78,7 +78,7 @@ public class ServerChessGameTest {
     public void testDestroy() {
         ServerChessGame game = new ServerChessGame(UID, player);
         game.addOpponent(opponent);
-        game.destory();
+        game.destroy();
         
         assertNull(game.getOpponent());
         assertNull(game.getChessGame());

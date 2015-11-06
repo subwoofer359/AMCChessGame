@@ -7,12 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.DatabaseGameMap;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.dao.ServerChessGameTestDatabaseEntity;
-import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.junit.After;
 import org.junit.Before;
