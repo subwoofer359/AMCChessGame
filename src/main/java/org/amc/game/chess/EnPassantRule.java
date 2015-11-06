@@ -5,7 +5,8 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class EnPassantRule extends PawnPieceRule{
+public class EnPassantRule extends PawnPieceRule {
+    
     /**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
