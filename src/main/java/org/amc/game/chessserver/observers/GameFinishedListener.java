@@ -1,6 +1,7 @@
 package org.amc.game.chessserver.observers;
 
 import org.amc.game.GameObserver;
+import org.amc.game.GameSubject;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
@@ -49,18 +50,44 @@ public class GameFinishedListener extends GameObserver {
         this.scheduler = taskScheduler;
     }
 
+    /**
+     * Calls {@link #setGameToObserver(ServerChessGame)}
+     */
+    @Override
+    public void setGameToObserver(GameSubject subject) {
+        if(subject instanceof ServerChessGame) {
+            setGameToObserver((ServerChessGame)subject);
+        }
+    }
+    
+    /**
+     * Checks to see if the {@link ServerChessGame} is a FINISHED state
+     * and schedules it for deletion if it is.
+     * @param serverChessGame
+     */
+    public void setGameToObserver(ServerChessGame serverChessGame) {
+        super.setGameToObserver(serverChessGame);
+        if(serverChessGame.getCurrentStatus().equals(ServerGameStatus.FINISHED)) {
+            scheduleDeleteThread(serverChessGame);
+        }
+    }
+    
     @Override
     public void update(Subject subject, Object message) {
         if (message instanceof ServerGameStatus && subject instanceof ServerChessGame) {
             ServerGameStatus status = (ServerGameStatus) message;
             if (status == ServerGameStatus.FINISHED) {
                 ServerChessGame chessGame = (ServerChessGame) subject;
-                chessGame.removeObserver(this);
-                Calendar c = Calendar.getInstance();
-                c.add(Calendar.SECOND, delayTime);
-                scheduler.schedule(new DeleteChessGameJob(gameMap, chessGame), c.getTime());
+                scheduleDeleteThread(chessGame);
             }
         }
+    }
+    
+    private void scheduleDeleteThread(ServerChessGame serverChessGame) {
+        serverChessGame.removeObserver(this);
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, delayTime);
+        scheduler.schedule(new DeleteChessGameJob(gameMap, serverChessGame), c.getTime());
     }
 
     public int getDelayTime() {
@@ -83,9 +110,16 @@ public class GameFinishedListener extends GameObserver {
 
         @Override
         public void run() {
-            gameMap.remove(chessGame.getUid());
-            chessGame.destroy();
-            logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
+            if(chessGame != null) {
+                synchronized (chessGame) {
+                    gameMap.remove(chessGame.getUid());
+                    chessGame.destroy();
+                }
+                logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
+            } else 
+            {
+                logger.debug(String.format("Game(%d) has already been removed from gameMap", chessGame.getUid()));
+            }
         }
 
     }
