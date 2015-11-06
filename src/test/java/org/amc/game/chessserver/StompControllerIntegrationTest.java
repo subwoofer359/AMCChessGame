@@ -4,22 +4,17 @@ import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.DAO;
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.DatabaseGameMap;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
-import org.amc.game.chessserver.messaging.EmailTemplate;
-import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.JsonChessGameView;
-import org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -86,7 +81,7 @@ public class StompControllerIntegrationTest {
 
     private Player nobby;
 
-    private Map<Long, ServerChessGame> gameMap;
+    private DatabaseGameMap gameMap;
 
     private JsonChessGameView view;
 
@@ -108,7 +103,8 @@ public class StompControllerIntegrationTest {
         this.clientOutboundChannelInterceptor.setIncludedDestinations(MESSAGE_DESTINATION);
         this.clientOutboundChannel.addInterceptor(this.clientOutboundChannelInterceptor);
 
-        gameMap = (Map<Long, ServerChessGame>) wac.getBean("gameMap");
+        gameMap = (DatabaseGameMap) wac.getBean("gameMap");
+        gameMap.clearCache();
 
         ServerChessGameFactory scgfactory = (ServerChessGameFactory) wac
                         .getBean("serverChessGameFactory");
@@ -142,7 +138,6 @@ public class StompControllerIntegrationTest {
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
             testInfoMessageSent();
             Thread.sleep(1000);
-            EntityManagerThreadLocal.getEntityManager().refresh(scg);
             verifyMove(scg, moves[i]);
         }
     }
@@ -179,8 +174,7 @@ public class StompControllerIntegrationTest {
             oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID,
                             moves[i]);
             testInfoMessageSent();
-        
-            EntityManagerThreadLocal.getEntityManager().refresh(oneViewChessGame);
+
             verifyMove(oneViewChessGame, moves[i]);
         }
 
