@@ -36,7 +36,6 @@ public class JsonChessGameView extends GameObserver {
 
     /**
      * Constructor for JsonChessBoardView
-     * @param chessGame to Observe
      * @param template Stomp message template
      */
     public JsonChessGameView(SimpMessagingTemplate template) {
