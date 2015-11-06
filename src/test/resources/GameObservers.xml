@@ -23,7 +23,7 @@
 	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
 	
 	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
-		<lookup-method name="createObserver" bean="offlineChessGameMessager"/>
+		<lookup-method name="createObserver" bean="mockOfflineChessGameMessager"/>
 	</bean>
 	
 	<bean id="defaultObserverFactoryChain" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">

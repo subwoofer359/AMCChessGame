@@ -39,6 +39,14 @@
 		<property name="emailTemplateFactory" ref="emailTemplateFactory"></property>
 	</bean>
 	
+		<!-- Mock OfflineChessGameMessager object for testing -->
+	<bean id="mockOfflineChessGameMessager" class="org.amc.game.chessserver.messaging.MockOfflineChessGameMessager">
+		<property name="messageService"><null/></property>
+		<property name="sessionRegistry"><null/></property>
+		<property name="userDAO"><null/></property>
+		<property name="emailTemplateFactory"><null/></property>
+	</bean>
+	
 	
 	<!-- THYMELEAF: Template Engine -->
 	<bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
