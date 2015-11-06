@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,8 @@ public class DatabaseGameCacheTest {
     private static final int NO_OF_GAMES_CACHED = 2;
     private static final int TOTAL_OF_GAMES = NO_OF_GAMES_IN_DATABASE + 
                     NO_OF_GAMES_IN_CACHE;
+    
+    private static final List<ServerChessGame> EMPTY_LIST = Collections.emptyList();
     
     @Before
     public void setUp() throws Exception {
@@ -109,7 +112,7 @@ public class DatabaseGameCacheTest {
     @Test
     public void isEmptyTest() throws DAOException {
         assertFalse(gameMap.isEmpty());
-        when(chessGameDAO.findEntities()).thenReturn(new ArrayList<ServerChessGame>());
+        when(chessGameDAO.findEntities()).thenReturn(EMPTY_LIST);
         assertFalse(gameMap.isEmpty());
         gameMap.clearCache();
         assertTrue(gameMap.isEmpty());
@@ -126,6 +129,8 @@ public class DatabaseGameCacheTest {
     @Test
     public void removeTest() throws DAOException {
         ServerChessGame scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+        when(chessGameDAO.findEntities(eq("uid"), eq(gameUid))).thenReturn(EMPTY_LIST);
+        
         gameMap.put(gameUid, scg);
         gameMap.remove(gameUid);
         assertFalse(gameMap.containsKey(gameUid));

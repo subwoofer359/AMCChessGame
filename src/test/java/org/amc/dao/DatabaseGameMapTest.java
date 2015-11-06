@@ -16,12 +16,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class DatabaseGameMapTest {
 
@@ -32,11 +37,11 @@ public class DatabaseGameMapTest {
     private ServerChessGameFactory scgfactory;
     private DatabaseGameMap gameMap;
     private ServerChessGame game;
-    private Map<Long, ServerChessGame> hashMap;
+    private ConcurrentMap<Long, ServerChessGame> hashMap;
 
     @Before
     public void setUp() throws Exception {
-        hashMap = mock(HashMap.class);
+        hashMap = mock(ConcurrentHashMap.class);
         scgfactory = new ServerChessGameFactory();
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
 
@@ -69,14 +74,34 @@ public class DatabaseGameMapTest {
     }
 
     @Test
-    public void isEmptyTest() {
+    public void isEmptyFalseTest() {
         assertFalse(gameMap.isEmpty());
+    }
+    
+    @Test
+    public void isEmptyFalseDatabaseNotEmpty() throws DAOException {
+        when(hashMap.isEmpty()).thenReturn(true);
+        assertFalse(gameMap.isEmpty());
+    }
+    
+    @Test
+    public void isEmptyFalseCacheNotEmpty() throws DAOException {
+        when(hashMap.isEmpty()).thenReturn(false);
+        assertFalse(gameMap.isEmpty());
+    }
+    
+    @Test
+    public void isEmptyTrueTest() throws DAOException {
+        when(hashMap.isEmpty()).thenReturn(true);
+        when(chessGameDAO.findEntities()).thenReturn( Collections.<ServerChessGame>emptyList());
+        assertTrue(gameMap.isEmpty());
     }
 
     @Test
     public void isEmptyTestThrowsDAOException() throws DAOException {
         when(chessGameDAO.findEntities()).thenThrow(
                         new DAOException("isEmptyTestThrowsDAOException"));
+        when(hashMap.isEmpty()).thenReturn(true);
         assertTrue(gameMap.isEmpty());
     }
 
@@ -121,7 +146,7 @@ public class DatabaseGameMapTest {
         assertEquals(game, retrievedChessGame);
         verify(hashMap, times(1)).get(eq(gameUid));
         verify(chessGameDAO, times(1)).getServerChessGame(eq(gameUid));
-        verify(hashMap, times(1)).put(eq(gameUid), eq(retrievedChessGame));
+        verify(hashMap, times(1)).putIfAbsent(eq(gameUid), eq(retrievedChessGame));
     }
 
     @Test
@@ -156,20 +181,8 @@ public class DatabaseGameMapTest {
         final ServerChessGame newGame = scgfactory.getServerChessGame(
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
-        verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
+        verify(this.chessGameDAO, never()).addEntity(eq(newGame));
         verify(hashMap, never()).put(eq(gameUid), eq(newGame));
-    }
-
-    @Test
-    public void putTestThrowsDAOException() throws DAOException {
-        doThrow(new DAOException("putTestThrowsDAOException")).when(chessGameDAO).addEntity(
-                        any(ServerChessGame.class));
-        final Long newUid = 1000L;
-        final ServerChessGame newGame = scgfactory.getServerChessGame(
-                        GameType.LOCAL_GAME, newUid, player);
-        gameMap.put(newUid, newGame);
-        verify(this.chessGameDAO, times(1)).addEntity(eq(newGame));
-
     }
 
     @Test(expected = UnsupportedOperationException.class)
