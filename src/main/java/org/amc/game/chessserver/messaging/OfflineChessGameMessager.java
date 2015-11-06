@@ -137,17 +137,17 @@ public class OfflineChessGameMessager extends GameObserver {
         return template;
     }
    
-    @Autowired
+    @Resource(name="myUserDAO")
     public void setUserDAO(DAO<User> userDAO) {
         this.userDAO = userDAO;
     }
     
-    @Autowired
+    @Resource(name="messageService")
     public void setMessageService(GameMessageService<EmailTemplate> gameMessageService) {
         this.messageService = gameMessageService;
     }
     
-    @Autowired
+    @Resource(name="emailTemplateFactory")
     public void setEmailTemplateFactory(EmailTemplateFactory templateFactory) {
 		this.templateFactory = templateFactory;
 	}
