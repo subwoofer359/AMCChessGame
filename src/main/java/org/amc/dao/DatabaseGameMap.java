@@ -5,11 +5,9 @@ import org.amc.game.chessserver.ServerChessGame;
 import org.apache.log4j.Logger;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,7 +53,17 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
 
     @Override
     public boolean containsKey(Object key) {
-        return gameMap.containsKey(key);
+        try {
+            if(key != null && key instanceof Long){
+                return this.gameMap.containsKey(key) || 
+                                this.serverChessGameDAO.findEntities("uid", (Long)key).size() == 1;
+            } else {
+                return false;
+            }
+        } catch (DAOException de) {
+            logger.error(de);
+            return false;
+        }
     }
 
     
