@@ -13,7 +13,7 @@ public class PlayerInStalement {
     private final PlayerKingInCheckCondition inCheck;
     
     public PlayerInStalement(ChessGamePlayer player,ChessGamePlayer opponent,ChessBoard board) {
-        inCheck=new PlayerKingInCheckCondition();
+        inCheck = PlayerKingInCheckCondition.getInstance();
         this.player=player;
         this.opponent=opponent;
         this.board=board;

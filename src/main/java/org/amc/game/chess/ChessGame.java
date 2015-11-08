@@ -55,7 +55,7 @@ public class ChessGame implements Serializable {
     List<ChessMoveRule> chessRules;
     
     @Transient
-    private final PlayerKingInCheckCondition kingInCheck;
+    private final PlayerKingInCheckCondition kingInCheck = PlayerKingInCheckCondition.getInstance();
     
     @Column(nullable=false)
     private GameState gameState;
@@ -84,7 +84,6 @@ public class ChessGame implements Serializable {
         this.whitePlayer = null;
         this.blackPlayer = null;
         this.currentPlayer = this.whitePlayer;
-        this.kingInCheck = new PlayerKingInCheckCondition();
         chessRules = new ArrayList<>();
         chessRules.add(new EnPassantRule());
         chessRules.add(new CastlingRule());
@@ -108,7 +107,6 @@ public class ChessGame implements Serializable {
         this.currentPlayer = chessGame.getCurrentPlayer();
         this.chessRules = chessGame.chessRules;
         this.allGameMoves = copyOfChessMoves(chessGame);
-        this.kingInCheck = new PlayerKingInCheckCondition();
     }
 
     /**
