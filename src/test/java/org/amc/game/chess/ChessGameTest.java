@@ -104,10 +104,19 @@ public class ChessGameTest {
     }
     
     @Test
-    public void CloneConstuctorMoveListCopyTest() {
+    public void cloneConstuctorMoveListCopyTest() {
         chessGameFixture.initialise();
         ChessGame clone = new ChessGame(chessGameFixture.getChessGame());
         assertTrue(chessGameFixture.getTheLastMove().equals(clone.getTheLastMove()));
+    }
+    
+    @Test
+    public void cloneConstuctorRuleListCopyTest() {
+        chessGameFixture.initialise();
+        ChessGame clone = new ChessGame(chessGameFixture.getChessGame());
+        clone.addChessMoveRule(EnPassantRule.getInstance());
+        assertEquals(3, chessGameFixture.getChessGame().getChessMoveRules().size());
+        assertEquals(4, clone.getChessMoveRules().size());
     }
 
     /**

@@ -7,6 +7,7 @@ import org.apache.openjpa.persistence.PersistentCollection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -52,7 +53,7 @@ public class ChessGame implements Serializable {
     private ChessGamePlayer blackPlayer;
    
     @Transient
-    List<ChessMoveRule> chessRules;
+    private List<ChessMoveRule> chessRules;
     
     @Transient
     private final PlayerKingInCheckCondition kingInCheck = PlayerKingInCheckCondition.getInstance();
@@ -105,7 +106,7 @@ public class ChessGame implements Serializable {
         this.whitePlayer = chessGame.getWhitePlayer();
         this.blackPlayer = chessGame.getBlackPlayer();
         this.currentPlayer = chessGame.getCurrentPlayer();
-        this.chessRules = chessGame.chessRules;
+        this.chessRules = new ArrayList<ChessMoveRule>(chessGame.chessRules);
         this.allGameMoves = copyOfChessMoves(chessGame);
     }
 
@@ -344,5 +345,13 @@ public class ChessGame implements Serializable {
  
     private List<Move> copyOfChessMoves(ChessGame chessGame) {
         return new ArrayList<Move>(chessGame.allGameMoves);
+    }
+    
+    List<ChessMoveRule> getChessMoveRules() {
+    	return Collections.unmodifiableList(this.chessRules);
+    }
+    
+    void addChessMoveRule(ChessMoveRule rule) {
+    	this.chessRules.add(rule);
     }
 }
