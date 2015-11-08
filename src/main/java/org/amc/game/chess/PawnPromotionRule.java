@@ -9,7 +9,9 @@ package org.amc.game.chess;
  *
  */
 public class PawnPromotionRule extends PawnPieceRule {
-    private static final int BLACK_PROMOTION_RANK=1;
+	
+	private static final long serialVersionUID = 841805006071732686L;
+	private static final int BLACK_PROMOTION_RANK=1;
     private static final int WHITE_PROMOTION_RANK=8;
     
     /**
@@ -34,7 +36,7 @@ public class PawnPromotionRule extends PawnPieceRule {
     public boolean isRuleApplicable(ChessGame game, Move move) {
         ChessPiece piece=game.getChessBoard().getPieceFromBoardAt(move.getStart());
         if(isPawnChessPiece(piece)){
-            if(piece.getColour().equals(Colour.BLACK)){
+            if(Colour.BLACK.equals(piece.getColour())){
                 return move.getEnd().getNumber()==BLACK_PROMOTION_RANK;
             }else{
                 return move.getEnd().getNumber()==WHITE_PROMOTION_RANK;

@@ -29,8 +29,8 @@ public abstract class EmailTemplateFactory {
 	}
 	
 	public EmailTemplate getEmailTemplate(Class<?> clss, ServerGameStatus status) {
-	    if(clss.equals(Player.class)){
-	        if(status.equals(ServerGameStatus.FINISHED)){
+	    if(Player.class.equals(clss)){
+	        if(ServerGameStatus.FINISHED.equals(status)){
 	            PlayerQuitChessGameEmail email = new PlayerQuitChessGameEmail();
 	            email.setTemplateEngine(templateEngine);
 	            return email;

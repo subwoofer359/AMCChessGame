@@ -121,7 +121,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
      *            Player
      */
     public void addOpponent(Player opponent) {
-        if (this.currentStatus.equals(ServerGameStatus.AWAITING_PLAYER)) {
+        if (ServerGameStatus.AWAITING_PLAYER.equals(this.currentStatus)) {
             if (ComparePlayers.comparePlayers(this.player, opponent)) {
                 logger.debug(String.format("Player:(%s) tried to join their own game",
                                 opponent.getName()));
@@ -213,14 +213,6 @@ public class ServerChessGame extends GameSubject implements Serializable {
         }
         return this.chessGame.getBlackPlayer();
     }
-    
-    /**
-     * set Opponent
-     */
-    
-//    void setOpponent(ChessGamePlayer opponent) {
-//        this.opponent = opponent;
-//    }
 
     /**
      * Sends a move to the ChessGame

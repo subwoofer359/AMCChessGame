@@ -70,9 +70,9 @@ public class StompController {
 
         String message = "";
 
-        if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
+        if (ServerChessGame.ServerGameStatus.IN_PROGRESS.equals(game.getCurrentStatus())) {
             message = moveChessPiece(game, player, moveString);
-        } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
+        } else if (ServerChessGame.ServerGameStatus.AWAITING_PLAYER.equals(game.getCurrentStatus())) {
             message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
         } else {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
@@ -132,10 +132,10 @@ public class StompController {
 
         String message = "";
        
-        if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
+        if (ServerGameStatus.IN_PROGRESS.equals(game.getCurrentStatus())) {
             Player player = game.getChessGame().getCurrentPlayer();
             message = moveChessPiece(game, player, moveString);
-           } else if (game.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER)) {
+           } else if (ServerGameStatus.AWAITING_PLAYER.equals(game.getCurrentStatus())) {
                message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
                logger.error(message);
            } else {
@@ -187,7 +187,7 @@ public class StompController {
         
         String replyMessage="";
         
-        if(serverGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.FINISHED)){
+        if(ServerGameStatus.FINISHED.equals(serverGame.getCurrentStatus())){
             replyMessage = MSG_GAME_ALREADY_OVER;
         } else {        
             serverGame.setCurrentStatus(ServerGameStatus.FINISHED);

@@ -125,7 +125,6 @@ public class ChessGame implements Serializable {
      * @return Player
      */
     public ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
-        //return player.equals(whitePlayer) ? blackPlayer : whitePlayer;
         return ComparePlayers.comparePlayers(player, whitePlayer)? blackPlayer : whitePlayer;
     }
 
@@ -259,7 +258,7 @@ public class ChessGame implements Serializable {
         ChessGamePlayer opponent = getOpposingPlayer(player);
         boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent, player, board);
         if (inCheck) {
-            gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_IN_CHECK
+            gameState = Colour.WHITE.equals(opponent.getColour()) ? GameState.WHITE_IN_CHECK
                             : GameState.BLACK_IN_CHECK;
         }
         return inCheck;
@@ -270,7 +269,7 @@ public class ChessGame implements Serializable {
         PlayersKingCheckmateCondition okcc = new PlayersKingCheckmateCondition(opponent, player,
                         board);
         if (okcc.isCheckMate()) {
-            gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_CHECKMATE
+            gameState = Colour.WHITE.equals(opponent.getColour()) ? GameState.WHITE_CHECKMATE
                             : GameState.BLACK_CHECKMATE;
             return true;
         } else {
