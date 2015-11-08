@@ -32,7 +32,7 @@ public class CastlingTest {
         chessGameFixture = new ChessGameFixture();
         chessGame = chessGameFixture.getChessGame();
   
-        gameRule=new CastlingRule();
+        gameRule = CastlingRule.getInstance();
         whiteKing=new KingPiece(Colour.WHITE);
         blackKing=new KingPiece(Colour.BLACK);
         whiteLeftRook=new RookPiece(Colour.WHITE);

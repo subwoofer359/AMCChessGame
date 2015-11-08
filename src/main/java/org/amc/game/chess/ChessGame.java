@@ -86,7 +86,7 @@ public class ChessGame implements Serializable {
         this.currentPlayer = this.whitePlayer;
         chessRules = new ArrayList<>();
         chessRules.add(EnPassantRule.getInstance());
-        chessRules.add(new CastlingRule());
+        chessRules.add(CastlingRule.getInstance());
         chessRules.add(PawnPromotionRule.getInstance());
         allGameMoves = new ArrayList<>();
     }
