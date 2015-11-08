@@ -6,7 +6,18 @@ package org.amc.game.chess;
  *
  */
 public class EnPassantRule extends PawnPieceRule {
+	
+	private static final EnPassantRule instance = new EnPassantRule();
+	
+	public static final EnPassantRule getInstance() {
+		return instance;
+	}
+	
+	private EnPassantRule() {
+		
+	}
 
+	
 	private static final long serialVersionUID = 7076806270904008808L;
 
 	/**
