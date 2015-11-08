@@ -33,7 +33,7 @@ public class PawnIsNotPromotedTest {
         whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board = new ChessBoard();
-        this.promotion = new PawnPromotionRule();
+        this.promotion = PawnPromotionRule.getInstance();
         this.chessGame = new ChessGame(board, whitePlayer, blackPlayer);
     }
 

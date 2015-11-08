@@ -14,6 +14,15 @@ public class PawnPromotionRule extends PawnPieceRule {
 	private static final int BLACK_PROMOTION_RANK=1;
     private static final int WHITE_PROMOTION_RANK=8;
     
+    private static final PawnPromotionRule instance = new PawnPromotionRule();
+    
+    public static final PawnPromotionRule getInstance() {
+    	return instance;
+    }
+    
+    private PawnPromotionRule() {
+	}
+    
     /**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */

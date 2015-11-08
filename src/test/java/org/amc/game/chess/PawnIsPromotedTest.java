@@ -36,7 +36,7 @@ public class PawnIsPromotedTest {
                         StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
-        this.promotion = new PawnPromotionRule();
+        this.promotion = PawnPromotionRule.getInstance();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
     }
 
