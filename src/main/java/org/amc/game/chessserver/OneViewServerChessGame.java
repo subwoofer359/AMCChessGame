@@ -1,7 +1,6 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
@@ -29,7 +28,8 @@ public class OneViewServerChessGame extends ServerChessGame {
 	public void addOpponent(Player opponent) {
         ChessBoard board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);
-        setChessGame(new ChessGame(board, getPlayer(), new ChessGamePlayer(opponent, Colour.BLACK)));
+        setChessGame(getChessGameFactory().getChessGame(board, getPlayer(), 
+                        new ChessGamePlayer(opponent, Colour.BLACK)));
         setCurrentStatus(ServerGameStatus.IN_PROGRESS);
 	}
 }

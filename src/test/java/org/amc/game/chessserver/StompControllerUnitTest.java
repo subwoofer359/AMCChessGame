@@ -3,6 +3,9 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -60,6 +63,18 @@ public class StompControllerUnitTest {
     public void setUp() {
         this.controller = new StompController();
         scg = new ServerChessGame(gameUUID, whitePlayer);
+        scg.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+            
+            @Override
+            public ChessGame getChessGame() {
+                return null;
+            }
+        });
         Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
         controller.setGameMap(gameMap);

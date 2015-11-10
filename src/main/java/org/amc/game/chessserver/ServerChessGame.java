@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import org.amc.game.GameSubject;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
@@ -17,7 +18,6 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,6 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 
@@ -72,6 +73,9 @@ public class ServerChessGame extends GameSubject implements Serializable {
     
     @Version
     private int version;
+    
+    @Transient
+    private transient ChessGameFactory chessGameFactory;
     
     /**
      * Constructor
@@ -129,7 +133,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
             	ChessBoard board = new ChessBoard();
         		SetupChessBoard.setUpChessBoardToDefault(board);
             	synchronized (this) {
-            		this.chessGame = new ChessGame(board, this.player, 
+            		this.chessGame = chessGameFactory.getChessGame(board, this.player, 
             		                new ChessGamePlayer(opponent, Colour.BLACK));
             		this.currentStatus = ServerGameStatus.IN_PROGRESS;
             	}
@@ -246,6 +250,14 @@ public class ServerChessGame extends GameSubject implements Serializable {
         return uid;
     }
 
+    public void setChessGameFactory(ChessGameFactory chessGameFactory) {
+        this.chessGameFactory = chessGameFactory;
+    }
+    
+    ChessGameFactory getChessGameFactory() {
+        return this.chessGameFactory;
+    }
+    
     /**
      * Checks to see if the game is finished and sets it's status accordingly
      * No check for chessGame being null

@@ -16,6 +16,18 @@ public class ChessGameGetOpposingPlayerTest {
         chessGameFixture = new ChessGameFixture();
 
         scg = new ServerChessGame(2030L, chessGameFixture.getWhitePlayer());
+        scg.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+            
+            @Override
+            public ChessGame getChessGame() {
+                return new ChessGame();
+            }
+        });
         scg.addOpponent(chessGameFixture.getBlackPlayer());
 
     }
