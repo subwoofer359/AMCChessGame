@@ -20,12 +20,16 @@ public class EnPassantTest {
 
     @Before
     public void setUp() {
+        ChessGameFactory chessGamefactory = new StandardChessGameFactory();
         whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        board = new ChessBoard();
+        
         enPassantRule = EnPassantRule.getInstance();
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
+        
+        chessGame = chessGamefactory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
+        board = chessGame.getChessBoard();
+        
     }
 
     @Test
@@ -171,8 +175,10 @@ public class EnPassantTest {
     @Test
     public void enpassantCaptureNotPossibleAsKingWouldBeInCheck() throws ParseException,
                     IllegalMoveException {
-        board = factory.getChessBoard("Ke8:Rd8:Rf8:Pd7:Pf7:Pe4:qe1:kd1:pd2");
-        ChessGame game = new ChessGame(board, whitePlayer, blackPlayer);
+        ChessGame game = new StandardChessGameFactory().getChessGame(
+                        factory.getChessBoard("Ke8:Rd8:Rf8:Pd7:Pf7:Pe4:qe1:kd1:pd2"), 
+                        whitePlayer, blackPlayer);
+        ChessBoard board = game.getChessBoard();
         ChessBoardView view = new ChessBoardView(board);
         try {
             game.move(whitePlayer, new Move(new Location(D, 2), new Location(D, 4)));

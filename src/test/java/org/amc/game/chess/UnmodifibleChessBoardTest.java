@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UnmodifiedChessBoard {
+public class UnmodifibleChessBoardTest {
 	
 	private ChessBoard board = ChessBoard.EMPTY_CHESSBOARD; 
 	private ChessBoard chessBoard;

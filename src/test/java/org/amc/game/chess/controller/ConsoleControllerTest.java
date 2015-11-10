@@ -12,6 +12,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chess.StartingSquare;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.controller.ConsoleController;
@@ -36,14 +37,15 @@ public class ConsoleControllerTest {
     public void setUp() throws Exception {
         player1 = new ChessGamePlayer(new HumanPlayer("Test1"), Colour.BLACK);
         player2 = new ChessGamePlayer(new HumanPlayer("Test2"), Colour.WHITE);
-        board = new ChessBoard();
+        game = new StandardChessGameFactory().getChessGame(new ChessBoard(), player1, player2);
+        board = game.getChessBoard();
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         startLocation = new Location(Coordinate.A, 1);
         endLocation = new Location(Coordinate.B, 2);
-        game = new ChessGame(board, player1, player2);
+        
         piece = new BishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(piece, startLocation);
     }

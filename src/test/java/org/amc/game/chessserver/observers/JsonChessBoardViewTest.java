@@ -24,6 +24,7 @@ import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
+import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.ServerChessGame;
@@ -72,7 +73,8 @@ public class JsonChessBoardViewTest {
         whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
-        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
+        chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
+        board = chessGame.getChessBoard();
         template = mock(SimpMessagingTemplate.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
         messageArgument = ArgumentCaptor.forClass(String.class);
