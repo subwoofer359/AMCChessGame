@@ -5,7 +5,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class EnPassantRule extends PawnPieceRule {
+final class EnPassantRule extends PawnPieceRule {
 	
 	private static final EnPassantRule instance = new EnPassantRule();
 	
@@ -16,9 +16,6 @@ public class EnPassantRule extends PawnPieceRule {
 	private EnPassantRule() {
 		
 	}
-
-	
-	private static final long serialVersionUID = 7076806270904008808L;
 
 	/**
      * @see ChessMoveRule#applyRule(ChessGame, Move)

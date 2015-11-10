@@ -8,7 +8,7 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  * @author Adrian Mclaughlin
  *
  */
-public class CastlingRule implements ChessMoveRule{
+final class CastlingRule implements ChessMoveRule{
 	private static final CastlingRule instance = new CastlingRule();
 	
 	public static final CastlingRule getInstance() {

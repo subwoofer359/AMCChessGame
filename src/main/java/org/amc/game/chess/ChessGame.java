@@ -71,7 +71,8 @@ public class ChessGame implements Serializable {
     List<Move> allGameMoves;
     
     public enum GameState{
-        RUNNING,
+        NEW,
+    	RUNNING,
         STALEMATE,
         WHITE_IN_CHECK,
         BLACK_IN_CHECK,
@@ -80,25 +81,23 @@ public class ChessGame implements Serializable {
     }
     
 
-    public ChessGame() {
-        this.board = null;
+    protected ChessGame() {
+        this.board = ChessBoard.EMPTY_CHESSBOARD;
         this.whitePlayer = null;
         this.blackPlayer = null;
         this.currentPlayer = this.whitePlayer;
         chessRules = new ArrayList<>();
-        chessRules.add(EnPassantRule.getInstance());
-        chessRules.add(CastlingRule.getInstance());
-        chessRules.add(PawnPromotionRule.getInstance());
         allGameMoves = new ArrayList<>();
+        this.gameState = GameState.NEW;
     }
     
     public ChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack) {
         this();
-        this.board = board;
+        this.board = new ChessBoard(board);
         this.whitePlayer = playerWhite;
         this.blackPlayer = playerBlack;
         this.currentPlayer = this.whitePlayer;
-        this.gameState=GameState.RUNNING;
+        this.gameState = GameState.RUNNING;
     }
     
     public ChessGame(ChessGame chessGame) {
@@ -108,6 +107,7 @@ public class ChessGame implements Serializable {
         this.currentPlayer = chessGame.getCurrentPlayer();
         this.chessRules = new ArrayList<ChessMoveRule>(chessGame.chessRules);
         this.allGameMoves = copyOfChessMoves(chessGame);
+        this.gameState = chessGame.getGameState();
     }
 
     /**

@@ -8,9 +8,8 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class PawnPromotionRule extends PawnPieceRule {
+final class PawnPromotionRule extends PawnPieceRule {
 	
-	private static final long serialVersionUID = 841805006071732686L;
 	private static final int BLACK_PROMOTION_RANK=1;
     private static final int WHITE_PROMOTION_RANK=8;
     

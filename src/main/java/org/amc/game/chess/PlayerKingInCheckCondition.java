@@ -4,7 +4,7 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 
 import java.util.List;
 
-public class PlayerKingInCheckCondition {
+final class PlayerKingInCheckCondition {
 	
 	private static final PlayerKingInCheckCondition instance = new PlayerKingInCheckCondition();
 	
