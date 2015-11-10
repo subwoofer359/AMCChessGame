@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.DatabaseGameMap;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.dao.ServerChessGameTestDatabaseEntity;
+import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.junit.After;
 import org.junit.Before;
@@ -79,10 +79,7 @@ public class JoinGameControllerTest {
                         .andReturn();
         
         long gameUUID = (long)result.getModelAndView().getModelMap().get(ServerConstants.GAME_UUID);
-        
-        EntityManagerThreadLocal.closeEntityManager();
-        EntityManagerThreadLocal.getEntityManager();
-        
+
         this.mockMvc.perform(
         		post("/joinGame")
         			.sessionAttr(PLAYER_SESSION_ATTR, entity.getBlackPlayer())
@@ -91,15 +88,10 @@ public class JoinGameControllerTest {
         		.andExpect(model().attributeExists(ServerConstants.GAME))
         		.andExpect(model().attributeExists(ServerConstants.CHESSPLAYER))
         		.andExpect(view().name(ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE));
-
-        EntityManagerThreadLocal.closeEntityManager();
-        EntityManagerThreadLocal.getEntityManager();
         
-        ServerChessGame gameInDatabase = serverChessGameDAO.getServerChessGame(gameUUID);
         ServerChessGame gameInGameMap = gameMap.get(gameUUID);
-        
-        assertNotNull(gameInDatabase.getChessGame());
         assertNotNull(gameInGameMap.getChessGame());
+        assertEquals(ServerGameStatus.IN_PROGRESS, gameInGameMap.getCurrentStatus());
     }
 
 }

@@ -14,6 +14,9 @@ import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 /**
  * Creates a single ServerChessGame and stores it in the database
  * 
@@ -24,35 +27,56 @@ public class ServerChessGameTestDatabaseEntity {
     
     private Player whitePlayer;
     private Player blackPlayer;
-    private ChessGame game;
     private ServerChessGame scgGame;
     private final long UID = 29393L;
+    private final ServerChessGameDAO scgDAO;
+    private final ChessGameFixture cgFixture;
     
     public ServerChessGameTestDatabaseEntity() throws DAOException {
-        ServerChessGameDAO scgDAO = new ServerChessGameDAO();
+        scgDAO = new ServerChessGameDAO();
         DAO<Player> playerDAO = new DAO<>(HumanPlayer.class);
-        ChessGameFixture cgFixture = new ChessGameFixture();
+        cgFixture = new ChessGameFixture();
         
         whitePlayer = playerDAO.findEntities("userName", "laura").get(0);
         blackPlayer = playerDAO.findEntities("userName", "nobby").get(0);
         
+        cgFixture.getBoard().initialise();
         
+        ServerChessGame scgGame = createServerGame(UID);
+        addServerChessGameToDataBase(scgGame);
+    }
+    
+    public ServerChessGameTestDatabaseEntity(int noOfDBEntries) throws DAOException {
+        this();
+        EntityManager em = scgDAO.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        for (int i = 0; i < noOfDBEntries; i++) {
+            em.persist(createServerGame(i));
+        }
+        em.flush();
+        transaction.commit();
         
-        game = new ChessGame(cgFixture.getBoard(), new ChessGamePlayer(whitePlayer, Colour.WHITE),
+    }
+    
+    private ServerChessGame createServerGame(long id) {
+        ChessGame chessGame = new ChessGame(cgFixture.getBoard(), 
+                        new ChessGamePlayer(whitePlayer, Colour.WHITE),
                         new ChessGamePlayer(blackPlayer, Colour.BLACK));
-        scgGame = new ServerChessGame(UID, game);
-        
+        scgGame = new ServerChessGame(id, chessGame);
         JsonChessGameView jsonView = new JsonChessGameView(mock(SimpMessagingTemplate.class));
         GameFinishedListener listener = new GameFinishedListener();
-        
         jsonView.setGameToObserver(scgGame);
         listener.setGameToObserver(scgGame);
         
-        cgFixture.getBoard().initialise();
+        return scgGame;
+    }
+    
+    private void addServerChessGameToDataBase(ServerChessGame scgGame) throws DAOException {
         scgDAO.addEntity(scgGame);
         scgDAO.getEntityManager().detach(scgGame);
     }
-
+    
     public Player getWhitePlayer() {
         return whitePlayer;
     }
@@ -64,7 +88,7 @@ public class ServerChessGameTestDatabaseEntity {
     
 
     public ChessGame getChessGame() {
-        return game;
+        return scgGame.getChessGame();
     }
 
     public ServerChessGame getServerChessGame() {

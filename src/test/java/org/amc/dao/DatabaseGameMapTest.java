@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -214,8 +215,13 @@ public class DatabaseGameMapTest {
 
     }
 
+    /**
+     * Using a real Map as the mock map throws an exception
+     */
     @Test
     public void keySetTest() {
+        ConcurrentMap<Long, ServerChessGame> realMap = new ConcurrentHashMap<>();
+        this.gameMap.setInternalHashMap(realMap);
         Set<Long> gameUids = gameMap.keySet();
         assertTrue(gameUids.contains(gameUid));
     }
