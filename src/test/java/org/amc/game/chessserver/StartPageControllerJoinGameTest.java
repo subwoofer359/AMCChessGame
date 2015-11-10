@@ -40,11 +40,6 @@ public class StartPageControllerJoinGameTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         });
         gameMap.put(gameUUID, chessGame);
     }

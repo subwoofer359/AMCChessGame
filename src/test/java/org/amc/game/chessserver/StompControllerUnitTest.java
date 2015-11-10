@@ -69,11 +69,6 @@ public class StompControllerUnitTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         });
         Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);

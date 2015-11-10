@@ -48,11 +48,6 @@ public class MoveUpdateEmailTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         });
         scg.addOpponent(opponent);
         

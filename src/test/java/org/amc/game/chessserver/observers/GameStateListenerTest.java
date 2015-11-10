@@ -41,11 +41,6 @@ public class GameStateListenerTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         };
         
         serverGame = new ServerChessGame(GAME_UID, whitePlayer);

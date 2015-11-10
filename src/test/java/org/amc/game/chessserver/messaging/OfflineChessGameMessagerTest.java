@@ -107,11 +107,6 @@ public class OfflineChessGameMessagerTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         });
         
         serverChessGame.attachObserver(offlineGMessager);

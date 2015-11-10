@@ -35,11 +35,6 @@ public class PlayerJoinedChessGameEmailTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         });
         scg.addOpponent(new HumanPlayer("Player 2"));
         template = new PlayerJoinedChessGameEmail(player, scg);

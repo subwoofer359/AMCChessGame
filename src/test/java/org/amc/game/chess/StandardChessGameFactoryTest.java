@@ -22,13 +22,6 @@ public class StandardChessGameFactoryTest {
     }
 
     @Test
-    public void test() {
-        ChessGame game = factory.getChessGame();
-        assertEquals(GameState.NEW, game.getGameState());
-        assertEquals(3, game.getChessMoveRules().size());
-    }
-
-    @Test
     public void testGetChessGameBoardPlayerPlayer() {
         ChessGame game = factory.getChessGame(chessGameFixture.getBoard(),
                         chessGameFixture.getWhitePlayer(), chessGameFixture.getBlackPlayer());

@@ -22,11 +22,6 @@ public class ChessGameGetOpposingPlayerTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return new ChessGame();
-            }
         });
         scg.addOpponent(chessGameFixture.getBlackPlayer());
 

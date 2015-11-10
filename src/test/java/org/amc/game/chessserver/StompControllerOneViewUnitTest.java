@@ -64,11 +64,6 @@ public class StompControllerOneViewUnitTest {
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-            
-            @Override
-            public ChessGame getChessGame() {
-                return null;
-            }
         };
         scg = new OneViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);

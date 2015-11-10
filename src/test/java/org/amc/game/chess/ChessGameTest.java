@@ -1,5 +1,8 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import static org.junit.Assert.*;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
@@ -7,6 +10,8 @@ import org.amc.game.chess.ChessGame.GameState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 public class ChessGameTest {
 
@@ -119,8 +124,33 @@ public class ChessGameTest {
         clone.addChessMoveRule(EnPassantRule.getInstance());
         assertEquals(3, chessGameFixture.getChessGame().getChessMoveRules().size());
         assertEquals(4, clone.getChessMoveRules().size());
+        assertTrue(clone.getChessMoveRules().contains(EnPassantRule.getInstance()));
+    }
+    
+    @Test 
+    public void testCopyConstructorForEmptyConstructor() {
+        ChessGame game = new ChessGame();
+        game.addChessMoveRule(EnPassantRule.getInstance());
+        
+        ChessGame copy = new ChessGame(game);
+        testForChessRules(copy);
+        assertEquals(game.getBlackPlayer(), copy.getBlackPlayer());
+        assertEquals(game.getWhitePlayer(), copy.getWhitePlayer());
+        assertNotNull(copy.getChessBoard());
+        assertFalse(game.getChessBoard() == copy.getChessBoard());
+        ChessBoardUtilities.compareBoards(game.getChessBoard(), copy.getChessBoard());
+        assertEquals(GameState.NEW, copy.getGameState());
+    }
+    
+    private void testForChessRules(ChessGame game) {
+        List<ChessMoveRule> rules = game.getChessMoveRules();
+        assertFalse(rules.isEmpty());
+        assertEquals(1, rules.size());
+        assertTrue(rules.contains(EnPassantRule.getInstance()));
     }
 
+    
+    
     /**
      * JIRA CG-33 Player can make a move out of turn
      * 

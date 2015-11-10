@@ -21,13 +21,6 @@ public class StandardChessGameTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
-	@Test
-	public void test() {
-		ChessGame game = chessGameFactory.getChessGame();
-		testForChessRules(game);
-		checkChessGameUninitialised(game);
-	}
 	
 	private void checkChessGameUninitialised(ChessGame game) {
 		assertNull(game.getBlackPlayer());
@@ -55,15 +48,6 @@ public class StandardChessGameTest {
 		testForChessRules(copy);
 		checkChessGame(copy);
 		assertEquals(GameState.RUNNING, copy.getGameState());
-	}
-	
-	@Test 
-	public void testCopyConstructorForEmptyConstructor() {
-		ChessGame game = chessGameFactory.getChessGame();
-		ChessGame copy = new ChessGame(game);
-		testForChessRules(copy);
-		checkChessGameUninitialised(game);
-		assertEquals(GameState.NEW, game.getGameState());
 	}
 	
 	private void checkChessGame(ChessGame game) {
