@@ -66,10 +66,14 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
         
-        ServerChessGame scg = (ServerChessGame)query.getSingleResult();
-        
-        addObservers(scg);
-        
+        ServerChessGame scg = null;
+        try {
+            scg = (ServerChessGame)query.getSingleResult();
+            addObservers(scg);
+            return scg;
+        } catch(NoResultException nre) {
+            logger.error(nre);
+        }
         return scg;
     }
     
