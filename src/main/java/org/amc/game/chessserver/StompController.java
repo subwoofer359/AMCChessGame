@@ -2,6 +2,8 @@ package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
@@ -17,6 +19,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -45,14 +48,26 @@ public class StompController {
      */
 
     private SimpMessagingTemplate template;
+    
+    private ServerChessGameDAO serverChessGameDAO;
+    
+    static final String ERROR_UNKNOWN_PLAYER = "The player is not part of this chess game";
 
-    private static final String ERROR_MSG_NOT_ENOUGH_PLAYERS = "Error:Move on game(%d) which hasn't got two players";
+    static final String ERROR_MSG_NOT_ENOUGH_PLAYERS = "Error:Move on game(%d) which hasn't got two players";
 
-    private static final String ERROR_MSG_GAME_OVER = "Error:Move on game(%d) which has finished";
+    static final String ERROR_MSG_GAME_OVER = "Error:Move on game(%d) which has finished";
     
     static final String MSG_PLAYER_HAS_QUIT = "%s has quit the game";
     
     static final String MSG_GAME_ALREADY_OVER = "Game already over";
+    
+    static final String SAVE_ERROR_GAME_DOESNT_EXIST_ERROR = "Chess Game(%d) doesn't exist";
+    
+    static final String SAVE_ERROR_GAME_IS_OVER = "Chess Game can't be saved as it's finished";
+    
+    static final String SAVE_ERROR_CANT_BE_SAVED = "Error saving the Chess Game";
+    
+    static final String GAME_SAVED_SUCCESS = "Chess Game has been saved";
 
     @MessageMapping("/move/{gameUUID}")
     @SendToUser(value = "/queue/updates", broadcast = false)
@@ -98,7 +113,8 @@ public class StompController {
 
         return message;
     }
-
+    
+    @Deprecated
     private Move getMoveFromString(String moveString) {
         MoveEditor convertor = new MoveEditor();
         convertor.setAsText(moveString);
@@ -196,6 +212,62 @@ public class StompController {
         }
         sendMessage(replyMessage, gameUUID, MessageType.INFO);
     }
+    
+    /**
+     * Saves the Chess Game in the Underlying Database
+     * 
+     * @param user Principal who has been authenicated
+     * @param wsSession WebSocket Session
+     * @param gameUUID ChessGame identifier
+     * @param message String from client
+     */
+    @MessageMapping("/save/{gameUUID}")
+    public void save(Principal user, Map<String, Object> wsSession,
+                    @DestinationVariable long gameUUID, @Payload String message) {
+        ServerChessGame serverChessGame = gameMap.get(gameUUID);
+        String replyMessage="";
+        
+        if(serverChessGame == null ){
+            replyMessage = String.format(SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, gameUUID); 
+            logger.error(replyMessage);
+        } else {
+            Player player = (Player) wsSession.get("PLAYER");
+            replyMessage = saveServerChessGameIfValidPlayer(player, serverChessGame);
+        }
+        sendMessageToUser(user, replyMessage, MessageType.INFO);
+        
+    }
+    
+    private boolean isValidPlayer(Player player, ServerChessGame serverChessGame) {
+        return (ComparePlayers.comparePlayers(player, serverChessGame.getPlayer()) || 
+                        ComparePlayers.comparePlayers(player, serverChessGame.getOpponent()));
+    }
+    
+    private String saveServerChessGameIfValidPlayer(Player player, ServerChessGame serverChessGame) {
+        if(isValidPlayer(player, serverChessGame)) {
+            return saveServerChessGameIfNotFinished(serverChessGame);
+        } else {
+            return ERROR_UNKNOWN_PLAYER;
+        }
+    }
+
+    private String saveServerChessGameIfNotFinished(ServerChessGame serverChessGame) {
+        if(ServerGameStatus.FINISHED.equals(serverChessGame.getCurrentStatus())) {
+            return SAVE_ERROR_GAME_IS_OVER;
+        } else {
+            return saveServerChessGame(serverChessGame);
+        }
+    }
+    
+    private String saveServerChessGame(ServerChessGame serverChessGame) {
+        try {
+            serverChessGameDAO.addEntity(serverChessGame);
+            return GAME_SAVED_SUCCESS;
+        } catch(DAOException de) {
+            logger.error(de);
+            return SAVE_ERROR_CANT_BE_SAVED;
+        }
+    }
 
     @Resource(name = "gameMap")
     public void setGameMap(Map<Long, ServerChessGame> gameMap) {
@@ -212,6 +284,11 @@ public class StompController {
     @Autowired
     public void setTemplate(SimpMessagingTemplate template) {
         this.template = template;
+    }
+    
+    @Autowired
+    public void setServerChessDAO(ServerChessGameDAO serverChessGameDAO) {
+        this.serverChessGameDAO = serverChessGameDAO;
     }
 
 }

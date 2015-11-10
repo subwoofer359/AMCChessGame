@@ -70,8 +70,10 @@ public class StompControllerUnitTest {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
         });
+        
         Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
+        
         controller.setGameMap(gameMap);
         sessionAttributes = new HashMap<String, Object>();
 
@@ -80,7 +82,6 @@ public class StompControllerUnitTest {
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
-
     }
 
     @Test
