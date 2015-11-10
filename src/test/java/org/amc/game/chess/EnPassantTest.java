@@ -23,7 +23,7 @@ public class EnPassantTest {
         whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board = new ChessBoard();
-        enPassantRule = new EnPassantRule();
+        enPassantRule = EnPassantRule.getInstance();
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
     }
@@ -163,9 +163,8 @@ public class EnPassantTest {
         Move move = new Move(startSquare, endSquare);
 
         board.putPieceOnBoardAt(bishop, startSquare);
-        EnPassantRule rule = new EnPassantRule();
 
-        assertFalse(rule.isEnPassantCapture(chessGame, move));
+        assertFalse(enPassantRule.isEnPassantCapture(chessGame, move));
 
     }
 

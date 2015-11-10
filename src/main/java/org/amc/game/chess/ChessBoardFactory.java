@@ -5,5 +5,7 @@ import java.text.ParseException;
 public interface ChessBoardFactory {
 
     ChessBoard getChessBoard(String setupNotation) throws ParseException;
+    
+    
 
 }

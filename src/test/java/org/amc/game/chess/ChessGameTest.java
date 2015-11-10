@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
+import org.amc.game.chess.ChessGame.GameState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,10 +105,20 @@ public class ChessGameTest {
     }
     
     @Test
-    public void CloneConstuctorMoveListCopyTest() {
+    public void cloneConstuctorMoveListCopyTest() {
         chessGameFixture.initialise();
         ChessGame clone = new ChessGame(chessGameFixture.getChessGame());
         assertTrue(chessGameFixture.getTheLastMove().equals(clone.getTheLastMove()));
+        assertEquals(GameState.RUNNING, clone.getGameState());
+    }
+    
+    @Test
+    public void cloneConstuctorRuleListCopyTest() {
+        chessGameFixture.initialise();
+        ChessGame clone = new ChessGame(chessGameFixture.getChessGame());
+        clone.addChessMoveRule(EnPassantRule.getInstance());
+        assertEquals(3, chessGameFixture.getChessGame().getChessMoveRules().size());
+        assertEquals(4, clone.getChessMoveRules().size());
     }
 
     /**

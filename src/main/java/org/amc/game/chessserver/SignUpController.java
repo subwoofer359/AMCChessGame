@@ -92,7 +92,7 @@ public class SignUpController {
     private void createUserEntity(UserForm user) throws DAOException {
     	Player player = new HumanPlayer(user.getFullName());
         player.setUserName(user.getUserName());
-        createEntryInUserTable(player, user.getPassword(), user.emailAddress);
+        createEntryInUserTable(player, user.getPassword(), user.getEmailAddress());
     }
     
     void createEntryInUserTable(Player player, String password, String emailAddress) throws DAOException {

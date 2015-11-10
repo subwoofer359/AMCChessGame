@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import java.io.Serializable;
-
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 /**
@@ -10,10 +8,15 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  * @author Adrian Mclaughlin
  *
  */
-public class CastlingRule implements ChessMoveRule, Serializable {
-
-    private static final long serialVersionUID = -3542422983476763664L;
-
+final class CastlingRule implements ChessMoveRule{
+	private static final CastlingRule instance = new CastlingRule();
+	
+	public static final CastlingRule getInstance() {
+		return instance;
+	}
+    
+	private CastlingRule() {
+	}
     /**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */

@@ -57,7 +57,7 @@ public class SVGBlankChessBoard {
         }
     }
     public void markMove(Element layer, Move move){
-    	if(move.equals(Move.EMPTY_MOVE)){
+    	if(Move.EMPTY_MOVE.equals(move)){
     		return;
     	}
     	NodeList nodeList = layer.getChildNodes();

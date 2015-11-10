@@ -13,6 +13,8 @@ import java.util.List;
  *
  */
 public class ChessBoard extends DefaultSubject {
+	
+	public static final ChessBoard EMPTY_CHESSBOARD = new EmptyChessBoard();
 
     /**
      * Represents the Letter Coordinates of squares on a chess board
@@ -262,5 +264,20 @@ public class ChessBoard extends DefaultSubject {
             sb.append(location.toString());
             return sb.toString();
         }
+    }
+    
+    private final static class EmptyChessBoard extends ChessBoard {
+
+		@Override
+		public void initialise() {
+		}
+
+		@Override
+		public void move(Move move) {
+		}
+
+		@Override
+		public void putPieceOnBoardAt(ChessPiece piece, Location location) {
+		}    	
     }
 }

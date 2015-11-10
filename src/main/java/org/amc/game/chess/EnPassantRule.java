@@ -5,9 +5,19 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class EnPassantRule extends PawnPieceRule {
-    
-    /**
+final class EnPassantRule extends PawnPieceRule {
+	
+	private static final EnPassantRule instance = new EnPassantRule();
+	
+	public static final EnPassantRule getInstance() {
+		return instance;
+	}
+	
+	private EnPassantRule() {
+		
+	}
+
+	/**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
     @Override
@@ -23,7 +33,7 @@ public class EnPassantRule extends PawnPieceRule {
     
     private void removeCapturedPawnFromTheChessBoard(ChessBoard board,ChessPiece piece,Location endSquare){
         Location capturedPawnLocation;
-        if(piece.getColour().equals(Colour.WHITE)){
+        if(Colour.WHITE.equals(piece.getColour())){
             capturedPawnLocation=new Location(endSquare.getLetter(),endSquare.getNumber()-1);
             
         }

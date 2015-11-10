@@ -8,9 +8,19 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public class PawnPromotionRule extends PawnPieceRule {
-    private static final int BLACK_PROMOTION_RANK=1;
+final class PawnPromotionRule extends PawnPieceRule {
+	
+	private static final int BLACK_PROMOTION_RANK=1;
     private static final int WHITE_PROMOTION_RANK=8;
+    
+    private static final PawnPromotionRule instance = new PawnPromotionRule();
+    
+    public static final PawnPromotionRule getInstance() {
+    	return instance;
+    }
+    
+    private PawnPromotionRule() {
+	}
     
     /**
      * @see ChessMoveRule#applyRule(ChessGame, Move)
@@ -34,7 +44,7 @@ public class PawnPromotionRule extends PawnPieceRule {
     public boolean isRuleApplicable(ChessGame game, Move move) {
         ChessPiece piece=game.getChessBoard().getPieceFromBoardAt(move.getStart());
         if(isPawnChessPiece(piece)){
-            if(piece.getColour().equals(Colour.BLACK)){
+            if(Colour.BLACK.equals(piece.getColour())){
                 return move.getEnd().getNumber()==BLACK_PROMOTION_RANK;
             }else{
                 return move.getEnd().getNumber()==WHITE_PROMOTION_RANK;

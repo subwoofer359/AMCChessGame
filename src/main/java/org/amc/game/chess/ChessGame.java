@@ -7,6 +7,7 @@ import org.apache.openjpa.persistence.PersistentCollection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -52,10 +53,10 @@ public class ChessGame implements Serializable {
     private ChessGamePlayer blackPlayer;
    
     @Transient
-    List<ChessMoveRule> chessRules;
+    private List<ChessMoveRule> chessRules;
     
     @Transient
-    private final PlayerKingInCheckCondition kingInCheck;
+    private final PlayerKingInCheckCondition kingInCheck = PlayerKingInCheckCondition.getInstance();
     
     @Column(nullable=false)
     private GameState gameState;
@@ -70,7 +71,8 @@ public class ChessGame implements Serializable {
     List<Move> allGameMoves;
     
     public enum GameState{
-        RUNNING,
+        NEW,
+    	RUNNING,
         STALEMATE,
         WHITE_IN_CHECK,
         BLACK_IN_CHECK,
@@ -79,26 +81,23 @@ public class ChessGame implements Serializable {
     }
     
 
-    public ChessGame() {
-        this.board = null;
+    protected ChessGame() {
+        this.board = ChessBoard.EMPTY_CHESSBOARD;
         this.whitePlayer = null;
         this.blackPlayer = null;
         this.currentPlayer = this.whitePlayer;
-        this.kingInCheck = new PlayerKingInCheckCondition();
         chessRules = new ArrayList<>();
-        chessRules.add(new EnPassantRule());
-        chessRules.add(new CastlingRule());
-        chessRules.add(new PawnPromotionRule());
         allGameMoves = new ArrayList<>();
+        this.gameState = GameState.NEW;
     }
     
     public ChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack) {
         this();
-        this.board = board;
+        this.board = new ChessBoard(board);
         this.whitePlayer = playerWhite;
         this.blackPlayer = playerBlack;
         this.currentPlayer = this.whitePlayer;
-        this.gameState=GameState.RUNNING;
+        this.gameState = GameState.RUNNING;
     }
     
     public ChessGame(ChessGame chessGame) {
@@ -106,9 +105,9 @@ public class ChessGame implements Serializable {
         this.whitePlayer = chessGame.getWhitePlayer();
         this.blackPlayer = chessGame.getBlackPlayer();
         this.currentPlayer = chessGame.getCurrentPlayer();
-        this.chessRules = chessGame.chessRules;
+        this.chessRules = new ArrayList<ChessMoveRule>(chessGame.chessRules);
         this.allGameMoves = copyOfChessMoves(chessGame);
-        this.kingInCheck = new PlayerKingInCheckCondition();
+        this.gameState = chessGame.getGameState();
     }
 
     /**
@@ -125,7 +124,6 @@ public class ChessGame implements Serializable {
      * @return Player
      */
     public ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
-        //return player.equals(whitePlayer) ? blackPlayer : whitePlayer;
         return ComparePlayers.comparePlayers(player, whitePlayer)? blackPlayer : whitePlayer;
     }
 
@@ -259,7 +257,7 @@ public class ChessGame implements Serializable {
         ChessGamePlayer opponent = getOpposingPlayer(player);
         boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent, player, board);
         if (inCheck) {
-            gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_IN_CHECK
+            gameState = Colour.WHITE.equals(opponent.getColour()) ? GameState.WHITE_IN_CHECK
                             : GameState.BLACK_IN_CHECK;
         }
         return inCheck;
@@ -270,7 +268,7 @@ public class ChessGame implements Serializable {
         PlayersKingCheckmateCondition okcc = new PlayersKingCheckmateCondition(opponent, player,
                         board);
         if (okcc.isCheckMate()) {
-            gameState = opponent.getColour().equals(Colour.WHITE) ? GameState.WHITE_CHECKMATE
+            gameState = Colour.WHITE.equals(opponent.getColour()) ? GameState.WHITE_CHECKMATE
                             : GameState.BLACK_CHECKMATE;
             return true;
         } else {
@@ -347,5 +345,13 @@ public class ChessGame implements Serializable {
  
     private List<Move> copyOfChessMoves(ChessGame chessGame) {
         return new ArrayList<Move>(chessGame.allGameMoves);
+    }
+    
+    List<ChessMoveRule> getChessMoveRules() {
+    	return Collections.unmodifiableList(this.chessRules);
+    }
+    
+    void addChessMoveRule(ChessMoveRule rule) {
+    	this.chessRules.add(rule);
     }
 }

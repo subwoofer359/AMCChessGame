@@ -1,9 +1,10 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpSessionRequiredException;
@@ -68,7 +69,7 @@ public class ServerJoinChessGameController {
     }
 
     public boolean inProgressState(ServerChessGame chessGame) {
-        return chessGame.getCurrentStatus().equals(ServerGameStatus.IN_PROGRESS);
+        return ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus());
     }
 
     private void joinChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
@@ -124,16 +125,15 @@ public class ServerJoinChessGameController {
     }
 
     private boolean isGameInFinishedState(ServerChessGame chessGame) {
-        return ServerChessGame.ServerGameStatus.FINISHED.equals(chessGame.getCurrentStatus());
+        return ServerGameStatus.FINISHED.equals(chessGame.getCurrentStatus());
     }
 
     private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
-        return chessGame.getCurrentStatus()
-                        .equals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+        return ServerGameStatus.AWAITING_PLAYER.equals(chessGame.getCurrentStatus());
     }
 
     private boolean joiningCurrentGame(ServerChessGame chessGame, Player player) {
-        if (chessGame.getCurrentStatus().equals(ServerChessGame.ServerGameStatus.IN_PROGRESS)) {
+        if (ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus())) {
             return ComparePlayers.comparePlayers(player, chessGame.getOpponent());
         } else {
             return false;

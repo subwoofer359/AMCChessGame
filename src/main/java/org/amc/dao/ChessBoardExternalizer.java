@@ -49,7 +49,7 @@ public class ChessBoardExternalizer {
     
     private static ChessPieceNotation getChessPieceSymbol(ChessPiece piece) {
 
-        if(piece.getColour().equals(Colour.BLACK))
+        if(Colour.BLACK.equals(piece.getColour()))
         {
             if(piece instanceof KingPiece) {
                 return K;

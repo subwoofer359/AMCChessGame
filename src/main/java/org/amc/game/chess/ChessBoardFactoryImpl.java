@@ -13,7 +13,7 @@ public class ChessBoardFactoryImpl implements ChessBoardFactory {
         this.notation = notation;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.amc.game.chess.ChessBoardFactory#getChessBoard(java.lang.String)
      */
     @Override

@@ -20,6 +20,10 @@ import javax.persistence.Table;
 public class HumanPlayer implements Player, Serializable {
     
     private static final long serialVersionUID = 9137658189552898690L;
+    
+    private static String DEFAULT_USERNAME = "no username";
+    
+    private static String DEFAULT_NAME = "no name";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +36,13 @@ public class HumanPlayer implements Player, Serializable {
     private String userName;
     
     public HumanPlayer(String name) {
-        this.name = name;
+        this();
+    	this.name = name;
     }
     
     public HumanPlayer() {
-        // do nothing
+        this.userName = DEFAULT_USERNAME;
+        this.name = DEFAULT_NAME;
     }
 
     @Override

@@ -24,7 +24,7 @@ public abstract class SVGChessPiece {
         }
 
         public static SVGColour getColour(org.amc.game.chess.Colour colour) {
-            if (colour.equals(org.amc.game.chess.Colour.BLACK)) {
+            if (org.amc.game.chess.Colour.BLACK.equals(colour)) {
                 return BLACK;
             } else {
                 return WHITE;

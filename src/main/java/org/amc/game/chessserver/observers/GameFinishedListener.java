@@ -67,7 +67,7 @@ public class GameFinishedListener extends GameObserver {
      */
     public void setGameToObserver(ServerChessGame serverChessGame) {
         super.setGameToObserver(serverChessGame);
-        if(serverChessGame.getCurrentStatus().equals(ServerGameStatus.FINISHED)) {
+        if(ServerGameStatus.FINISHED.equals(serverChessGame.getCurrentStatus())) {
             scheduleDeleteThread(serverChessGame);
         }
     }
