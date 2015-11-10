@@ -4,11 +4,13 @@ import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.amc.game.chessserver.observers.JsonChessGameView;
@@ -31,8 +33,10 @@ public class ServerChessGameTestDatabaseEntity {
     private final long UID = 29393L;
     private final ServerChessGameDAO scgDAO;
     private final ChessGameFixture cgFixture;
+    private ChessGameFactory chessGamefactory; 
     
     public ServerChessGameTestDatabaseEntity() throws DAOException {
+        this.chessGamefactory = new StandardChessGameFactory();
         scgDAO = new ServerChessGameDAO();
         DAO<Player> playerDAO = new DAO<>(HumanPlayer.class);
         cgFixture = new ChessGameFixture();
@@ -60,7 +64,7 @@ public class ServerChessGameTestDatabaseEntity {
     }
     
     private ServerChessGame createServerGame(long id) {
-        ChessGame chessGame = new ChessGame(cgFixture.getBoard(), 
+        ChessGame chessGame = chessGamefactory.getChessGame(cgFixture.getBoard(), 
                         new ChessGamePlayer(whitePlayer, Colour.WHITE),
                         new ChessGamePlayer(blackPlayer, Colour.BLACK));
         scgGame = new ServerChessGame(id, chessGame);

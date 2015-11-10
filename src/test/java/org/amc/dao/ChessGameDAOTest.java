@@ -10,7 +10,6 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.SimpleInputParser;
 import org.amc.game.chess.view.ChessBoardView;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
@@ -27,14 +26,12 @@ public class ChessGameDAOTest {
     private Player laura;
     private Player nobby;
     private ChessGame game;
-    private SimpleInputParser mlParser;
     private int id;
-    private static final String[] MOVES = {"A2A3", "A7A6", "B1C3"};
+    private static final String[] MOVES = {"A2-A3", "A7-A6", "B1-C3"};
  
     @Before
     public void setUp() throws Exception {
         this.signUpfixture.setUp();
-        this.mlParser = new SimpleInputParser();
         ServerChessGameTestDatabaseEntity serverChessGamesfixture = new ServerChessGameTestDatabaseEntity();
         laura = serverChessGamesfixture.getBlackPlayer();
         nobby = serverChessGamesfixture.getWhitePlayer();
@@ -72,7 +69,7 @@ public class ChessGameDAOTest {
         ChessBoardUtilities.compareBoards(newBoard, game.getChessBoard());
         
         for(String move : MOVES) {
-            Move gameMove = mlParser.parseMoveString(move);
+            Move gameMove = new Move(move);
             game.move(game.getCurrentPlayer(), gameMove );
             game.changePlayer();
             newBoard.move(gameMove);

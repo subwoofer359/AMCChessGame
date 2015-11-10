@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -30,6 +32,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="chessGames")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class ChessGame implements Serializable {
     private static final long serialVersionUID = 5323277982974698086L;
     
