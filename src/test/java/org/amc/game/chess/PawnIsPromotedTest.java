@@ -31,7 +31,8 @@ public class PawnIsPromotedTest {
 
     @Before
     public void setUp() throws Exception {
-        chessGame = new StandardChessGame(new ChessBoard(), whitePlayer, blackPlayer);
+        chessGame = new StandardChessGameFactory().getChessGame(new ChessBoard(), 
+                        whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());

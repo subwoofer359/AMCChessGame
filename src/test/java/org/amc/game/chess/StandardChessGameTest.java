@@ -11,9 +11,11 @@ import org.junit.Test;
 
 public class StandardChessGameTest {
 	private ChessGameFixture fixture;
+	private ChessGameFactory chessGameFactory;
 	@Before
 	public void setUp() throws Exception {
 		fixture = new ChessGameFixture();
+		chessGameFactory = new StandardChessGameFactory();
 	}
 
 	@After
@@ -22,7 +24,7 @@ public class StandardChessGameTest {
 
 	@Test
 	public void test() {
-		ChessGame game = new StandardChessGame();
+		ChessGame game = chessGameFactory.getChessGame();
 		testForChessRules(game);
 		checkChessGameUninitialised(game);
 	}
@@ -37,7 +39,8 @@ public class StandardChessGameTest {
 	
 	@Test
 	public void constructorTest() {
-		ChessGame game = new StandardChessGame(fixture.getBoard(), fixture.getWhitePlayer(), 
+		ChessGame game = chessGameFactory.getChessGame(
+		                fixture.getBoard(), fixture.getWhitePlayer(), 
 				fixture.getBlackPlayer());
 		testForChessRules(game);
 		checkChessGame(game);
@@ -46,7 +49,7 @@ public class StandardChessGameTest {
 	
 	@Test 
 	public void testCopyConstructor() {
-		ChessGame game = new StandardChessGame(fixture.getBoard(), fixture.getWhitePlayer(), 
+		ChessGame game = chessGameFactory.getChessGame(fixture.getBoard(), fixture.getWhitePlayer(), 
 				fixture.getBlackPlayer());
 		ChessGame copy = new ChessGame(game);
 		testForChessRules(copy);
@@ -56,7 +59,7 @@ public class StandardChessGameTest {
 	
 	@Test 
 	public void testCopyConstructorForEmptyConstructor() {
-		ChessGame game = new StandardChessGame();
+		ChessGame game = chessGameFactory.getChessGame();
 		ChessGame copy = new ChessGame(game);
 		testForChessRules(copy);
 		checkChessGameUninitialised(game);

@@ -25,7 +25,7 @@ public class StandardChessGameFactoryTest {
     public void test() {
         ChessGame game = factory.getChessGame();
         assertEquals(GameState.NEW, game.getGameState());
-        assertTrue(game.getClass().equals(StandardChessGame.class));
+        assertEquals(3, game.getChessMoveRules().size());
     }
 
     @Test
@@ -35,6 +35,7 @@ public class StandardChessGameFactoryTest {
         ChessBoardUtilities.compareBoards(chessGameFixture.getBoard(), game.getChessBoard());
         assertEquals(chessGameFixture.getWhitePlayer(), game.getWhitePlayer());
         assertEquals(chessGameFixture.getBlackPlayer(), game.getBlackPlayer());
+        assertEquals(3, game.getChessMoveRules().size());
     }
 
 }
