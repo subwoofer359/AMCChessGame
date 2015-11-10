@@ -3,6 +3,14 @@ package org.amc.game.chess;
 import javax.persistence.Entity;
 
 
+/**
+ * Represents a chess game with the default rules
+ * A class is required so the rules don't have to be persisted in the 
+ * underlying database.  
+ * 
+ * @author Adrian Mclaughlin
+ *
+ */
 @Entity
 public class StandardChessGame extends ChessGame {
 
