@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import com.google.gson.Gson;
 
 import org.amc.DAOException;
+import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
@@ -19,14 +20,15 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.Resource;
+import javax.persistence.OptimisticLockException;
 
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
@@ -41,7 +43,7 @@ public class StompController {
 
     private static final Logger logger = Logger.getLogger(StompController.class);
 
-    private Map<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
 
     /**
      * STOMP messaging object to send stomp message to objects
@@ -222,17 +224,19 @@ public class StompController {
      * @param message String from client
      */
     @MessageMapping("/save/{gameUUID}")
-    public void save(Principal user, Map<String, Object> wsSession,
+    public void save(Principal user, 
+                    @Header(SESSION_ATTRIBUTES)Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
         ServerChessGame serverChessGame = gameMap.get(gameUUID);
         String replyMessage="";
+        logger.debug("IN STOMP SAVE METHOD");
         
         if(serverChessGame == null ){
             replyMessage = String.format(SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, gameUUID); 
             logger.error(replyMessage);
         } else {
             Player player = (Player) wsSession.get("PLAYER");
-            replyMessage = saveServerChessGameIfValidPlayer(player, serverChessGame);
+            replyMessage = saveServerChessGameIfValidPlayer(player, serverChessGame);     
         }
         sendMessageToUser(user, replyMessage, MessageType.INFO);
         
@@ -247,12 +251,14 @@ public class StompController {
         if(isValidPlayer(player, serverChessGame)) {
             return saveServerChessGameIfNotFinished(serverChessGame);
         } else {
+            logger.debug(ERROR_UNKNOWN_PLAYER);
             return ERROR_UNKNOWN_PLAYER;
         }
     }
 
     private String saveServerChessGameIfNotFinished(ServerChessGame serverChessGame) {
         if(ServerGameStatus.FINISHED.equals(serverChessGame.getCurrentStatus())) {
+            logger.debug(SAVE_ERROR_GAME_IS_OVER);
             return SAVE_ERROR_GAME_IS_OVER;
         } else {
             return saveServerChessGame(serverChessGame);
@@ -261,16 +267,19 @@ public class StompController {
     
     private String saveServerChessGame(ServerChessGame serverChessGame) {
         try {
-            serverChessGameDAO.addEntity(serverChessGame);
+            gameMap.replace(serverChessGame.getUid(), serverChessGameDAO.saveServerChessGame(serverChessGame));
+            EntityManagerThreadLocal.closeEntityManager();
+            logger.debug(GAME_SAVED_SUCCESS);
             return GAME_SAVED_SUCCESS;
-        } catch(DAOException de) {
+        } catch(OptimisticLockException | DAOException de) {
             logger.error(de);
+            logger.debug(SAVE_ERROR_CANT_BE_SAVED);
             return SAVE_ERROR_CANT_BE_SAVED;
         }
     }
 
     @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, ServerChessGame> gameMap) {
+    public void setGameMap(ConcurrentMap<Long, ServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 
