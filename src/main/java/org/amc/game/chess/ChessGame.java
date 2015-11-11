@@ -13,6 +13,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -67,7 +68,7 @@ public class ChessGame implements Serializable {
     @Version
     private int version;
     
-    @PersistentCollection(elementCascade=CascadeType.ALL, elementType=Move.class)
+    @PersistentCollection(elementCascade=CascadeType.ALL, elementType=Move.class, fetch = FetchType.EAGER)
     @Externalizer("org.amc.dao.MoveListExternalizer.stringOfAllMoves")
     @Factory("org.amc.dao.MoveListExternalizer.listOfMovesFromString")
     @Column(length=1000)
