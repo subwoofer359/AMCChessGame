@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class DatabaseGameMap implements Map<Long, ServerChessGame> {
+public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
 
     ServerChessGameDAO serverChessGameDAO;
     
@@ -29,8 +29,8 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     public int size() {
         try {
             Set<ServerChessGame> gameSet = new HashSet<>();
-            gameSet.addAll(this.serverChessGameDAO.findEntities());
             gameSet.addAll(this.gameMap.values());
+            gameSet.addAll(this.serverChessGameDAO.findEntities());
             return gameSet.size();
         } catch (DAOException de) {
             logger.error(de);
@@ -86,6 +86,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
                         logger.error("ServerChessGame with uid:" + key + " doesn't exist!");
                         return null;
                     } else {
+                        serverChessGameDAO.detachEntity(game);
                         gameMap.putIfAbsent((Long) key, game);
                     }
                 }
@@ -139,16 +140,16 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     @Override
     public Set<Long> keySet() {
         Set<Long> keys = new HashSet<>();
-        keys.addAll(serverChessGameDAO.getGameUids());
         keys.addAll(gameMap.keySet());
+        keys.addAll(serverChessGameDAO.getGameUids());
         return keys;
     }
 
     @Override
     public Collection<ServerChessGame> values() {
         try {
-            Set<ServerChessGame> games = new HashSet<>(serverChessGameDAO.findEntities());
-            games.addAll(gameMap.values());
+            Set<ServerChessGame> games = new HashSet<>(gameMap.values());
+            games.addAll(serverChessGameDAO.findEntities());
             return games;
         } catch(DAOException de) {
             logger.error(de);
@@ -166,6 +167,22 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
         return gameSet;
     }
     
+    @Override
+    public ServerChessGame putIfAbsent(Long gameUID, ServerChessGame serverChessGame) {
+        return gameMap.putIfAbsent(gameUID, serverChessGame);
+    }
+
+    @Override
+    public boolean remove(Object gameUID, Object serverChessGame) {
+        return gameMap.remove(gameUID, serverChessGame);
+    }
+
+    @Override
+    public boolean replace(Long gameUID, ServerChessGame oldServerChessGame, ServerChessGame newServerChessGame) {
+        serverChessGameDAO.detachEntity(newServerChessGame);
+        return gameMap.replace(gameUID, oldServerChessGame, newServerChessGame);
+    }
+    
     /**
      * Clears the cache. 
      * ServerChessGames in the cache may not be persisted to the database.
@@ -174,6 +191,10 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
         gameMap.clear();
     }
     
+    public ServerChessGame replace(Long gameUid, ServerChessGame serverChessGame) {
+        serverChessGameDAO.detachEntity(serverChessGame);
+        return gameMap.replace(gameUid, serverChessGame);
+    }
     /**
      * Retrieve a collection of ServerChessGames from the cache
      * @return Collection of ServerChessGames
@@ -181,7 +202,7 @@ public class DatabaseGameMap implements Map<Long, ServerChessGame> {
     public Collection<ServerChessGame> cacheValues() {
         return gameMap.values();
     }
-    
+       
     public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
