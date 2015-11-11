@@ -4,6 +4,9 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
+import org.amc.game.chess.ChessGamePlayer;
+import org.amc.game.chess.Colour;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
@@ -230,6 +233,20 @@ public class DatabaseGameMapTest {
     public void valuesTest() {
         Collection<ServerChessGame> games = gameMap.values();
         assertTrue(games.contains(game));
+    }
+    
+    @Test
+    public void valuesBugTest() {
+        ConcurrentMap<Long, ServerChessGame> conHashMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap.setInternalHashMap(conHashMap);
+        ServerChessGame newGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+        gameMap.put(gameUid, newGame);
+        Player opponent = new HumanPlayer("Mary");
+        newGame.addOpponent(new ChessGamePlayer(opponent, Colour.BLACK));
+        Collection<ServerChessGame> games = gameMap.values();
+        for(ServerChessGame scg : games) {
+            assertTrue(ComparePlayers.comparePlayers(opponent, scg.getOpponent()));
+        }
     }
 
     @Test

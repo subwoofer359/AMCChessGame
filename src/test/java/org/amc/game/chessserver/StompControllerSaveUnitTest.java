@@ -7,6 +7,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
+import org.amc.EntityManagerThreadLocal;
+import org.amc.dao.DatabaseGameMap;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
@@ -25,6 +27,11 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.OptimisticLockException;
 
 public class StompControllerSaveUnitTest {
     private StompController controller;
@@ -68,7 +75,6 @@ public class StompControllerSaveUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        this.controller = new StompController();
         scg = new ServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
@@ -78,7 +84,12 @@ public class StompControllerSaveUnitTest {
             }
         });
         
-        Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
+        this.serverChessGameDAO = mock(ServerChessGameDAO.class);
+        this.controller = new StompController();
+        controller.setServerChessDAO(serverChessGameDAO);
+        
+        DatabaseGameMap gameMap = new DatabaseGameMap();
+        gameMap.setServerChessGameDAO(serverChessGameDAO);
         gameMap.put(gameUUID, scg);
         
         controller.setGameMap(gameMap);
@@ -89,18 +100,23 @@ public class StompControllerSaveUnitTest {
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
-        
-        this.serverChessGameDAO = mock(ServerChessGameDAO.class);
-        controller.setServerChessDAO(serverChessGameDAO);
-        
+            
         scg.addOpponent(blackPlayer);
         sessionAttributes.put("PLAYER", whitePlayer);
     }
     
     @Test
     public void testSaveGame() throws DAOException {
+        EntityTransaction mockTransaction = mock(EntityTransaction.class);
+        EntityManagerFactory emFactory = mock(EntityManagerFactory.class);
+        EntityManagerThreadLocal.setEntityManagerFactory(emFactory);
+        EntityManager mockEmManager = mock(EntityManager.class);
+        when(emFactory.createEntityManager()).thenReturn(mockEmManager);
+        when(mockEmManager.getTransaction()).thenReturn(mockTransaction);
+        
+        when(serverChessGameDAO.saveServerChessGame(eq(scg))).thenReturn(scg);
         controller.save(principal, sessionAttributes, gameUUID, "Save");
-        verify(serverChessGameDAO,times(1)).addEntity(eq(scg));
+        verify(serverChessGameDAO,times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(StompController.GAME_SAVED_SUCCESS, payoadArgument.getValue());
@@ -117,7 +133,7 @@ public class StompControllerSaveUnitTest {
     public void testSaveGameServerChessGameDoesntExist() throws DAOException {
         Long invalidGameUID = 1L;
         controller.save(principal, sessionAttributes, invalidGameUID, "Save");
-        verify(serverChessGameDAO, never()).addEntity(eq(scg));
+        verify(serverChessGameDAO, never()).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(StompController.SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, invalidGameUID), 
@@ -138,9 +154,9 @@ public class StompControllerSaveUnitTest {
     @Test
     public void testSaveServerChessGameDAOException() throws DAOException {
         doThrow(new DAOException("Database connection closed"))
-            .when(serverChessGameDAO).addEntity(eq(scg));
+            .when(serverChessGameDAO).saveServerChessGame(eq(scg));
         controller.save(principal, sessionAttributes, gameUUID, "Save");
-        verify(serverChessGameDAO, times(1)).addEntity(eq(scg));
+        verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(StompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
@@ -154,5 +170,29 @@ public class StompControllerSaveUnitTest {
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(StompController.ERROR_UNKNOWN_PLAYER, payoadArgument.getValue());
+    }
+    
+    @Test
+    public void testSaveThrowsOptimisticLockingException() throws DAOException {
+        doThrow(new OptimisticLockException())
+        .when(serverChessGameDAO).saveServerChessGame(eq(scg));
+        controller.save(principal, sessionAttributes, gameUUID, "Save");
+        verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(StompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+    }
+    
+    @Test
+    public void testSaveThrowsOptimisticLockingExceptionThenDAOException() throws DAOException {
+        doThrow(new OptimisticLockException())
+        .when(serverChessGameDAO).saveServerChessGame(eq(scg));
+        doThrow(new DAOException("Database connection closed"))
+        .when(serverChessGameDAO).deleteEntity(eq(scg));
+        controller.save(principal, sessionAttributes, gameUUID, "Save");
+        verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(StompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
     }
 }

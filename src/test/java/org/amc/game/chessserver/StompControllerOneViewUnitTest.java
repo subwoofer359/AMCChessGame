@@ -15,8 +15,9 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +25,7 @@ public class StompControllerOneViewUnitTest {
 
     private StompController controller;
     
-    private Map<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
     
     private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
@@ -67,7 +68,7 @@ public class StompControllerOneViewUnitTest {
         };
         scg = new OneViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);
-        gameMap = new HashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
         controller.setGameMap(gameMap);
 

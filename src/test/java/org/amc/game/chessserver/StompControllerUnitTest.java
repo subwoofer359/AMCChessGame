@@ -19,6 +19,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
@@ -71,7 +73,7 @@ public class StompControllerUnitTest {
             }
         });
         
-        Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
+        ConcurrentMap<Long, ServerChessGame> gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
         
         controller.setGameMap(gameMap);
