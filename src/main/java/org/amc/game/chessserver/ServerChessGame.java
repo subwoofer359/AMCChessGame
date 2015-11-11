@@ -22,6 +22,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -38,7 +39,9 @@ import javax.persistence.Version;
 @Entity
 @Table(name="serverChessGames")
 
-@NamedQuery(name="serverChessGameByUid", query="SELECT x FROM ServerChessGame x where x.uid = ?1")
+@NamedQueries({
+    @NamedQuery(name="serverChessGameByUid", query="SELECT x FROM ServerChessGame x where x.uid = ?1"),
+})
 public class ServerChessGame extends GameSubject implements Serializable {
     
     private static final long serialVersionUID = 2147129152958398504L;
@@ -298,4 +301,31 @@ public class ServerChessGame extends GameSubject implements Serializable {
     public String toString() {
         return "ServerChessGame[" + getPlayer() + " vs " + getOpponent() + "]";
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + (int) (uid ^ (uid >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ServerChessGame other = (ServerChessGame) obj;
+        if (id != other.id)
+            return false;
+        if (uid != other.uid)
+            return false;
+        return true;
+    }
+    
+    
 }
