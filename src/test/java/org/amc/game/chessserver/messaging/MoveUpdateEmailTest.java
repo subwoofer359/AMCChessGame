@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactoryImpl;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
@@ -39,6 +42,13 @@ public class MoveUpdateEmailTest {
         player = new HumanPlayer("Adrian McLaughlin");
         scg = new ServerChessGame(GAME_UID, player);
         opponent = new HumanPlayer("Player 2");
+        scg.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        });
         scg.addOpponent(opponent);
         
         emailTemplateResolver = new FileTemplateResolver();

@@ -3,6 +3,9 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -16,6 +19,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
@@ -60,8 +65,17 @@ public class StompControllerUnitTest {
     public void setUp() {
         this.controller = new StompController();
         scg = new ServerChessGame(gameUUID, whitePlayer);
-        Map<Long, ServerChessGame> gameMap = new HashMap<Long, ServerChessGame>();
+        scg.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        });
+        
+        ConcurrentMap<Long, ServerChessGame> gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
+        
         controller.setGameMap(gameMap);
         sessionAttributes = new HashMap<String, Object>();
 
@@ -70,7 +84,6 @@ public class StompControllerUnitTest {
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
-
     }
 
     @Test

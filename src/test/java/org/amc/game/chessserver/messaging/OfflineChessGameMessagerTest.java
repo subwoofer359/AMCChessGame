@@ -8,6 +8,8 @@ import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
@@ -99,6 +101,13 @@ public class OfflineChessGameMessagerTest {
         when(userDAO.findEntities("userName", opponentPlayer.getUserName())).thenReturn(userList);
 
         serverChessGame = new ServerChessGame(GAME_UID, player);
+        serverChessGame.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        });
         
         serverChessGame.attachObserver(offlineGMessager);
 

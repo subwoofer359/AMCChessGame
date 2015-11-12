@@ -31,9 +31,10 @@ public class ChessGameMoveKingOutOfCheck {
     }
 
     @Before
-    public void setUp() throws Exception {
-        board = new ChessBoard();
-        chessGame = new ChessGame(board, whitePlayer, blackPlayer);
+    public void setUp() throws Exception {     
+        ChessGameFactory factory = new StandardChessGameFactory();
+        chessGame = factory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
+        board = chessGame.getChessBoard();
         attackingPiece = new BishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),

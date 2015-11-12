@@ -2,6 +2,10 @@ package org.amc.game.chessserver.messaging;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -11,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
-
-import java.util.Map;
 
 public class PlayerJoinedChessGameEmailTest {
 
@@ -27,6 +29,13 @@ public class PlayerJoinedChessGameEmailTest {
     public void setUp() throws Exception {
         player = new HumanPlayer("Adrian McLaughlin");
         scg = new ServerChessGame(GAME_UID, player);
+        scg.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        });
         scg.addOpponent(new HumanPlayer("Player 2"));
         template = new PlayerJoinedChessGameEmail(player, scg);
         

@@ -4,6 +4,7 @@ import org.amc.DAOException;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
+import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
@@ -24,7 +26,6 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
     
     private static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
-    
     private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
     
     private ObserverFactoryChain chain;
@@ -66,11 +67,39 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
         
-        ServerChessGame scg = (ServerChessGame)query.getSingleResult();
-        
-        addObservers(scg);
-        
+        ServerChessGame scg = null;
+        try {
+            scg = (ServerChessGame)query.getSingleResult();
+            addObservers(scg);
+            return scg;
+        } catch(NoResultException nre) {
+            logger.error(nre);
+        }
         return scg;
+    }
+    
+    public ServerChessGame saveServerChessGame(ServerChessGame serverChessGame) throws DAOException {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            if(em.contains(serverChessGame)) {
+                
+            } else {
+                
+                serverChessGame = em.merge(serverChessGame);
+            }
+            
+            if(em instanceof OpenJPAEntityManager) {
+                ((OpenJPAEntityManager)em).dirty(serverChessGame.getChessGame(), "board");
+            }
+            em.flush();
+            em.getTransaction().commit();
+            return serverChessGame;
+        } catch (PersistenceException pe) {
+            logger.error(pe);
+            em.close();
+            throw new DAOException(pe);
+        }
     }
     
     @Resource(name="defaultObserverFactoryChain")

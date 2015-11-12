@@ -105,7 +105,7 @@ $(document).ready(function () {
                 userName = $(this).find(".userName").text();
             td.append('<button class="play-button btn btn-primary">Request Game</button>');
             
-            $(".play-button").click(function () {
+            $(".play-button").click(function (event) {
                 event.preventDefault();
                 requestGame(userName);
             });

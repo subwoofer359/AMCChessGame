@@ -31,6 +31,8 @@ import org.amc.game.chess.PawnPieceTest;
 import org.amc.game.chess.QueenPieceTest;
 import org.amc.game.chess.RookPieceTest;
 import org.amc.game.chess.SimpleChessBoardSetupNotationTest;
+import org.amc.game.chess.StandardChessGameTest;
+import org.amc.game.chess.UnmodifibleChessBoardTest;
 import org.amc.game.chess.controller.ConsoleControllerTest;
 import org.amc.game.chess.controller.SimpleInputParserTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
@@ -139,7 +141,9 @@ import org.junit.runners.Suite.SuiteClasses;
     ValidEmailAddrTest.class,
     ValidFullNameTest.class,
     ValidPasswordTest.class,
-    ValidUserNameTest.class
+    ValidUserNameTest.class,
+    StandardChessGameTest.class,
+    UnmodifibleChessBoardTest.class
 })
 
 public class UnitTestSuite {

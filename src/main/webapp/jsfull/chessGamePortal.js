@@ -93,6 +93,9 @@ StompActions.prototype = {
         } else if (message.headers.TYPE === "UPDATE") {
             this.updateChessBoard(message.body);
         } else if (message.headers.TYPE === "INFO") {
+            if (/[A-Za-z]+/.test(message.body)) {
+                this.showFadingAlertMessage(message.body);
+            }
             console.log(message.body);
         }
     },
@@ -182,7 +185,8 @@ function openStompConnection(websocketURL, headers, stompCallBack) {
         TOPIC_UPDATES = "/topic/updates/",
         APP_GET = "/app/get/",
         PRIORITY = {priority : 9},
-        APP_QUIT = "/app/quit/";
+        APP_QUIT = "/app/quit/",
+        APP_SAVE = "/app/save/";
 
     if (!(typeof stompCallBack === 'object' && stompCallBack instanceof StompActions)) {
         throw "callback function isn't an instance of StompActions";
@@ -200,6 +204,10 @@ function openStompConnection(websocketURL, headers, stompCallBack) {
 
         $(".quit-btn").click(function () {
             stompClient.send(APP_QUIT + stompCallBack.gameUID, PRIORITY, "quit");
+        });
+
+        $(".save-btn").click(function () {
+            stompClient.send(APP_SAVE + stompCallBack.gameUID, PRIORITY, "save");
         });
         stompClient.send(APP_GET + stompCallBack.gameUID, PRIORITY, "Get ChessBoard");
     }, function onStompError() {

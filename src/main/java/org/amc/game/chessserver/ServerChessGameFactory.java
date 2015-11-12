@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 
 import org.amc.game.chess.Player;
+import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 
 import javax.annotation.Resource;
@@ -34,6 +35,7 @@ public class ServerChessGameFactory {
 		}
 		
 		observerFactoryChain.addObserver(observerStr, serverChessGame);
+		serverChessGame.setChessGameFactory(new StandardChessGameFactory());
 		return serverChessGame;
 	}
 	

@@ -190,6 +190,7 @@ $(document).ready(function(){
 <body>
     <tags:BottomMenu>
     	<tags:NavMenuButton id="home-btn" url="${pageContext.request.contextPath}/app/chessgame/chessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
+        <tags:NavMenuButton id="save-btn" aclass="save-btn"><span class="glyphicon glyphicon-floppy-disk"></span> Save Game</tags:NavMenuButton>
         <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
     </tags:BottomMenu>
     
@@ -197,6 +198,7 @@ $(document).ready(function(){
     <div class="row full-height">
         <tags:SideMenu>
                 <li><a href="${pageContext.request.contextPath}/app/chessgame/chessapplication"><button id="home-btn">Home</button></a></li>
+                <li><button class="save-btn">Save Game</button></li>
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 

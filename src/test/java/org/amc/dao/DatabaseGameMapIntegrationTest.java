@@ -21,14 +21,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-
+@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml"})
@@ -230,7 +233,21 @@ public class DatabaseGameMapIntegrationTest {
     	gameMap.remove(game.getUid());
     	checkPlayerExistsInTheDatabase(scEntity.getWhitePlayer().getUserName());
     }
-    	
+    
+    @Test
+    public void testSize() throws DAOException {
+        final int gameToCreate = 1000;
+        new ServerChessGameTestDatabaseEntity(gameToCreate);
+        long startTime = System.nanoTime();
+        long noOfGames = gameMap.size();
+        long endTime = System.nanoTime();
+        
+        System.out.println("Time taken:" + TimeUnit.NANOSECONDS.toSeconds((endTime - startTime)));
+        System.out.println("Time taken:" + TimeUnit.NANOSECONDS.toMillis((endTime - startTime)));
+        assertEquals(gameToCreate, (noOfGames - 1));
+        
+    }
+    
     private void checkPlayerExistsInTheDatabase(String userName) throws DAOException {
     	assertTrue(playerDAO.findEntities("userName", userName).size() ==1);
     }

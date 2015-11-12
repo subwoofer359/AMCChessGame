@@ -11,20 +11,15 @@ import org.junit.Test;
 
 public class StandardChessGameTest {
 	private ChessGameFixture fixture;
+	private ChessGameFactory chessGameFactory;
 	@Before
 	public void setUp() throws Exception {
 		fixture = new ChessGameFixture();
+		chessGameFactory = new StandardChessGameFactory();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void test() {
-		ChessGame game = new StandardChessGame();
-		testForChessRules(game);
-		checkChessGameUninitialised(game);
 	}
 	
 	private void checkChessGameUninitialised(ChessGame game) {
@@ -37,7 +32,8 @@ public class StandardChessGameTest {
 	
 	@Test
 	public void constructorTest() {
-		ChessGame game = new StandardChessGame(fixture.getBoard(), fixture.getWhitePlayer(), 
+		ChessGame game = chessGameFactory.getChessGame(
+		                fixture.getBoard(), fixture.getWhitePlayer(), 
 				fixture.getBlackPlayer());
 		testForChessRules(game);
 		checkChessGame(game);
@@ -46,21 +42,12 @@ public class StandardChessGameTest {
 	
 	@Test 
 	public void testCopyConstructor() {
-		ChessGame game = new StandardChessGame(fixture.getBoard(), fixture.getWhitePlayer(), 
+		ChessGame game = chessGameFactory.getChessGame(fixture.getBoard(), fixture.getWhitePlayer(), 
 				fixture.getBlackPlayer());
 		ChessGame copy = new ChessGame(game);
 		testForChessRules(copy);
 		checkChessGame(copy);
 		assertEquals(GameState.RUNNING, copy.getGameState());
-	}
-	
-	@Test 
-	public void testCopyConstructorForEmptyConstructor() {
-		ChessGame game = new StandardChessGame();
-		ChessGame copy = new ChessGame(game);
-		testForChessRules(copy);
-		checkChessGameUninitialised(game);
-		assertEquals(GameState.NEW, game.getGameState());
 	}
 	
 	private void checkChessGame(ChessGame game) {

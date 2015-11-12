@@ -3,7 +3,9 @@ package org.amc.game.chessserver.observers;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -25,14 +27,26 @@ public class GameStateListenerTest {
     private static final long GAME_UID = 1234l;
     private ArgumentCaptor<String> destinationArgument;
     private ArgumentCaptor<Object> messageArgument;
+    private ChessGameFactory chessGameFactory;
     
     @Before
     public void setUp() throws Exception {
         whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         template = mock(SimpMessagingTemplate.class);
+        
+        chessGameFactory = new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        };
+        
         serverGame = new ServerChessGame(GAME_UID, whitePlayer);
+        serverGame.setChessGameFactory(chessGameFactory);
         serverGame.addOpponent(blackPlayer);
+        
         
         destinationArgument = ArgumentCaptor.forClass(String.class);
         messageArgument = ArgumentCaptor.forClass(Object.class);

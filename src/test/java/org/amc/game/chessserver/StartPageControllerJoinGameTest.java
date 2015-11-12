@@ -2,6 +2,10 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -30,6 +34,13 @@ public class StartPageControllerJoinGameTest {
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
         ServerChessGame chessGame = new ServerChessGame(gameUUID, whitePlayer);
+        chessGame.setChessGameFactory(new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        });
         gameMap.put(gameUUID, chessGame);
     }
 

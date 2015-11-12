@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
@@ -52,9 +53,9 @@ public class DAO<T> {
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (PersistenceException pe) {
-            em.getTransaction().rollback();
-            em.close();
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to persist entity");
             throw new DAOException(pe);
@@ -76,6 +77,8 @@ public class DAO<T> {
             T entityToBeRemoved = em.merge(entity);
             em.remove(entityToBeRemoved);
             em.getTransaction().commit();
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (PersistenceException pe) {
             em.close();
             LOG.error("DAO<" + entityClass.getSimpleName()
@@ -104,6 +107,8 @@ public class DAO<T> {
                             "Select x from " + entityClass.getSimpleName() + " x");
             List<T> resultList = query.getResultList();
             return resultList;
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (PersistenceException pe) {
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to find entities");
@@ -135,6 +140,8 @@ public class DAO<T> {
             LOG.debug(query.toString());
             List<T> resultList = query.getResultList();
             return resultList;
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (PersistenceException pe) {
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to find entities");
@@ -172,6 +179,8 @@ public class DAO<T> {
                             + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to retrive entity. The entity should exist in the database but it doesn't");
             throw new DAOException(nre);
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (PersistenceException pe) {
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to retrive entity");
@@ -227,8 +236,9 @@ public class DAO<T> {
             em.getTransaction().begin();
             em.merge(entity);
             em.getTransaction().commit();
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (PersistenceException pe) {
-            em.getTransaction().rollback();
             em.close();
             LOG.error("DAO<"
                             + entityClass.getSimpleName()
@@ -248,6 +258,8 @@ public class DAO<T> {
         EntityManager em = getEntityManager();
         try {
             em.detach(entity);
+        } catch (OptimisticLockException ole) {
+            throw ole;
         } catch (IllegalArgumentException iae) {
             LOG.error("DAO: is not an entity");
         }

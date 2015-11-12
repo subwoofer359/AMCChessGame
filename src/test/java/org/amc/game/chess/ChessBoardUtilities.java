@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.view.ChessBoardView;
 
 public class ChessBoardUtilities {
 
@@ -32,5 +33,14 @@ public class ChessBoardUtilities {
                 }
             }
         }
+    }
+    
+    public static void compareBoardsAndDisplay(ChessBoard firstBoard, ChessBoard secondBoard) {
+        ChessBoardView view1 = new ChessBoardView(firstBoard);
+        ChessBoardView view2 = new ChessBoardView(secondBoard);
+        
+        view1.displayTheBoard();
+        view2.displayTheBoard();
+        compareBoards(firstBoard, secondBoard);
     }
 }

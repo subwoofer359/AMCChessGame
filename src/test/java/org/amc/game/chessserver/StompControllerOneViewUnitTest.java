@@ -3,6 +3,9 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 
+import org.amc.game.chess.ChessBoard;
+import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -12,8 +15,9 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +25,7 @@ public class StompControllerOneViewUnitTest {
 
     private StompController controller;
     
-    private Map<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
     
     private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
@@ -41,6 +45,8 @@ public class StompControllerOneViewUnitTest {
 
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
+    
+    private ChessGameFactory chessGameFactory;
 
     private Principal principal = new Principal() {
 
@@ -53,8 +59,16 @@ public class StompControllerOneViewUnitTest {
     @Before
     public void setUp() {
         this.controller = new StompController();
+        chessGameFactory = new ChessGameFactory() {
+            @Override
+            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+                            ChessGamePlayer playerBlack) {
+                return new ChessGame(board, playerWhite, playerBlack);
+            }
+        };
         scg = new OneViewServerChessGame(gameUUID, whitePlayer);
-        gameMap = new HashMap<Long, ServerChessGame>();
+        scg.setChessGameFactory(chessGameFactory);
+        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
         controller.setGameMap(gameMap);
 
@@ -129,6 +143,7 @@ public class StompControllerOneViewUnitTest {
     @Test
     public void testNotOneViewServerChessGame() {
         ServerChessGame scg = new ServerChessGame(gameUUID, whitePlayer);
+        scg.setChessGameFactory(chessGameFactory);
         this.gameMap.put(gameUUID, scg);
         scg.addOpponent(blackPlayer);
         String move = "A2-A3";

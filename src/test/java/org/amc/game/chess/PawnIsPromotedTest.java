@@ -31,13 +31,15 @@ public class PawnIsPromotedTest {
 
     @Before
     public void setUp() throws Exception {
-        board = new ChessBoard();
+        chessGame = new StandardChessGameFactory().getChessGame(new ChessBoard(), 
+                        whitePlayer, blackPlayer);
+        board = chessGame.getChessBoard();
         board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         this.promotion = PawnPromotionRule.getInstance();
-        chessGame = new StandardChessGame(board, whitePlayer, blackPlayer);
+        
     }
 
     @Parameters
@@ -64,7 +66,8 @@ public class PawnIsPromotedTest {
     public void testChessGamePawnPromotion() throws IllegalMoveException {
         ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Test1"), Colour.WHITE);
         ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Test2"), Colour.BLACK);
-        ChessGame chessGame = new ChessGame(board, whitePlayer, blackPlayer);
+        ChessGame chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
+        board = chessGame.getChessBoard();
         new ChessBoardView(board);
         board.putPieceOnBoardAt(piece, move.getStart());
         if (piece.getColour().equals(Colour.BLACK)) {
