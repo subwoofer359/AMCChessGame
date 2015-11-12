@@ -1,10 +1,10 @@
 package org.amc.game.chessserver;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
@@ -26,6 +26,15 @@ public class GameTableController {
 
     private Map<Long, ServerChessGame> gameMap;
     
+    private static final Gson GSON;
+    static {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeHierarchyAdapter(ServerChessGame.class, 
+                        new GameTableController.ServerChessGameSerialiser());
+                builder.serializeNulls();
+        GSON = builder.create();
+    }
+    
     private static final Logger logger = Logger.getLogger(GameTableController.class);
     
     @Async
@@ -36,8 +45,7 @@ public class GameTableController {
         return new Callable<String>() {
             @Override
             public String call() throws Exception {
-                Gson gson = new Gson();
-                return gson.toJson(gameMap);
+                return GSON.toJson(gameMap);
             }
             
         };
