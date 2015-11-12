@@ -53,9 +53,9 @@ public class ServerChessGameSerilaiserTest {
 		String output = gson.toJson(scgGame);
 		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
 		assertEquals(gameUID, info.getUid());
-		assertEquals(whitePlayer.getUserName(), info.player);
-		assertEquals(blackPlayer.getUserName(), info.opponent);
-		assertEquals(scgGame.getCurrentStatus(), info.currentStatus);
+		assertEquals(whitePlayer.getUserName(), info.getPlayer());
+		assertEquals(blackPlayer.getUserName(), info.getOpponent());
+		assertEquals(scgGame.getCurrentStatus(), info.getCurrentStatus());
 	}
 	
 	@Test
@@ -65,9 +65,8 @@ public class ServerChessGameSerilaiserTest {
 		String output = gson.toJson(scgGame);
 		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
 		assertEquals(gameUID, info.getUid());
-		//assertNull(whitePlayer.getUserName());
-		assertNull(info.opponent);
-		assertEquals(scgGame.getCurrentStatus(), info.currentStatus);
+		assertNull(info.getOpponent());
+		assertEquals(scgGame.getCurrentStatus(), info.getCurrentStatus());
 	}
 	
 	private static class ServerChessGameInfo {
@@ -75,31 +74,21 @@ public class ServerChessGameSerilaiserTest {
 		private ServerGameStatus currentStatus;
 		private String player;
 		private String opponent;
+		
 		public long getUid() {
 			return uid;
-		}
-		public void setUid(long uid) {
-			this.uid = uid;
 		}
 		public ServerGameStatus getCurrentStatus() {
 			return currentStatus;
 		}
-		public void setCurrentStatus(ServerGameStatus currentStatus) {
-			this.currentStatus = currentStatus;
-		}
+
 		public String getPlayer() {
 			return player;
 		}
-		public void setPlayer(String player) {
-			this.player = player;
-		}
+
 		public String getOpponent() {
 			return opponent;
 		}
-		public void setOpponent(String opponent) {
-			this.opponent = opponent;
-		}
-		
 	}
 
 }
