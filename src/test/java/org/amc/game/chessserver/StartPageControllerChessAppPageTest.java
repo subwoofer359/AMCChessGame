@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessGamePlayer;

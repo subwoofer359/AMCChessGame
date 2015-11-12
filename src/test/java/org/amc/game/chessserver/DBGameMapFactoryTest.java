@@ -17,10 +17,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Map;
 
-@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameServerSecurity.xml"})
+@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+    "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 public class DBGameMapFactoryTest {
 
     private DBGameMapFactoryBean gameMapFactory;

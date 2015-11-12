@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalThreadTest {
 
-    private int NUMBER_OF_GAMES = 1000;
+    private int NUMBER_OF_GAMES = 100;
     private ThreadPoolTaskScheduler scheduler;
     // Countdown Latch used to synchonise removal threads
     private CountDownLatch latch = new CountDownLatch(NUMBER_OF_GAMES);

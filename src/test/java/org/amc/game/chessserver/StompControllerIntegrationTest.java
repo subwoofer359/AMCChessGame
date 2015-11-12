@@ -6,11 +6,14 @@ import static org.mockito.Mockito.*;
 
 import org.amc.dao.DAO;
 import org.amc.dao.DatabaseGameMap;
+import org.amc.dao.ServerChessGameDAO;
+import org.amc.game.chess.ChessBoardUtilities;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.JsonChessGameView;
+import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +25,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -30,6 +34,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.persistence.OptimisticLockException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -44,6 +50,7 @@ public class StompControllerIntegrationTest {
     private static final String SESSION_ATTRIBUTE = "PLAYER";
 
     private static final String MESSAGE_DESTINATION = "/app/move/";
+    private static final String SAVE_MESSAGE_DESTINATION = "/app/save/";
 
     private static final String ONEVIEW_MESSAGE_DESTINATION = "/app/oneViewMove/";
 
@@ -63,15 +70,12 @@ public class StompControllerIntegrationTest {
 
     private TestChannelInterceptor brokerChannelInterceptor;
 
-    private long gameUUID = 1234L;
+    private final long gameUUID = 1234L;
 
-    private long oneViewChessGameUUID = 4321L;
+    private final long oneViewChessGameUUID = 4321L;
 
-    //private ServerChessGame scg;
-
-    //private ServerChessGame oneViewChessGame;
-
-    private String[] moves = { "A2-A3", "A7-A6", "B1-C3", "E7-E6" };
+    private String[] moves = { "A2-A3", "A7-A6", "B2-B3", "B7-B6", "C2-C3", "C7-C6", "D2-D3", 
+                    "D7-D6", "E2-E3", "E7-E6", "F2-F3", "F7-F6", "G2-G3", "G7-G6" ,"H2-H3", "H7-H6" };
 
     private DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
 
@@ -137,7 +141,7 @@ public class StompControllerIntegrationTest {
             ServerChessGame scg = gameMap.get(gameUUID);
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
             testInfoMessageSent();
-            Thread.sleep(1000);
+            Thread.sleep(200);
             verifyMove(scg, moves[i]);
         }
     }
@@ -165,7 +169,7 @@ public class StompControllerIntegrationTest {
         assertNotNull(message);
         assertNotEquals(type, message.getHeaders().get(MESSAGE_HEADER_TYPE));
     }
-
+    
     @Test
     public void OneViewChessGameMove() throws Exception {
         subscribe();
@@ -250,5 +254,123 @@ public class StompControllerIntegrationTest {
             }
         };
         return p;
+    }
+    
+    @Test
+    public void saveTest() throws Exception {
+        subscribe();
+        ServerChessGameDAO dao = new ServerChessGameDAO();
+        ObserverFactoryChain chain = (ObserverFactoryChain)wac.getBean("defaultObserverFactoryChain");
+        dao.setObserverFactoryChain(chain);
+        
+        for(String move : moves) {         
+            ServerChessGame scg = gameMap.get(gameUUID);
+            dao.detachEntity(scg);
+            move(scg.getChessGame().getCurrentPlayer(), 
+                            gameUUID, MESSAGE_DESTINATION, move);
+            
+            Thread.sleep(200);
+            saveGame(scg);
+            testInfoMessageSent();
+            Thread.sleep(200);
+            ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
+            dao.detachEntity(savedGame);
+            if (savedGame == null) {
+                Thread.sleep(200);
+                savedGame = dao.getServerChessGame(gameUUID);
+                
+            }
+            assertNotNull(savedGame);
+            ChessBoardUtilities.compareBoards(scg.getChessGame().getChessBoard(), savedGame.getChessGame().getChessBoard());
+        }
+      
+    }
+    
+    @Test
+    public void saveTestOpt() throws Exception {
+        subscribe();
+        ServerChessGameDAO dao = new ServerChessGameDAO();
+        ObserverFactoryChain chain = (ObserverFactoryChain)wac.getBean("defaultObserverFactoryChain");
+        dao.setObserverFactoryChain(chain);
+        
+        for(String move : moves) {         
+            saveGameTest(dao, move, 10);
+        }
+        
+        Thread.sleep(200);
+        ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
+        Move move = savedGame.getChessGame().getTheLastMove();
+        System.out.println("MOVE:" + move);
+        assertTrue(move.equals(new Move(moves[moves.length-1])));
+        
+        
+    }
+    
+    private void saveGameTest(ServerChessGameDAO dao, String move, int delayInMillis) throws Exception {
+        ServerChessGame scg = gameMap.get(gameUUID);
+        dao.detachEntity(scg);
+        move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
+
+        Thread.sleep(delayInMillis);
+        saveGame(scg);
+        Thread.sleep(delayInMillis);
+        testInfoMessageSent();
+        ServerChessGame savedGame = null;
+        
+        
+        int check = 0;
+        do{
+            if (savedGame == null) {
+                Thread.sleep(100);
+                savedGame = dao.getServerChessGame(gameUUID);
+                check++;
+            }
+         } while(check < 5 && savedGame == null);
+        dao.detachEntity(savedGame);
+        assertNotNull(savedGame);
+    }
+    
+    @DirtiesContext
+    @Test
+    public void saveOptimisticLockingExceptionThrownTest() throws Exception {
+        subscribe();
+        ServerChessGameDAO dao = spy(new ServerChessGameDAO());
+        
+        
+        ObserverFactoryChain chain = (ObserverFactoryChain)wac.getBean("defaultObserverFactoryChain");
+        
+        
+        dao.setObserverFactoryChain(chain);
+        
+        ServerChessGame scg = gameMap.get(gameUUID);
+        saveGame(scg);
+        Thread.sleep(200);
+        
+        StompController controller = (StompController)wac.getBean(StompController.class);
+        controller.setServerChessDAO(dao);
+        doThrow(new OptimisticLockException()).doReturn(scg).when(dao).saveServerChessGame(any(ServerChessGame.class));
+        
+        saveGameTest(dao, moves[0], 10);
+       
+        
+        ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
+        assertTrue(savedGame.getChessGame().getTheLastMove().equals(Move.EMPTY_MOVE));
+        
+        
+    }
+    
+    
+    private void saveGame(ServerChessGame scg) {
+        StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.SEND);
+        headers.setSubscriptionId(SUBSCRIPTION_ID);
+        headers.setDestination(SAVE_MESSAGE_DESTINATION + scg.getUid());
+        headers.setSessionId(SESSION_ID);
+        headers.setUser(getTestPrincipal());
+        Map<String, Object> sessionAttributes = new HashMap<String, Object>();
+        sessionAttributes.put(SESSION_ATTRIBUTE, scg.getChessGame().getCurrentPlayer());
+        headers.setSessionAttributes(sessionAttributes);
+        Message<byte[]> message = MessageBuilder.createMessage("save".getBytes(),
+                        headers.getMessageHeaders());
+        this.clientInboundChannel.send(message);
     }
 }

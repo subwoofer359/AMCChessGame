@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -10,7 +9,6 @@ import org.amc.game.chessserver.spring.PasswordValidator;
 import org.amc.game.chessserver.spring.UserNameValidator;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +16,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/SpringTestConfig.xml", "/GameServerSecurity.xml",
-        "/GameServerWebSockets.xml" })
+@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+    "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 public class SignUpControllerIntegrationTest {
 
     private static final String URL = "/signup";

@@ -15,10 +15,11 @@ import org.amc.game.chessserver.messaging.EmailMessagingIntegrationTest;
 import org.amc.game.chessserver.messaging.MoveUpdateEmailTest;
 import org.amc.game.chessserver.observers.FinishedChessGameRemovalThreadTest;
 import org.amc.game.chessserver.observers.ObserverFactoryChainIntegrationTest;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
+@Ignore
 @RunWith(Suite.class)
 @SuiteClasses({ 
     ChessGameDAOTest.class,

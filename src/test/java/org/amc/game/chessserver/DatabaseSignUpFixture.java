@@ -112,4 +112,10 @@ public class DatabaseSignUpFixture {
         return result;
     }
 
+    public EntityManagerFactory getFactory() {
+        return factory;
+    }
+    
+    
+
 }

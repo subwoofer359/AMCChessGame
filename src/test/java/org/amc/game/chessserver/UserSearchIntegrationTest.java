@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +32,8 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/GameServerSecurity.xml" })
+@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+    "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
 public class UserSearchIntegrationTest {
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();

@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml" })
+
 public class StartPageControllerIntegrationTest {
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private static final String PLAYER_SESSION_ATTR = "PLAYER";

@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  * @author Adrian Mclaughlin
  *
  */
-@DirtiesContext
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations={"/SpringTestConfig.xml", "/UserLogging.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml"})

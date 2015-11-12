@@ -4,7 +4,6 @@ import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
@@ -17,12 +16,10 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
-import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -32,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.Persistence;
 
 public class StompControllerSaveUnitTest {
     private StompController controller;
@@ -45,10 +43,6 @@ public class StompControllerSaveUnitTest {
     private long gameUUID = 1234L;
 
     private ServerChessGame scg;
-    
-    private OfflineChessGameMessager messager = mock (OfflineChessGameMessager.class);
-    
-    private static final String DESTINATION_BOTH_PLAYERS = "/topic/updates";
 
     private Map<String, Object> sessionAttributes;
 
@@ -105,14 +99,10 @@ public class StompControllerSaveUnitTest {
         sessionAttributes.put("PLAYER", whitePlayer);
     }
     
+    @DirtiesContext
     @Test
     public void testSaveGame() throws DAOException {
-        EntityTransaction mockTransaction = mock(EntityTransaction.class);
-        EntityManagerFactory emFactory = mock(EntityManagerFactory.class);
-        EntityManagerThreadLocal.setEntityManagerFactory(emFactory);
-        EntityManager mockEmManager = mock(EntityManager.class);
-        when(emFactory.createEntityManager()).thenReturn(mockEmManager);
-        when(mockEmManager.getTransaction()).thenReturn(mockTransaction);
+        setupMockEntityManagerThreadLocal();
         
         when(serverChessGameDAO.saveServerChessGame(eq(scg))).thenReturn(scg);
         controller.save(principal, sessionAttributes, gameUUID, "Save");
@@ -120,6 +110,23 @@ public class StompControllerSaveUnitTest {
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(StompController.GAME_SAVED_SUCCESS, payoadArgument.getValue());
+        
+        restoreEntityManagerThreadLocal();
+    }
+    
+    private void setupMockEntityManagerThreadLocal() {
+        EntityTransaction mockTransaction = mock(EntityTransaction.class);
+        EntityManagerFactory emFactory = mock(EntityManagerFactory.class);
+        EntityManagerThreadLocal.setEntityManagerFactory(emFactory);
+        EntityManager mockEmManager = mock(EntityManager.class);
+        
+        when(emFactory.createEntityManager()).thenReturn(mockEmManager);
+        when(mockEmManager.getTransaction()).thenReturn(mockTransaction);
+    }
+    
+    private void restoreEntityManagerThreadLocal() {
+        EntityManagerThreadLocal.setEntityManagerFactory(
+                        Persistence.createEntityManagerFactory("myDatabaseTest"));
     }
     
     @SuppressWarnings("unchecked")

@@ -28,7 +28,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml" })
+@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+    "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
 public class JoinGameControllerTest {
 	
