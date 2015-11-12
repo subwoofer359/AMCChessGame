@@ -55,12 +55,12 @@ $(document).ready(function () {
             for (gameUUID in data) {
                 if (data.hasOwnProperty(gameUUID)) {
                     tempEntry = '<tr><td>' + gameUUID.toString().slice(-5) + '</td><td>' +
-                        data[gameUUID].player.player.userName +
-                        '</td><td>' + (data[gameUUID].chessGame ? data[gameUUID].chessGame.blackPlayer.player.userName : "") +
+                        data[gameUUID].player +
+                        '</td><td>' + (data[gameUUID].opponent || "") +
                         '</td><td>' + getStatusSymbol(data[gameUUID].currentStatus) +
                         '</td><td><input type="checkbox" name="gameUUID" value="' +
                         gameUUID + '"></td></tr>';
-                    if (userName === data[gameUUID].player.player.userName) {
+                    if (userName === data[gameUUID].player) {
                         yourEntry += tempEntry;
                     } else {
                         otherEntry += tempEntry;
