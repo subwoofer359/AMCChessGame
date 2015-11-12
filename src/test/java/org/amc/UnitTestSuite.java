@@ -42,6 +42,7 @@ import org.amc.game.chessserver.MoveEditorTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
+import org.amc.game.chessserver.ServerChessGameSerilaiserTest;
 import org.amc.game.chessserver.ServerChessGameTest;
 import org.amc.game.chessserver.SignUpControllerUnitTest;
 import org.amc.game.chessserver.StartPageControllerChessAppPageTest;
@@ -143,7 +144,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ValidPasswordTest.class,
     ValidUserNameTest.class,
     StandardChessGameTest.class,
-    UnmodifibleChessBoardTest.class
+    UnmodifibleChessBoardTest.class,
+    ServerChessGameSerilaiserTest.class
 })
 
 public class UnitTestSuite {
