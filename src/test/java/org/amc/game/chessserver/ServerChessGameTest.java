@@ -56,6 +56,12 @@ public class ServerChessGameTest {
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, game.getCurrentStatus());
         assertEquals(Colour.BLACK, game.getOpponent().getColour());
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullAddOpponent() {
+        ServerChessGame game = getServerChessGame();
+        game.addOpponent(null);
+    }
 
     @Test
     public void testAddPlayerAsOpponent() {
@@ -84,6 +90,35 @@ public class ServerChessGameTest {
         assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, game.getCurrentStatus());
+    }
+    
+    @Test
+    public void getPlayerOpponentNotAddedTest() {
+    	ServerChessGame game = getServerChessGame();
+    	assertEquals(null,game.getPlayer(opponent));
+    }
+    
+    @Test
+    public void getPlayerTest() {
+    	ServerChessGame game = getServerChessGame();
+    	game.addOpponent(opponent);
+    	assertTrue(ComparePlayers.comparePlayers(opponent, game.getPlayer(opponent)));
+    	assertTrue(ComparePlayers.comparePlayers(player, game.getPlayer(player)));
+    }
+    
+    @Test
+    public void getPlayerUnknownPlayer() {
+    	ServerChessGame game = getServerChessGame();
+    	game.addOpponent(opponent);
+    	Player unknownPlayer = new HumanPlayer("Evil Ralph");
+    	game.getPlayer(unknownPlayer);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void getPlayerNullPlayer() {
+    	ServerChessGame game = getServerChessGame();
+    	game.addOpponent(opponent);
+    	game.getPlayer(null);
     }
     
     @Test

@@ -107,7 +107,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
     private void checkForNull(Class<?> cls, Object argument) {
     	if(argument == null) {
     		throw new IllegalArgumentException(
-    				cls.getSimpleName() + "is null");
+    				cls.getSimpleName() + " argument is null");
     	}
     }
     
@@ -137,6 +137,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
      *            Player
      */
     public void addOpponent(Player opponent) {
+    	checkForNull(Player.class, opponent);
         if (ServerGameStatus.AWAITING_PLAYER.equals(this.currentStatus)) {
             if (ComparePlayers.comparePlayers(this.player, opponent)) {
                 logger.debug(String.format("Player:(%s) tried to join their own game",
@@ -178,9 +179,10 @@ public class ServerChessGame extends GameSubject implements Serializable {
      * Return ChessGamePlayer with the same ID as Player
      * 
      * @param player
-     * @return ChessGamePlayer represents Player
+     * @return ChessGamePlayer representing Player
      */
     public ChessGamePlayer getPlayer(Player player) {
+    	checkForNull(Player.class, player);
         if(ComparePlayers.comparePlayers(this.player, player)) {
             return this.player;
         } else if(this.chessGame == null) {
@@ -243,6 +245,8 @@ public class ServerChessGame extends GameSubject implements Serializable {
      *             if Move is illegal
      */
     public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
+    	checkForNull(Player.class, player);
+    	checkForNull(Move.class, move);
         if (chessGame != null) {
             synchronized (chessGame) {
                 chessGame.move(player, move);
