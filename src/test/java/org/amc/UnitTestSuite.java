@@ -38,7 +38,6 @@ import org.amc.game.chess.controller.SimpleInputParserTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
-import org.amc.game.chessserver.MoveEditorTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
@@ -113,7 +112,6 @@ import org.junit.runners.Suite.SuiteClasses;
     ChessBoardViewTest.class,
     BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved.class,
     BugCG52ServerChessGameDidntEndInCheckmate.class,
-    MoveEditorTest.class,
     OnlinePlayerListControllerTest.class,
     OnlinePlayerListMessagerTest.class,
     ServerChessGameFactoryTest.class,

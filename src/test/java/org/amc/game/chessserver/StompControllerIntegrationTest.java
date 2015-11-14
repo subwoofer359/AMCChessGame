@@ -149,9 +149,7 @@ public class StompControllerIntegrationTest {
     private void verifyMove(ServerChessGame scg, String moveString) {
         scg = gameMap.get(scg.getUid());
         Move actualMove = scg.getChessGame().getTheLastMove();
-        MoveEditor editor = new MoveEditor();
-        editor.setAsText(moveString);
-        Move expectedMove = (Move) editor.getValue();
+        Move expectedMove = new Move(moveString);
         assertEquals(expectedMove.getStart(), actualMove.getStart());
         assertEquals(expectedMove.getEnd(), actualMove.getEnd());
     }

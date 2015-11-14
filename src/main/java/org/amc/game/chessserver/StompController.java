@@ -106,22 +106,14 @@ public class StompController {
 
         try {
             ChessGamePlayer gamePlayer = ComparePlayers.comparePlayers(game.getPlayer(), player) ? game.getPlayer() : game.getOpponent();
-            game.move(gamePlayer, getMoveFromString(moveString));
-        } catch (IllegalMoveException e) {
+            game.move(gamePlayer, new Move(moveString));
+        } catch (IllegalMoveException | IllegalArgumentException e) {
             message = "Error:" + e.getMessage();
         } catch (MalformedMoveException mme) {
             message = "Error:" + mme.getMessage();
         }
 
         return message;
-    }
-    
-    @Deprecated
-    private Move getMoveFromString(String moveString) {
-        MoveEditor convertor = new MoveEditor();
-        convertor.setAsText(moveString);
-        logger.debug(convertor.getValue());
-        return (Move) convertor.getValue();
     }
 
     /**
