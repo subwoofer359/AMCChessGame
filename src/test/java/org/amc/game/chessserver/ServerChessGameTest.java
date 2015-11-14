@@ -102,5 +102,17 @@ public class ServerChessGameTest {
         game.setChessGameFactory(chessGameFactory);
         return game;
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullPlayerPassedToConstructor() {
+    	Player p = null;
+    	new ServerChessGame(233L, p);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullChessGamePassedToConstructor() {
+    	ChessGame c = null;
+    	new ServerChessGame(233L, c);
+    }
 
 }

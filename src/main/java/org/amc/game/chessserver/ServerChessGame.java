@@ -96,11 +96,19 @@ public class ServerChessGame extends GameSubject implements Serializable {
      * @param player
      *            Player who created the game and will be the white player
      */
-    public ServerChessGame(long uid, Player player) {
+    public ServerChessGame(long uid, Player player) { 
         super();
+        checkForNull(Player.class, player);
         this.uid = uid;
         this.player = new ChessGamePlayer(player, Colour.WHITE);
         this.currentStatus = ServerGameStatus.AWAITING_PLAYER;
+    }
+    
+    private void checkForNull(Class<?> cls, Object argument) {
+    	if(argument == null) {
+    		throw new IllegalArgumentException(
+    				cls.getSimpleName() + "is null");
+    	}
     }
     
     /**
@@ -113,6 +121,7 @@ public class ServerChessGame extends GameSubject implements Serializable {
      */
     public ServerChessGame(long uid, ChessGame chessGame) {
         super();
+        checkForNull(ChessGame.class, chessGame);
         this.uid = uid;
         this.player = chessGame.getWhitePlayer();
         this.currentStatus = ServerGameStatus.IN_PROGRESS;
