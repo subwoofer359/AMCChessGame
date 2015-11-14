@@ -9,19 +9,6 @@ import org.amc.game.chess.IllegalMoveException;
  *
  */
 public interface Controller {
-
-    /**
-     * @return current inputParser
-     */
-    InputParser getInputParser();
-
-    /**
-     * 
-     * @param parser
-     *            InputParser
-     */
-    void setInputParser(InputParser parser);
-
     /**
      * Take a turn in the game
      * 
