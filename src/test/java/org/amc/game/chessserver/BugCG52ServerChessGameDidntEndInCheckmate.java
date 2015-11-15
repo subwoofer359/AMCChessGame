@@ -54,7 +54,7 @@ public class BugCG52ServerChessGameDidntEndInCheckmate {
 
     @Test
     public void test() throws IllegalMoveException {
-        Move move =new Move(new Location(C,2), new Location(C,7));
+        Move move =new Move("C2-C7");
         serverChessGame.move(whitePlayer, move);
         ChessGame game = serverChessGame.getChessGame();
         System.out.println("Game state:"+game.getGameState());

@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author Adrian Mclaughlin
  * 
  */
-public class MoveListExternalizer {
+public final class MoveListExternalizer {
 
     private MoveListExternalizer() {
     }

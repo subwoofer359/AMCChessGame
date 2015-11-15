@@ -186,7 +186,7 @@ $(document).ready(function(){
 </head>
 <body>
     <tags:BottomMenu>
-    	<tags:NavMenuButton id="home-btn" url="${pageContext.request.contextPath}/app/chessgamechessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
+    	<tags:NavMenuButton id="home-btn" url="${pageContext.request.contextPath}/app/chessgame/chessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
         <tags:NavMenuButton id="save-btn" aclass="save-btn"><span class="glyphicon glyphicon-floppy-disk"></span> Save Game</tags:NavMenuButton>
         <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
     </tags:BottomMenu>

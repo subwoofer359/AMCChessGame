@@ -11,24 +11,24 @@ import org.junit.Test;
 
 public class PawnPieceTest {
     private ChessBoard board;
-    private Location testWhiteStartPosition = new Location(ChessBoard.Coordinate.F, 2);
-    private Location testBlackStartPosition = new Location(ChessBoard.Coordinate.F, 7);
+    private Location testWhiteStartPosition = new Location("F2");
+    private Location testBlackStartPosition = new Location("F7");
 
     private static final Location[] invalidWhiteMovesFromF2 = {
-            new Location(ChessBoard.Coordinate.F, 1), new Location(ChessBoard.Coordinate.E, 1),
-            new Location(ChessBoard.Coordinate.E, 2), new Location(ChessBoard.Coordinate.G, 2),
-            new Location(ChessBoard.Coordinate.G, 1), new Location(ChessBoard.Coordinate.E, 4),
-            new Location(ChessBoard.Coordinate.G, 4), new Location(ChessBoard.Coordinate.F, 5),
-            new Location(ChessBoard.Coordinate.D, 4), new Location(ChessBoard.Coordinate.H, 4),
-            new Location(ChessBoard.Coordinate.H, 1) };
+            new Location("F1"), new Location("E1"),
+            new Location("E2"), new Location("G2"),
+            new Location("G1"), new Location("E4"),
+            new Location("G4"), new Location("F5"),
+            new Location("D4"), new Location("H4"),
+            new Location("H1") };
 
     private static final Location[] invalidBlackMovesFromF7 = {
-            new Location(ChessBoard.Coordinate.F, 8), new Location(ChessBoard.Coordinate.E, 8),
-            new Location(ChessBoard.Coordinate.E, 7), new Location(ChessBoard.Coordinate.G, 7),
-            new Location(ChessBoard.Coordinate.G, 8), new Location(ChessBoard.Coordinate.E, 5),
-            new Location(ChessBoard.Coordinate.G, 5), new Location(ChessBoard.Coordinate.F, 4),
-            new Location(ChessBoard.Coordinate.D, 5), new Location(ChessBoard.Coordinate.H, 5),
-            new Location(ChessBoard.Coordinate.H, 8) };
+            new Location("F8"), new Location("E8"),
+            new Location("E7"), new Location("G7"),
+            new Location("G8"), new Location("E5"),
+            new Location("G5"), new Location("F4"),
+            new Location("D5"), new Location("H5"),
+            new Location("H8") };
 
     @Before
     public void setUp() throws Exception {
@@ -45,9 +45,9 @@ public class PawnPieceTest {
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
 
         assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition, new Location(
-                        ChessBoard.Coordinate.F, 3))));
+                        "F3"))));
         assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition, new Location(
-                        ChessBoard.Coordinate.F, 4))));
+                        "F4"))));
 
     }
 
@@ -57,9 +57,9 @@ public class PawnPieceTest {
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
 
         assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition, new Location(
-                        ChessBoard.Coordinate.F, 6))));
+                        "F6"))));
         assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition, new Location(
-                        ChessBoard.Coordinate.F, 5))));
+                        "F5"))));
 
     }
 

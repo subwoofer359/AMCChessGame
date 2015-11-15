@@ -34,7 +34,6 @@ import org.amc.game.chess.SimpleChessBoardSetupNotationTest;
 import org.amc.game.chess.StandardChessGameTest;
 import org.amc.game.chess.UnmodifibleChessBoardTest;
 import org.amc.game.chess.controller.ConsoleControllerTest;
-import org.amc.game.chess.controller.SimpleInputParserTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
@@ -108,7 +107,6 @@ import org.junit.runners.Suite.SuiteClasses;
     RookPieceTest.class,
     SimpleChessBoardSetupNotationTest.class,
     ConsoleControllerTest.class,
-    SimpleInputParserTest.class,
     ChessBoardViewTest.class,
     BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved.class,
     BugCG52ServerChessGameDidntEndInCheckmate.class,

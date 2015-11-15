@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessGame.GameState;
@@ -43,7 +42,7 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move(new Location(E, 6), new Location(E, 8)));
+        chessGame.move(blackPlayer, new Move("E6-E8"));
         assertEquals(GameState.WHITE_IN_CHECK, chessGame.getGameState());
     }
 
@@ -53,7 +52,7 @@ public class GameStateTest {
         chessGame.setChessBoard(board);
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
-        chessGame.move(whitePlayer, new Move(new Location(E, 1), new Location(E, 2)));
+        chessGame.move(whitePlayer, new Move("E1-E2"));
         assertEquals(GameState.BLACK_IN_CHECK, chessGame.getGameState());
     }
 
@@ -63,7 +62,7 @@ public class GameStateTest {
         chessGame.setChessBoard(board);
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
-        chessGame.move(whitePlayer, new Move(new Location(E, 1), new Location(E, 2)));
+        chessGame.move(whitePlayer, new Move("E1-E2"));
         assertEquals(GameState.BLACK_CHECKMATE, chessGame.getGameState());
     }
 
@@ -74,7 +73,7 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move(new Location(E, 8), new Location(E, 7)));
+        chessGame.move(blackPlayer, new Move("E8-E7"));
         assertEquals(GameState.WHITE_CHECKMATE, chessGame.getGameState());
     }
 
@@ -84,10 +83,10 @@ public class GameStateTest {
         chessGame.setChessBoard(board);
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
-        chessGame.move(whitePlayer, new Move(new Location(E, 1), new Location(E, 2)));
+        chessGame.move(whitePlayer, new Move("E1-E2"));
         assertEquals(GameState.BLACK_IN_CHECK, chessGame.getGameState());
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move(new Location(E, 8), new Location(F, 7)));
+        chessGame.move(blackPlayer, new Move("E8-F7"));
         assertEquals(GameState.RUNNING, chessGame.getGameState());
     }
 
@@ -98,10 +97,10 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move(new Location(E, 6), new Location(E, 8)));
+        chessGame.move(blackPlayer, new Move("E6-E8"));
         assertEquals(GameState.WHITE_IN_CHECK, chessGame.getGameState());
         chessGame.changePlayer();
-        chessGame.move(whitePlayer, new Move(new Location(E, 1), new Location(F, 2)));
+        chessGame.move(whitePlayer, new Move("E1-F2"));
         assertEquals(GameState.RUNNING, chessGame.getGameState());
     }
 
@@ -112,10 +111,10 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move(new Location(E, 8), new Location(E, 7)));
+        chessGame.move(blackPlayer, new Move("E8-E7"));
         assertEquals(GameState.WHITE_IN_CHECK, chessGame.getGameState());
         chessGame.changePlayer();
-        chessGame.move(whitePlayer, new Move(new Location(B, 1), new Location(E, 4)));
+        chessGame.move(whitePlayer, new Move("B1-E4"));
         assertEquals(GameState.BLACK_IN_CHECK, chessGame.getGameState());
     }
 
@@ -126,7 +125,7 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move(new Location(E, 4), new Location(F, 5)));
+        chessGame.move(blackPlayer, new Move("E4-F5"));
         assertEquals(GameState.STALEMATE, chessGame.getGameState());
     }
 

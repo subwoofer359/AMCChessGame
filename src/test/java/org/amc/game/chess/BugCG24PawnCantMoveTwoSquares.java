@@ -3,7 +3,6 @@ package org.amc.game.chess;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 public class BugCG24PawnCantMoveTwoSquares {
     private ChessGamePlayer whitePlayer;
@@ -27,10 +26,10 @@ public class BugCG24PawnCantMoveTwoSquares {
 
     @Test
     public void test() throws IllegalMoveException {
-        Move firstMove = new Move(new Location(H, 2), new Location(H, 4));
+        Move firstMove = new Move("H2-H4");
         game.move(whitePlayer, firstMove);
         game.changePlayer();
-        Move secondMoveThatFails = new Move(new Location(A, 7), new Location(A, 5));
+        Move secondMoveThatFails = new Move("A7-A5");
         game.move(blackPlayer, secondMoveThatFails);
     }
 

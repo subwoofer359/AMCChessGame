@@ -11,19 +11,19 @@ import org.junit.Test;
 public class KnightPieceTest extends ChessPieceTest {
 
     private ChessBoard board;
-    private Location testStartPosition = new Location(ChessBoard.Coordinate.D, 4);
+    private Location testStartPosition = new Location("D4");
 
-    private Location[] validLocationsFromD4 = { new Location(ChessBoard.Coordinate.B, 5),
-            new Location(ChessBoard.Coordinate.C, 6), new Location(ChessBoard.Coordinate.E, 6),
-            new Location(ChessBoard.Coordinate.F, 5), new Location(ChessBoard.Coordinate.B, 3),
-            new Location(ChessBoard.Coordinate.C, 2), new Location(ChessBoard.Coordinate.E, 2),
-            new Location(ChessBoard.Coordinate.F, 3) };
+    private Location[] validLocationsFromD4 = { new Location("B5"),
+            new Location("C6"), new Location("E6"),
+            new Location("F5"), new Location("B3"),
+            new Location("C2"), new Location("E2"),
+            new Location("F3") };
 
-    private Location[] notValidLocationsFromD4 = { new Location(ChessBoard.Coordinate.B, 4),
-            new Location(ChessBoard.Coordinate.D, 6), new Location(ChessBoard.Coordinate.F, 4),
-            new Location(ChessBoard.Coordinate.D, 2), new Location(ChessBoard.Coordinate.C, 5),
-            new Location(ChessBoard.Coordinate.C, 3), new Location(ChessBoard.Coordinate.E, 5),
-            new Location(ChessBoard.Coordinate.E, 3) };
+    private Location[] notValidLocationsFromD4 = { new Location("B4"),
+            new Location("D6"), new Location("F4"),
+            new Location("D2"), new Location("C5"),
+            new Location("C3"), new Location("E5"),
+            new Location("E3") };
 
     @Before
     public void setUp() throws Exception {

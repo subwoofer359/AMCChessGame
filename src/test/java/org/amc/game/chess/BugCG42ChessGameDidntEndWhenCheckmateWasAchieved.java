@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
@@ -10,7 +9,6 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
-import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessBoardView;
@@ -57,7 +55,7 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
 
     @Test
     public void test() throws IllegalMoveException {
-        Move move = new Move(new Location(C, 6), new Location(B, 6));
+        Move move = new Move("C6-B6");
         chessGame.move(whitePlayer, move);
         assertTrue(chessGame.isCheckMate(blackPlayer, board));
         assertTrue(chessGame.getGameState() == ChessGame.GameState.BLACK_CHECKMATE);

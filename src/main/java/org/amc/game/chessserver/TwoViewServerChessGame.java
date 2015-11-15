@@ -39,6 +39,7 @@ public class TwoViewServerChessGame extends ServerChessGame {
      *            Player
      */
     public void addOpponent(Player opponent) {
+        checkForNull(Player.class, opponent);
         if (ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus())) {
             if (ComparePlayers.comparePlayers(getPlayer(), opponent)) {
                 logger.debug(String.format("Player:(%s) tried to join their own game",

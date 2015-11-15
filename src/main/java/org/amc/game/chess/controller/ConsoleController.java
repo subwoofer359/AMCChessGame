@@ -3,10 +3,8 @@ package org.amc.game.chess.controller;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.SimpleInputParser;
 
 import java.io.Console;
-import java.text.ParseException;
 
 /**
  * Creates a Controller which uses the System.Console
@@ -14,28 +12,12 @@ import java.text.ParseException;
  * @author Adrian Mclaughlin
  *
  */
-public class ConsoleController implements Controller {
+public final class ConsoleController implements Controller {
     private UserConsole console = new GameTextConsole();
-    private InputParser parser = new SimpleInputParser();
     private final ChessGame chessGame;
 
     public ConsoleController(ChessGame chessGame) {
         this.chessGame=chessGame;
-    }
-
-    /**
-     * @see Controller#getInputParser()
-     */
-    @Override
-    public InputParser getInputParser() {
-        return this.parser;
-    }
-
-    /**
-     * @see Controller#setInputParser(InputParser)
-     */
-    public void setInputParser(InputParser parser) {
-        this.parser = parser;
     }
 
     /**
@@ -44,10 +26,10 @@ public class ConsoleController implements Controller {
     public void takeTurn() throws IllegalMoveException {
         String input = console.readLine("Player(%s) move:", chessGame.getCurrentPlayer().getName());
         try {
-            Move move = getInputParser().parseMoveString(input);
+            Move move = new Move(input);
             chessGame.move(chessGame.getCurrentPlayer(), move);
-        } catch (ParseException pe) {
-            throw new IllegalMoveException(pe);
+        } catch (IllegalArgumentException ie) {
+            throw new IllegalMoveException(ie);
         }
     }
 

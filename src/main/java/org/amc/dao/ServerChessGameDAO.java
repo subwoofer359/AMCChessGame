@@ -6,6 +6,7 @@ import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,9 +38,14 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
     public Set<Long> getGameUids() {
         EntityManager entityManager = getEntityManager();
         Query query = entityManager.createQuery("Select x.uid from " + getEntityClass().getSimpleName() + " x ORDER BY x.uid");
-        Set<Long> gameUidsSet = new HashSet<Long>(query.getResultList());
-    
-        return gameUidsSet;
+        try {
+        	Set<Long> gameUidsSet = new HashSet<Long>(query.getResultList());
+        	return gameUidsSet;
+        } catch(PersistenceException pe) {
+        	logger.error(pe);
+        	return Collections.<Long>emptySet();
+        }
+        
     }
     
     private void addObservers(ServerChessGame serverChessGame) throws DAOException {

@@ -16,13 +16,10 @@ import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chess.StartingSquare;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.controller.ConsoleController;
-import org.amc.game.chess.controller.InputParser;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
-
-import static org.mockito.Mockito.*;
 
 public class ConsoleControllerTest {
     private ChessBoard board;
@@ -54,7 +51,7 @@ public class ConsoleControllerTest {
     public void testTakeTurn() throws IllegalMoveException {
         ConsoleController controller = new ConsoleController(game);
         MockUserInput userInput = new MockUserInput();
-        userInput.setOutput("A1B2");
+        userInput.setOutput("A1-B2");
         controller.setConsole(userInput);
 
         controller.takeTurn();
@@ -62,15 +59,11 @@ public class ConsoleControllerTest {
         assertNull(board.getPieceFromBoardAt(startLocation));
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalMoveException.class)
     public void testTakeTurnThrowsException() throws IllegalMoveException, ParseException {
-        InputParser parser = mock(InputParser.class);
-        when(parser.parseMoveString(anyString())).thenThrow(ParseException.class);
         ConsoleController controller = new ConsoleController(game);
-        controller.setInputParser(parser);
         MockUserInput userInput = new MockUserInput();
-        userInput.setOutput("A1B2");
+        userInput.setOutput("A1-E2");
         controller.setConsole(userInput);
 
         controller.takeTurn();

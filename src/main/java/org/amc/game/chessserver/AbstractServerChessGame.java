@@ -84,9 +84,17 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      */
     public AbstractServerChessGame(long uid, Player player) {
         super();
+        checkForNull(Player.class, player);
         this.uid = uid;
         this.player = new ChessGamePlayer(player, Colour.WHITE);
         this.currentStatus = ServerGameStatus.AWAITING_PLAYER;
+    }
+    
+    void checkForNull(Class<?> cls, Object argument) {
+        if(argument == null) {
+            throw new IllegalArgumentException(
+                    cls.getSimpleName() + " argument is null");
+        }
     }
     
     /**
@@ -99,6 +107,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      */
     public AbstractServerChessGame(long uid, ChessGame chessGame) {
         super();
+        checkForNull(ChessGame.class, chessGame);
         this.uid = uid;
         this.player = chessGame.getWhitePlayer();
         this.currentStatus = ServerGameStatus.IN_PROGRESS;
@@ -142,6 +151,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @return ChessGamePlayer represents Player
      */
     public ChessGamePlayer getPlayer(Player player) {
+        checkForNull(Player.class, player);
         if(ComparePlayers.comparePlayers(this.player, player)) {
             return this.player;
         } else if(this.chessGame == null) {

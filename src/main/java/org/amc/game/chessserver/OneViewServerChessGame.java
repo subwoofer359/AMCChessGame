@@ -26,6 +26,7 @@ public class OneViewServerChessGame extends ServerChessGame {
 
 	@Override
 	public void addOpponent(Player opponent) {
+	    checkForNull(Player.class, opponent);
         ChessBoard board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);
         setChessGame(getChessGameFactory().getChessGame(board, getPlayer(), 

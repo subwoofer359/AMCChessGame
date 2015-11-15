@@ -19,7 +19,7 @@ import org.amc.game.chess.SimpleChessBoardSetupNotation;
 
 import java.text.ParseException;
 
-public class ChessBoardExternalizer {
+public final class ChessBoardExternalizer {
 
     private ChessBoardExternalizer() {
         

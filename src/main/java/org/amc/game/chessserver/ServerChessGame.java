@@ -51,6 +51,8 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
         super(uid, player);
     }
     
+
+    
     /**
      * Constructor 
      * 
@@ -73,6 +75,8 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
      */
     public abstract void addOpponent(Player opponent);
 
+
+    
     /**
      * Sends a move to the ChessGame
      * If successful the next player can take their turn
@@ -87,6 +91,8 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
      */
     @Override
     public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
+        checkForNull(Player.class, player);
+        checkForNull(Move.class, move);
         if (getChessGame() != null) {
             synchronized (getChessGame()) {
                 getChessGame().move(player, move);

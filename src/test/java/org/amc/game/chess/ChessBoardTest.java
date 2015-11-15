@@ -118,6 +118,6 @@ public class ChessBoardTest {
     @Test(expected = RuntimeException.class)
     public void getPlayersKingLocationFailTest() throws ParseException {
         ChessBoard board = factory.getChessBoard("ka1");
-        Location blackKingLocation = board.getPlayersKingLocation(blackPlayer);
+        board.getPlayersKingLocation(blackPlayer);
     }
 }
