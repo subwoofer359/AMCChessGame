@@ -7,7 +7,7 @@ import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

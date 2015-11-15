@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class ChessGameGetOpposingPlayerTest {
     public void setUp() throws Exception {
         chessGameFixture = new ChessGameFixture();
 
-        scg = new ServerChessGame(2030L, chessGameFixture.getWhitePlayer());
+        scg = new TwoViewServerChessGame(2030L, chessGameFixture.getWhitePlayer());
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

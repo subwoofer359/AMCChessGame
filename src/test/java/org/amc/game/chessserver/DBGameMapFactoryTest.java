@@ -3,7 +3,7 @@ package org.amc.game.chessserver;
 import static org.junit.Assert.*;
 
 import org.amc.dao.ServerChessGameTestDatabaseEntity;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

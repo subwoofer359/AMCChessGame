@@ -10,7 +10,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

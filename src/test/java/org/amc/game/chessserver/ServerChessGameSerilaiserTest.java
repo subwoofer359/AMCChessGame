@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.After;

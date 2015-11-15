@@ -16,7 +16,9 @@
 <class>org.amc.game.chess.ChessGamePlayer</class>
 <class>org.amc.game.chess.ChessGame</class>
 <class>org.amc.game.chess.StandardChessGame</class>
+<class>org.amc.game.chessserver.AbstractServerChessGame</class>
 <class>org.amc.game.chessserver.ServerChessGame</class>
+<class>org.amc.game.chessserver.TwoViewServerChessGame</class>
 <class>org.amc.game.chessserver.OneViewServerChessGame</class>
 <properties>
       <property name="openjpa.ConnectionURL" value="jdbc:mysql://192.168.1.5/amcchessgametest"/>

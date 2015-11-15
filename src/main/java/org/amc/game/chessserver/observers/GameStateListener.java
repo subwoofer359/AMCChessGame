@@ -6,7 +6,7 @@ import org.amc.game.chess.ChessGame.GameState;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.StompConstants;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

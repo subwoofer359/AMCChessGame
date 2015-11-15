@@ -17,6 +17,7 @@ import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,7 +101,7 @@ public class OfflineChessGameMessagerTest {
 
         when(userDAO.findEntities("userName", opponentPlayer.getUserName())).thenReturn(userList);
 
-        serverChessGame = new ServerChessGame(GAME_UID, player);
+        serverChessGame = new TwoViewServerChessGame(GAME_UID, player);
         serverChessGame.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

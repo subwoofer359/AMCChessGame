@@ -98,7 +98,7 @@ public class ServerChessGameTest {
     }
     
     private ServerChessGame getServerChessGame() {
-        ServerChessGame game = new ServerChessGame(UID, player);
+        ServerChessGame game = new TwoViewServerChessGame(UID, player);
         game.setChessGameFactory(chessGameFactory);
         return game;
     }

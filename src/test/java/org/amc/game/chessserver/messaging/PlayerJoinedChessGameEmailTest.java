@@ -10,6 +10,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class PlayerJoinedChessGameEmailTest {
     @Before
     public void setUp() throws Exception {
         player = new HumanPlayer("Adrian McLaughlin");
-        scg = new ServerChessGame(GAME_UID, player);
+        scg = new TwoViewServerChessGame(GAME_UID, player);
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

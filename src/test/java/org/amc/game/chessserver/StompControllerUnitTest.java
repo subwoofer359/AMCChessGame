@@ -9,7 +9,7 @@ import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class StompControllerUnitTest {
     @Before
     public void setUp() {
         this.controller = new StompController();
-        scg = new ServerChessGame(gameUUID, whitePlayer);
+        scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

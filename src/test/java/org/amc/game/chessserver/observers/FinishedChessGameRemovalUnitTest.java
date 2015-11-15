@@ -6,7 +6,8 @@ import org.amc.game.GameSubject;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class FinishedChessGameRemovalUnitTest {
         scheduler.afterPropertiesSet();
         gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         player.setUserName("adrian");
-        serverChessGame = new ServerChessGame(uid, player);
+        serverChessGame = new TwoViewServerChessGame(uid, player);
         listener = new GameFinishedListener();
         listener.setGameMap(gameMap);
         listener.setTaskScheduler(scheduler);
