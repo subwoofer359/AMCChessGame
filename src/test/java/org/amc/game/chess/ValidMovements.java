@@ -8,43 +8,43 @@ public class ValidMovements {
 
     private static final Location[] arrayOfDiagonalLocationsFromD5 = {
             // moving diagonal to the top right
-            new Location(ChessBoard.Coordinate.E, 6),
-            new Location(ChessBoard.Coordinate.F, 7),
-            new Location(ChessBoard.Coordinate.G, 8),
+            new Location("E6"),
+            new Location("F7"),
+            new Location("G8"),
 
             // moving to the top left
-            new Location(ChessBoard.Coordinate.C, 6),
-            new Location(ChessBoard.Coordinate.B, 7),
-            new Location(ChessBoard.Coordinate.A, 8),
+            new Location("C6"),
+            new Location("B7"),
+            new Location("A8"),
 
             // moving to the bottom left
-            new Location(ChessBoard.Coordinate.C, 4), new Location(ChessBoard.Coordinate.B, 3),
-            new Location(ChessBoard.Coordinate.A, 2),
+            new Location("C4"), new Location("B3"),
+            new Location("A2"),
 
             // moving to the bottom right
-            new Location(ChessBoard.Coordinate.E, 4), new Location(ChessBoard.Coordinate.F, 3),
-            new Location(ChessBoard.Coordinate.G, 2), new Location(ChessBoard.Coordinate.H, 1),
+            new Location("E4"), new Location("F3"),
+            new Location("G2"), new Location("H1"),
 
     };
 
     private static final Location[] arrayOfDUpAndDownLocationsFromD5 = {
             // moving to the top of the board
-            new Location(ChessBoard.Coordinate.D, 6),
-            new Location(ChessBoard.Coordinate.D, 7),
-            new Location(ChessBoard.Coordinate.D, 8),
+            new Location("D6"),
+            new Location("D7"),
+            new Location("D8"),
 
             // moving to the bottom of the board
-            new Location(ChessBoard.Coordinate.D, 4), new Location(ChessBoard.Coordinate.D, 3),
-            new Location(ChessBoard.Coordinate.D, 2),
-            new Location(ChessBoard.Coordinate.D, 1),
+            new Location("D4"), new Location("D3"),
+            new Location("D2"),
+            new Location("D1"),
 
             // moving to the right of the board
-            new Location(ChessBoard.Coordinate.E, 5), new Location(ChessBoard.Coordinate.F, 5),
-            new Location(ChessBoard.Coordinate.G, 5), new Location(ChessBoard.Coordinate.H, 5),
+            new Location("E5"), new Location("F5"),
+            new Location("G5"), new Location("H5"),
 
             // moving to the left of the board
-            new Location(ChessBoard.Coordinate.C, 5), new Location(ChessBoard.Coordinate.B, 5),
-            new Location(ChessBoard.Coordinate.A, 5)
+            new Location("C5"), new Location("B5"),
+            new Location("A5")
 
     };
 

@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 /**
  * Bug test case for JIRA CG-44
  * 
@@ -31,18 +30,18 @@ public class BugCG44MoveToSameSquareAllowed {
     public static void setUpFactory(){
         boardFactory=new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         moves=new HashMap<String, Move>();
-        moves.put("blackKing",new Move(new Location(A,8),new Location(A,8)));
-        moves.put("whiteKing",new Move(new Location(A,1),new Location(A,1)));
-        moves.put("blackQueen",new Move(new Location(E,8),new Location(E,8)));
-        moves.put("whiteQueen",new Move(new Location(E,1),new Location(E,1)));
-        moves.put("blackBishop",new Move(new Location(C,8),new Location(C,8)));
-        moves.put("whiteBishop",new Move(new Location(C,1),new Location(C,1)));
-        moves.put("blackKnight",new Move(new Location(B,8),new Location(B,8)));
-        moves.put("whiteKnight",new Move(new Location(B,1),new Location(B,1)));
-        moves.put("blackPawn",new Move(new Location(F,8),new Location(F,8)));
-        moves.put("whitePawn",new Move(new Location(F,1),new Location(F,1)));
-        moves.put("blackRook",new Move(new Location(D,8),new Location(D,8)));
-        moves.put("whiteRook",new Move(new Location(D,1),new Location(D,1)));
+        moves.put("blackKing",new Move("A8-A8"));
+        moves.put("whiteKing",new Move("A1-A1"));
+        moves.put("blackQueen",new Move("E8-E8"));
+        moves.put("whiteQueen",new Move("E1-E1"));
+        moves.put("blackBishop",new Move("C8-C8"));
+        moves.put("whiteBishop",new Move("C1-C1"));
+        moves.put("blackKnight",new Move("B8-B8"));
+        moves.put("whiteKnight",new Move("B1-B1"));
+        moves.put("blackPawn",new Move("F8-F8"));
+        moves.put("whitePawn",new Move("F1-F1"));
+        moves.put("blackRook",new Move("D8-D8"));
+        moves.put("whiteRook",new Move("D1-D1"));
     }
     
     @Before

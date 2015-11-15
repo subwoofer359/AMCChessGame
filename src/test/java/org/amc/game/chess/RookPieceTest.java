@@ -11,13 +11,13 @@ import java.util.List;
 
 public class RookPieceTest extends ChessPieceTest {
     private ChessBoard board;
-    private Location testStartPosition = new Location(ChessBoard.Coordinate.D, 5);
+    private Location testStartPosition = new Location("D5");
 
-    private Location[] notValidLocationsFromD5 = { new Location(ChessBoard.Coordinate.C, 6),
-            new Location(ChessBoard.Coordinate.E, 6), new Location(ChessBoard.Coordinate.E, 4),
-            new Location(ChessBoard.Coordinate.C, 4), new Location(ChessBoard.Coordinate.B, 7),
-            new Location(ChessBoard.Coordinate.E, 7), new Location(ChessBoard.Coordinate.F, 4),
-            new Location(ChessBoard.Coordinate.C, 3), new Location(ChessBoard.Coordinate.D, 5) };
+    private Location[] notValidLocationsFromD5 = { new Location("C6"),
+            new Location("E6"), new Location("E4"),
+            new Location("C4"), new Location("B7"),
+            new Location("E7"), new Location("F4"),
+            new Location("C3"), new Location("D5") };
 
     @Before
     public void setUp() throws Exception {
@@ -56,10 +56,10 @@ public class RookPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardIsValidCapture() {
         List<Location> validCaptureLocations = new ArrayList<Location>();
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.D, 1));
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.D, 8));
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.H, 5));
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.A, 5));
+        validCaptureLocations.add(new Location("D1"));
+        validCaptureLocations.add(new Location("D8"));
+        validCaptureLocations.add(new Location("H5"));
+        validCaptureLocations.add(new Location("A5"));
 
         RookPiece rook = new RookPiece(Colour.BLACK);
         board.putPieceOnBoardAt(rook, testStartPosition);
@@ -75,10 +75,10 @@ public class RookPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardInvalidCapture() {
         List<Location> validCaptureLocations = new ArrayList<Location>();
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.D, 1));
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.D, 8));
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.H, 5));
-        validCaptureLocations.add(new Location(ChessBoard.Coordinate.A, 5));
+        validCaptureLocations.add(new Location("D1"));
+        validCaptureLocations.add(new Location("D8"));
+        validCaptureLocations.add(new Location("H5"));
+        validCaptureLocations.add(new Location("A5"));
 
         RookPiece rook = new RookPiece(Colour.BLACK);
         board.putPieceOnBoardAt(rook, testStartPosition);
@@ -94,16 +94,16 @@ public class RookPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardIsNotValidMove() {
         List<Location> validMoveLocations = new ArrayList<Location>();
-        validMoveLocations.add(new Location(ChessBoard.Coordinate.D, 1));
-        validMoveLocations.add(new Location(ChessBoard.Coordinate.D, 8));
-        validMoveLocations.add(new Location(ChessBoard.Coordinate.H, 5));
-        validMoveLocations.add(new Location(ChessBoard.Coordinate.A, 5));
+        validMoveLocations.add(new Location("D1"));
+        validMoveLocations.add(new Location("D8"));
+        validMoveLocations.add(new Location("H5"));
+        validMoveLocations.add(new Location("A5"));
 
         List<Location> blockingPiecesPosition = new ArrayList<Location>();
-        blockingPiecesPosition.add(new Location(ChessBoard.Coordinate.D, 3));
-        blockingPiecesPosition.add(new Location(ChessBoard.Coordinate.D, 7));
-        blockingPiecesPosition.add(new Location(ChessBoard.Coordinate.E, 5));
-        blockingPiecesPosition.add(new Location(ChessBoard.Coordinate.B, 5));
+        blockingPiecesPosition.add(new Location("D3"));
+        blockingPiecesPosition.add(new Location("D7"));
+        blockingPiecesPosition.add(new Location("E5"));
+        blockingPiecesPosition.add(new Location("B5"));
 
         for (Location endPosition : blockingPiecesPosition) {
             board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), endPosition);

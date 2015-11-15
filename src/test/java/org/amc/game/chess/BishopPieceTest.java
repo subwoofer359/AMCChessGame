@@ -9,7 +9,7 @@ import java.text.ParseException;
 
 public class BishopPieceTest extends ChessPieceTest {
     private ChessBoard board;
-    private Location testStartPosition = new Location(ChessBoard.Coordinate.D, 5);
+    private Location testStartPosition = new Location("D5");
 
     @Before
     public void setUp() throws Exception {

@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
-
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
 import org.junit.Before;
@@ -30,7 +28,7 @@ public class BugCG23TestCase {
 
     @Test
     public void test() throws ParseException, IllegalMoveException {
-        Move move = new Move(new Location(C, 6), new Location(B, 7));
+        Move move = new Move(new Location("C6"), new Location("B7"));
         chessGameFixture.move(chessGameFixture.getWhitePlayer(), move);
         chessGameFixture.changePlayer();
         chessGameFixture.isCheckMate(chessGameFixture.getBlackPlayer(),chessGameFixture.getBoard());
