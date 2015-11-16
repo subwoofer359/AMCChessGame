@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.apache.log4j.Logger;
@@ -26,7 +27,7 @@ public class NewGameRequestController {
     private static Logger logger = Logger.getLogger(NewGameRequestController.class);
     
     @Autowired
-    private WebApplicationContext context;
+    WebApplicationContext context;
 
     private DAO<User> userDAO;
     
@@ -39,6 +40,10 @@ public class NewGameRequestController {
                 List<User> userList = userDAO.findEntities("userName", userToPlay);
                 if(userList.size() == 1) {
                     User user = userList.get(0);
+                    if(ComparePlayers.comparePlayers(user.getPlayer(), player)) {
+                    	logger.error("Can't request new game with one self");
+                    	return false;
+                    }
                     StartPageController controller = context.getBean(StartPageController.class);
                     controller.createGame(model, user.getPlayer(), GameType.NETWORK_GAME, null);
                                 
