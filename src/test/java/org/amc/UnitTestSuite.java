@@ -37,6 +37,7 @@ import org.amc.game.chess.controller.ConsoleControllerTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
+import org.amc.game.chessserver.MemoryGameMapFactoryBeanTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
@@ -46,6 +47,7 @@ import org.amc.game.chessserver.SignUpControllerUnitTest;
 import org.amc.game.chessserver.StartPageControllerChessAppPageTest;
 import org.amc.game.chessserver.StartPageControllerJoinGameTest;
 import org.amc.game.chessserver.StompControllerOneViewUnitTest;
+import org.amc.game.chessserver.StompControllerSaveUnitTest;
 import org.amc.game.chessserver.StompControllerUnitTest;
 import org.amc.game.chessserver.UserSearchTest;
 import org.amc.game.chessserver.messaging.EmailMessageServiceTest;
@@ -99,6 +101,7 @@ import org.junit.runners.Suite.SuiteClasses;
     KingPieceTest.class,
     KnightPieceTest.class,
     LocationTest.class,
+    MemoryGameMapFactoryBeanTest.class,
     MoveTest.class,
     PawnIsNotPromotedTest.class,
     PawnIsPromotedTest.class,
@@ -119,6 +122,7 @@ import org.junit.runners.Suite.SuiteClasses;
     StartPageControllerJoinGameTest.class,
     StompControllerUnitTest.class,
     StompControllerOneViewUnitTest.class,
+    StompControllerSaveUnitTest.class,
     UserSearchTest.class,
     EmailMessageServiceTest.class,
     EmailTemplateFactoryTest.class,
