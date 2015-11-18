@@ -1,6 +1,7 @@
 package org.amc;
 
 import org.amc.dao.ChessBoardExternalizerTest;
+import org.amc.dao.DAOUnitTest;
 import org.amc.dao.DatabaseGameMapTest;
 import org.amc.game.chess.BishopPieceTest;
 import org.amc.game.chess.BugCG23TestCase;
@@ -145,7 +146,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ValidUserNameTest.class,
     StandardChessGameTest.class,
     UnmodifibleChessBoardTest.class,
-    ServerChessGameSerilaiserTest.class
+    ServerChessGameSerilaiserTest.class,
+    DAOUnitTest.class
 })
 
 public class UnitTestSuite {
