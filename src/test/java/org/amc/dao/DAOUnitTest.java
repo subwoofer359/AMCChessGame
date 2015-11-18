@@ -6,11 +6,12 @@ import static org.junit.Assert.*;
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +36,16 @@ public class DAOUnitTest {
     private ArgumentCaptor<String> queryString;
     private static final String COLUMN = "name";
     private static final String VALUE = "Ted";
+    private static EntityManagerFactory oldFactory;
+    
+    /**
+     * The factory in EntityManagerThreadLocal has to be saved so
+     * not to interfere with other tests
+     */
+    @BeforeClass
+    public static void saveEntityManagerFactory() {
+        oldFactory = EntityManagerThreadLocal.getEntityManagerFactory();
+    }
     
     @Before
     public void setUp() throws Exception {
@@ -52,10 +63,19 @@ public class DAOUnitTest {
         dao = new DAO<DAOUnitTest.TestEntity>(TestEntity.class);       
     }
 
+    /**
+     * The factory in EntityManagerThreadLocal has to be restored to it's concrete value 
+     * so not to interfere with other tests
+     */
     @After
     public void tearDown() throws Exception {
         reset(transaction);
         EntityManagerThreadLocal.closeEntityManager();
+    }
+    
+    @AfterClass
+    public static void reloadEntityManagerFactory() {
+        EntityManagerThreadLocal.setEntityManagerFactory(oldFactory);
     }
 
     @Test

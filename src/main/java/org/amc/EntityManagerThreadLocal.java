@@ -40,6 +40,10 @@ public final class EntityManagerThreadLocal {
     public static void setEntityManagerFactory(EntityManagerFactory factory) {
         EntityManagerThreadLocal.FACTORY = factory;
     }
+    
+    public static EntityManagerFactory getEntityManagerFactory() {
+        return FACTORY;
+    }
 
     /**
      * @return an JPA EntityManager
