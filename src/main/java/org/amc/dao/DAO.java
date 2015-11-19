@@ -104,7 +104,7 @@ public class DAO<T> {
     public List<T> findEntities() throws DAOException {
         try {
             Query query = getEntityManager().createQuery(
-                            "Select x from " + entityClass.getSimpleName() + " x");
+                            "Select x from " + entityClass.getSimpleName() + " x", entityClass);
             List<T> resultList = query.getResultList();
             return resultList;
         } catch (PersistenceException pe) {
@@ -133,7 +133,7 @@ public class DAO<T> {
         try {
             Query query = getEntityManager().createQuery(
                             "Select x from " + entityClass.getSimpleName() + " x where x." + col
-                                            + " = ?1");
+                                            + " = ?1", entityClass);
             query.setParameter(1, value);
             LOG.debug(query.toString());
             List<T> resultList = query.getResultList();
@@ -165,7 +165,7 @@ public class DAO<T> {
     public T getEntity(int id) throws DAOException {
 
         Query query = getEntityManager().createQuery(
-                        "Select x from " + entityClass.getSimpleName() + " x where x.id = ?1");
+                        "Select x from " + entityClass.getSimpleName() + " x where x.id = ?1", entityClass);
         try {
             query.setParameter(1, id);
             T mp = (T) query.getSingleResult();
