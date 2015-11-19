@@ -29,7 +29,7 @@ public class ServerChessGameFactory {
 			break;
 		case NETWORK_GAME:
 		default:
-		    serverChessGame = new ServerChessGame(uid, player);
+		    serverChessGame = new TwoViewServerChessGame(uid, player);
 		    observerStr = NETWORK_OBSERVERS;
 		    break;
 		}

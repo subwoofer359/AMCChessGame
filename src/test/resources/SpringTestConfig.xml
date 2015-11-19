@@ -83,13 +83,6 @@
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
 	</bean>
 	
-	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-    	<property name="customEditors">
-        	<map>
-            	<entry key="org.amc.game.chess.Move" value="org.amc.game.chessserver.MoveEditor"/>
-        	</map>
-    	</property>
-    </bean>
     
     <bean id="myExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" destroy-method="shutdown">
     	<property name="corePoolSize" value="5"/>

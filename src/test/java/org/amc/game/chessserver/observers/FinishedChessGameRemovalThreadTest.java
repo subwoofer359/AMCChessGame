@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class FinishedChessGameRemovalThreadTest {
         player.setUserName("adrian");
         for(int i = 0; i < uids.length; i++) {
             uids[i] = i;
-            chessGames[i] = new ServerChessGame(uids[i], player);
+            chessGames[i] = new TwoViewServerChessGame(uids[i], player);
             GameFinishedListener listener =new GameFinishedListener();
             listener.setGameMap(gameMap);
             listener.setGameToObserver(chessGames[i]);

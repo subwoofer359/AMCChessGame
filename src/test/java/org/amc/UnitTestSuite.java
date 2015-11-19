@@ -1,6 +1,7 @@
 package org.amc;
 
 import org.amc.dao.ChessBoardExternalizerTest;
+import org.amc.dao.DAOUnitTest;
 import org.amc.dao.DatabaseGameMapTest;
 import org.amc.game.chess.BishopPieceTest;
 import org.amc.game.chess.BugCG23TestCase;
@@ -39,6 +40,8 @@ import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAc
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
 import org.amc.game.chessserver.GameTableControllerTest;
 import org.amc.game.chessserver.NewGameRequestControllerTest;
+import org.amc.game.chessserver.LogOutControllerTest;
+import org.amc.game.chessserver.MemoryGameMapFactoryBeanTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
@@ -46,8 +49,10 @@ import org.amc.game.chessserver.ServerChessGameSerilaiserTest;
 import org.amc.game.chessserver.ServerChessGameTest;
 import org.amc.game.chessserver.SignUpControllerUnitTest;
 import org.amc.game.chessserver.StartPageControllerChessAppPageTest;
+import org.amc.game.chessserver.StartPageControllerCreateGameTest;
 import org.amc.game.chessserver.StartPageControllerJoinGameTest;
 import org.amc.game.chessserver.StompControllerOneViewUnitTest;
+import org.amc.game.chessserver.StompControllerSaveUnitTest;
 import org.amc.game.chessserver.StompControllerUnitTest;
 import org.amc.game.chessserver.UserNameAvailableTest;
 import org.amc.game.chessserver.UserSearchTest;
@@ -76,7 +81,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-@SuiteClasses({ 
+@SuiteClasses({
+    DAOUnitTest.class,
     ChessBoardExternalizerTest.class,
     DatabaseGameMapTest.class,
     BishopPieceTest.class,
@@ -102,6 +108,8 @@ import org.junit.runners.Suite.SuiteClasses;
     KingPieceTest.class,
     KnightPieceTest.class,
     LocationTest.class,
+    LogOutControllerTest.class,
+    MemoryGameMapFactoryBeanTest.class,
     MoveTest.class,
     NewGameRequestControllerTest.class,
     PawnIsNotPromotedTest.class,
@@ -122,7 +130,9 @@ import org.junit.runners.Suite.SuiteClasses;
     StartPageControllerChessAppPageTest.class,
     StartPageControllerJoinGameTest.class,
     StompControllerUnitTest.class,
+    StartPageControllerCreateGameTest.class,
     StompControllerOneViewUnitTest.class,
+    StompControllerSaveUnitTest.class,
     UserSearchTest.class,
     EmailMessageServiceTest.class,
     EmailTemplateFactoryTest.class,

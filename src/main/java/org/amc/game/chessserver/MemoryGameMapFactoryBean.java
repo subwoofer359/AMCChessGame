@@ -1,5 +1,7 @@
 package org.amc.game.chessserver;
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,6 +17,8 @@ import javax.annotation.PreDestroy;
  *
  */
 public class MemoryGameMapFactoryBean{
+    
+    private static final Logger logger = Logger.getLogger(MemoryGameMapFactoryBean.class);
 
     private Map<Long, ServerChessGame> gameMap;
     
@@ -34,7 +38,7 @@ public class MemoryGameMapFactoryBean{
      */
     @PostConstruct
     public void init(){
-        gameMap=new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
     }
     
     /**
@@ -43,8 +47,18 @@ public class MemoryGameMapFactoryBean{
      */
     @PreDestroy
     public void destroyGameMap(){
-        gameMap.clear();
-        System.out.println("Game Map has been cleared");
+        if(gameMap != null ) {
+            gameMap.clear();
+            logger.debug("GameMap has been cleared");
+        }
+    }
+    
+    /**
+     * Used for testing only
+     * @param gameMap {@link Map}
+     */
+    void setGameMap(Map<Long, ServerChessGame> gameMap) {
+        this.gameMap = gameMap;
     }
 
 }

@@ -3,7 +3,7 @@ package org.amc.game.chessserver.observers;
 import org.amc.game.GameObserver;
 import org.amc.game.GameSubject;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;

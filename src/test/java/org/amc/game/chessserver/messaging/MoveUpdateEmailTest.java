@@ -15,6 +15,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class MoveUpdateEmailTest {
     @Before
     public void setUp() throws Exception {
         player = new HumanPlayer("Adrian McLaughlin");
-        scg = new ServerChessGame(GAME_UID, player);
+        scg = new TwoViewServerChessGame(GAME_UID, player);
         opponent = new HumanPlayer("Player 2");
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override

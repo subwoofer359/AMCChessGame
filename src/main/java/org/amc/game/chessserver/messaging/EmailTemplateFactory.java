@@ -2,7 +2,7 @@ package org.amc.game.chessserver.messaging;
 
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 

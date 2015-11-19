@@ -29,6 +29,7 @@ import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.StompConstants;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
 import org.junit.After;
@@ -80,7 +81,7 @@ public class JsonChessBoardViewTest {
         messageArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
         
-        serverGame = new ServerChessGame(GAME_UID, chessGame);
+        serverGame = new TwoViewServerChessGame(GAME_UID, chessGame);
         
         gson = new GsonBuilder();
         gson.registerTypeAdapter(Player.class, new PlayerDeserializer());

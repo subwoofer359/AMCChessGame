@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -29,7 +30,17 @@
 	<http pattern="/css/**" security="none" />
 	<http pattern="/img/**" security="none" />
 	<http pattern="/js/**" security="none" />
-
+<!-- 
+	<websocket-message-broker>
+		<intercept-message type="CONNECT" access="permitAll" />
+    	<intercept-message type="UNSUBSCRIBE" access="permitAll" />
+    	<intercept-message type="DISCONNECT" access="permitAll" />
+    	<intercept-message pattern="/user/queue" type="SUBSCRIBE" access="hasRole('USER')" />
+    	<intercept-message pattern="/user/topic" type="SUBSCRIBE" access="hasRole('USER')" />
+    	<intercept-message pattern="/app/**" access="hasRole('USER')" />
+    	 <intercept-message pattern="/**" access="denyAll" />
+	</websocket-message-broker>
+ -->
 	<http>
 		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter"/>
 		

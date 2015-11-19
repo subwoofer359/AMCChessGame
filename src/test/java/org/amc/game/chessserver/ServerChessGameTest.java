@@ -133,7 +133,7 @@ public class ServerChessGameTest {
     }
     
     private ServerChessGame getServerChessGame() {
-        ServerChessGame game = new ServerChessGame(UID, player);
+        ServerChessGame game = new TwoViewServerChessGame(UID, player);
         game.setChessGameFactory(chessGameFactory);
         return game;
     }
@@ -141,13 +141,13 @@ public class ServerChessGameTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNullPlayerPassedToConstructor() {
     	Player p = null;
-    	new ServerChessGame(233L, p);
+    	new TwoViewServerChessGame(233L, p);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testNullChessGamePassedToConstructor() {
     	ChessGame c = null;
-    	new ServerChessGame(233L, c);
+    	new TwoViewServerChessGame(233L, c);
     }
 
 }

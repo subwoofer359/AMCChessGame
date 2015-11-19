@@ -5,12 +5,11 @@ import static org.junit.Assert.*;
 
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -66,16 +65,6 @@ public class ServerChessGameSerilaiserTest {
 		String output = gson.toJson(scgGame);
 		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
 		assertNull(info);
-	}
-	
-	@Ignore
-	@Test
-	public void testNullPlayer() {
-		ServerChessGame scgGame = new ServerChessGame();
-		Gson gson = builder.create();
-		String output = gson.toJson(scgGame);
-		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
-		assertNull(info.getPlayer());
 	}
 	
 	@Test

@@ -12,6 +12,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -67,7 +68,7 @@ public class ServerChessGameTestDatabaseEntity {
         ChessGame chessGame = chessGamefactory.getChessGame(cgFixture.getBoard(), 
                         new ChessGamePlayer(whitePlayer, Colour.WHITE),
                         new ChessGamePlayer(blackPlayer, Colour.BLACK));
-        scgGame = new ServerChessGame(id, chessGame);
+        scgGame = new TwoViewServerChessGame(id, chessGame);
         JsonChessGameView jsonView = new JsonChessGameView(mock(SimpMessagingTemplate.class));
         GameFinishedListener listener = new GameFinishedListener();
         jsonView.setGameToObserver(scgGame);

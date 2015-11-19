@@ -10,6 +10,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameStateListener;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class GameStateListenerTest {
             }
         };
         
-        serverGame = new ServerChessGame(GAME_UID, whitePlayer);
+        serverGame = new TwoViewServerChessGame(GAME_UID, whitePlayer);
         serverGame.setChessGameFactory(chessGameFactory);
         serverGame.addOpponent(blackPlayer);
         

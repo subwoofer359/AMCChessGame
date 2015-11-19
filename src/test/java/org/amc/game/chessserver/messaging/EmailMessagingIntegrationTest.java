@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.Assert.*;
 
 import org.amc.User;
-import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
@@ -20,8 +19,7 @@ import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
-import org.amc.game.chessserver.StartPageController;
-import org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerConstants;
 import org.amc.game.chessserver.messaging.EmailMessageService.SendMessage;
 import org.junit.After;

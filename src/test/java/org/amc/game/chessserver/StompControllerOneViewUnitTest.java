@@ -142,7 +142,7 @@ public class StompControllerOneViewUnitTest {
     
     @Test
     public void testNotOneViewServerChessGame() {
-        ServerChessGame scg = new ServerChessGame(gameUUID, whitePlayer);
+        ServerChessGame scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);
         this.gameMap.put(gameUUID, scg);
         scg.addOpponent(blackPlayer);
