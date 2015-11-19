@@ -25,6 +25,12 @@
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-messaging</artifactId>
+		<version>4.0.2.RELEASE</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-test</artifactId>
 		<version>4.0.3.RELEASE</version>
 		<scope>test</scope>
@@ -56,6 +62,12 @@
 		<artifactId>junit</artifactId>
 		<version>4.12</version>
 		<scope>test</scope>
+	</dependency>
+	<dependency>
+    	<groupId>com.googlecode.junit-toolbox</groupId>
+    	<artifactId>junit-toolbox</artifactId>
+    	<version>1.10</version>
+    	<scope>test</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.mockito</groupId>
