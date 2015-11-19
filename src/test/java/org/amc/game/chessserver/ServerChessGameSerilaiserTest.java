@@ -10,6 +10,7 @@ import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -60,6 +61,25 @@ public class ServerChessGameSerilaiserTest {
 	
 	@Test
 	public void testNull() {
+		ServerChessGame scgGame = null;
+		Gson gson = builder.create();
+		String output = gson.toJson(scgGame);
+		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+		assertNull(info);
+	}
+	
+	@Ignore
+	@Test
+	public void testNullPlayer() {
+		ServerChessGame scgGame = new ServerChessGame();
+		Gson gson = builder.create();
+		String output = gson.toJson(scgGame);
+		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+		assertNull(info.getPlayer());
+	}
+	
+	@Test
+	public void testNullOpponent() {
 		ServerChessGame scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, gameUID, whitePlayer);
 		Gson gson = builder.create();
 		String output = gson.toJson(scgGame);

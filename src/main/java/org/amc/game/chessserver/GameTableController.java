@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -45,7 +46,11 @@ public class GameTableController {
         return new Callable<String>() {
             @Override
             public String call() throws Exception {
-                return GSON.toJson(gameMap);
+            	if(gameMap == null) {
+            		return GSON.toJson(Collections.emptyMap());
+            	} else {
+            		return GSON.toJson(gameMap);
+            	}
             }
             
         };
@@ -62,9 +67,6 @@ public class GameTableController {
 		@Override
 		public JsonElement serialize(ServerChessGame serverChessGame, Type arg1, JsonSerializationContext arg2) {
 			JsonObject jsObj = new JsonObject();
-			if(serverChessGame == null ) {
-				return jsObj;
-			}
 			
 			jsObj.addProperty("uid", serverChessGame.getUid());
 			jsObj.addProperty("currentStatus", serverChessGame.getCurrentStatus().toString());
