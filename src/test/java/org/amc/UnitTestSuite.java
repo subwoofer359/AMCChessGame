@@ -37,7 +37,8 @@ import org.amc.game.chess.controller.ConsoleControllerTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
-import org.amc.game.chessserver.MoveEditorTest;
+import org.amc.game.chessserver.GameTableControllerTest;
+import org.amc.game.chessserver.NewGameRequestControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
@@ -48,6 +49,7 @@ import org.amc.game.chessserver.StartPageControllerChessAppPageTest;
 import org.amc.game.chessserver.StartPageControllerJoinGameTest;
 import org.amc.game.chessserver.StompControllerOneViewUnitTest;
 import org.amc.game.chessserver.StompControllerUnitTest;
+import org.amc.game.chessserver.UserNameAvailableTest;
 import org.amc.game.chessserver.UserSearchTest;
 import org.amc.game.chessserver.messaging.EmailMessageServiceTest;
 import org.amc.game.chessserver.messaging.EmailTemplateFactoryTest;
@@ -101,6 +103,7 @@ import org.junit.runners.Suite.SuiteClasses;
     KnightPieceTest.class,
     LocationTest.class,
     MoveTest.class,
+    NewGameRequestControllerTest.class,
     PawnIsNotPromotedTest.class,
     PawnIsPromotedTest.class,
     PawnPieceTest.class,
@@ -111,7 +114,6 @@ import org.junit.runners.Suite.SuiteClasses;
     ChessBoardViewTest.class,
     BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved.class,
     BugCG52ServerChessGameDidntEndInCheckmate.class,
-    MoveEditorTest.class,
     OnlinePlayerListControllerTest.class,
     OnlinePlayerListMessagerTest.class,
     ServerChessGameFactoryTest.class,
@@ -128,6 +130,7 @@ import org.junit.runners.Suite.SuiteClasses;
     PlayerJoinedChessGameEmailTest.class,
     FinishedChessGameRemovalUnitTest.class,
     GameStateListenerTest.class,
+    GameTableControllerTest.class,
     JsonChessBoardViewTest.class,
     JsonChessGameViewFactoryTest.class,
     ObserverFactoryChainImplTest.class,
@@ -143,7 +146,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ValidUserNameTest.class,
     StandardChessGameTest.class,
     UnmodifibleChessBoardTest.class,
-    ServerChessGameSerilaiserTest.class
+    ServerChessGameSerilaiserTest.class,
+    UserNameAvailableTest.class
 })
 
 public class UnitTestSuite {

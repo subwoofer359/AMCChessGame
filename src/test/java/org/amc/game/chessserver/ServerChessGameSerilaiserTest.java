@@ -69,7 +69,7 @@ public class ServerChessGameSerilaiserTest {
 		assertEquals(scgGame.getCurrentStatus(), info.getCurrentStatus());
 	}
 	
-	private static class ServerChessGameInfo {
+	static class ServerChessGameInfo {
 		private long uid;
 		private ServerGameStatus currentStatus;
 		private String player;
