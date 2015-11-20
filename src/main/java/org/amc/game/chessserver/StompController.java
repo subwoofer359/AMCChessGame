@@ -109,8 +109,6 @@ public class StompController {
             game.move(gamePlayer, new Move(moveString));
         } catch (IllegalMoveException | IllegalArgumentException e) {
             message = "Error:" + e.getMessage();
-        } catch (MalformedMoveException mme) {
-            message = "Error:" + mme.getMessage();
         }
 
         return message;

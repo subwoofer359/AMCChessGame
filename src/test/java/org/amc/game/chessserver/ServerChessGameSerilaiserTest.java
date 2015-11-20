@@ -60,6 +60,15 @@ public class ServerChessGameSerilaiserTest {
 	
 	@Test
 	public void testNull() {
+		ServerChessGame scgGame = null;
+		Gson gson = builder.create();
+		String output = gson.toJson(scgGame);
+		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+		assertNull(info);
+	}
+	
+	@Test
+	public void testNullOpponent() {
 		ServerChessGame scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, gameUID, whitePlayer);
 		Gson gson = builder.create();
 		String output = gson.toJson(scgGame);
@@ -69,7 +78,7 @@ public class ServerChessGameSerilaiserTest {
 		assertEquals(scgGame.getCurrentStatus(), info.getCurrentStatus());
 	}
 	
-	private static class ServerChessGameInfo {
+	static class ServerChessGameInfo {
 		private long uid;
 		private ServerGameStatus currentStatus;
 		private String player;

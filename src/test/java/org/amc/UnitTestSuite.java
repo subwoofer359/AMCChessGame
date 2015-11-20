@@ -38,6 +38,8 @@ import org.amc.game.chess.controller.ConsoleControllerTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
+import org.amc.game.chessserver.GameTableControllerTest;
+import org.amc.game.chessserver.NewGameRequestControllerTest;
 import org.amc.game.chessserver.LogOutControllerTest;
 import org.amc.game.chessserver.MemoryGameMapFactoryBeanTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
@@ -52,6 +54,7 @@ import org.amc.game.chessserver.StartPageControllerJoinGameTest;
 import org.amc.game.chessserver.StompControllerOneViewUnitTest;
 import org.amc.game.chessserver.StompControllerSaveUnitTest;
 import org.amc.game.chessserver.StompControllerUnitTest;
+import org.amc.game.chessserver.UserNameAvailableTest;
 import org.amc.game.chessserver.UserSearchTest;
 import org.amc.game.chessserver.messaging.EmailMessageServiceTest;
 import org.amc.game.chessserver.messaging.EmailTemplateFactoryTest;
@@ -108,6 +111,7 @@ import org.junit.runners.Suite.SuiteClasses;
     LogOutControllerTest.class,
     MemoryGameMapFactoryBeanTest.class,
     MoveTest.class,
+    NewGameRequestControllerTest.class,
     PawnIsNotPromotedTest.class,
     PawnIsPromotedTest.class,
     PawnPieceTest.class,
@@ -136,6 +140,7 @@ import org.junit.runners.Suite.SuiteClasses;
     PlayerJoinedChessGameEmailTest.class,
     FinishedChessGameRemovalUnitTest.class,
     GameStateListenerTest.class,
+    GameTableControllerTest.class,
     JsonChessBoardViewTest.class,
     JsonChessGameViewFactoryTest.class,
     ObserverFactoryChainImplTest.class,
@@ -151,7 +156,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ValidUserNameTest.class,
     StandardChessGameTest.class,
     UnmodifibleChessBoardTest.class,
-    ServerChessGameSerilaiserTest.class
+    ServerChessGameSerilaiserTest.class,
+    UserNameAvailableTest.class
 })
 
 public class UnitTestSuite {
