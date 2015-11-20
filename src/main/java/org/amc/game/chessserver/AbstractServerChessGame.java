@@ -33,6 +33,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     private static final long serialVersionUID = 2147129152958398504L;
 
     public enum ServerGameStatus {
+        NEW,
         IN_PROGRESS,
         AWAITING_PLAYER,
         FINISHED
@@ -72,6 +73,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     
     protected AbstractServerChessGame() {
         super();
+        this.currentStatus = ServerGameStatus.NEW;
     }
     
     /**
@@ -111,7 +113,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         this.uid = uid;
         this.player = chessGame.getWhitePlayer();
         this.currentStatus = ServerGameStatus.IN_PROGRESS;
-        this.chessGame = chessGame;
+        this.chessGame = new ChessGame(chessGame);
     }
 
     /**
