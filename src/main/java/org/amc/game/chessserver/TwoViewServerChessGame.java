@@ -40,20 +40,28 @@ public class TwoViewServerChessGame extends ServerChessGame {
      */
     public void addOpponent(Player opponent) {
         checkForNull(Player.class, opponent);
-        if (ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus())) {
+        if (isGameAwaitingPlayer()) {
             if (ComparePlayers.comparePlayers(getPlayer(), opponent)) {
                 logger.debug(String.format("Player:(%s) tried to join their own game",
                                 opponent.getName()));
             } else {
-                ChessBoard board = new ChessBoard();
-                SetupChessBoard.setUpChessBoardToDefault(board);
-                synchronized (this) {
-                    setChessGame(getChessGameFactory().getChessGame(board, getPlayer(), 
-                                    new ChessGamePlayer(opponent, Colour.BLACK)));
-                    setCurrentStatus(ServerGameStatus.IN_PROGRESS);
-                }
-                notifyObservers(opponent);
+                setupChessGame(opponent);
             }
         }
+    }
+    
+    private boolean isGameAwaitingPlayer() {
+        return ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus());
+    }
+    
+    private void setupChessGame(Player opponent) {
+        ChessBoard board = new ChessBoard();
+        SetupChessBoard.setUpChessBoardToDefault(board);
+        synchronized (this) {
+            setChessGame(getChessGameFactory().getChessGame(board, getPlayer(), 
+                            new ChessGamePlayer(opponent, Colour.BLACK)));
+            setCurrentStatus(ServerGameStatus.IN_PROGRESS);
+        }
+        notifyObservers(opponent);
     }
 }
