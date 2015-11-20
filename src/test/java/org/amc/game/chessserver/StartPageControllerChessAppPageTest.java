@@ -1,6 +1,7 @@
 package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
@@ -10,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.ModelAndViewAssert;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,5 +48,13 @@ public class StartPageControllerChessAppPageTest {
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAMEMAP.toString());
         ModelAndViewAssert.assertViewName(mav,
                         StartPageController.CHESS_APPLICATION_PAGE);
+    }
+    
+    @Test
+    public void handleMissingSessionAttributesTest() {
+        HttpSessionRequiredException hsre = mock(HttpSessionRequiredException.class);
+        when(hsre.getMessage()).thenReturn("Mock Exception");
+        String view = controller.handleMissingSessionAttributes(hsre);
+        assertEquals(StartPageController.TWOVIEW_REDIRECT_PAGE, view);
     }
 }
