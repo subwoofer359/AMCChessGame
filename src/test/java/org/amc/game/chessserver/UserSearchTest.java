@@ -26,6 +26,7 @@ public class UserSearchTest {
     private UserSearchDAO userDAO;
     private static final String FULLNAME = "adrian mclaughlin";
     private static final String USERNAME = "adrian";
+    private static final String USER_SEARCH_PAGE = "UserSearchPage";
 
     
     @Before
@@ -56,6 +57,11 @@ public class UserSearchTest {
         UserDetails jsonUser = (UserDetails)u.get(0);
         assertEquals(USERNAME, jsonUser.getUserName());
         assertEquals(FULLNAME, jsonUser.getFullName());
+    }
+    
+    @Test
+    public void getUserSearchPageTest() {
+        assertEquals(USER_SEARCH_PAGE, controller.getUserSearchPage());
     }
 
 }
