@@ -61,7 +61,7 @@ public class GameTableControllerTest {
 		assertNull(serverCGInfo.getOpponent());
 	}
 
-	@Test
+	@Test(expected=NullPointerException.class)
 	public void getGamesGameMapNullTest() throws Exception {
 		gtController.setGameMap(null);
 		Callable<String> callable = gtController.getGames();
@@ -70,7 +70,5 @@ public class GameTableControllerTest {
 		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
 		}.getType();
 		Map<Long, ServerChessGameInfo> serverCGInfoMap = gson.fromJson(result, mapType);
-
-		assertEquals(0, serverCGInfoMap.size());
 	}
 }

@@ -47,7 +47,7 @@ public class GameTableController {
             @Override
             public String call() throws Exception {
             	if(gameMap == null) {
-            		return GSON.toJson(Collections.emptyMap());
+            		throw new NullPointerException("GameMap is Null");
             	} else {
             		return GSON.toJson(gameMap);
             	}
