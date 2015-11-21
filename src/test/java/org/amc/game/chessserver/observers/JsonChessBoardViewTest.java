@@ -52,7 +52,6 @@ public class JsonChessBoardViewTest {
 
     private ServerChessGame serverGame;
     private ChessGame chessGame;
-    private ChessBoard board;
     private static ChessBoardFactory chBoardFactory;
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
@@ -73,15 +72,16 @@ public class JsonChessBoardViewTest {
     public void setUp() throws Exception {
         whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
+        ChessBoard board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
         chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
-        board = chessGame.getChessBoard();
+
         template = mock(SimpMessagingTemplate.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
         messageArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
         
         serverGame = new TwoViewServerChessGame(GAME_UID, chessGame);
+        chessGame = serverGame.getChessGame();
         
         gson = new GsonBuilder();
         gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
@@ -136,7 +136,7 @@ public class JsonChessBoardViewTest {
     }
 
     private String getChessPieceSymbol(String file, String rank) {
-        return String.valueOf(ChessPieceTextSymbol.getChessPieceTextSymbol(board
+        return String.valueOf(ChessPieceTextSymbol.getChessPieceTextSymbol(chessGame.getChessBoard()
                         .getPieceFromBoardAt(getLocation(file, rank))));
     }
 

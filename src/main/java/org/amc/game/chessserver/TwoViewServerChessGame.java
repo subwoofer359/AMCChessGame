@@ -49,11 +49,7 @@ public class TwoViewServerChessGame extends ServerChessGame {
             }
         }
     }
-    
-    private boolean isGameAwaitingPlayer() {
-        return ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus());
-    }
-    
+        
     private void setupChessGame(Player opponent) {
         ChessBoard board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);

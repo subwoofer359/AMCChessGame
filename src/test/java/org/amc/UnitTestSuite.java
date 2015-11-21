@@ -42,11 +42,13 @@ import org.amc.game.chessserver.GameTableControllerTest;
 import org.amc.game.chessserver.NewGameRequestControllerTest;
 import org.amc.game.chessserver.LogOutControllerTest;
 import org.amc.game.chessserver.MemoryGameMapFactoryBeanTest;
+import org.amc.game.chessserver.OneViewServerChessGameTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
 import org.amc.game.chessserver.ServerChessGameSerilaiserTest;
 import org.amc.game.chessserver.ServerChessGameTest;
+import org.amc.game.chessserver.ServerChessGameTest2;
 import org.amc.game.chessserver.SignUpControllerUnitTest;
 import org.amc.game.chessserver.StartPageControllerChessAppPageTest;
 import org.amc.game.chessserver.StartPageControllerCreateGameTest;
@@ -54,6 +56,7 @@ import org.amc.game.chessserver.StartPageControllerJoinGameTest;
 import org.amc.game.chessserver.StompControllerOneViewUnitTest;
 import org.amc.game.chessserver.StompControllerSaveUnitTest;
 import org.amc.game.chessserver.StompControllerUnitTest;
+import org.amc.game.chessserver.TwoViewServerChessGameTest;
 import org.amc.game.chessserver.UserNameAvailableTest;
 import org.amc.game.chessserver.UserSearchTest;
 import org.amc.game.chessserver.messaging.EmailMessageServiceTest;
@@ -126,6 +129,9 @@ import org.junit.runners.Suite.SuiteClasses;
     OnlinePlayerListMessagerTest.class,
     ServerChessGameFactoryTest.class,
     ServerChessGameTest.class,
+    ServerChessGameTest2.class,
+    OneViewServerChessGameTest.class,
+    TwoViewServerChessGameTest.class,
     SignUpControllerUnitTest.class,
     StartPageControllerChessAppPageTest.class,
     StartPageControllerJoinGameTest.class,

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.Callable;
 

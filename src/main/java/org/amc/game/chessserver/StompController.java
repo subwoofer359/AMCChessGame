@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.ServerChessGameDAO;
+import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
@@ -52,12 +53,15 @@ public class StompController {
     private SimpMessagingTemplate template;
     
     private ServerChessGameDAO serverChessGameDAO;
+    static final String MESSAGE_USER_DESTINATION = "/queue/updates";
+    static final String MESSAGE_DESTINATION = "/topic/updates/%d";
     
     static final String ERROR_UNKNOWN_PLAYER = "The player is not part of this chess game";
 
     static final String ERROR_MSG_NOT_ENOUGH_PLAYERS = "Error:Move on game(%d) which hasn't got two players";
 
     static final String ERROR_MSG_GAME_OVER = "Error:Move on game(%d) which has finished";
+    static final String ERROR_CHESSBOARD_DOESNT_EXIST = "The requested Chess board doesn't exist";
     
     static final String MSG_PLAYER_HAS_QUIT = "%s has quit the game";
     
@@ -123,7 +127,8 @@ public class StompController {
      *            containing either an error message or information update
      */
     private void sendMessageToUser(Principal user, String message, MessageType type) {
-        template.convertAndSendToUser(user.getName(), "/queue/updates", message, getHeaders(type));
+        template.convertAndSendToUser(user.getName(), MESSAGE_USER_DESTINATION, 
+                        message, getHeaders(type));
     }
     
     @MessageMapping("/oneViewMove/{gameUUID}")
@@ -164,7 +169,7 @@ public class StompController {
      *            containing either an error message or information update
      */
     private void sendMessage(String message, long gameUUID, MessageType type) {
-        String msgDestination = String.format("/topic/updates/%d", gameUUID);
+        String msgDestination = String.format(MESSAGE_DESTINATION, gameUUID);
         template.convertAndSend(msgDestination, message, getHeaders(type));
     }
 
@@ -179,11 +184,22 @@ public class StompController {
     public void getChessBoard(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        ServerChessGame serverGame = gameMap.get(gameUUID);
-        Gson gson = new Gson();
-        JsonChessGame jcb = new JsonChessGame(serverGame.getChessGame());
-        logger.debug(wsSession.get("PLAYER") + " requested update for game:" + gameUUID);
-        sendMessageToUser(user, gson.toJson(jcb), MessageType.UPDATE);
+        ChessGame chessGame = gameMap.get(gameUUID) == null ? null : gameMap.get(gameUUID).getChessGame();
+        String payLoadMessage = null;
+        MessageType messageType;
+        if(chessGame == null) {
+            payLoadMessage = ERROR_CHESSBOARD_DOESNT_EXIST;
+            logger.error("Game:" + gameUUID + " has a null ChessGame");
+            messageType = MessageType.ERROR;
+        } else {
+            Gson gson = new Gson();
+            JsonChessGame jcb = new JsonChessGame(chessGame);
+            logger.debug(wsSession.get("PLAYER") + " requested update for game:" + gameUUID);
+            payLoadMessage = gson.toJson(jcb);
+            messageType = MessageType.UPDATE;
+        }
+        sendMessageToUser(user, payLoadMessage, messageType);
+        
     }
     
     @MessageMapping("/quit/{gameUUID}")

@@ -5,6 +5,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
 
 import javax.persistence.Entity;
@@ -101,6 +102,11 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
             notifyObservers(getChessGame());
             checkGameStatus();
         }
+    }
+    
+    
+    boolean isGameAwaitingPlayer() {
+        return ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus());
     }
     
     /**

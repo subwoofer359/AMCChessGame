@@ -68,6 +68,16 @@ public class ServerChessGameSerilaiserTest {
 	}
 	
 	@Test
+	public void nullPlayerTest() {
+	    ServerChessGame scgGame = new TwoViewServerChessGame();
+        Gson gson = builder.create();
+        String output = gson.toJson(scgGame);
+        ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+        assertNotNull(info);
+        assertNull(info.getPlayer());
+	}
+	
+	@Test
 	public void testNullOpponent() {
 		ServerChessGame scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, gameUID, whitePlayer);
 		Gson gson = builder.create();

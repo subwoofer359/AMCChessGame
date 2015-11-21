@@ -1,5 +1,8 @@
 package org.amc.game.chessserver;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 
@@ -11,6 +14,7 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -60,6 +64,8 @@ public class StompControllerUnitTest {
             return "Stephen";
         }
     };
+    
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
 
     @Before
     public void setUp() {
@@ -73,7 +79,7 @@ public class StompControllerUnitTest {
             }
         });
         
-        ConcurrentMap<Long, ServerChessGame> gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
         
         controller.setGameMap(gameMap);
@@ -202,6 +208,46 @@ public class StompControllerUnitTest {
         sessionAttributes.put("PLAYER", whitePlayer);
         String move = "-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
+    }
+    
+    @Test
+    public void getChessBoardTest() {
+        scg.addOpponent(blackPlayer);
+        
+        controller.getChessBoard(principal, sessionAttributes, gameUUID, "chessboard");
+        
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals(principal.getName(), userArgument.getValue());
+        assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
+        assertEquals(MessageType.UPDATE, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertNotNull(payoadArgument.getValue());
+        assertTrue(payoadArgument.getValue().length() > 0);
+        
+    }
+    
+    @Test
+    public void getNullChessBoardTest() {
+        
+        controller.getChessBoard(principal, sessionAttributes, gameUUID, "chessboard");
+        
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals(principal.getName(), userArgument.getValue());
+        assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(StompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue()); 
+    }
+    
+    @Test
+    public void getChessBoardNoServerChessGameTest() {
+        gameMap.remove(gameUUID);
+        controller.getChessBoard(principal, sessionAttributes, gameUUID, "chessboard");
+        
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals(principal.getName(), userArgument.getValue());
+        assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(StompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue());
+        
     }
 
 }

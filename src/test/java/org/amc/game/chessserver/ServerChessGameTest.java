@@ -168,6 +168,36 @@ public class ServerChessGameTest {
     }
     
     @Test
+    public void checkStatusInCheckTest() throws IllegalMoveException {
+        
+        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        scgGame.setChessGame(mockChessGame);
+        when(mockChessGame.getGameState()).thenReturn(GameState.BLACK_IN_CHECK);
+        
+        Move move = new Move("A2-A3");
+        scgGame.move(fixture.getCurrentPlayer(), move);
+        verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
+        verify(mockChessGame, times(1)).changePlayer();
+        verify(mockChessGame, times(2)).getGameState();
+    }
+    
+    @Test
+    public void checkStatusStalemateTest() throws IllegalMoveException {
+        
+        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        scgGame.setChessGame(mockChessGame);
+        when(mockChessGame.getGameState()).thenReturn(GameState.STALEMATE);
+        
+        Move move = new Move("A2-A3");
+        scgGame.move(fixture.getCurrentPlayer(), move);
+        verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
+        verify(mockChessGame, times(1)).changePlayer();
+        verify(mockChessGame, times(1)).getGameState();
+        assertEquals(ServerGameStatus.FINISHED, scgGame.getCurrentStatus());
+        
+    }
+    
+    @Test
     public void testMoveOnNullChessBoard() throws IllegalMoveException {
         ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
         scgGame.setChessGame(null);
