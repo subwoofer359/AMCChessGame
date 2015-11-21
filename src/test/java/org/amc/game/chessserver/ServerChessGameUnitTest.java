@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class ServerChessGameTest2 {
+public class ServerChessGameUnitTest {
 
     private ServerChessGame scgGame;
     private Player player;
@@ -35,7 +35,7 @@ public class ServerChessGameTest2 {
     private ServerChessGameFactory factory;
     private GameType gameType;
 
-    public ServerChessGameTest2(GameType gameType) {
+    public ServerChessGameUnitTest(GameType gameType) {
         this.gameType = gameType;
     }
 

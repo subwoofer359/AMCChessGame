@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TwoViewServerChessGameTest {
+public class TwoViewServerChessGameConstructorTest {
 
     private static final long UID = 120l;
 

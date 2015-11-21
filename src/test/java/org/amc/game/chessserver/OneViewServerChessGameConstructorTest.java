@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OneViewServerChessGameTest {
+public class OneViewServerChessGameConstructorTest {
 
     private OneViewServerChessGame ovscGame;
     private Player player;
