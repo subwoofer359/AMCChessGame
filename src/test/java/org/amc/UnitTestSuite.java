@@ -38,6 +38,9 @@ import org.amc.game.chess.controller.ConsoleControllerTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
+import org.amc.game.chessserver.CacheFilter;
+import org.amc.game.chessserver.CacheFilterTest;
+import org.amc.game.chessserver.DBGameMapFactoryTest;
 import org.amc.game.chessserver.GameTableControllerTest;
 import org.amc.game.chessserver.NewGameRequestControllerTest;
 import org.amc.game.chessserver.LogOutControllerTest;
@@ -45,6 +48,7 @@ import org.amc.game.chessserver.MemoryGameMapFactoryBeanTest;
 import org.amc.game.chessserver.OneViewServerChessGameConstructorTest;
 import org.amc.game.chessserver.OnlinePlayerListControllerTest;
 import org.amc.game.chessserver.OnlinePlayerListMessagerTest;
+import org.amc.game.chessserver.PlayerFilterTest;
 import org.amc.game.chessserver.ServerChessGameFactoryTest;
 import org.amc.game.chessserver.ServerChessGameSerilaiserTest;
 import org.amc.game.chessserver.ServerChessGameConstructorTest;
@@ -94,6 +98,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BugCG42ChessGameDidntEndWhenCheckmateWasAchieved.class,
     BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved.class,
     BugCG44MoveToSameSquareAllowed.class,
+    CacheFilterTest.class,
     CastlingTest.class,
     ChessBoardTest.class,
     ChessGameCastlingKingInCheck.class,
@@ -118,6 +123,7 @@ import org.junit.runners.Suite.SuiteClasses;
     PawnIsNotPromotedTest.class,
     PawnIsPromotedTest.class,
     PawnPieceTest.class,
+    PlayerFilterTest.class,
     QueenPieceTest.class,
     RookPieceTest.class,
     SimpleChessBoardSetupNotationTest.class,
