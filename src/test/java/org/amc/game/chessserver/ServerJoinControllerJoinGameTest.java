@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class StartPageControllerJoinGameTest {
+public class ServerJoinControllerJoinGameTest {
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     private ServerJoinChessGameController controller;
     private Player whitePlayer;

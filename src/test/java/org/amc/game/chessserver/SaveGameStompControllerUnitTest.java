@@ -31,8 +31,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Persistence;
 
-public class StompControllerSaveUnitTest {
-    private StompController controller;
+public class SaveGameStompControllerUnitTest {
+    private SaveGameStompController controller;
 
     private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
@@ -79,7 +79,7 @@ public class StompControllerSaveUnitTest {
         });
         
         this.serverChessGameDAO = mock(ServerChessGameDAO.class);
-        this.controller = new StompController();
+        this.controller = new SaveGameStompController();
         controller.setServerChessDAO(serverChessGameDAO);
         
         DatabaseGameMap gameMap = new DatabaseGameMap();
@@ -109,7 +109,7 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO,times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.GAME_SAVED_SUCCESS, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.GAME_SAVED_SUCCESS, payoadArgument.getValue());
         
         restoreEntityManagerThreadLocal();
     }
@@ -143,7 +143,7 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO, never()).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(String.format(StompController.SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, invalidGameUID), 
+        assertEquals(String.format(SaveGameStompController.SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, invalidGameUID), 
                         payoadArgument.getValue());
         
     }
@@ -155,7 +155,7 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO, never()).addEntity(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.SAVE_ERROR_GAME_IS_OVER, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_GAME_IS_OVER, payoadArgument.getValue());
     }
     
     @Test
@@ -166,7 +166,7 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
     }
     
     @Test
@@ -176,7 +176,7 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO, never()).addEntity(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.ERROR_UNKNOWN_PLAYER, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.ERROR_UNKNOWN_PLAYER, payoadArgument.getValue());
     }
     
     @Test
@@ -187,7 +187,7 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
     }
     
     @Test
@@ -200,6 +200,6 @@ public class StompControllerSaveUnitTest {
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
     }
 }

@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 public class StompControllerOneViewUnitTest {
 
-    private StompController controller;
+    private GameMoveStompController controller;
     
     private ConcurrentMap<Long, ServerChessGame> gameMap;
     
@@ -58,7 +58,7 @@ public class StompControllerOneViewUnitTest {
 
     @Before
     public void setUp() {
-        this.controller = new StompController();
+        this.controller = new GameMoveStompController();
         chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

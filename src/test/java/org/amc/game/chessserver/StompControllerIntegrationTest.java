@@ -344,7 +344,7 @@ public class StompControllerIntegrationTest {
         saveGame(scg);
         Thread.sleep(200);
         
-        StompController controller = (StompController)wac.getBean(StompController.class);
+        SaveGameStompController controller = (SaveGameStompController)wac.getBean(SaveGameStompController.class);
         controller.setServerChessDAO(dao);
         doThrow(new OptimisticLockException()).doReturn(scg).when(dao).saveServerChessGame(any(ServerChessGame.class));
         
