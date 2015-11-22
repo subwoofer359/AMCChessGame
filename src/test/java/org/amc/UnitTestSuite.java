@@ -36,11 +36,10 @@ import org.amc.game.chess.StandardChessGameTest;
 import org.amc.game.chess.UnmodifibleChessBoardTest;
 import org.amc.game.chess.controller.ConsoleControllerTest;
 import org.amc.game.chess.view.ChessBoardViewTest;
+import org.amc.game.chessserver.AbstractServerChessGameTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
-import org.amc.game.chessserver.CacheFilter;
 import org.amc.game.chessserver.CacheFilterTest;
-import org.amc.game.chessserver.DBGameMapFactoryTest;
 import org.amc.game.chessserver.GameTableControllerTest;
 import org.amc.game.chessserver.NewGameRequestControllerTest;
 import org.amc.game.chessserver.LogOutControllerTest;
@@ -89,6 +88,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
+	AbstractServerChessGameTest.class,
     DAOUnitTest.class,
     ChessBoardExternalizerTest.class,
     DatabaseGameMapTest.class,
