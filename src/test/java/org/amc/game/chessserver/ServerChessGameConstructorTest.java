@@ -60,18 +60,7 @@ public class ServerChessGameConstructorTest {
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, game.getCurrentStatus());
         assertEquals(Colour.WHITE, game.getPlayer().getColour());
     }
-    
-    @Test
-    public void testDestroy() {
-        ServerChessGame game = getServerChessGame(UID, player);
-        game.addOpponent(opponent);
-        game.destroy();
         
-        assertNull(game.getOpponent());
-        assertNull(game.getChessGame());
-        assertEquals(ServerChessGame.ServerGameStatus.FINISHED, game.getCurrentStatus());
-    }
-    
     private ServerChessGame getServerChessGame(long UID, Player player) {
         ServerChessGame game = new ServerChessGame(UID, player) {
 

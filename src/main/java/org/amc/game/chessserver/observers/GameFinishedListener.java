@@ -118,7 +118,7 @@ public class GameFinishedListener extends GameObserver {
                 logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
             } else 
             {
-                logger.debug(String.format("Game(%d) has already been removed from gameMap", chessGame.getUid()));
+                logger.debug("GameFinishedLisnter:ServerChessGame is null, ignoring");
             }
         }
 

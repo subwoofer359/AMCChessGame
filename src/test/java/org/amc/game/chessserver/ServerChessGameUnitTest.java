@@ -111,7 +111,7 @@ public class ServerChessGameUnitTest {
         assertEquals(null, scgGame.getPlayer(opponent));
     }
 
-    @Test
+    @Test(expected=RuntimeException.class)
     public void getPlayerUnknownPlayer() {
         scgGame.addOpponent(opponent);
         Player unknownPlayer = new HumanPlayer("Evil Ralph");

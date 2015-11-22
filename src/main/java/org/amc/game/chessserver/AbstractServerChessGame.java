@@ -65,7 +65,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     private int version;
     
     @Transient
-    private transient ChessGameFactory chessGameFactory;
+    transient ChessGameFactory chessGameFactory;
     
     /**
      * Constructor
@@ -158,9 +158,11 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
             return this.player;
         } else if(this.chessGame == null) {
             return null;
-        } else {
+        } else if (ComparePlayers.comparePlayers(getOpponent(), player)) {
             return this.chessGame.getBlackPlayer();
-        } 
+        } else {
+        	throw new RuntimeException("Player not part of the game");
+        }
     }
 
     /**
