@@ -87,7 +87,7 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
                         return null;
                     } else {
                         serverChessGameDAO.detachEntity(game);
-                        gameMap.putIfAbsent((Long) key, game);
+                        game = gameMap.putIfAbsent((Long) key, game);
                     }
                 }
                 return game;
