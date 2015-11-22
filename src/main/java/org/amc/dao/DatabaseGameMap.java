@@ -158,7 +158,7 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
     }
 
     @Override
-    public Set<java.util.Map.Entry<Long, ServerChessGame>> entrySet() {
+    public Set<Entry<Long, ServerChessGame>> entrySet() {
         Set<Map.Entry<Long, ServerChessGame>> gameSet = new HashSet<>();
         Collection<ServerChessGame> games = values();
         for(ServerChessGame game: games) {
