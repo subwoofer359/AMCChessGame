@@ -23,7 +23,6 @@ import org.junit.Test;
 
 public class ServerChessGameConstructorTest {
     private Player player;
-    private Player opponent;
     private ChessGameFactory chessGameFactory;
     private ChessGameFixture fixture;
     private ChessGame mockChessGame;
@@ -33,7 +32,6 @@ public class ServerChessGameConstructorTest {
     @Before
     public void setUp() throws Exception {
         player = new HumanPlayer("Ted");
-        opponent = new HumanPlayer("Chris");
         chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

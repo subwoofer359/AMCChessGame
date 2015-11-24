@@ -1,6 +1,6 @@
 package org.amc.game.chessserver;
 
-import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
+import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

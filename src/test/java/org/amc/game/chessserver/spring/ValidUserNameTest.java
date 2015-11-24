@@ -1,31 +1,23 @@
 package org.amc.game.chessserver.spring;
 
-import static org.mockito.Mockito.*;
-import static org.amc.game.chess.ChessBoard.Coordinate.G;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
-import org.amc.game.chess.Location;
-import org.amc.game.chess.Move;
-import org.amc.game.chess.StartingSquare;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.MapBindingResult;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(Parameterized.class)
 public class ValidUserNameTest {
@@ -39,7 +31,8 @@ public class ValidUserNameTest {
 		this.userName = userName;
 	}
 	
-	@Before
+	@SuppressWarnings("unchecked")
+    @Before
 	public void setUp() throws Exception {
 		this.userDAO = mock(DAO.class);
 		this.userNameValidator = new UserNameValidator(userDAO);

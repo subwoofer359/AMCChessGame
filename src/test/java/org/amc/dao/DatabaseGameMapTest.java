@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.amc.DAOException;
-import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
@@ -51,8 +50,10 @@ public class DatabaseGameMapTest {
     private ServerChessGame game;
     private ConcurrentMap<Long, ServerChessGame> hashMap;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
+        
         hashMap = mock(ConcurrentHashMap.class);
         scgfactory = new ServerChessGameFactory();
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());

@@ -22,14 +22,6 @@ public class StandardChessGameTest {
 	public void tearDown() throws Exception {
 	}
 	
-	private void checkChessGameUninitialised(ChessGame game) {
-		assertNull(game.getBlackPlayer());
-		assertNull(game.getWhitePlayer());
-		assertNotNull(game.getChessBoard());
-		assertEquals(GameState.NEW, game.getGameState());
-	}
-
-	
 	@Test
 	public void constructorTest() {
 		ChessGame game = chessGameFactory.getChessGame(

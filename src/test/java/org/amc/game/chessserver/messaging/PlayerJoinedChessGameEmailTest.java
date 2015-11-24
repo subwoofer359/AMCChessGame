@@ -63,7 +63,7 @@ public class PlayerJoinedChessGameEmailTest {
         assertEquals(template.getEmailSubject(), PlayerJoinedChessGameEmail.DEFAULT_EMAIL_SUBJECT);
         assertTrue(ComparePlayers.comparePlayers(template.getPlayer(),player));
         assertEquals(template.getServerChessGame(), scg);
-        String html = template.getEmailHtml();  
+        template.getEmailHtml();  
         
     }
 }

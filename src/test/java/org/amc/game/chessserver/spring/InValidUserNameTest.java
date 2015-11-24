@@ -31,7 +31,8 @@ public class InValidUserNameTest {
 		this.userName = userName;
 	}
 	
-	@Before
+	@SuppressWarnings("unchecked")
+    @Before
 	public void setUp() throws Exception {
 		this.userDAO = mock(DAO.class);
 		Map<String, Object> errorMap = new HashMap<String, Object>();

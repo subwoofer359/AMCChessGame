@@ -50,8 +50,6 @@ public class EmailMessagingIntegrationTest {
 	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
 
-    private static final String MESSAGE_DESTINATION = "/app/move/";
-
     private ChessGamePlayer whitePlayer;
 
     private ChessGamePlayer blackPlayer;

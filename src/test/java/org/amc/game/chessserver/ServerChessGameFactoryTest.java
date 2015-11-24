@@ -56,10 +56,12 @@ public class ServerChessGameFactoryTest {
         assertEquals(3, scgGame.getNoOfObservers());
     }
     
+    
     private void checkOfflineChessGameMessagerHasBeenAdded(ServerChessGame scgGame, boolean pass) throws Exception {
         Field observerField = GameSubject.class.getDeclaredField("observers");
         observerField.setAccessible(true);
         
+        @SuppressWarnings("unchecked")
         List<Observer> list = (List<Observer>)observerField.get(scgGame);
         
         for(Observer obs: list) {

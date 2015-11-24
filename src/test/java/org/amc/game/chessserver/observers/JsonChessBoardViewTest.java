@@ -29,7 +29,7 @@ import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.StompConstants;
+import org.amc.game.chessserver.StompController;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
@@ -58,6 +58,8 @@ public class JsonChessBoardViewTest {
     private ChessGamePlayer blackPlayer;
     private SimpMessagingTemplate template;
     private GsonBuilder gson;
+    
+    @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
     private ArgumentCaptor<String> destinationArgument;
     ArgumentCaptor<String> messageArgument;
@@ -103,6 +105,7 @@ public class JsonChessBoardViewTest {
      * 
      * @throws IllegalMoveException
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void test() throws IllegalMoveException {
         serverGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
@@ -147,7 +150,7 @@ public class JsonChessBoardViewTest {
     }
 
     private void checkForUpdateMessageHeader(){
-        assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompConstants.MESSAGE_HEADER_TYPE));
+        assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompController.MESSAGE_HEADER_TYPE));
     }
     
     private void verifyMessageDestination(String destination) {

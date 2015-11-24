@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import org.amc.dao.DAO;
 import org.amc.dao.DatabaseGameMap;
 import org.amc.game.GameObserver;
-import org.amc.game.chessserver.messaging.EmailTemplate;
 import org.amc.game.chessserver.messaging.EmailTemplateFactory;
 import org.amc.game.chessserver.messaging.GameMessageService;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
@@ -41,6 +40,7 @@ public class ObserverFactoryChainFixture {
         
         OfflineChessGameMessagerFactory offlineCGMFactory = new OfflineChessGameMessagerFactory() {
             
+            @SuppressWarnings("unchecked")
             @Override
             public GameObserver createObserver() {
                 OfflineChessGameMessager messager = new OfflineChessGameMessager();

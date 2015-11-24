@@ -57,6 +57,7 @@ public class OfflineChessGameMessagerTest {
     private ServerChessGame serverChessGame;
     private Move move;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         

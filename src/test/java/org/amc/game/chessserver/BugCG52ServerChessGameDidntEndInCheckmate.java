@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
@@ -11,7 +10,6 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
-import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;

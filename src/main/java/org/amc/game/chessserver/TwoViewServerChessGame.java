@@ -2,7 +2,6 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;

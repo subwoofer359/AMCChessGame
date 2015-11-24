@@ -29,8 +29,13 @@ public class StompController {
     
     private ServerChessGameDAO serverChessGameDAO;
     
+    public static final String MESSAGE_HEADER_TYPE = "TYPE";
+    
     static final String MESSAGE_USER_DESTINATION = "/queue/updates";
+    
     static final String MESSAGE_DESTINATION = "/topic/updates/%d";
+    
+    static final String PLAYER = "PLAYER";
     
     /**
      * Sends a reply to the user
@@ -60,7 +65,7 @@ public class StompController {
 
     private Map<String, Object> getHeaders(MessageType type) {
         Map<String, Object> headers = new HashMap<String, Object>();
-        headers.put(StompConstants.MESSAGE_HEADER_TYPE, type);
+        headers.put(MESSAGE_HEADER_TYPE, type);
         return headers;
     }
     

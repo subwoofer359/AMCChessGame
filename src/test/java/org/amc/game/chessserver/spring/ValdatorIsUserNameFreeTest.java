@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
@@ -26,7 +25,8 @@ public class ValdatorIsUserNameFreeTest {
 	private static final String USER_NAME = "adrian";
 	private static final String TAKEN_USER_NAME = "sarah";
 	
-	@Before
+	@SuppressWarnings("unchecked")
+    @Before
 	public void setUp() throws Exception {
 		this.userDAO = mock(DAO.class);
 		this.userNameValidator = new UserNameValidator(userDAO);

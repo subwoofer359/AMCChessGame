@@ -39,7 +39,8 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         EntityManager entityManager = getEntityManager();
         Query query = entityManager.createQuery("Select x.uid from " + getEntityClass().getSimpleName() + " x ORDER BY x.uid");
         try {
-        	Set<Long> gameUidsSet = new HashSet<Long>(query.getResultList());
+        	@SuppressWarnings("unchecked")
+            Set<Long> gameUidsSet = new HashSet<Long>(query.getResultList());
         	return gameUidsSet;
         } catch(PersistenceException pe) {
         	logger.error(pe);

@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import static org.mockito.Mockito.*;
-import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
+import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
@@ -141,6 +141,7 @@ public class StompControllerOneViewUnitTest {
         controller.registerOneViewMoveMove(principal, gameUUID, move);
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testNotOneViewServerChessGame() {
         ServerChessGame scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
@@ -149,6 +150,7 @@ public class StompControllerOneViewUnitTest {
         scg.addOpponent(blackPlayer);
         String move = "A2-A3";
         controller.registerOneViewMoveMove(principal, gameUUID, move);
+        
         verify(template,never()).convertAndSendToUser(anyString(),
                         anyString(), anyObject(),anyMap());
     }

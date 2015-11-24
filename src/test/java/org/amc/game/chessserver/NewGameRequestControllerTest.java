@@ -33,7 +33,8 @@ public class NewGameRequestControllerTest {
 	private User opponentUser;
 	private static final Long gameUid = 1234L;
 
-	@Before
+	@SuppressWarnings("unchecked")
+    @Before
 	public void setUp() throws Exception {
 		wac = mock(GenericWebApplicationContext.class);
 		spController = mock(StartPageController.class);

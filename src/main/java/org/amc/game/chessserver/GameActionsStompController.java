@@ -46,7 +46,7 @@ public class GameActionsStompController extends StompController {
         } else {
             Gson gson = new Gson();
             JsonChessGame jcb = new JsonChessGame(chessGame);
-            logger.debug(wsSession.get("PLAYER") + " requested update for game:" + gameUUID);
+            logger.debug(wsSession.get(PLAYER) + " requested update for game:" + gameUUID);
             payLoadMessage = gson.toJson(jcb);
             messageType = MessageType.UPDATE;
         }
@@ -59,7 +59,7 @@ public class GameActionsStompController extends StompController {
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
         ServerChessGame serverGame = getGameMap().get(gameUUID);
-        Player player = (Player) wsSession.get("PLAYER");
+        Player player = (Player) wsSession.get(PLAYER);
         
         String replyMessage="";
         

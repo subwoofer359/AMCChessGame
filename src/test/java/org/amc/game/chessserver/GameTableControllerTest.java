@@ -69,6 +69,6 @@ public class GameTableControllerTest {
 		Gson gson = new Gson();
 		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
 		}.getType();
-		Map<Long, ServerChessGameInfo> serverCGInfoMap = gson.fromJson(result, mapType);
+		gson.fromJson(result, mapType);
 	}
 }

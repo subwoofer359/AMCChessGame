@@ -21,6 +21,7 @@ public class UserNameAvailableTest {
     private static final String USERNAME = "adrian";
     private static final String USERNAME_NOT_VALID = "ed";
     
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         userDAO = mock(DAO.class);

@@ -12,7 +12,7 @@ import org.amc.game.chess.Location;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.StompConstants;
+import org.amc.game.chessserver.StompController;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -65,7 +65,7 @@ public class JsonChessGameView extends GameObserver {
     
     private Map<String,Object> getDefaultHeaders(){
         Map<String,Object> headers = new HashMap<String, Object>();
-        headers.put(StompConstants.MESSAGE_HEADER_TYPE, MessageType.UPDATE);
+        headers.put(StompController.MESSAGE_HEADER_TYPE, MessageType.UPDATE);
         return headers;
     }
     

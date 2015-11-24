@@ -6,7 +6,6 @@ import org.amc.DAOException;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
-import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;

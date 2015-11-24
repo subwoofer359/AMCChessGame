@@ -90,7 +90,7 @@ public class MoveUpdateEmailTest {
         EmbeddedMailImage imageBackground = images.get(MoveUpdateEmail.BACKGROUND_IMAGE_RESOURCE);
         assertEquals(imageBackground.getContentId(), MoveUpdateEmail.BACKGROUND_IMAGE_RESOURCE);
         assertEquals(imageBackground.getContentType(), "image/jpg");
-        assertEquals(imageBackground.getImageSource().getPath(), template.backgroundImagePath);
+        assertEquals(imageBackground.getImageSource().getPath(), EmailTemplate.backgroundImagePath);
         
         EmbeddedMailImage imageChessboard = images.get(MoveUpdateEmail.CHESSBOARD_IMAGE_RESOURCE);
         assertEquals(imageChessboard.getContentId(), MoveUpdateEmail.CHESSBOARD_IMAGE_RESOURCE);

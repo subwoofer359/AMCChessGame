@@ -58,6 +58,7 @@ public class GameStateListenerTest {
     public void tearDown() throws Exception {
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void test() {
         listener = new GameStateListener(template);
@@ -70,6 +71,7 @@ public class GameStateListenerTest {
         assertEquals(ChessGame.GameState.RUNNING.toString(), messageArgument.getValue());
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testSendCheckMateMessage() {
         listener = new GameStateListener(template);
@@ -78,6 +80,7 @@ public class GameStateListenerTest {
         verify(template, times(1)).convertAndSend(anyString(),anyObject(),anyMap());
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testMessageIsIgnored() {
         listener = new GameStateListener(template);

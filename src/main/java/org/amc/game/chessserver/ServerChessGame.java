@@ -5,8 +5,6 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.apache.log4j.Logger;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -30,8 +28,6 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
     
     private static final long serialVersionUID = 2147129152958398504L;
 
-    private static final Logger logger = Logger.getLogger(ServerChessGame.class);
-    
     /**
      * Constructor
      */

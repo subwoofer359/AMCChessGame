@@ -2,7 +2,7 @@ package org.amc.game.chessserver;
 
 
 import static org.mockito.Mockito.*;
-import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
+import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;

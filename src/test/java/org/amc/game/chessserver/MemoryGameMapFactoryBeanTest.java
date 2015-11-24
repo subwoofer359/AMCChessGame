@@ -3,7 +3,6 @@ package org.amc.game.chessserver;
 import static org.junit.Assert.*;
 
 import org.amc.dao.DatabaseGameMap;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

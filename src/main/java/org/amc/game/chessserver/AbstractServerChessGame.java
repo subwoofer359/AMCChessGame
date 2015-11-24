@@ -10,7 +10,6 @@ import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
-import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 
@@ -39,8 +38,6 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         AWAITING_PLAYER,
         FINISHED
     }
-
-    private static final Logger logger = Logger.getLogger(AbstractServerChessGame.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

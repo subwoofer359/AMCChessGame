@@ -54,7 +54,7 @@ public class SaveGameStompController extends StompController {
             replyMessage = String.format(SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, gameUUID); 
             logger.error(replyMessage);
         } else {
-            Player player = (Player) wsSession.get("PLAYER");
+            Player player = (Player) wsSession.get(PLAYER);
             replyMessage = saveServerChessGameIfValidPlayer(player, serverChessGame);     
         }
         sendMessageToUser(user, replyMessage, MessageType.INFO);
