@@ -11,10 +11,9 @@ public class RealChessGamePlayer extends ChessGamePlayer {
 	
 	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH},
     		targetEntity=org.amc.game.chess.HumanPlayer.class)
-    private Player player;
+    private Player player = null;
 	
 	protected RealChessGamePlayer() {
-		player = new HumanPlayer();
 	}
 	
 	public RealChessGamePlayer(Player player, Colour colour) {

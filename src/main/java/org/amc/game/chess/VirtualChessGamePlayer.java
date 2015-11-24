@@ -11,10 +11,9 @@ public class VirtualChessGamePlayer extends ChessGamePlayer {
     
     @OneToOne(cascade=CascadeType.ALL,
                     targetEntity=org.amc.game.chess.HumanPlayer.class)
-            private Player player;
+            private Player player = null;
             
             protected VirtualChessGamePlayer() {
-                player = new HumanPlayer();
             }
             
             public VirtualChessGamePlayer(Player player, Colour colour) {
