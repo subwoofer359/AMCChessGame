@@ -33,6 +33,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.OptimisticLockException;
@@ -141,7 +142,6 @@ public class StompControllerIntegrationTest {
             ServerChessGame scg = gameMap.get(gameUUID);
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
             testInfoMessageSent();
-            Thread.sleep(200);
             verifyMove(scg, moves[i]);
         }
     }
@@ -165,7 +165,12 @@ public class StompControllerIntegrationTest {
     private void testMessageSent(MessageType type) throws Exception {
         Message<?> message = this.brokerChannelInterceptor.awaitMessage(5);
         assertNotNull(message);
-        assertNotEquals(type, message.getHeaders().get(MESSAGE_HEADER_TYPE));
+        
+        @SuppressWarnings("unchecked")
+		Map<String, List<String>> nativeHeaders = message.getHeaders()
+			.get("nativeHeaders", Map.class);
+        
+        assertEquals(type, MessageType.valueOf(nativeHeaders.get(MESSAGE_HEADER_TYPE).get(0)));
     }
     
     @Test
@@ -267,14 +272,14 @@ public class StompControllerIntegrationTest {
             move(scg.getChessGame().getCurrentPlayer(), 
                             gameUUID, MESSAGE_DESTINATION, move);
             
-            Thread.sleep(200);
+            testInfoMessageSent();
             saveGame(scg);
             testInfoMessageSent();
-            Thread.sleep(200);
             ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
             dao.detachEntity(savedGame);
+            
             if (savedGame == null) {
-                Thread.sleep(200);
+                Thread.sleep(60);
                 savedGame = dao.getServerChessGame(gameUUID);
                 
             }
@@ -292,10 +297,9 @@ public class StompControllerIntegrationTest {
         dao.setObserverFactoryChain(chain);
         
         for(String move : moves) {         
-            saveGameTest(dao, move, 10);
+            saveGameTest(dao, move);
         }
         
-        Thread.sleep(200);
         ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
         Move move = savedGame.getChessGame().getTheLastMove();
         System.out.println("MOVE:" + move);
@@ -304,14 +308,12 @@ public class StompControllerIntegrationTest {
         
     }
     
-    private void saveGameTest(ServerChessGameDAO dao, String move, int delayInMillis) throws Exception {
+    private void saveGameTest(ServerChessGameDAO dao, String move) throws Exception {
         ServerChessGame scg = gameMap.get(gameUUID);
         dao.detachEntity(scg);
         move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
-
-        Thread.sleep(delayInMillis);
+        testInfoMessageSent();
         saveGame(scg);
-        Thread.sleep(delayInMillis);
         testInfoMessageSent();
         ServerChessGame savedGame = null;
         
@@ -319,7 +321,6 @@ public class StompControllerIntegrationTest {
         int check = 0;
         do{
             if (savedGame == null) {
-                Thread.sleep(100);
                 savedGame = dao.getServerChessGame(gameUUID);
                 check++;
             }
@@ -342,13 +343,13 @@ public class StompControllerIntegrationTest {
         
         ServerChessGame scg = gameMap.get(gameUUID);
         saveGame(scg);
-        Thread.sleep(200);
+        testInfoMessageSent();
         
         StompController controller = (StompController)wac.getBean(StompController.class);
         controller.setServerChessDAO(dao);
         doThrow(new OptimisticLockException()).doReturn(scg).when(dao).saveServerChessGame(any(ServerChessGame.class));
         
-        saveGameTest(dao, moves[0], 10);
+        saveGameTest(dao, moves[0]);
        
         
         ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
