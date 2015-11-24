@@ -32,7 +32,7 @@ public class HumanPlayer implements Player, Serializable {
     @Column(name = "name", length = 50, nullable = false)
     private String name="name";
     
-    @Column(name = "username" , length =50, nullable = false)
+    @Column(name = "username" , length = 50, nullable = false)
     private String userName;
     
     public HumanPlayer(String name) {
