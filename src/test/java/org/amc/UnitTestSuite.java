@@ -60,6 +60,7 @@ import org.amc.game.chessserver.StompControllerOneViewUnitTest;
 import org.amc.game.chessserver.SaveGameStompControllerUnitTest;
 import org.amc.game.chessserver.GameMoveStompControllerUnitTest;
 import org.amc.game.chessserver.TwoViewServerChessGameConstructorTest;
+import org.amc.game.chessserver.UrlViewChessGameTest;
 import org.amc.game.chessserver.UserNameAvailableTest;
 import org.amc.game.chessserver.UserSearchTest;
 import org.amc.game.chessserver.messaging.EmailMessageServiceTest;
@@ -170,7 +171,8 @@ import org.junit.runners.Suite.SuiteClasses;
     StandardChessGameTest.class,
     UnmodifibleChessBoardTest.class,
     ServerChessGameSerilaiserTest.class,
-    UserNameAvailableTest.class
+    UserNameAvailableTest.class,
+    UrlViewChessGameTest.class
 })
 
 public class UnitTestSuite {
