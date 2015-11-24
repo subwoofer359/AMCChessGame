@@ -33,34 +33,38 @@ public class UrlViewChessGameController {
         
         ServerChessGame scgGame = gameMap.get(gameUid);
         
-        if(scgGame == null) {
-            mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
-            mav.getModel().put(ServerConstants.ERRORS, String.format(CANT_VIEW_CHESSGAME, gameUid));
-        } else if (!(scgGame instanceof TwoViewServerChessGame)) {
-            mav.getModel().put(ServerConstants.ERRORS, String.format(CANT_VIEW_CHESSGAME, gameUid));
-            mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
-        } else if(!(ComparePlayers.comparePlayers(player, scgGame.getPlayer()))
-                        || ComparePlayers.comparePlayers(player, scgGame.getOpponent())) {
-            mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
-        } else if(ServerGameStatus.IN_PROGRESS.equals(scgGame.getCurrentStatus())) {
+        if(canServerChessGameBeViewed(player, scgGame)) {
             mav.getModel().put(ServerConstants.GAME_UUID, gameUid);
             mav.getModel().put(ServerConstants.GAME, scgGame);
             mav.getModel().put(ServerConstants.CHESSPLAYER, scgGame.getPlayer(player));
             mav.setViewName(ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE);
-        } else if(ServerGameStatus.AWAITING_PLAYER.equals(scgGame.getCurrentStatus())) {
-            mav.getModel().put(ServerConstants.ERRORS, ServerJoinChessGameController.ERROR_GAME_HAS_NO_OPPONENT);
-            mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
-        } else if(ServerGameStatus.FINISHED.equals(scgGame.getCurrentStatus())) {
-            mav.getModel().put(ServerConstants.ERRORS, ServerJoinChessGameController.ERROR_GAMEOVER);
-            mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
         } else {
-            mav.getModel().put(ServerConstants.ERRORS, String.format(CANT_VIEW_CHESSGAME, gameUid));
             mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
-        }
+            mav.getModel().put(ServerConstants.ERRORS, String.format(CANT_VIEW_CHESSGAME, gameUid));
+        } 
         return mav;
         
     }
     
+    private boolean canServerChessGameBeViewed(Player player, ServerChessGame scgGame) {
+        return scgGame !=null && instanceOfTwoServerChessGame(scgGame)
+                        && isInProgressState(scgGame)
+                        && isPlayerPartOfThisGame(player, scgGame);
+    }
+    
+    private boolean instanceOfTwoServerChessGame(ServerChessGame scgGame) {
+        return scgGame instanceof TwoViewServerChessGame;
+    }
+    
+    private boolean isPlayerPartOfThisGame(Player player, ServerChessGame scgGame) {
+        return ComparePlayers.comparePlayers(player, scgGame.getPlayer()) ||
+                        ComparePlayers.comparePlayers(player, scgGame.getOpponent());
+    }
+    
+    private boolean isInProgressState(ServerChessGame scgGame) {
+        return ServerGameStatus.IN_PROGRESS.equals(scgGame.getCurrentStatus());
+    }
+     
     @Resource(name = "gameMap")
     public void setDatabaseGameMap(ConcurrentMap<Long, ServerChessGame> databaseGameMap) {
         this.gameMap = databaseGameMap;
