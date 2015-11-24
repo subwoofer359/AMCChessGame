@@ -14,7 +14,6 @@ import org.amc.game.chess.ChessGameCastlingKingInCheck;
 import org.amc.game.chess.ChessGameGetOpposingPlayerTest;
 import org.amc.game.chess.ChessGameMoveKingInCheck;
 import org.amc.game.chess.ChessGameMoveKingOutOfCheck;
-import org.amc.game.chess.ChessGameMoveTest;
 import org.amc.game.chess.ChessPieceCanCopy;
 import org.amc.game.chess.EmptyMoveTest;
 import org.amc.game.chess.EnPassantTest;
@@ -106,7 +105,6 @@ import org.junit.runners.Suite.SuiteClasses;
     ChessGameGetOpposingPlayerTest.class,
     ChessGameMoveKingInCheck.class,
     ChessGameMoveKingOutOfCheck.class,
-    ChessGameMoveTest.class,
     ChessPieceCanCopy.class,
     EmptyMoveTest.class,
     EnPassantTest.class,
