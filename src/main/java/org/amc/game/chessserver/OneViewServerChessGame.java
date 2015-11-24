@@ -1,12 +1,11 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SetupChessBoard;
+import org.amc.game.chess.VirtualChessGamePlayer;
 import org.apache.log4j.Logger;
 
 import javax.persistence.Entity;
@@ -38,7 +37,7 @@ public class OneViewServerChessGame extends ServerChessGame {
 	        ChessBoard board = new ChessBoard();
 	        SetupChessBoard.setUpChessBoardToDefault(board);
 	        setChessGame(getChessGameFactory().getChessGame(board, getPlayer(), 
-                        new RealChessGamePlayer(opponent, Colour.BLACK)));
+                        new VirtualChessGamePlayer(opponent, Colour.BLACK)));
 	        setCurrentStatus(ServerGameStatus.IN_PROGRESS);
 	    } else 
 	    {
