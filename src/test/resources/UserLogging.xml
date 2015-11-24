@@ -22,5 +22,10 @@
 	</bean>
 
 	<bean id="mockPlayerListMessager" class="org.amc.game.chessserver.MockPlayerListMessager"/>
+
+	<bean class="org.amc.game.chessserver.OnlinePlayerListController">
+		<property name="sessionRegistry" ref="sessionRegistry"/>
+	</bean>
+
 </beans>
 	

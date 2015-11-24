@@ -101,10 +101,5 @@
 	<bean class="org.amc.game.chessserver.SignUpController">
 		<property name="passwordEncoder" ref="myPasswordEncoder"/>
 		<property name="userDAO" ref="myUserDAO"/>
-	</bean>
-	
-	<bean class="org.amc.game.chessserver.OnlinePlayerListController">
-		<property name="sessionRegistry" ref="sessionRegistry"/>
-	</bean>
-	
+	</bean>	
 </beans>

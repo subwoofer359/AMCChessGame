@@ -31,7 +31,7 @@
 		<lookup-method name="getChessBoardSVGFactory" bean="chessBoardSVGFactory"/>
 		<property name="templateEngine" ref="templateEngine"></property>
 	</bean>
-	
+		
 	<bean id="offlineChessGameMessager" class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
 		<property name="messageService" ref="messageService"></property>
 		<property name="sessionRegistry" ref="sessionRegistry"></property>
