@@ -103,4 +103,8 @@
 		<property name="userDAO" ref="myUserDAO"/>
 	</bean>
 	
+	<bean class="org.amc.game.chessserver.OnlinePlayerListController">
+		<property name="sessionRegistry" ref="sessionRegistry"/>
+	</bean>
+	
 </beans>
