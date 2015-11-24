@@ -14,6 +14,7 @@
 <class>org.amc.game.GameSubject</class>
 <class>org.amc.game.chess.HumanPlayer</class>
 <class>org.amc.game.chess.ChessGamePlayer</class>
+<class>org.amc.game.chess.RealChessGamePlayer</class>
 <class>org.amc.game.chess.ChessGame</class>
 <class>org.amc.game.chess.StandardChessGame</class>
 <class>org.amc.game.chessserver.AbstractServerChessGame</class>
