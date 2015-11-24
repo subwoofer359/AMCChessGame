@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.session.HttpSessionCreatedEvent;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -55,15 +55,17 @@ public class OnlinePlayerListControllerIntegrationTest {
     }
 
     
-    @Ignore
+
     @Test
     public void test() throws Exception{
-        MvcResult result = this.mockMvc.perform(get("/onlinePlayerList")).andExpect(status().isOk())
+        MvcResult result = this.mockMvc.perform(get("/onlinePlayerList"))
+                        .andDo(print()).andExpect(status().isOk())
                         .andExpect(request().asyncStarted()).andReturn();
+
+        String userListString = String.valueOf(result.getAsyncResult(5000));
+        assertNotNull(userListString);
+        assertTrue(userListString.contains("nobby"));
         
-        MvcResult result2 = this.mockMvc.perform(asyncDispatch(result)).andExpect(status().isOk())
-                        .andReturn();
-        System.out.println("--------------->" + result2.getAsyncResult(500000));
         
     }
     
