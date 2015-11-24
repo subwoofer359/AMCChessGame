@@ -16,6 +16,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;
@@ -213,7 +214,7 @@ public class AbstractServerChessGameTest {
 		public void addOpponent(Player opponent) {
 			if(getChessGame() == null) {
 				ChessBoard board = new ChessBoard();
-				setChessGame(new ChessGame(board, getPlayer(), new ChessGamePlayer(opponent, Colour.BLACK)));
+				setChessGame(new ChessGame(board, getPlayer(), new RealChessGamePlayer(opponent, Colour.BLACK)));
 			} else {
 				System.out.println("Opponent already set");
 			}

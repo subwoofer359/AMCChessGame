@@ -12,10 +12,10 @@ public class PlayerEqualityTest {
     private static final int uidTwo = 1903939939;
     
     Player playerA = new HumanPlayer("Ted");
-    Player playerB = new ChessGamePlayer(playerA, Colour.WHITE);
+    Player playerB = new RealChessGamePlayer(playerA, Colour.WHITE);
     Player playerC = new HumanPlayer("Ted");
     Player playerD = new HumanPlayer("Tom");
-    Player playerE = new ChessGamePlayer(playerD, Colour.WHITE);
+    Player playerE = new RealChessGamePlayer(playerD, Colour.WHITE);
     Player playerF = new HumanPlayer("Ted");
     Player playerG = new HumanPlayer("Tom");
     

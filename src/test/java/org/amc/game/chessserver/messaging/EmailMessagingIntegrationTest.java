@@ -15,6 +15,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.ServerChessGame;
@@ -73,9 +74,9 @@ public class EmailMessagingIntegrationTest {
         stephen.setUserName("stephen");
         Player nobby = new HumanPlayer("Nobby");
         nobby.setUserName("nobby");
-        whitePlayer = new ChessGamePlayer(stephen, Colour.WHITE);
+        whitePlayer = new RealChessGamePlayer(stephen, Colour.WHITE);
         
-        blackPlayer = new ChessGamePlayer(nobby, Colour.BLACK);
+        blackPlayer = new RealChessGamePlayer(nobby, Colour.BLACK);
         
         
     }

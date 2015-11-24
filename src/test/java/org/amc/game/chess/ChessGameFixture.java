@@ -8,8 +8,8 @@ public class ChessGameFixture {
     private ChessGamePlayer blackPlayer;
 
     public ChessGameFixture() {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         ChessGameFactory factory = new StandardChessGameFactory();
         chessGame = factory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();

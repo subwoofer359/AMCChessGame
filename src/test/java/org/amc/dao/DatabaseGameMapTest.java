@@ -30,6 +30,7 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -251,7 +252,7 @@ public class DatabaseGameMapTest {
         ServerChessGame newGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
         gameMap.put(gameUid, newGame);
         Player opponent = new HumanPlayer("Mary");
-        newGame.addOpponent(new ChessGamePlayer(opponent, Colour.BLACK));
+        newGame.addOpponent(new RealChessGamePlayer(opponent, Colour.BLACK));
         Collection<ServerChessGame> games = gameMap.values();
         for(ServerChessGame scg : games) {
             assertTrue(ComparePlayers.comparePlayers(opponent, scg.getOpponent()));

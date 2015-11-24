@@ -21,8 +21,8 @@ public class EnPassantTest {
     @Before
     public void setUp() {
         ChessGameFactory chessGamefactory = new StandardChessGameFactory();
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         
         enPassantRule = EnPassantRule.getInstance();
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());

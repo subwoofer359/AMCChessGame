@@ -37,8 +37,8 @@ public class IsKingNotInCheckTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
     }
 
     @Test

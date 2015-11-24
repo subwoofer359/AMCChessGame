@@ -6,6 +6,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SetupChessBoard;
 import org.apache.log4j.Logger;
 
@@ -55,7 +56,7 @@ public class TwoViewServerChessGame extends ServerChessGame {
         SetupChessBoard.setUpChessBoardToDefault(board);
         synchronized (this) {
             setChessGame(getChessGameFactory().getChessGame(board, getPlayer(), 
-                            new ChessGamePlayer(opponent, Colour.BLACK)));
+                            new RealChessGamePlayer(opponent, Colour.BLACK)));
             setCurrentStatus(ServerGameStatus.IN_PROGRESS);
         }
         notifyObservers(opponent);

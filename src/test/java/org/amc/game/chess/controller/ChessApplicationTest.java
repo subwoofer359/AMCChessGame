@@ -8,6 +8,7 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.controller.ConsoleController;
 import org.junit.After;
 import org.junit.Before;
@@ -27,8 +28,8 @@ public class ChessApplicationTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
         board = new ChessBoard();
         game = new ChessApplication(whitePlayer, blackPlayer);
         chessGame = spy(new ChessGame(board, whitePlayer, blackPlayer));

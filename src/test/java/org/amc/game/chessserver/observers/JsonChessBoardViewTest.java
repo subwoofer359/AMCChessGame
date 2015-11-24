@@ -23,6 +23,7 @@ import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
@@ -70,8 +71,8 @@ public class JsonChessBoardViewTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         ChessBoard board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
         chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
 
@@ -85,6 +86,7 @@ public class JsonChessBoardViewTest {
         
         gson = new GsonBuilder();
         gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
+        gson.registerTypeHierarchyAdapter(ChessGamePlayer.class, new ChessGamePlayerDeserializer());
         
         new JsonChessGameView(template).setGameToObserver(serverGame);
         
@@ -165,6 +167,18 @@ public class JsonChessBoardViewTest {
                         throws JsonParseException {
             JsonObject object = arg0.getAsJsonObject();
             return new HumanPlayer(object.get("name").getAsString());
+        }
+    }
+    
+    private class ChessGamePlayerDeserializer implements JsonDeserializer<ChessGamePlayer> {
+
+        @Override
+        public ChessGamePlayer deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
+                        throws JsonParseException {
+            JsonObject object = arg0.getAsJsonObject();
+            JsonObject playerJson = object.getAsJsonObject("player");
+            Colour colour = Colour.valueOf(object.get("colour").getAsString());
+            return new RealChessGamePlayer(new HumanPlayer(playerJson.get("name").getAsString()), colour);
         }
     }
 

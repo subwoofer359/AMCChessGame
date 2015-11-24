@@ -9,6 +9,7 @@ import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameStateListener;
@@ -32,8 +33,8 @@ public class GameStateListenerTest {
     
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         template = mock(SimpMessagingTemplate.class);
         
         chessGameFactory = new ChessGameFactory() {

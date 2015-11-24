@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class StartPageControllerChessAppPageTest {
         
         controller.setGameMap(gameMap);
         controller.setServerChessGameFactory(scgFactory);
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
     }
 
     @After

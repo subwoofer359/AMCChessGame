@@ -15,9 +15,9 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class ChessGameCastlingKingInCheck {
-    private static ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"),
+    private static ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"),
                     Colour.WHITE);
-    private static ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"),
+    private static ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"),
                     Colour.BLACK);
     private ChessGamePlayer currentPlayer;
     private ChessPiece attackingPiece;

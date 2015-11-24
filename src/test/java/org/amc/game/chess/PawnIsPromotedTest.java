@@ -64,8 +64,8 @@ public class PawnIsPromotedTest {
 
     @Test
     public void testChessGamePawnPromotion() throws IllegalMoveException {
-        ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Test1"), Colour.WHITE);
-        ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Test2"), Colour.BLACK);
+        ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Test1"), Colour.WHITE);
+        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Test2"), Colour.BLACK);
         ChessGame chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
         new ChessBoardView(board);

@@ -13,6 +13,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
@@ -38,8 +39,8 @@ public class BugCG52ServerChessGameDidntEndInCheckmate {
     
     @Before
     public void setUp() throws Exception {
-        whitePlayer=new ChessGamePlayer(new HumanPlayer("White Player"),Colour.WHITE);
-        blackPlayer=new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer=new RealChessGamePlayer(new HumanPlayer("White Player"),Colour.WHITE);
+        blackPlayer=new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board=boardFactory.getChessBoard(CHESSBOARD_CONFIG);
         new ChessBoardView(board);
         

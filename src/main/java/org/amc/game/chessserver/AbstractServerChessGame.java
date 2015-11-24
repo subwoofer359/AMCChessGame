@@ -9,6 +9,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -88,7 +89,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         super();
         checkForNull(Player.class, player);
         this.uid = uid;
-        this.player = new ChessGamePlayer(player, Colour.WHITE);
+        this.player = new RealChessGamePlayer(player, Colour.WHITE);
         this.currentStatus = ServerGameStatus.AWAITING_PLAYER;
     }
     

@@ -29,8 +29,8 @@ public class PawnIsNotPromotedTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board = new ChessBoard();
         this.promotion = PawnPromotionRule.getInstance();
         this.chessGame = new ChessGame(board, whitePlayer, blackPlayer);

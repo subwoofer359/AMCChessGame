@@ -6,6 +6,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
 import org.junit.After;
@@ -34,7 +35,7 @@ public class StartPageControllerCreateGameTest {
         scgFactory = new ServerChessGameFactory();
         model=new ExtendedModelMap();
         gameMap =new ConcurrentHashMap<>();
-        whitePlayer=new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
+        whitePlayer=new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         controller=new StartPageController();    
         controller.setGameMap(gameMap);
         scgFactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());

@@ -6,10 +6,10 @@ import org.amc.game.GameSubject;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
-
 import org.amc.util.Observer;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +27,7 @@ public class ServerChessGameFactoryTest {
     @Before
     public void setUp() throws Exception {
         scgfactory = new ServerChessGameFactory();
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         scgfactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         
     }

@@ -12,8 +12,8 @@ public class BugCG24PawnCantMoveTwoSquares {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
         board = new ChessBoard();
         SetupChessBoard.setUpChessBoardToDefault(board);
         game = new ChessGame(board, whitePlayer, blackPlayer);

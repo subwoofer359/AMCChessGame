@@ -13,6 +13,7 @@ import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.RookPiece;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.controller.ConsoleController;
@@ -176,8 +177,8 @@ public class ChessBoardView implements Observer {
     public static void main(String[] args) {
         ChessBoard board = new ChessBoard();
         board.initialise();
-        ChessGamePlayer playerOne = new ChessGamePlayer(new HumanPlayer("Stephen"),Colour.WHITE);
-        ChessGamePlayer playerTwo = new ChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
+        ChessGamePlayer playerOne = new RealChessGamePlayer(new HumanPlayer("Stephen"),Colour.WHITE);
+        ChessGamePlayer playerTwo = new RealChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
         ChessGame chessGame=new ChessGame(board, playerOne, playerTwo);
         ConsoleController controller = new ConsoleController(chessGame);
         ChessBoardView view = new ChessBoardView(board);

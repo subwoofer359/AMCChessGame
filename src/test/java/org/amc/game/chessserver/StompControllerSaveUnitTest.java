@@ -15,11 +15,11 @@ import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.*;
 import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -34,11 +34,11 @@ import javax.persistence.Persistence;
 public class StompControllerSaveUnitTest {
     private StompController controller;
 
-    private ChessGamePlayer whitePlayer = new ChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
+    private ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
-    private ChessGamePlayer blackPlayer = new ChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
+    private ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
     
-    private ChessGamePlayer unknownPlayer = new ChessGamePlayer(new HumanPlayer("Villian"), Colour.BLACK);
+    private ChessGamePlayer unknownPlayer = new RealChessGamePlayer(new HumanPlayer("Villian"), Colour.BLACK);
 
     private long gameUUID = 1234L;
 
@@ -99,7 +99,11 @@ public class StompControllerSaveUnitTest {
         sessionAttributes.put("PLAYER", whitePlayer);
     }
     
-    @DirtiesContext
+    @AfterClass
+    public static void tearDownClass() {
+    	restoreEntityManagerThreadLocal();
+    }
+    
     @Test
     public void testSaveGame() throws DAOException {
         setupMockEntityManagerThreadLocal();
@@ -124,7 +128,7 @@ public class StompControllerSaveUnitTest {
         when(mockEmManager.getTransaction()).thenReturn(mockTransaction);
     }
     
-    private void restoreEntityManagerThreadLocal() {
+    private static void restoreEntityManagerThreadLocal() {
         EntityManagerThreadLocal.setEntityManagerFactory(
                         Persistence.createEntityManagerFactory("myDatabaseTest"));
     }

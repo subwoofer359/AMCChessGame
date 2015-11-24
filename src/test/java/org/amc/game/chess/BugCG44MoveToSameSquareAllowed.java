@@ -46,8 +46,8 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Before
     public void setUp() throws Exception {
-        whitePlayer=new ChessGamePlayer(new HumanPlayer("White Player"),Colour.WHITE);
-        blackPlayer=new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer=new RealChessGamePlayer(new HumanPlayer("White Player"),Colour.WHITE);
+        blackPlayer=new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board=boardFactory.getChessBoard("Ka8:Nb8:Bc8:Rd8:Qe8:Pf8:ka1:nb1:bc1:rd1:qe1:pf1");
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
     }

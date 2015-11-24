@@ -10,6 +10,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
@@ -66,8 +67,8 @@ public class ServerChessGameTestDatabaseEntity {
     
     private ServerChessGame createServerGame(long id) {
         ChessGame chessGame = chessGamefactory.getChessGame(cgFixture.getBoard(), 
-                        new ChessGamePlayer(whitePlayer, Colour.WHITE),
-                        new ChessGamePlayer(blackPlayer, Colour.BLACK));
+                        new RealChessGamePlayer(whitePlayer, Colour.WHITE),
+                        new RealChessGamePlayer(blackPlayer, Colour.BLACK));
         scgGame = new TwoViewServerChessGame(id, chessGame);
         JsonChessGameView jsonView = new JsonChessGameView(mock(SimpMessagingTemplate.class));
         GameFinishedListener listener = new GameFinishedListener();

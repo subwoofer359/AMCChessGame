@@ -20,8 +20,8 @@ public class GameStateTest {
     @Before
     public void setUp() throws Exception {
         board = new ChessBoard();
-        whitePlayer = new ChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new ChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
     }
