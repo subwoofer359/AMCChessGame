@@ -32,7 +32,7 @@ public class OnlinePlayerListController {
      * ASynchronous call for the list of Online Users.
      * @return String representation of a JSON
      */
-    @RequestMapping(method= RequestMethod.GET, value="/onlinePlayerList",produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method= RequestMethod.GET, value="/onlinePlayerList", produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Callable<String> getOnlinePlayerList() {
         return new Callable<String>() {
