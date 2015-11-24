@@ -5,12 +5,11 @@ import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
-import org.amc.RunInThread;
-import org.amc.RunInThreadRule;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -28,7 +27,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.QueryTimeoutException;
 import javax.persistence.TypedQuery;
 
-@Ignore
+@Ignore("Issues with Mock EntityManager")
 public class DAOUnitTest {
     
     private DAO<TestEntity> dao;
@@ -50,6 +49,18 @@ public class DAOUnitTest {
     private ArgumentCaptor<String> queryString;
     private static final String COLUMN = "name";
     private static final String VALUE = "Ted";
+    
+    private static EntityManagerFactory oldFactory;
+    
+    @BeforeClass
+    public static void saveEntityManagerFactory() {
+        oldFactory = EntityManagerThreadLocal.getEntityManagerFactory();
+    }
+    
+    @AfterClass
+    public static void restoreEntityManagerFactory() {
+       EntityManagerThreadLocal.setEntityManagerFactory(oldFactory);
+    }
     
     @Before
     public void setUp() throws Exception {
@@ -122,7 +133,6 @@ public class DAOUnitTest {
     }
     
     @Test
-    
     public void deleteTest() throws DAOException {
         when(em.merge(eq(entity))).thenReturn(entity);
         dao.deleteEntity(entity);
@@ -133,35 +143,30 @@ public class DAOUnitTest {
     }
     
     @Test(expected=OptimisticLockException.class)
-    
     public void deleteThrowOptimisticLockException() throws DAOException {
         doThrow(new OptimisticLockException()).when(transaction).commit();
         dao.deleteEntity(entity);
     }
     
     @Test(expected=DAOException.class)
-    
     public void deleteTestThrowDAOException() throws DAOException {
         doThrow(new PersistenceException()).when(em).remove(any());
         dao.deleteEntity(entity);
     }
     
     @Test
-    
     public void detachTest() throws DAOException {
         dao.detachEntity(entity);
         verify(em, times(1)).detach(eq(entity));
     }
     
     @Test
-    
     public void detachTestThrowsIllegalArgumentException() {
         doThrow(new IllegalArgumentException()).when(em).detach(any());
         dao.detachEntity(entity);
     }
     
     @Test
-    
     public void findEntities() throws DAOException {
         when(query.getResultList()).thenReturn(Collections.<TestEntity>emptyList());
         List<TestEntity> entities = dao.findEntities();
@@ -172,7 +177,6 @@ public class DAOUnitTest {
     }
     
     @Test(expected=DAOException.class)
-    
     public void findEntitiesThrowsDAOException() throws DAOException {
         when(query.getResultList()).thenThrow(new PersistenceException());
         
@@ -180,7 +184,6 @@ public class DAOUnitTest {
     }
     
     @Test
-    
     public void findEntitiesThrowsRunTimeException() {
         when(query.getResultList()).thenThrow(new QueryTimeoutException());
         List<TestEntity> result = null;
@@ -193,8 +196,7 @@ public class DAOUnitTest {
         }
     }
     
-    @Test
-    
+    @Test  
     public void findEntitiesString() throws DAOException {
         when(query.getResultList()).thenReturn(Collections.<TestEntity>emptyList());
         final String queryStr  = "Select x from TestEntity x where x." + COLUMN +" = ?1";
@@ -210,7 +212,6 @@ public class DAOUnitTest {
     }
     
     @Test(expected=DAOException.class)
-    
     public void findEntitiesStringThrowsDAOException() throws DAOException {
         when(query.getResultList()).thenThrow(new PersistenceException());
         
@@ -218,7 +219,6 @@ public class DAOUnitTest {
     }
     
     @Test
-    
     public void findEntitiesStringThrowsRunTimeException() {
         when(query.getResultList()).thenThrow(new QueryTimeoutException());
         List<TestEntity> result = null;
@@ -232,7 +232,6 @@ public class DAOUnitTest {
     }
     
     @Test
-    
     public void getEntityTest() throws DAOException {
         String queryStr = "Select x from TestEntity x where x.id = ?1";
         final int ID = 4;
@@ -250,7 +249,6 @@ public class DAOUnitTest {
     }
     
     @Test(expected=DAOException.class)
-    
     public void getEntityThrowsDAOException() throws DAOException {
         when(query.getSingleResult()).thenThrow(new PersistenceException());
         
@@ -258,7 +256,6 @@ public class DAOUnitTest {
     }
     
     @Test
-    
     public void getEntityThrowsRunTimeException() {
         when(query.getSingleResult()).thenThrow(new QueryTimeoutException());
         TestEntity result = null;
@@ -271,8 +268,7 @@ public class DAOUnitTest {
         }
     }
     
-    @Test
-    
+    @Test 
     public void getEntityThrowsNoResultException() {
         when(query.getSingleResult()).thenThrow(new NoResultException());
         TestEntity result = null;
