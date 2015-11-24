@@ -40,6 +40,7 @@ import org.amc.game.chessserver.AbstractServerChessGameTest;
 import org.amc.game.chessserver.BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved;
 import org.amc.game.chessserver.BugCG52ServerChessGameDidntEndInCheckmate;
 import org.amc.game.chessserver.CacheFilterTest;
+import org.amc.game.chessserver.GameActionsStompControllerTest;
 import org.amc.game.chessserver.GameTableControllerTest;
 import org.amc.game.chessserver.NewGameRequestControllerTest;
 import org.amc.game.chessserver.LogOutControllerTest;
@@ -55,10 +56,10 @@ import org.amc.game.chessserver.ServerChessGameUnitTest;
 import org.amc.game.chessserver.SignUpControllerUnitTest;
 import org.amc.game.chessserver.StartPageControllerChessAppPageTest;
 import org.amc.game.chessserver.StartPageControllerCreateGameTest;
-import org.amc.game.chessserver.StartPageControllerJoinGameTest;
+import org.amc.game.chessserver.ServerJoinControllerJoinGameTest;
 import org.amc.game.chessserver.StompControllerOneViewUnitTest;
-import org.amc.game.chessserver.StompControllerSaveUnitTest;
-import org.amc.game.chessserver.StompControllerUnitTest;
+import org.amc.game.chessserver.SaveGameStompControllerUnitTest;
+import org.amc.game.chessserver.GameMoveStompControllerUnitTest;
 import org.amc.game.chessserver.TwoViewServerChessGameConstructorTest;
 import org.amc.game.chessserver.UserNameAvailableTest;
 import org.amc.game.chessserver.UserSearchTest;
@@ -140,11 +141,13 @@ import org.junit.runners.Suite.SuiteClasses;
     TwoViewServerChessGameConstructorTest.class,
     SignUpControllerUnitTest.class,
     StartPageControllerChessAppPageTest.class,
-    StartPageControllerJoinGameTest.class,
-    StompControllerUnitTest.class,
+    ServerJoinControllerJoinGameTest.class,
+    GameMoveStompControllerUnitTest.class,
     StartPageControllerCreateGameTest.class,
     StompControllerOneViewUnitTest.class,
-    StompControllerSaveUnitTest.class,
+    SaveGameStompControllerUnitTest.class,
+    GameMoveStompControllerUnitTest.class,
+    GameActionsStompControllerTest.class,
     UserSearchTest.class,
     EmailMessageServiceTest.class,
     EmailTemplateFactoryTest.class,

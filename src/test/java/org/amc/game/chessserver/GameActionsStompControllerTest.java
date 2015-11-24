@@ -1,7 +1,10 @@
 package org.amc.game.chessserver;
 
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
+import static org.junit.Assert.assertEquals;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
@@ -12,6 +15,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,11 +27,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static org.junit.Assert.*;
-
-public class StompControllerUnitTest {
-
-    private StompController controller;
+public class GameActionsStompControllerTest {
+    
+    private GameActionsStompController controller;
 
     private ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
@@ -65,8 +67,8 @@ public class StompControllerUnitTest {
     private ConcurrentMap<Long, ServerChessGame> gameMap;
 
     @Before
-    public void setUp() {
-        this.controller = new StompController();
+    public void setUp() throws Exception {
+        this.controller = new GameActionsStompController();
         scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
@@ -89,76 +91,10 @@ public class StompControllerUnitTest {
         headersArgument = ArgumentCaptor.forClass(Map.class);
     }
 
-    @Test
-    public void testMove() {
-        scg.addOpponent(blackPlayer);
-        String move = "A2-A3";
-        sessionAttributes.put("PLAYER", whitePlayer);
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals("", payoadArgument.getValue());
-        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+    @After
+    public void tearDown() throws Exception {
     }
 
-    @SuppressWarnings("unchecked")
-    private void verifySimpMessagingTemplateCallToUser() {
-        verify(template).convertAndSendToUser(userArgument.capture(),
-                        destinationArgument.capture(), payoadArgument.capture(),
-                        headersArgument.capture());
-    }
-    
-    @SuppressWarnings("unchecked")
-    private void verifySimpMessagingTemplateCall() {
-        verify(template).convertAndSend(destinationArgument.capture(), payoadArgument.capture(),
-                        headersArgument.capture());
-    }
-
-    @Test
-    public void testInvalidMove() {
-        scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        String move = "A1-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not a valid move", payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-    }
-
-    @Test
-    public void testNotPlayersMove() {
-        scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", blackPlayer);
-        String move = "A1-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not Player's turn", payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-    }
-
-    @Test
-    public void testChessGameNotInitialised() {
-        String move = "A1-A3";
-        sessionAttributes.put("PLAYER", whitePlayer);
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
-                        payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-    }
-
-    @Test
-    public void testChessGameFinished() {
-        scg.addOpponent(blackPlayer);
-        scg.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
-        String move = "A1-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
-                        payoadArgument.getValue());
-        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-    }
-    
-    
     @Test
     public void testQuitChessGame() {
         
@@ -172,7 +108,7 @@ public class StompControllerUnitTest {
         verify(messager,times(1)).update(eq(scg), eq(whitePlayer));
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(String.format(StompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
+        assertEquals(String.format(GameActionsStompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
                         payoadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());
@@ -189,22 +125,10 @@ public class StompControllerUnitTest {
         verifySimpMessagingTemplateCall();
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.MSG_GAME_ALREADY_OVER,
+        assertEquals(GameActionsStompController.MSG_GAME_ALREADY_OVER,
                         payoadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());
-    }
-    
-    /**
-     * JIRA http://192.168.1.5:8081/browse/CG-49
-     */
-    @Test
-    public void testUnParsableMove()
-    {
-        scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        String move = "-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
     }
     
     @Test
@@ -231,7 +155,7 @@ public class StompControllerUnitTest {
         assertEquals(principal.getName(), userArgument.getValue());
         assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue()); 
+        assertEquals(GameActionsStompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue()); 
     }
     
     @Test
@@ -243,8 +167,20 @@ public class StompControllerUnitTest {
         assertEquals(principal.getName(), userArgument.getValue());
         assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(StompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue());
+        assertEquals(GameActionsStompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue());
         
     }
-
+    
+    @SuppressWarnings("unchecked")
+    private void verifySimpMessagingTemplateCallToUser() {
+        verify(template).convertAndSendToUser(userArgument.capture(),
+                        destinationArgument.capture(), payoadArgument.capture(),
+                        headersArgument.capture());
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void verifySimpMessagingTemplateCall() {
+        verify(template).convertAndSend(destinationArgument.capture(), payoadArgument.capture(),
+                        headersArgument.capture());
+    }
 }

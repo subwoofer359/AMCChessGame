@@ -45,7 +45,9 @@
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain" />
 	</bean>
 	
-	<bean id="stompController" class="org.amc.game.chessserver.StompController"/>
+	<bean id="gameActionsStompController" class="org.amc.game.chessserver.GameActionsStompController"/>
+	<bean id="saveGameStompController" class="org.amc.game.chessserver.SaveGameStompController" />
+	<bean id="gameMoveStompController" class="org.amc.game.chessserver.GameMoveStompController"/>
 	
 	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
 		<property name="gameMap" ref="gameMap"></property>

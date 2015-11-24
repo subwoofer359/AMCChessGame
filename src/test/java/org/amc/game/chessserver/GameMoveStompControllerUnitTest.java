@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompConstants.MESSAGE_HEADER_TYPE;
 
@@ -16,18 +17,17 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
-public class StompControllerOneViewUnitTest {
+public class GameMoveStompControllerUnitTest {
 
     private GameMoveStompController controller;
-    
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
-    
+
     private ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
     private ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
@@ -35,6 +35,8 @@ public class StompControllerOneViewUnitTest {
     private long gameUUID = 1234L;
 
     private ServerChessGame scg;
+
+    private Map<String, Object> sessionAttributes;
 
     private SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
 
@@ -46,8 +48,6 @@ public class StompControllerOneViewUnitTest {
 
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
-    
-    private ChessGameFactory chessGameFactory;
 
     private Principal principal = new Principal() {
 
@@ -56,36 +56,40 @@ public class StompControllerOneViewUnitTest {
             return "Stephen";
         }
     };
+    
+    private ConcurrentMap<Long, ServerChessGame> gameMap;
 
     @Before
     public void setUp() {
         this.controller = new GameMoveStompController();
-        chessGameFactory = new ChessGameFactory() {
+        scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
+        scg.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-        };
-        scg = new OneViewServerChessGame(gameUUID, whitePlayer);
-        scg.setChessGameFactory(chessGameFactory);
+        });
+        
         gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
         gameMap.put(gameUUID, scg);
+        
         controller.setGameMap(gameMap);
+        sessionAttributes = new HashMap<String, Object>();
 
         this.controller.setTemplate(template);
         userArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
-
     }
 
     @Test
     public void testMove() {
         scg.addOpponent(blackPlayer);
         String move = "A2-A3";
-        controller.registerOneViewMoveMove(principal, gameUUID, move);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals("", payoadArgument.getValue());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
@@ -101,17 +105,30 @@ public class StompControllerOneViewUnitTest {
     @Test
     public void testInvalidMove() {
         scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
         String move = "A1-A3";
-        controller.registerOneViewMoveMove(principal, gameUUID, move);
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals("Error:Not a valid move", payoadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
+    public void testNotPlayersMove() {
+        scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", blackPlayer);
+        String move = "A1-A3";
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals("Error:Not Player's turn", payoadArgument.getValue());
+        assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+    }
+
+    @Test
     public void testChessGameNotInitialised() {
         String move = "A1-A3";
-        controller.registerOneViewMoveMove(principal, gameUUID, move);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
                         payoadArgument.getValue());
@@ -123,7 +140,7 @@ public class StompControllerOneViewUnitTest {
         scg.addOpponent(blackPlayer);
         scg.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         String move = "A1-A3";
-        controller.registerOneViewMoveMove(principal, gameUUID, move);
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
                         payoadArgument.getValue());
@@ -137,20 +154,8 @@ public class StompControllerOneViewUnitTest {
     public void testUnParsableMove()
     {
         scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
         String move = "-A3";
-        controller.registerOneViewMoveMove(principal, gameUUID, move);
+        controller.registerMove(principal, sessionAttributes, gameUUID, move);
     }
-    
-    @Test
-    public void testNotOneViewServerChessGame() {
-        ServerChessGame scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
-        scg.setChessGameFactory(chessGameFactory);
-        this.gameMap.put(gameUUID, scg);
-        scg.addOpponent(blackPlayer);
-        String move = "A2-A3";
-        controller.registerOneViewMoveMove(principal, gameUUID, move);
-        verify(template,never()).convertAndSendToUser(anyString(),
-                        anyString(), anyObject(),anyMap());
-    }
-
 }
