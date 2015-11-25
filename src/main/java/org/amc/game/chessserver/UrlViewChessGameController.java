@@ -39,7 +39,7 @@ public class UrlViewChessGameController {
             mav.getModel().put(ServerConstants.CHESSPLAYER, scgGame.getPlayer(player));
             mav.setViewName(ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE);
         } else {
-            mav.setViewName(ServerJoinChessGameController.ERROR_FORWARD_PAGE);
+            mav.setViewName(ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
             mav.getModel().put(ServerConstants.ERRORS, String.format(CANT_VIEW_CHESSGAME, gameUid));
         } 
         return mav;
