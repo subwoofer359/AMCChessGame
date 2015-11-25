@@ -3,7 +3,6 @@ package org.amc.game.chessserver.messaging;
 import java.io.File;
 import java.io.IOException;
 
-import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
@@ -60,6 +59,7 @@ public class MoveUpdateEmail extends EmailTemplate {
         addContextVariable("gameState", chessGame.getGameState().toString());
         addContextVariable("opponent", opponent);
         addContextVariable("colourBlack", Colour.BLACK);
+        addContextVariable("gameUrl", getUrlBaseString() + getServerChessGame().getUid());
         addContextVariable(TEMPLATE_CHESSBOARD_TAG, CHESSBOARD_IMAGE_RESOURCE);
         addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
     }

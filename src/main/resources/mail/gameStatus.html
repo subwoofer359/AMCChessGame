@@ -13,6 +13,7 @@
     <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Hello <span th:text="${player.name}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;">Christopher</span>,</p>
      <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Player <span th:text="${opponent}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;">Stephen</span> has made a move!</p>
     
+    <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">The game can be viewed  &gt;&gt; <a th:href="${gameUrl}" href="#">here</a> &lt;&lt; </p>
         
      <div th:switch="${status}" style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: 100%;vertical-align: baseline;margin: 0;padding: 0;">
         <p style="-moz-box-sizing: border-box;box-sizing: border-box;border: 0;font-size: medium;vertical-align: baseline;margin: 0;padding: 0;font-family: serif;font-weight: 400;line-height: 1.5em;margin-left: 30px;">Game is  

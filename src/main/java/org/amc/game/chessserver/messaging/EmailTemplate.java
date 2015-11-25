@@ -28,6 +28,8 @@ public abstract class EmailTemplate {
         }
     }
 
+    private String urlBase;
+    
 	private static final String IMAGE_TYPE = "image/jpg";
 	
 	private static final String DEFAULT_EMAIL_SUBJECT = "Move update from AMCChessGame";
@@ -132,4 +134,15 @@ public abstract class EmailTemplate {
     public void setEmailTemplateName(String emailTemplateName) {
         this.emailTemplateName = emailTemplateName;
     }
+    
+    public void setURLBase(String urlBase) {
+    	this.urlBase = urlBase;
+    }
+
+	public String getUrlBaseString() {
+		return urlBase;
+	}
+    
+    
+    
 }

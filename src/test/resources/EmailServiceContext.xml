@@ -30,6 +30,7 @@
 	<bean id="emailTemplateFactory" class="org.amc.game.chessserver.messaging.EmailTemplateFactory" scope="prototype">
 		<lookup-method name="getChessBoardSVGFactory" bean="chessBoardSVGFactory"/>
 		<property name="templateEngine" ref="templateEngine"></property>
+		<property name="servletContext" ref="servletContext"/>
 	</bean>
 		
 	<bean id="offlineChessGameMessager" class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
