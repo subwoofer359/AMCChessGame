@@ -28,7 +28,7 @@ public abstract class EmailTemplate {
         }
     }
 
-    static String URL_ROOT;
+    private static String URL_ROOT;
     
 	private static final String IMAGE_TYPE = "image/jpg";
 	
@@ -133,5 +133,20 @@ public abstract class EmailTemplate {
     
     public void setEmailTemplateName(String emailTemplateName) {
         this.emailTemplateName = emailTemplateName;
-    }    
+    }
+    
+    public static String getUrlRoot() {
+        synchronized (EmailTemplate.class) {
+            return EmailTemplate.URL_ROOT;
+        }
+        
+    }
+    
+    public static void setUrlRoot(String urlRoot) {
+        synchronized (EmailTemplate.class) {
+            if(URL_ROOT == null) {
+                URL_ROOT = urlRoot;
+            }
+        }
+    }
 }

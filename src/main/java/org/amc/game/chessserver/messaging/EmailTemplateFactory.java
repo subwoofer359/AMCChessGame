@@ -61,7 +61,7 @@ public abstract class EmailTemplateFactory {
 		if(servletContext == null) {
 			logger.error(this.getClass() + ":Servlet property not set");
 		} else {
-			EmailTemplate.URL_ROOT = servletContext.getContextPath() + URL_APP_PATH;
+			EmailTemplate.setUrlRoot(servletContext.getContextPath() + URL_APP_PATH);
 		}
 	}
 
