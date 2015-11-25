@@ -26,6 +26,7 @@
 		<list>
 			<value>classpath:smtp.properties</value>
 			<value>classpath:database.properties</value>
+			<value>classpath:server.properties</value>
 		</list>
 		</property>
 	</bean>

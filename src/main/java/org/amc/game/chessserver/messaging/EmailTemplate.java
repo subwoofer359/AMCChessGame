@@ -20,7 +20,7 @@ public abstract class EmailTemplate {
     static final String backgroundImagePath;
     
     static {
-        if("/home/adrian".equals(System.getenv("HOME"))) {
+        if(System.getProperty("user.dir").contains("workspace")) {
             
             backgroundImagePath = "src/main/webapp/img/1700128.jpg";
         } else {

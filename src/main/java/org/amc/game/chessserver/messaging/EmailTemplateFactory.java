@@ -1,11 +1,10 @@
 package org.amc.game.chessserver.messaging;
 
-import javax.servlet.ServletContext;
-
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.UrlViewChessGameController;
+import org.amc.util.SpringHostInfo;
 import org.apache.log4j.Logger;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
@@ -57,11 +56,12 @@ public abstract class EmailTemplateFactory {
 		this.templateEngine = templateEngine;
 	}
 	
-	public void setServletContext(ServletContext servletContext) {
-		if(servletContext == null) {
-			logger.error(this.getClass() + ":Servlet property not set");
+	public void setSpringHostInfo(SpringHostInfo springHostInfo) {
+		if(springHostInfo == null) {
+			logger.error(this.getClass() + ": springHostInfo not set");
 		} else {
-			EmailTemplate.setUrlRoot(servletContext.getContextPath() + URL_APP_PATH);
+			EmailTemplate.setUrlRoot(springHostInfo.getHostUrl() + URL_APP_PATH);
+			logger.debug("URL_ROOT ------------>" + EmailTemplate.getUrlRoot());
 		}
 	}
 
