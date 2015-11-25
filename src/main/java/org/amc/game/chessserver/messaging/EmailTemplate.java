@@ -28,7 +28,7 @@ public abstract class EmailTemplate {
         }
     }
 
-    private String urlBase;
+    static String URL_ROOT;
     
 	private static final String IMAGE_TYPE = "image/jpg";
 	
@@ -133,16 +133,5 @@ public abstract class EmailTemplate {
     
     public void setEmailTemplateName(String emailTemplateName) {
         this.emailTemplateName = emailTemplateName;
-    }
-    
-    public void setURLBase(String urlBase) {
-    	this.urlBase = urlBase;
-    }
-
-	public String getUrlBaseString() {
-		return urlBase;
-	}
-    
-    
-    
+    }    
 }

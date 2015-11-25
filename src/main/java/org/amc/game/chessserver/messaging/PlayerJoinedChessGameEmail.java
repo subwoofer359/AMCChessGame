@@ -39,7 +39,7 @@ public class PlayerJoinedChessGameEmail extends EmailTemplate {
         String gameUidFragment = gameUid.length() > GAMEUID_LENGTH ? gameUid.substring(gameUid.length() - GAMEUID_LENGTH, gameUid.length()) : NO_VALID_UID_MESSAGE;
         addContextVariable("GAME_UUID", gameUidFragment);
         addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
-        addContextVariable("gameUrl", getUrlBaseString() + getServerChessGame().getUid());
+        addContextVariable("gameUrl", URL_ROOT + getServerChessGame().getUid());
 	}
 
     @Override
