@@ -20,7 +20,7 @@ public abstract class EmailTemplate {
     static final String backgroundImagePath;
     
     static {
-        if("/home/adrian".equals(System.getenv("HOME"))) {
+        if(System.getProperty("user.dir").contains("workspace")) {
             
             backgroundImagePath = "src/main/webapp/img/1700128.jpg";
         } else {
@@ -28,7 +28,7 @@ public abstract class EmailTemplate {
         }
     }
 
-    private String urlBase;
+    private static String URL_ROOT;
     
 	private static final String IMAGE_TYPE = "image/jpg";
 	
@@ -135,14 +135,18 @@ public abstract class EmailTemplate {
         this.emailTemplateName = emailTemplateName;
     }
     
-    public void setURLBase(String urlBase) {
-    	this.urlBase = urlBase;
+    public static String getUrlRoot() {
+        synchronized (EmailTemplate.class) {
+            return EmailTemplate.URL_ROOT;
+        }
+        
     }
-
-	public String getUrlBaseString() {
-		return urlBase;
-	}
     
-    
-    
+    public static void setUrlRoot(String urlRoot) {
+        synchronized (EmailTemplate.class) {
+            if(URL_ROOT == null) {
+                URL_ROOT = urlRoot;
+            }
+        }
+    }
 }

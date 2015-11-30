@@ -82,6 +82,7 @@ import org.amc.game.chessserver.spring.ValidEmailAddrTest;
 import org.amc.game.chessserver.spring.ValidFullNameTest;
 import org.amc.game.chessserver.spring.ValidPasswordTest;
 import org.amc.game.chessserver.spring.ValidUserNameTest;
+import org.amc.util.SpringHostInfoTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -169,6 +170,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ValidPasswordTest.class,
     ValidUserNameTest.class,
     StandardChessGameTest.class,
+    SpringHostInfoTest.class,
     UnmodifibleChessBoardTest.class,
     ServerChessGameSerilaiserTest.class,
     UserNameAvailableTest.class,

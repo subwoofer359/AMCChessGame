@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
 import org.amc.dao.DatabaseGameMap;
-import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -88,7 +87,7 @@ public class UrlViewChessGameTest {
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
         verify(gameMap, times(1)).get(GAME_UID);
-        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_FORWARD_PAGE);
+        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
     }
@@ -101,7 +100,7 @@ public class UrlViewChessGameTest {
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
         verify(gameMap, times(1)).get(GAME_UID);
-        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_FORWARD_PAGE);
+        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
     }
@@ -113,7 +112,7 @@ public class UrlViewChessGameTest {
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
         verify(gameMap, times(1)).get(GAME_UID);
-        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_FORWARD_PAGE);
+        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
     }
@@ -126,7 +125,7 @@ public class UrlViewChessGameTest {
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
         verify(gameMap, times(1)).get(GAME_UID);
-        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_FORWARD_PAGE);
+        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
     }
@@ -141,6 +140,6 @@ public class UrlViewChessGameTest {
         ModelAndView mav = urlController.viewChessGame(villian, GAME_UID);
         
         verify(gameMap, times(1)).get(GAME_UID);
-        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_FORWARD_PAGE);
+        ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
     }
 }
