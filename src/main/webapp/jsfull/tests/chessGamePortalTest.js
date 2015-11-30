@@ -38,7 +38,7 @@ QUnit.module("Stomp Message tests", {
         stompObject.gameUID = "1234";
         stompObject.playerName = "testPlayer";
         stompObject.opponentName = "testOpponent";
-        stompObject.playerColour = ChessPieces.prototype.colour.black;
+        stompObject.playerColour = chesspieces_module.ChessPieces.prototype.colour.black;
         stompObject.headers = {};
         myStompActions = new StompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);

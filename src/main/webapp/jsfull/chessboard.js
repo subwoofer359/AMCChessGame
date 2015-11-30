@@ -80,7 +80,7 @@ function createChessPiecesElements(playerColour, chessboardJSON) {
         chesspieces,
         piecesOnBoard = "";
 
-    chesspieces = new ChessPieces(playerColour);
+    chesspieces = new chesspieces_module.ChessPieces(playerColour);
     
     for (location in json.squares) {
         if (json.squares.hasOwnProperty(location)) {

@@ -9,12 +9,14 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
     "use strict";
     var i,
         t,
-        coordinate;
+        coordinate,
+        coordinates = chesspieces_module.coordinates,
+        chesspieces = chesspieces_module;
 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {
             for (t = 1; t <= boardWidth; t += 1) {
-                coordinate = parseSquareCoordinates(i + t);
+                coordinate = chesspieces.parseSquareCoordinates(i + t);
                 assert.equal(coordinate.file, i);
                 assert.equal(coordinate.rank, t);
             }
@@ -25,13 +27,13 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Exception ", function (assert) {
     "use strict";
     assert.throws(function () {
-        parseSquareCoordinates("A9");
+        chesspieces_module.parseSquareCoordinates("A9");
     }, /Not valid ChessBoard coordinate/);
     assert.throws(function () {
-        parseSquareCoordinates("A");
+        chesspieces_module.parseSquareCoordinates("A");
     }, /Not valid ChessBoard coordinate/);
     assert.throws(function () {
-        parseSquareCoordinates("I1");
+        chesspieces_module.parseSquareCoordinates("I1");
     }, /Not valid ChessBoard coordinate/);
 });
 
@@ -39,7 +41,7 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Excep
 
 QUnit.test("testing chesspieces.js: white player pawn creation", function (assert) {
     "use strict";
-    var chesspieces = new ChessPieces("WHITE"),
+    var chesspieces = new chesspieces_module.ChessPieces("WHITE"),
         whiteId = "whiteId",
         blackId = "blackId",
         whiteChesspiece,
@@ -59,7 +61,7 @@ QUnit.test("testing chesspieces.js: white player pawn creation", function (asser
 
 QUnit.test("testing chesspieces.js: black player pawn creation", function (assert) {
     "use strict";
-    var chesspieces = new ChessPieces("BLACK"),
+    var chesspieces = new chesspieces_module.ChessPieces("BLACK"),
         whiteId = "whiteId",
         blackId = "blackId",
         whiteChesspiece,
