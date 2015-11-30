@@ -1,5 +1,6 @@
 /*global QUnit*/
 /*global InteractActions*/
+/*global OneViewInteractActions*/
 /*global console*/
 
 var stompClient = {

@@ -1,8 +1,8 @@
 /*global $*/
 
 /*global WebSocket*/
-/*global createChessBoard*/
 /*global updatePlayer*/
+/*global chessboard_module*/
 /*global console*/
 /*global Stomp*/
 /*global SockJS*/
@@ -72,7 +72,7 @@ StompActions.prototype = {
      */
     updateChessBoard : function (chessBoardJson) {
         "use strict";
-        createChessBoard(this.playerColour, chessBoardJson);
+        chessboard_module.createChessBoard(this.playerColour, chessBoardJson);
         this.oldChessBoard = chessBoardJson;
         updatePlayer(chessBoardJson);
     },
@@ -88,7 +88,7 @@ StompActions.prototype = {
         if (message.headers.TYPE === "ERROR") {
             this.showFadingAlertMessage(message.body);
             if (this.oldChessBoard !== undefined && !$.isEmptyObject(this.oldChessBoard)) {
-                createChessBoard(this.playerColour, this.oldChessBoard);
+                chessboard_module.createChessBoard(this.playerColour, this.oldChessBoard);
             }
         } else if (message.headers.TYPE === "UPDATE") {
             this.updateChessBoard(message.body);

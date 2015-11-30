@@ -3,7 +3,8 @@
 QUnit.module("chesspieces test");
 
 /*global coordinates*/
-/*global boardWidth*/
+/*global chessboard_module*/
+/*global chesspieces_module*/
 /*global parseSquareCoordinates*/
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function (assert) {
     "use strict";
@@ -11,7 +12,8 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
         t,
         coordinate,
         coordinates = chesspieces_module.coordinates,
-        chesspieces = chesspieces_module;
+        chesspieces = chesspieces_module,
+        boardWidth = chessboard_module.boardWidth;
 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {
