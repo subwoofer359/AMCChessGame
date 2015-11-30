@@ -1,8 +1,7 @@
 /*global QUnit*/
 /*global $*/
+/*global chessgameportal_module*/
 /*global console*/
-/*global openStompConnection*/
-/*global StompActions*/
 /*jslint unparam: true*/
 
 var SockJS = function (URL) {
@@ -45,7 +44,7 @@ QUnit.module("Stomp Calls Test", {
 QUnit.test("testing Stomp Calls Test", function (assert) {
     "use strict";
     var sentMessage;
-    openStompConnection("", {}, new StompActions("gameUID", "playerName", "opponentName", "playerColour"));
+    chessgameportal_module.openStompConnection("", {}, new chessgameportal_module.StompActions("gameUID", "playerName", "opponentName", "playerColour"));
     assert.equal(subscriptions.indexOf(USER_UPDATES), 0);
     assert.equal(subscriptions.indexOf(TOPIC_UPDATES + "gameUID"), 1);
     sentMessage = messages.pop();

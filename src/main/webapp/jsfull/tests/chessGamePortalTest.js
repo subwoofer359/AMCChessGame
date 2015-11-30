@@ -1,10 +1,8 @@
 /*global QUnit*/
 /*global $*/
-/*global StompActions*/
-/*global openStompConnection*/
 /*global chessboard_module*/
 /*global chesspieces_module*/
-/*global OneViewStompActions*/
+/*global chessgameportal_module*/
 var stompObject = {},
     gameUID,
     playerName,
@@ -41,7 +39,7 @@ QUnit.module("Stomp Message tests", {
         stompObject.opponentName = "testOpponent";
         stompObject.playerColour = chesspieces_module.ChessPieces.prototype.colour.black;
         stompObject.headers = {};
-        myStompActions = new StompActions(stompObject.gameUID, stompObject.playerName,
+        myStompActions = new chessgameportal_module.StompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);
         updatePlayerCall = false;
         updateChessBoardCall = false;
@@ -60,7 +58,7 @@ QUnit.test("testing StompActions: function updateChessBoard", function (assert) 
 QUnit.test("testing StompActions: function updateChessBoard", function (assert) {
     "use strict";
     var json = chessboardString,
-        oneViewStompActions = new OneViewStompActions(stompObject.gameUID, stompObject.playerName,
+        oneViewStompActions = new chessgameportal_module.OneViewStompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);
     oneViewStompActions.updateChessBoard(json);
     assert.equal(true, updatePlayerCall);
@@ -223,6 +221,6 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert
 QUnit.test("testing openStompConnection: fail with error", function (assert) {
     "use strict";
     assert.throws(function () {
-        openStompConnection("", function () { chessboard_module.createChessBoard(""); });
+        chessgameportal_module.openStompConnection("", function () { chessboard_module.createChessBoard(""); });
     }, "callback function isn't an instance of StompActions");
 });
