@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class StartPageControllerCreateGameTest {
     private Model model;
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     private ChessGamePlayer whitePlayer;
     private StartPageController controller;
     private ServerChessGameFactory scgFactory;
@@ -103,7 +103,7 @@ public class StartPageControllerCreateGameTest {
     }
     
     private void assertPlayerIsAddedToChessGame(){
-        List<ServerChessGame> games= new ArrayList<>(gameMap.values());
+        List<AbstractServerChessGame> games= new ArrayList<>(gameMap.values());
         assertTrue(ComparePlayers.comparePlayers(games.get(0).getPlayer(), whitePlayer));
     }
 }

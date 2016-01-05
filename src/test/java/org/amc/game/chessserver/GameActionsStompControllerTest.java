@@ -37,7 +37,7 @@ public class GameActionsStompControllerTest {
 
     private long gameUUID = 1234L;
 
-    private ServerChessGame scg;
+    private AbstractServerChessGame scg;
     
     private OfflineChessGameMessager messager = mock (OfflineChessGameMessager.class);
     
@@ -64,7 +64,7 @@ public class GameActionsStompControllerTest {
         }
     };
     
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
 
     @Before
     public void setUp() throws Exception {
@@ -78,7 +78,7 @@ public class GameActionsStompControllerTest {
             }
         });
         
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         gameMap.put(gameUUID, scg);
         
         controller.setGameMap(gameMap);
@@ -106,7 +106,7 @@ public class GameActionsStompControllerTest {
         verifySimpMessagingTemplateCall();
         
         verify(messager,times(1)).update(eq(scg), eq(whitePlayer));
-        assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
+        assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(GameActionsStompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
                         payoadArgument.getValue());
@@ -123,7 +123,7 @@ public class GameActionsStompControllerTest {
         
         verify(messager,never()).update(eq(scg), eq(whitePlayer));
         verifySimpMessagingTemplateCall();
-        assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
+        assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(GameActionsStompController.MSG_GAME_ALREADY_OVER,
                         payoadArgument.getValue());

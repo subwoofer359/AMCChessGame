@@ -26,7 +26,7 @@ public class StompControllerOneViewUnitTest {
 
     private GameMoveStompController controller;
     
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     
     private ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
@@ -34,7 +34,7 @@ public class StompControllerOneViewUnitTest {
 
     private long gameUUID = 1234L;
 
-    private ServerChessGame scg;
+    private AbstractServerChessGame scg;
 
     private SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
 
@@ -69,7 +69,7 @@ public class StompControllerOneViewUnitTest {
         };
         scg = new OneViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         gameMap.put(gameUUID, scg);
         controller.setGameMap(gameMap);
 
@@ -121,7 +121,7 @@ public class StompControllerOneViewUnitTest {
     @Test
     public void testChessGameFinished() {
         scg.addOpponent(blackPlayer);
-        scg.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
+        scg.setCurrentStatus(AbstractServerChessGame.ServerGameStatus.FINISHED);
         String move = "A1-A3";
         controller.registerOneViewMoveMove(principal, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
@@ -144,7 +144,7 @@ public class StompControllerOneViewUnitTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testNotOneViewServerChessGame() {
-        ServerChessGame scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
+        AbstractServerChessGame scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);
         this.gameMap.put(gameUUID, scg);
         scg.addOpponent(blackPlayer);

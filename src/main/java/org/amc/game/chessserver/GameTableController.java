@@ -29,12 +29,12 @@ import javax.annotation.Resource;
 @SessionAttributes("PLAYER")
 public class GameTableController {
 
-    private Map<Long, ServerChessGame> gameMap;
+    private Map<Long, AbstractServerChessGame> gameMap;
     
     private static final Gson GSON;
     static {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeHierarchyAdapter(ServerChessGame.class, 
+        builder.registerTypeHierarchyAdapter(AbstractServerChessGame.class, 
                         new GameTableController.ServerChessGameSerialiser());
                 builder.serializeNulls();
         GSON = builder.create();
@@ -62,14 +62,14 @@ public class GameTableController {
     }
     
     @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, ServerChessGame> gameMap) {
+    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
     
-    static class ServerChessGameSerialiser implements JsonSerializer<ServerChessGame> {
+    static class ServerChessGameSerialiser implements JsonSerializer<AbstractServerChessGame> {
 
 		@Override
-		public JsonElement serialize(ServerChessGame serverChessGame, Type arg1, JsonSerializationContext arg2) {
+		public JsonElement serialize(AbstractServerChessGame serverChessGame, Type arg1, JsonSerializationContext arg2) {
 			JsonObject jsObj = new JsonObject();
 			
 			jsObj.addProperty("uid", serverChessGame.getUid());

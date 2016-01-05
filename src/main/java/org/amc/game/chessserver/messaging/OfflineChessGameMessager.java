@@ -6,7 +6,7 @@ import org.amc.dao.DAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
@@ -32,8 +32,8 @@ public class OfflineChessGameMessager extends GameObserver {
 
     @Override
     public void update(Subject subject, Object message) {
-        if (subject instanceof ServerChessGame) {
-            ServerChessGame serverChessGame = (ServerChessGame) subject;
+        if (subject instanceof AbstractServerChessGame) {
+            AbstractServerChessGame serverChessGame = (AbstractServerChessGame) subject;
             try {
                 Player player = serverChessGame.getChessGame().getCurrentPlayer(); 
                 if (isOnline(player) || doesUserNotHaveEmailAddress(player)) {
@@ -82,7 +82,7 @@ public class OfflineChessGameMessager extends GameObserver {
         }
     }
     
-    private void handleChessGameUpdate(ServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
+    private void handleChessGameUpdate(AbstractServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
         final ChessGame chessGame = (ChessGame) message;
         User user = getUser(chessGame);
         Player player = chessGame.getCurrentPlayer();
@@ -91,7 +91,7 @@ public class OfflineChessGameMessager extends GameObserver {
         
     }
     
-    private void handlePlayerUpdate(ServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
+    private void handlePlayerUpdate(AbstractServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
     	User user = getUser(scg.getChessGame());
     	Player player = (Player) message;
     	logger.debug(String.format("OfflineChessMessager: %s is offline", player));
@@ -116,21 +116,21 @@ public class OfflineChessGameMessager extends GameObserver {
         }
     }
     
-    private EmailTemplate newMoveUpdateEmail(Player player, ServerChessGame serverChessGame) {
+    private EmailTemplate newMoveUpdateEmail(Player player, AbstractServerChessGame serverChessGame) {
         EmailTemplate template = templateFactory.getEmailTemplate(ChessGame.class);
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);
         return template;
     }
     
-    private EmailTemplate newPlayerJoinGameEmail(Player player, ServerChessGame serverChessGame) {
+    private EmailTemplate newPlayerJoinGameEmail(Player player, AbstractServerChessGame serverChessGame) {
     	EmailTemplate template = templateFactory.getEmailTemplate(Player.class);
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);
         return template;
     }
     
-    private EmailTemplate newPlayerQuitGameEmail(Player player, ServerChessGame serverChessGame) {
+    private EmailTemplate newPlayerQuitGameEmail(Player player, AbstractServerChessGame serverChessGame) {
         EmailTemplate template = templateFactory.getEmailTemplate(Player.class, serverChessGame.getCurrentStatus());
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);

@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class StartPageControllerChessAppPageTest {
     private MockHttpSession session;
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     private StartPageController controller;
     private ChessGamePlayer whitePlayer;
     private ServerChessGameFactory scgFactory;

@@ -4,7 +4,7 @@ import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGame.GameState;
 import org.amc.game.chessserver.MessageType;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.StompController;
 import org.amc.util.Subject;
@@ -40,13 +40,13 @@ public class GameStateListener extends GameObserver {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if(subject instanceof ServerChessGame) {
-            ServerChessGame serverChessGame = (ServerChessGame)subject;
+        if(subject instanceof AbstractServerChessGame) {
+            AbstractServerChessGame serverChessGame = (AbstractServerChessGame)subject;
             if (message instanceof ChessGame.GameState) {
                 GameState gameState = (GameState) message;
                 sendMessage(serverChessGame, gameState.toString());
                 logGameState(gameState);   
-            } else if(message instanceof ServerChessGame.ServerGameStatus) {
+            } else if(message instanceof AbstractServerChessGame.ServerGameStatus) {
                 ServerGameStatus status = (ServerGameStatus)message;
                 if(status == ServerGameStatus.FINISHED) {
                     sendMessage(serverChessGame, serverChessGame.getChessGame().getGameState().toString());
@@ -55,12 +55,12 @@ public class GameStateListener extends GameObserver {
         }
     }
     
-    private void sendMessage(ServerChessGame serverChessGame, String message) {
+    private void sendMessage(AbstractServerChessGame serverChessGame, String message) {
         this.template.convertAndSend(getMessageDestination(serverChessGame), message, getDefaultHeaders()); 
         logger.debug("Message sent to" + getMessageDestination(serverChessGame));
     }
     
-    private String getMessageDestination(ServerChessGame serverChessGame) {
+    private String getMessageDestination(AbstractServerChessGame serverChessGame) {
         return String.format("%s/%d", MESSAGE_DESTINATION, serverChessGame.getUid());
     }
     

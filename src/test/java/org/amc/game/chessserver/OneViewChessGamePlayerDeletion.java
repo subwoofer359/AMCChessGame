@@ -48,7 +48,7 @@ public class OneViewChessGamePlayerDeletion {
 
     @Test
     public void testRealPlayers() throws DAOException {
-        ServerChessGame serverChessGame = new TwoViewServerChessGame(GAME_UID, whitePlayer);
+        AbstractServerChessGame serverChessGame = new TwoViewServerChessGame(GAME_UID, whitePlayer);
         serverChessGame.setChessGameFactory(chessGameFactory);
         serverChessGame.addOpponent(blackPlayer);
         serverChessGame = serverChessGameDao.saveServerChessGame(serverChessGame);
@@ -68,7 +68,7 @@ public class OneViewChessGamePlayerDeletion {
     
     @Test
     public void testVirtualPlayers() throws DAOException {
-        ServerChessGame serverChessGame = new OneViewServerChessGame(GAME_UID, whitePlayer);
+        AbstractServerChessGame serverChessGame = new OneViewServerChessGame(GAME_UID, whitePlayer);
         serverChessGame.setChessGameFactory(chessGameFactory);
         serverChessGame.addOpponent(blackPlayer);
         serverChessGame = serverChessGameDao.saveServerChessGame(serverChessGame);

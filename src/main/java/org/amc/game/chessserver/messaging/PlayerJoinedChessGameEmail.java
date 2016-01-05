@@ -3,7 +3,7 @@ package org.amc.game.chessserver.messaging;
 import java.io.File;
 
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.apache.log4j.Logger;
 
 public class PlayerJoinedChessGameEmail extends EmailTemplate {
@@ -24,7 +24,7 @@ public class PlayerJoinedChessGameEmail extends EmailTemplate {
 		
 	}
 	
-	public PlayerJoinedChessGameEmail(Player player, ServerChessGame serverChessGame){
+	public PlayerJoinedChessGameEmail(Player player, AbstractServerChessGame serverChessGame){
 		this();
 	    setPlayer(player);
 	    setServerChessGame(serverChessGame);

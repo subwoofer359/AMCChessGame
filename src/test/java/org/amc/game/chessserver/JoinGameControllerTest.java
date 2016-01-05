@@ -90,7 +90,7 @@ public class JoinGameControllerTest {
         		.andExpect(model().attributeExists(ServerConstants.CHESSPLAYER))
         		.andExpect(view().name(ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE));
         
-        ServerChessGame gameInGameMap = gameMap.get(gameUUID);
+        AbstractServerChessGame gameInGameMap = gameMap.get(gameUUID);
         assertNotNull(gameInGameMap.getChessGame());
         assertEquals(ServerGameStatus.IN_PROGRESS, gameInGameMap.getCurrentStatus());
     }

@@ -26,7 +26,7 @@ public class MemoryGameMapFactoryBeanTest {
 
     @Test
     public void test() {
-        Map<Long, ServerChessGame> gameMap = factory.getGameMap();
+        Map<Long, AbstractServerChessGame> gameMap = factory.getGameMap();
         assertNull(gameMap);
         factory.init();
         gameMap = factory.getGameMap();

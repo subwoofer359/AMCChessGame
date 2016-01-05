@@ -2,7 +2,7 @@ package org.amc.game.chessserver.observers;
 
 import org.amc.game.GameObserver;
 import org.amc.game.GameSubject;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
@@ -33,7 +33,7 @@ public class GameFinishedListener extends GameObserver {
 
     private TaskScheduler scheduler;
 
-    private Map<Long, ServerChessGame> gameMap;
+    private Map<Long, AbstractServerChessGame> gameMap;
 
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
@@ -41,7 +41,7 @@ public class GameFinishedListener extends GameObserver {
     }
 
     @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, ServerChessGame> gameMap) {
+    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 
@@ -51,21 +51,21 @@ public class GameFinishedListener extends GameObserver {
     }
 
     /**
-     * Calls {@link #setGameToObserver(ServerChessGame)}
+     * Calls {@link #setGameToObserver(AbstractServerChessGame)}
      */
     @Override
     public void setGameToObserver(GameSubject subject) {
-        if(subject instanceof ServerChessGame) {
-            setGameToObserver((ServerChessGame)subject);
+        if(subject instanceof AbstractServerChessGame) {
+            setGameToObserver((AbstractServerChessGame)subject);
         }
     }
     
     /**
-     * Checks to see if the {@link ServerChessGame} is a FINISHED state
+     * Checks to see if the {@link AbstractServerChessGame} is a FINISHED state
      * and schedules it for deletion if it is.
      * @param serverChessGame
      */
-    public void setGameToObserver(ServerChessGame serverChessGame) {
+    public void setGameToObserver(AbstractServerChessGame serverChessGame) {
         super.setGameToObserver(serverChessGame);
         if(ServerGameStatus.FINISHED.equals(serverChessGame.getCurrentStatus())) {
             scheduleDeleteThread(serverChessGame);
@@ -74,16 +74,16 @@ public class GameFinishedListener extends GameObserver {
     
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ServerGameStatus && subject instanceof ServerChessGame) {
+        if (message instanceof ServerGameStatus && subject instanceof AbstractServerChessGame) {
             ServerGameStatus status = (ServerGameStatus) message;
             if (status == ServerGameStatus.FINISHED) {
-                ServerChessGame chessGame = (ServerChessGame) subject;
+                AbstractServerChessGame chessGame = (AbstractServerChessGame) subject;
                 scheduleDeleteThread(chessGame);
             }
         }
     }
     
-    private void scheduleDeleteThread(ServerChessGame serverChessGame) {
+    private void scheduleDeleteThread(AbstractServerChessGame serverChessGame) {
         serverChessGame.removeObserver(this);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, delayTime);
@@ -100,10 +100,10 @@ public class GameFinishedListener extends GameObserver {
 
     private static class DeleteChessGameJob implements Runnable {
 
-        private Map<Long, ServerChessGame> gameMap;
-        private ServerChessGame chessGame;
+        private Map<Long, AbstractServerChessGame> gameMap;
+        private AbstractServerChessGame chessGame;
 
-        public DeleteChessGameJob(Map<Long, ServerChessGame> gameMap, ServerChessGame chessGame) {
+        public DeleteChessGameJob(Map<Long, AbstractServerChessGame> gameMap, AbstractServerChessGame chessGame) {
             this.gameMap = gameMap;
             this.chessGame = chessGame;
         }

@@ -23,8 +23,8 @@ import com.google.gson.reflect.TypeToken;
 public class GameTableControllerTest {
 
 	private GameTableController gtController;
-	private ConcurrentMap<Long, ServerChessGame> gameMap;
-	private ServerChessGame scgGame;
+	private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
+	private AbstractServerChessGame scgGame;
 	private ChessGameFixture cgFixture;
 	private static final long GAME_UID = 1234L;
 	

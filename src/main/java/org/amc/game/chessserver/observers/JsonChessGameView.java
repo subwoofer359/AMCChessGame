@@ -11,7 +11,7 @@ import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.StompController;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
@@ -50,8 +50,8 @@ public class JsonChessGameView extends GameObserver {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessGame && subject instanceof ServerChessGame) {
-            ServerChessGame serverChessGame = (ServerChessGame) subject;
+        if (message instanceof ChessGame && subject instanceof AbstractServerChessGame) {
+            AbstractServerChessGame serverChessGame = (AbstractServerChessGame) subject;
             String jsonBoard = convertChessGameToJson((ChessGame)message);
        
             this.template.convertAndSend(getMessageDestination(serverChessGame), jsonBoard, getDefaultHeaders());
@@ -59,7 +59,7 @@ public class JsonChessGameView extends GameObserver {
         }
     }
     
-    private String getMessageDestination(ServerChessGame serverChessGame) {
+    private String getMessageDestination(AbstractServerChessGame serverChessGame) {
         return String.format("%s/%d", MESSAGE_DESTINATION, serverChessGame.getUid());
     }
     

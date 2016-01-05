@@ -46,7 +46,7 @@ public class SaveGameStompController extends StompController {
     public void save(Principal user, 
                     @Header(SESSION_ATTRIBUTES)Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        ServerChessGame serverChessGame = getGameMap().get(gameUUID);
+        AbstractServerChessGame serverChessGame = getGameMap().get(gameUUID);
         String replyMessage="";
         logger.debug("IN STOMP SAVE METHOD");
         
@@ -61,12 +61,12 @@ public class SaveGameStompController extends StompController {
         
     }
     
-    private boolean isValidPlayer(Player player, ServerChessGame serverChessGame) {
+    private boolean isValidPlayer(Player player, AbstractServerChessGame serverChessGame) {
         return (ComparePlayers.comparePlayers(player, serverChessGame.getPlayer()) || 
                         ComparePlayers.comparePlayers(player, serverChessGame.getOpponent()));
     }
     
-    private String saveServerChessGameIfValidPlayer(Player player, ServerChessGame serverChessGame) {
+    private String saveServerChessGameIfValidPlayer(Player player, AbstractServerChessGame serverChessGame) {
         if(isValidPlayer(player, serverChessGame)) {
             return saveServerChessGameIfNotFinished(serverChessGame);
         } else {
@@ -75,7 +75,7 @@ public class SaveGameStompController extends StompController {
         }
     }
 
-    private String saveServerChessGameIfNotFinished(ServerChessGame serverChessGame) {
+    private String saveServerChessGameIfNotFinished(AbstractServerChessGame serverChessGame) {
         if(ServerGameStatus.FINISHED.equals(serverChessGame.getCurrentStatus())) {
             logger.debug(SAVE_ERROR_GAME_IS_OVER);
             return SAVE_ERROR_GAME_IS_OVER;
@@ -84,7 +84,7 @@ public class SaveGameStompController extends StompController {
         }
     }
     
-    private String saveServerChessGame(ServerChessGame serverChessGame) {
+    private String saveServerChessGame(AbstractServerChessGame serverChessGame) {
         try {
             getGameMap().replace(serverChessGame.getUid(), getServerChessGameDAO()
                             .saveServerChessGame(serverChessGame));

@@ -11,7 +11,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.StandardChessGameFactory;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.amc.game.chessserver.observers.JsonChessGameView;
@@ -30,7 +30,7 @@ public class ServerChessGameTestDatabaseEntity {
     
     private Player whitePlayer;
     private Player blackPlayer;
-    private ServerChessGame scgGame;
+    private AbstractServerChessGame scgGame;
     private final long UID = 29393L;
     private final ServerChessGameDAO scgDAO;
     private final ChessGameFixture cgFixture;
@@ -47,7 +47,7 @@ public class ServerChessGameTestDatabaseEntity {
         
         cgFixture.getBoard().initialise();
         
-        ServerChessGame scgGame = createServerGame(UID);
+        AbstractServerChessGame scgGame = createServerGame(UID);
         addServerChessGameToDataBase(scgGame);
     }
     
@@ -64,7 +64,7 @@ public class ServerChessGameTestDatabaseEntity {
         
     }
     
-    private ServerChessGame createServerGame(long id) {
+    private AbstractServerChessGame createServerGame(long id) {
         ChessGame chessGame = chessGamefactory.getChessGame(cgFixture.getBoard(), 
                         new RealChessGamePlayer(whitePlayer, Colour.WHITE),
                         new RealChessGamePlayer(blackPlayer, Colour.BLACK));
@@ -77,7 +77,7 @@ public class ServerChessGameTestDatabaseEntity {
         return scgGame;
     }
     
-    private void addServerChessGameToDataBase(ServerChessGame scgGame) throws DAOException {
+    private void addServerChessGameToDataBase(AbstractServerChessGame scgGame) throws DAOException {
         scgDAO.addEntity(scgGame);
         scgDAO.getEntityManager().detach(scgGame);
     }
@@ -96,7 +96,7 @@ public class ServerChessGameTestDatabaseEntity {
         return scgGame.getChessGame();
     }
 
-    public ServerChessGame getServerChessGame() {
+    public AbstractServerChessGame getServerChessGame() {
         return scgGame;
     }
 

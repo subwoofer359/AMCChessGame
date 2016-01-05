@@ -40,7 +40,7 @@ public class StartPageController {
     static final String ONE_VIEW_CHESS_PAGE = "OneViewChessGamePortal";
     static final String PLAYERS_NAME_FIELD = "playersName";
     
-    private Map<Long, ServerChessGame> gameMap;
+    private Map<Long, AbstractServerChessGame> gameMap;
     private static final Logger logger = Logger.getLogger(StartPageController.class);
     private ServerChessGameFactory scgFactory;
     
@@ -69,7 +69,7 @@ public class StartPageController {
 
     public String createGameNetwork(Model model, Player player) {
         long uuid = getNewGameUID();
-        ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
+        AbstractServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
         gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         
@@ -90,15 +90,15 @@ public class StartPageController {
             model.addAttribute("playersName", playersName);
             return TWOVIEW_FORWARD_PAGE;
         } else {
-            ServerChessGame serverGame = createLocalGame(player, playersName);
+            AbstractServerChessGame serverGame = createLocalGame(player, playersName);
             setUpModel(model, serverGame.getUid(), serverGame, player);
             return ONE_VIEW_CHESS_PAGE;
         }
     }
     
-    private ServerChessGame createLocalGame(Player player, String playersName) {
+    private AbstractServerChessGame createLocalGame(Player player, String playersName) {
         long uuid = getNewGameUID();
-        ServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
+        AbstractServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
         Player opponent = new HumanPlayer(playersName);
         opponent.setUserName(generateUserName(playersName));
         serverGame.addOpponent(opponent);
@@ -106,7 +106,7 @@ public class StartPageController {
         return serverGame;
     }
     
-    private void setUpModel(Model model, long uuid, ServerChessGame serverGame, Player player) {
+    private void setUpModel(Model model, long uuid, AbstractServerChessGame serverGame, Player player) {
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
         model.addAttribute(ServerConstants.GAME, serverGame);
         model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
@@ -131,7 +131,7 @@ public class StartPageController {
     }
 
     @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, ServerChessGame> gameMap) {
+    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
     

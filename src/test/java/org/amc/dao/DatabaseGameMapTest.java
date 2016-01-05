@@ -30,7 +30,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
@@ -42,13 +42,13 @@ import org.mockito.internal.util.collections.Sets;
 public class DatabaseGameMapTest {
 
     private ServerChessGameDAO chessGameDAO;
-    private List<ServerChessGame> chessGamesList;
+    private List<AbstractServerChessGame> chessGamesList;
     private Long gameUid = 1234L;
     private Player player = new HumanPlayer("Ted");
     private ServerChessGameFactory scgfactory;
     private DatabaseGameMap gameMap;
-    private ServerChessGame game;
-    private ConcurrentMap<Long, ServerChessGame> hashMap;
+    private AbstractServerChessGame game;
+    private ConcurrentMap<Long, AbstractServerChessGame> hashMap;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -108,7 +108,7 @@ public class DatabaseGameMapTest {
     @Test
     public void isEmptyTrueTest() throws DAOException {
         when(hashMap.isEmpty()).thenReturn(true);
-        when(chessGameDAO.findEntities()).thenReturn( Collections.<ServerChessGame>emptyList());
+        when(chessGameDAO.findEntities()).thenReturn( Collections.<AbstractServerChessGame>emptyList());
         assertTrue(gameMap.isEmpty());
     }
 
@@ -157,7 +157,7 @@ public class DatabaseGameMapTest {
 
     @Test
     public void getTest() throws DAOException {
-        ServerChessGame retrievedChessGame = gameMap.get(gameUid);
+        AbstractServerChessGame retrievedChessGame = gameMap.get(gameUid);
         assertEquals(game, retrievedChessGame);
         verify(hashMap, times(1)).get(eq(gameUid));
         verify(chessGameDAO, times(1)).getServerChessGame(eq(gameUid));
@@ -166,19 +166,19 @@ public class DatabaseGameMapTest {
 
     @Test
     public void getTestNull() {
-        ServerChessGame retrievedChessGame = gameMap.get(2343L);
+        AbstractServerChessGame retrievedChessGame = gameMap.get(2343L);
         assertNull(retrievedChessGame);
     }
 
     @Test
     public void getKeyNotLongNull() {
-        ServerChessGame retrievedChessGame = gameMap.get(null);
+        AbstractServerChessGame retrievedChessGame = gameMap.get(null);
         assertNull(retrievedChessGame);
     }
     
     @Test
     public void getKeyNotLong() {
-        ServerChessGame retrievedChessGame = gameMap.get("key");
+        AbstractServerChessGame retrievedChessGame = gameMap.get("key");
         assertNull(retrievedChessGame);
     }
 
@@ -186,14 +186,14 @@ public class DatabaseGameMapTest {
     public void getThrowsDAOException() throws DAOException {
         when(chessGameDAO.getServerChessGame(anyLong())).thenThrow(
                         new DAOException("getThrowsDAOException"));
-        ServerChessGame retrievedChessGame = gameMap.get(2343L);
+        AbstractServerChessGame retrievedChessGame = gameMap.get(2343L);
         assertNull(retrievedChessGame);
     }
 
     @Test
     public void putTest() throws DAOException {
         final Long newUid = 1000L;
-        final ServerChessGame newGame = scgfactory.getServerChessGame(
+        final AbstractServerChessGame newGame = scgfactory.getServerChessGame(
                         GameType.LOCAL_GAME, newUid, player);
         gameMap.put(newUid, newGame);
         verify(this.chessGameDAO, never()).addEntity(eq(newGame));
@@ -215,7 +215,7 @@ public class DatabaseGameMapTest {
     @Test
     public void removeThrowDAOExceptionTest() throws DAOException {
         doThrow(new DAOException("removeThrowDAOExceptionTest")).when(chessGameDAO).deleteEntity(
-                        any(ServerChessGame.class));
+                        any(AbstractServerChessGame.class));
         gameMap.remove(gameUid);
         verify(hashMap,times(1)).remove(eq(gameUid));
         verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
@@ -234,7 +234,7 @@ public class DatabaseGameMapTest {
      */
     @Test
     public void keySetTest() {
-        ConcurrentMap<Long, ServerChessGame> realMap = new ConcurrentHashMap<>();
+        ConcurrentMap<Long, AbstractServerChessGame> realMap = new ConcurrentHashMap<>();
         this.gameMap.setInternalHashMap(realMap);
         Set<Long> gameUids = gameMap.keySet();
         assertTrue(gameUids.contains(gameUid));
@@ -242,20 +242,20 @@ public class DatabaseGameMapTest {
 
     @Test
     public void valuesTest() {
-        Collection<ServerChessGame> games = gameMap.values();
+        Collection<AbstractServerChessGame> games = gameMap.values();
         assertTrue(games.contains(game));
     }
     
     @Test
     public void valuesBugTest() {
-        ConcurrentMap<Long, ServerChessGame> conHashMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        ConcurrentMap<Long, AbstractServerChessGame> conHashMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         gameMap.setInternalHashMap(conHashMap);
-        ServerChessGame newGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+        AbstractServerChessGame newGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
         gameMap.put(gameUid, newGame);
         Player opponent = new HumanPlayer("Mary");
         newGame.addOpponent(new RealChessGamePlayer(opponent, Colour.BLACK));
-        Collection<ServerChessGame> games = gameMap.values();
-        for(ServerChessGame scg : games) {
+        Collection<AbstractServerChessGame> games = gameMap.values();
+        for(AbstractServerChessGame scg : games) {
             assertTrue(ComparePlayers.comparePlayers(opponent, scg.getOpponent()));
         }
     }
@@ -263,13 +263,13 @@ public class DatabaseGameMapTest {
     @Test
     public void valuesTestThrowsException() throws DAOException {
         when(chessGameDAO.findEntities()).thenThrow(new DAOException("valuesTestThrowsException"));
-        Collection<ServerChessGame> games = gameMap.values();
+        Collection<AbstractServerChessGame> games = gameMap.values();
         assertFalse(games.contains(game));
     }
 
     @Test
     public void entrySetTest() {
-        Set<Map.Entry<Long, ServerChessGame>> entries = gameMap.entrySet();
+        Set<Map.Entry<Long, AbstractServerChessGame>> entries = gameMap.entrySet();
         assertFalse(entries.isEmpty());
     }
 
@@ -277,7 +277,7 @@ public class DatabaseGameMapTest {
     public void entrySetThrowsExceptionTest() throws DAOException {
         when(chessGameDAO.findEntities())
                         .thenThrow(new DAOException("entrySetThrowsExceptionTest"));
-        Set<Map.Entry<Long, ServerChessGame>> entries = gameMap.entrySet();
+        Set<Map.Entry<Long, AbstractServerChessGame>> entries = gameMap.entrySet();
         assertTrue(entries.isEmpty());
     }
 

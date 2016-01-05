@@ -46,13 +46,13 @@ public class DBGameMapFactoryTest {
      */
     @Test
     public void test() {
-         Map<Long, ServerChessGame> gameMap = gameMapFactory.getGameMap();
-         ServerChessGame game = gameMap.get(scgtbe.getUID());
+         Map<Long, AbstractServerChessGame> gameMap = gameMapFactory.getGameMap();
+         AbstractServerChessGame game = gameMap.get(scgtbe.getUID());
          assertEquals(ServerGameStatus.IN_PROGRESS, game.getCurrentStatus());
          
          game.setCurrentStatus(ServerGameStatus.FINISHED);
          gameMapFactory.destroyGameMap();
-         ServerChessGame retrievedGame = gameMap.get(scgtbe.getUID());
+         AbstractServerChessGame retrievedGame = gameMap.get(scgtbe.getUID());
          assertEquals(ServerGameStatus.FINISHED, retrievedGame.getCurrentStatus());
          
     }

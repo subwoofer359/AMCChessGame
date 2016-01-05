@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -36,7 +36,7 @@ public abstract class EmailTemplate {
 	
 	private SpringTemplateEngine templateEngine;
 
-    private ServerChessGame serverChessGame;
+    private AbstractServerChessGame serverChessGame;
 
     private Player otherPlayer;
     
@@ -52,7 +52,7 @@ public abstract class EmailTemplate {
         emailSubject = DEFAULT_EMAIL_SUBJECT;
     }
     
-    public EmailTemplate(Player player, ServerChessGame serverChessGame){
+    public EmailTemplate(Player player, AbstractServerChessGame serverChessGame){
         this();
         this.serverChessGame = serverChessGame;
         this.otherPlayer = player;
@@ -99,7 +99,7 @@ public abstract class EmailTemplate {
         return this.templateEngine;
     }
     
-    public ServerChessGame getServerChessGame() {
+    public AbstractServerChessGame getServerChessGame() {
         return this.serverChessGame;
     }
     
@@ -107,7 +107,7 @@ public abstract class EmailTemplate {
         return otherPlayer;
     }
 
-    public void setServerChessGame(ServerChessGame serverChessGame) {
+    public void setServerChessGame(AbstractServerChessGame serverChessGame) {
         this.serverChessGame = serverChessGame;
     }
 

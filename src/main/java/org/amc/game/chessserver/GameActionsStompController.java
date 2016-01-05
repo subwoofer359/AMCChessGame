@@ -58,7 +58,7 @@ public class GameActionsStompController extends StompController {
     public void quitChessGame(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        ServerChessGame serverGame = getGameMap().get(gameUUID);
+        AbstractServerChessGame serverGame = getGameMap().get(gameUUID);
         Player player = (Player) wsSession.get(PLAYER);
         
         String replyMessage="";

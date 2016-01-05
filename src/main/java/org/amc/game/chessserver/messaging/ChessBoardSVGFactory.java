@@ -11,7 +11,7 @@ import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
 import org.amc.game.chessserver.messaging.svg.SVGBlankChessBoard;
 import org.amc.game.chessserver.messaging.svg.SVGChessPiece;
@@ -43,7 +43,7 @@ public class ChessBoardSVGFactory {
 
     private static final Logger logger = Logger.getLogger(ChessBoardSVGFactory.class);
 
-    private ServerChessGame serverChessGame;
+    private AbstractServerChessGame serverChessGame;
 
     private static final String SVG_NODE_G = "g";
 
@@ -66,7 +66,7 @@ public class ChessBoardSVGFactory {
         svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
     }
 
-    public ChessBoardSVGFactory(ServerChessGame serverChessGame) throws ParserConfigurationException {
+    public ChessBoardSVGFactory(AbstractServerChessGame serverChessGame) throws ParserConfigurationException {
         this();
         this.serverChessGame = serverChessGame;
 
@@ -131,7 +131,7 @@ public class ChessBoardSVGFactory {
 
     
 
-    public void setServerChessGame(ServerChessGame serverChessGame) {
+    public void setServerChessGame(AbstractServerChessGame serverChessGame) {
         this.serverChessGame = serverChessGame;
         document = null;
     }

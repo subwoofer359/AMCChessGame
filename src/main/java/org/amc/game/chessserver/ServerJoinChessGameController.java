@@ -1,6 +1,6 @@
 package org.amc.game.chessserver;
 
-import static org.amc.game.chessserver.ServerChessGame.ServerGameStatus;
+import static org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
@@ -28,7 +28,7 @@ public class ServerJoinChessGameController {
 
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
 
-    private Map<Long, ServerChessGame> gameMap;
+    private Map<Long, AbstractServerChessGame> gameMap;
 
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
@@ -41,7 +41,7 @@ public class ServerJoinChessGameController {
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
                     @RequestParam long gameUUID) {
-        ServerChessGame chessGame = gameMap.get(gameUUID);
+        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
         ModelAndView mav = new ModelAndView();
         if (isPlayerJoiningOwnGame(chessGame, player)) {
             enterChessGame(mav, chessGame, player, gameUUID);
@@ -51,11 +51,11 @@ public class ServerJoinChessGameController {
         return mav;
     }
 
-    private boolean isPlayerJoiningOwnGame(ServerChessGame chessGame, Player player) {
+    private boolean isPlayerJoiningOwnGame(AbstractServerChessGame chessGame, Player player) {
         return ComparePlayers.comparePlayers(player, chessGame.getPlayer());
     }
 
-    private void enterChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
+    private void enterChessGame(ModelAndView mav, AbstractServerChessGame chessGame, Player player,
                     long gameUUID) {
         if (canPlayerEnterGame(chessGame, player)) {
             setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
@@ -64,15 +64,15 @@ public class ServerJoinChessGameController {
         }
     }
 
-    private boolean canPlayerEnterGame(ServerChessGame chessGame, Player player) {
+    private boolean canPlayerEnterGame(AbstractServerChessGame chessGame, Player player) {
         return inProgressState(chessGame);
     }
 
-    public boolean inProgressState(ServerChessGame chessGame) {
+    public boolean inProgressState(AbstractServerChessGame chessGame) {
         return ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus());
     }
 
-    private void joinChessGame(ModelAndView mav, ServerChessGame chessGame, Player player,
+    private void joinChessGame(ModelAndView mav, AbstractServerChessGame chessGame, Player player,
                     long gameUUID) {
         if (canPlayerJoinGame(chessGame, player)) {
             if (inAwaitingPlayerState(chessGame)) {
@@ -84,18 +84,18 @@ public class ServerJoinChessGameController {
         }
     }
 
-    private boolean canPlayerJoinGame(ServerChessGame chessGame, Player player) {
+    private boolean canPlayerJoinGame(AbstractServerChessGame chessGame, Player player) {
         return inAwaitingPlayerState(chessGame) || joiningCurrentGame(chessGame, player);
     }
 
-    private void addPlayerToGame(ServerChessGame chessGame, Player player) {
+    private void addPlayerToGame(AbstractServerChessGame chessGame, Player player) {
         chessGame.addOpponent(player);
     }
 
     private void setupModelForChessGameScreen(ModelAndView mav, ChessGamePlayer player,
                     long gameUUID) {
         mav.getModel().put(ServerConstants.GAME_UUID, gameUUID);
-        ServerChessGame serverGame = gameMap.get(gameUUID);
+        AbstractServerChessGame serverGame = gameMap.get(gameUUID);
         mav.getModel().put(ServerConstants.GAME, serverGame);
         mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
@@ -106,7 +106,7 @@ public class ServerJoinChessGameController {
         }
     }
 
-    private void setModelErrorMessage(ServerChessGame chessGame, Player player, ModelAndView mav) {
+    private void setModelErrorMessage(AbstractServerChessGame chessGame, Player player, ModelAndView mav) {
         if (isPlayerJoiningOwnGame(chessGame, player)) {
             setErrorPageAndMessage(mav, ERROR_GAME_HAS_NO_OPPONENT);
         } else {
@@ -124,15 +124,15 @@ public class ServerJoinChessGameController {
         logger.error(errorMessage);
     }
 
-    private boolean isGameInFinishedState(ServerChessGame chessGame) {
+    private boolean isGameInFinishedState(AbstractServerChessGame chessGame) {
         return ServerGameStatus.FINISHED.equals(chessGame.getCurrentStatus());
     }
 
-    private boolean inAwaitingPlayerState(ServerChessGame chessGame) {
+    private boolean inAwaitingPlayerState(AbstractServerChessGame chessGame) {
         return ServerGameStatus.AWAITING_PLAYER.equals(chessGame.getCurrentStatus());
     }
 
-    private boolean joiningCurrentGame(ServerChessGame chessGame, Player player) {
+    private boolean joiningCurrentGame(AbstractServerChessGame chessGame, Player player) {
         if (ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus())) {
             return ComparePlayers.comparePlayers(player, chessGame.getOpponent());
         } else {
@@ -144,10 +144,10 @@ public class ServerJoinChessGameController {
      * Dependency Injection of Map containing current ChessGames
      * 
      * @param gameMap
-     *            Map<Log,ServerChessGame>
+     *            Map<Log,AbstractServerChessGame>
      */
     @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, ServerChessGame> gameMap) {
+    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 

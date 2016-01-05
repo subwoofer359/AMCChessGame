@@ -18,7 +18,7 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerConstants;
@@ -127,7 +127,7 @@ public class EmailMessagingIntegrationTest {
         ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("Ka6:kc6:qb1");
         Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
         
-        ServerChessGame scg = (ServerChessGame)result.getModelAndView().getModel().get("GAME");
+        AbstractServerChessGame scg = (AbstractServerChessGame)result.getModelAndView().getModel().get("GAME");
         
         scg.getChessGame().setChessBoard(board);
         

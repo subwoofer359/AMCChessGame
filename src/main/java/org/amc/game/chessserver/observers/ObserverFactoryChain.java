@@ -1,6 +1,6 @@
 package org.amc.game.chessserver.observers;
 
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 
 public abstract class ObserverFactoryChain {
 
@@ -38,9 +38,9 @@ public abstract class ObserverFactoryChain {
      * Pass control to the next link in the ObserverFactoryChain
      * 
      * @param observerList String A list of GameObservers
-     * @param serverChessGame {@link ServerChessGame} instance to which to attach the observers to 
+     * @param serverChessGame {@link AbstractServerChessGame} instance to which to attach the observers to 
      */
-    public final void doChain(String observerList, ServerChessGame serverChessGame) {
+    public final void doChain(String observerList, AbstractServerChessGame serverChessGame) {
         if(getSuccessor() != null) {
             getSuccessor().addObserver(observerList, serverChessGame);
         }
@@ -50,8 +50,8 @@ public abstract class ObserverFactoryChain {
      * Checks the observerList to see if to add a GameObserver
      * 
      * @param observerList String list of GameObservers
-     * @param serverChessGame {@link ServerChessGame}
+     * @param serverChessGame {@link AbstractServerChessGame}
      */
-    public abstract void addObserver(String observerList, ServerChessGame serverChessGame);
+    public abstract void addObserver(String observerList, AbstractServerChessGame serverChessGame);
   
 }

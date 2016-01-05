@@ -34,7 +34,7 @@ public class GameMoveStompControllerUnitTest {
 
     private long gameUUID = 1234L;
 
-    private ServerChessGame scg;
+    private AbstractServerChessGame scg;
 
     private Map<String, Object> sessionAttributes;
 
@@ -57,7 +57,7 @@ public class GameMoveStompControllerUnitTest {
         }
     };
     
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
 
     @Before
     public void setUp() {
@@ -71,7 +71,7 @@ public class GameMoveStompControllerUnitTest {
             }
         });
         
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         gameMap.put(gameUUID, scg);
         
         controller.setGameMap(gameMap);
@@ -138,7 +138,7 @@ public class GameMoveStompControllerUnitTest {
     @Test
     public void testChessGameFinished() {
         scg.addOpponent(blackPlayer);
-        scg.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
+        scg.setCurrentStatus(AbstractServerChessGame.ServerGameStatus.FINISHED);
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();

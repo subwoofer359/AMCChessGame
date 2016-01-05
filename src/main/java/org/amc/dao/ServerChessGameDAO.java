@@ -1,7 +1,7 @@
 package org.amc.dao;
 
 import org.amc.DAOException;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
@@ -22,7 +22,7 @@ import javax.persistence.Query;
  * @author Adrian Mclaughlin
  *
  */
-public class ServerChessGameDAO extends DAO<ServerChessGame> {
+public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
     
@@ -32,7 +32,7 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
     private ObserverFactoryChain chain;
     
     public ServerChessGameDAO() {
-        super(ServerChessGame.class);
+        super(AbstractServerChessGame.class);
     }
     
     public Set<Long> getGameUids() {
@@ -49,7 +49,7 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         
     }
     
-    private void addObservers(ServerChessGame serverChessGame) throws DAOException {
+    private void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
         EntityManager entityManager = getEntityManager();
         if(serverChessGame.getNoOfObservers() == 0) {
             Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY, SCGObservers.class);
@@ -69,14 +69,14 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
      * @return ServerChessGame with Observers attached
      * @throws DAOException if the ServerChessGame can't be retrieved
      */
-    public ServerChessGame getServerChessGame(long uid) throws DAOException {
+    public AbstractServerChessGame getServerChessGame(long uid) throws DAOException {
         EntityManager entityManager = getEntityManager();
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
         
-        ServerChessGame scg = null;
+        AbstractServerChessGame scg = null;
         try {
-            scg = (ServerChessGame)query.getSingleResult();
+            scg = (AbstractServerChessGame)query.getSingleResult();
             addObservers(scg);
             return scg;
         } catch(NoResultException nre) {
@@ -85,7 +85,7 @@ public class ServerChessGameDAO extends DAO<ServerChessGame> {
         return scg;
     }
     
-    public ServerChessGame saveServerChessGame(ServerChessGame serverChessGame) throws DAOException {
+    public AbstractServerChessGame saveServerChessGame(AbstractServerChessGame serverChessGame) throws DAOException {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();

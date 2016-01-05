@@ -7,7 +7,7 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,7 +30,7 @@ public class MoveUpdateEmail extends EmailTemplate {
         setEmailTemplateName(EMAIL_TEMPLATE);
     }
     
-    public MoveUpdateEmail(Player player, ServerChessGame serverChessGame) {
+    public MoveUpdateEmail(Player player, AbstractServerChessGame serverChessGame) {
         this();
     	setPlayer(player);
     	setServerChessGame(serverChessGame);

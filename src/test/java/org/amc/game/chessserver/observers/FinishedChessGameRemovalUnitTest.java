@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.amc.game.GameSubject;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalUnitTest {
 
-    Map<Long, ServerChessGame> gameMap;
-    ServerChessGame serverChessGame;
+    Map<Long, AbstractServerChessGame> gameMap;
+    AbstractServerChessGame serverChessGame;
     long uid = 1234L;
     Player player = new HumanPlayer("Adrian McLaughlin");
     GameFinishedListener listener;
@@ -31,7 +31,7 @@ public class FinishedChessGameRemovalUnitTest {
     public void setUp() throws Exception {
         scheduler=new ThreadPoolTaskScheduler();
         scheduler.afterPropertiesSet();
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         player.setUserName("adrian");
         serverChessGame = new TwoViewServerChessGame(uid, player);
         listener = new GameFinishedListener();

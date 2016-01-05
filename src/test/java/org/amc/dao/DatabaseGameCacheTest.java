@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 import org.amc.DAOException;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
@@ -33,10 +33,10 @@ public class DatabaseGameCacheTest {
     private Player player = new HumanPlayer("Ted");
     private ServerChessGameFactory scgfactory;
     private DatabaseGameMap gameMap;
-    private ServerChessGame game;
+    private AbstractServerChessGame game;
     
-    private List<ServerChessGame> gamesInDatabase;
-    private ConcurrentMap<Long, ServerChessGame> gamesInCache;
+    private List<AbstractServerChessGame> gamesInDatabase;
+    private ConcurrentMap<Long, AbstractServerChessGame> gamesInCache;
     private Set<Long> uidsInDatabase;
     
     private static final int NO_OF_GAMES_IN_DATABASE = 5;
@@ -45,7 +45,7 @@ public class DatabaseGameCacheTest {
     private static final int TOTAL_OF_GAMES = NO_OF_GAMES_IN_DATABASE + 
                     NO_OF_GAMES_IN_CACHE;
     
-    private static final List<ServerChessGame> EMPTY_LIST = Collections.emptyList();
+    private static final List<AbstractServerChessGame> EMPTY_LIST = Collections.emptyList();
     
     @Before
     public void setUp() throws Exception {
@@ -103,7 +103,7 @@ public class DatabaseGameCacheTest {
 
     @Test
     public void sizeTest() {
-        Set<ServerChessGame> gameSet = new HashSet<>(gamesInDatabase);
+        Set<AbstractServerChessGame> gameSet = new HashSet<>(gamesInDatabase);
         gameSet.addAll(gamesInCache.values());
         assertEquals(TOTAL_OF_GAMES, gameSet.size());
         assertEquals(TOTAL_OF_GAMES, gameMap.size());
@@ -121,14 +121,14 @@ public class DatabaseGameCacheTest {
     
     @Test
     public void putTest() {
-        ServerChessGame scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+        AbstractServerChessGame scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
         gameMap.put(gameUid, scg);
         assertTrue(gameMap.containsKey(gameUid));
     }
     
     @Test
     public void removeTest() throws DAOException {
-        ServerChessGame scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
+        AbstractServerChessGame scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, gameUid, player);
         when(chessGameDAO.findEntities(eq("uid"), eq(gameUid))).thenReturn(EMPTY_LIST);
         
         gameMap.put(gameUid, scg);
@@ -141,7 +141,7 @@ public class DatabaseGameCacheTest {
     public void keySetTest() {
         assertEquals(TOTAL_OF_GAMES, gameMap.keySet().size());
         Set<Long> keys = new HashSet<>();
-        for(ServerChessGame game : gamesInDatabase) {
+        for(AbstractServerChessGame game : gamesInDatabase) {
             keys.add(game.getUid());
         }
         keys.addAll(gamesInCache.keySet());
@@ -152,8 +152,8 @@ public class DatabaseGameCacheTest {
     @Test
     public void valuesTest() {
         assertEquals(TOTAL_OF_GAMES, gameMap.values().size());
-        Set<ServerChessGame> games = new HashSet<>();
-        for(ServerChessGame game : gamesInDatabase) {
+        Set<AbstractServerChessGame> games = new HashSet<>();
+        for(AbstractServerChessGame game : gamesInDatabase) {
             games.add(game);
         }
         games.addAll(gamesInCache.values());
@@ -162,9 +162,9 @@ public class DatabaseGameCacheTest {
     
     @Test
     public void entrySet() {
-        Map<Long, ServerChessGame> games = new HashMap<Long, ServerChessGame>();
+        Map<Long, AbstractServerChessGame> games = new HashMap<Long, AbstractServerChessGame>();
         
-        for(ServerChessGame game : gamesInDatabase) {
+        for(AbstractServerChessGame game : gamesInDatabase) {
             games.put(game.getUid(), game);
         }
         games.putAll(gamesInCache);

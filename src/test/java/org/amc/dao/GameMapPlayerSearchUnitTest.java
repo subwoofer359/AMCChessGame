@@ -7,7 +7,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.OneViewServerChessGame;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class GameMapPlayerSearchUnitTest {
     private static final int NO_OF_SEPARATE_GAMES = 100;
     private static final int NO_OF_GAMES = 5;
     private static final int NO_OF_PLAYER = 100;
-    private static final ConcurrentMap<Long, ServerChessGame> actualGameMap;
+    private static final ConcurrentMap<Long, AbstractServerChessGame> actualGameMap;
     
     static {
         players = new ArrayList<Player>();
@@ -87,7 +87,7 @@ public class GameMapPlayerSearchUnitTest {
             Player player = players.get(p);
             for(int i = 0; i < NO_OF_GAMES; i++) {
                 Long gameUid = random.nextLong();
-                ServerChessGame game = new TwoViewServerChessGame(gameUid, player);
+                AbstractServerChessGame game = new TwoViewServerChessGame(gameUid, player);
                 game.setChessGameFactory(standardFactory);
                 game.addOpponent(players.get(p + 1));
                 actualGameMap.put(gameUid, game);
@@ -98,7 +98,7 @@ public class GameMapPlayerSearchUnitTest {
         for(int i = 0; i < NO_OF_GAMES; i++) {
             Player player = players.get(players.size()-1);
             Long gameUid = random.nextLong();
-            ServerChessGame game = new TwoViewServerChessGame(gameUid, player);
+            AbstractServerChessGame game = new TwoViewServerChessGame(gameUid, player);
             game.setChessGameFactory(standardFactory);
             game.addOpponent(players.get(0));
             actualGameMap.put(gameUid, game);
@@ -112,7 +112,7 @@ public class GameMapPlayerSearchUnitTest {
 
     @Test
     public void testGamesNo() {
-        Map<Long, ServerChessGame> games = gmps.getGames(gameMap, players.get(0));
+        Map<Long, AbstractServerChessGame> games = gmps.getGames(gameMap, players.get(0));
         assertEquals(NO_OF_SEPARATE_GAMES + NO_OF_GAMES * 2, games.size());
     }
     
@@ -134,10 +134,10 @@ public class GameMapPlayerSearchUnitTest {
     }
     
     private static class GameSearchThread implements Callable<Integer> {
-        private ConcurrentMap<Long, ServerChessGame> gameMap;
+        private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
         private Player player;
         
-        public GameSearchThread(ConcurrentMap<Long, ServerChessGame> gameMap, Player player) {
+        public GameSearchThread(ConcurrentMap<Long, AbstractServerChessGame> gameMap, Player player) {
             this.gameMap = gameMap;
             this.player = player;
         }

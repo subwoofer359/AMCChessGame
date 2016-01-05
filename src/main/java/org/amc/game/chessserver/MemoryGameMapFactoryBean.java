@@ -20,14 +20,14 @@ public class MemoryGameMapFactoryBean{
     
     private static final Logger logger = Logger.getLogger(MemoryGameMapFactoryBean.class);
 
-    private Map<Long, ServerChessGame> gameMap;
+    private Map<Long, AbstractServerChessGame> gameMap;
     
     /**
      * Called by Spring beans needing an gameMap instance
      * 
      * @return ConcurrentHashMap 
      */
-    public Map<Long, ServerChessGame> getGameMap(){
+    public Map<Long, AbstractServerChessGame> getGameMap(){
         return gameMap;
     }
     
@@ -38,7 +38,7 @@ public class MemoryGameMapFactoryBean{
      */
     @PostConstruct
     public void init(){
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
     }
     
     /**
@@ -57,7 +57,7 @@ public class MemoryGameMapFactoryBean{
      * Used for testing only
      * @param gameMap {@link Map}
      */
-    void setGameMap(Map<Long, ServerChessGame> gameMap) {
+    void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 

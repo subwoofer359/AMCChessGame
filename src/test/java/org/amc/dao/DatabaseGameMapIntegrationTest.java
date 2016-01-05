@@ -10,7 +10,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -75,25 +75,25 @@ public class DatabaseGameMapIntegrationTest {
     public void testGameOneFinished() {
         
         final long UID = 1234l;
-        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, laura);
+        AbstractServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, laura);
         
         gameMap.put(UID, game);
         
         game = gameMap.get(UID);
         
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER);
         assertTrue(ComparePlayers.comparePlayers(laura, game.getPlayer()));
         
         game.addOpponent(nobby);
         
         game = gameMap.get(UID);
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.IN_PROGRESS);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.IN_PROGRESS);
         assertTrue(ComparePlayers.comparePlayers(nobby, game.getOpponent()));
         
         game.setCurrentStatus(ServerGameStatus.FINISHED);
         
         game = gameMap.get(UID);
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.FINISHED);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.FINISHED);
         
         gameMap.put(UID, game);
     }
@@ -102,13 +102,13 @@ public class DatabaseGameMapIntegrationTest {
     public void testGameTwo() {
         
         final long UID = 12323334l;
-        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
+        AbstractServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
         
         gameMap.put(UID, game);
         
         game = gameMap.get(UID);
         
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER);
         assertTrue(ComparePlayers.comparePlayers(nobby, game.getPlayer()));
         
         game.addOpponent(stephen);
@@ -118,7 +118,7 @@ public class DatabaseGameMapIntegrationTest {
         
         game = gameMap.get(UID);
         
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.IN_PROGRESS);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.IN_PROGRESS);
         assertTrue(ComparePlayers.comparePlayers(stephen, game.getOpponent()));
     }
     
@@ -127,13 +127,13 @@ public class DatabaseGameMapIntegrationTest {
         
         final long UID = 12443324l;
         
-        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
+        AbstractServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
         
         gameMap.put(UID, game);
         
         game = gameMap.get(UID);
         
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.AWAITING_PLAYER);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER);
         assertTrue(ComparePlayers.comparePlayers(nobby, game.getPlayer()));
         
         game.addOpponent(stephen);
@@ -143,14 +143,14 @@ public class DatabaseGameMapIntegrationTest {
         
         game = gameMap.get(UID);
         
-        assertEquals(game.getCurrentStatus(), ServerChessGame.ServerGameStatus.IN_PROGRESS);
+        assertEquals(game.getCurrentStatus(), AbstractServerChessGame.ServerGameStatus.IN_PROGRESS);
         assertTrue(ComparePlayers.comparePlayers(stephen, game.getOpponent()));
     }
 
     @Test
     public void testChessGameLocal() throws Exception{
         final long UID = 1222334324l;
-        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
+        AbstractServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
         game.addOpponent(laura);
         Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
         game.move(game.getPlayer(nobby), move);
@@ -166,7 +166,7 @@ public class DatabaseGameMapIntegrationTest {
     public void testChessGameNetwork() throws Exception{
         final long UID = 1232224l;
         
-        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
+        AbstractServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.NETWORK_GAME, UID, nobby);
         game.addOpponent(laura);
         
         Move move = new Move(new Location(Coordinate.A,2), new Location(Coordinate.A,3));
@@ -186,7 +186,7 @@ public class DatabaseGameMapIntegrationTest {
     @Test
     public void testRetrieve() throws Exception {
         final long UID = 1222334324l;
-        ServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
+        AbstractServerChessGame game = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID, nobby);
         game.addOpponent(laura);
         game.move(game.getPlayer(nobby), new Move("A2-A3"));
         game.move(game.getPlayer(laura), new Move("A7-A6"));
@@ -207,10 +207,10 @@ public class DatabaseGameMapIntegrationTest {
     public void  keySet() {
         final long UID1 = 1222334324l;
         final long UID2 = 1395l;
-        ServerChessGame game1 = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID1, nobby);
+        AbstractServerChessGame game1 = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID1, nobby);
         game1.addOpponent(laura);
         
-        ServerChessGame game2 = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID2, laura);
+        AbstractServerChessGame game2 = serverChessGamefactory.getServerChessGame(GameType.LOCAL_GAME, UID2, laura);
         game2.addOpponent(nobby);
         
         gameMap.put(UID1, game1);
@@ -228,7 +228,7 @@ public class DatabaseGameMapIntegrationTest {
     public void testPlayerIsNotRemovedOnServerChessGameRemove() throws DAOException {
     	ServerChessGameTestDatabaseEntity scEntity = new ServerChessGameTestDatabaseEntity();
     	checkPlayerExistsInTheDatabase(scEntity.getWhitePlayer().getUserName());
-    	ServerChessGame game = gameMap.get(scEntity.getUID());
+    	AbstractServerChessGame game = gameMap.get(scEntity.getUID());
     	gameMap.remove(game.getUid());
     	checkPlayerExistsInTheDatabase(scEntity.getWhitePlayer().getUserName());
     }

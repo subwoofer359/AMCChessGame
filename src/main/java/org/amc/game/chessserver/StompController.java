@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  */
 public class StompController {
 
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
 
     /**
      * STOMP messaging object to send stomp message to objects
@@ -70,7 +70,7 @@ public class StompController {
     }
     
     @Resource(name = "gameMap")
-    public void setGameMap(ConcurrentMap<Long, ServerChessGame> gameMap) {
+    public void setGameMap(ConcurrentMap<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 
@@ -91,7 +91,7 @@ public class StompController {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 
-    public ConcurrentMap<Long, ServerChessGame> getGameMap() {
+    public ConcurrentMap<Long, AbstractServerChessGame> getGameMap() {
         return gameMap;
     }
 

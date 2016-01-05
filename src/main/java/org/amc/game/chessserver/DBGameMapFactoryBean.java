@@ -23,7 +23,7 @@ public class DBGameMapFactoryBean{
     
     private static final Logger logger = Logger.getLogger(DBGameMapFactoryBean.class);
 
-    private Map<Long, ServerChessGame> gameMap;
+    private Map<Long, AbstractServerChessGame> gameMap;
     private ServerChessGameDAO serverChessGameDAO;
     private EntityManagerFactory entityManagerFactory;
     
@@ -32,7 +32,7 @@ public class DBGameMapFactoryBean{
      * 
      * @return ConcurrentHashMap 
      */
-    public Map<Long, ServerChessGame> getGameMap(){
+    public Map<Long, AbstractServerChessGame> getGameMap(){
         return gameMap;
     }
     

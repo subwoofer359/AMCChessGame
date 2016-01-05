@@ -1,7 +1,7 @@
 package org.amc.dao;
 
 import org.amc.DAOException;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.apache.log4j.Logger;
 
 import java.util.AbstractMap;
@@ -13,22 +13,22 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
+public class DatabaseGameMap implements ConcurrentMap<Long, AbstractServerChessGame> {
 
     ServerChessGameDAO serverChessGameDAO;
     
     private static final Logger logger = Logger.getLogger(DatabaseGameMap.class);
     
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     
     public DatabaseGameMap() {
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
     }
     
     @Override
     public int size() {
         try {
-            Set<ServerChessGame> gameSet = new HashSet<>();
+            Set<AbstractServerChessGame> gameSet = new HashSet<>();
             gameSet.addAll(this.gameMap.values());
             gameSet.addAll(this.serverChessGameDAO.findEntities());
             return gameSet.size();
@@ -76,14 +76,14 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
     }
 
     @Override
-    public ServerChessGame get(Object key) {
+    public AbstractServerChessGame get(Object key) {
         try {
             if (key != null && key instanceof Long) {
-                ServerChessGame game = gameMap.get(key);
+                AbstractServerChessGame game = gameMap.get(key);
                 if (game == null) {
                     game = this.serverChessGameDAO.getServerChessGame((Long) key);
                     if (game == null) {
-                        logger.error("ServerChessGame with uid:" + key + " doesn't exist!");
+                        logger.error("AbstractServerChessGame with uid:" + key + " doesn't exist!");
                         return null;
                     } else {
                         serverChessGameDAO.detachEntity(game);
@@ -101,15 +101,15 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
     }
 
     @Override
-    public ServerChessGame put(Long key, ServerChessGame value) {
+    public AbstractServerChessGame put(Long key, AbstractServerChessGame value) {
         return gameMap.putIfAbsent(key, value);
     }
 
     @Override
-    public ServerChessGame remove(Object key) {
-        ServerChessGame gameToDelete = this.get(key);
+    public AbstractServerChessGame remove(Object key) {
+        AbstractServerChessGame gameToDelete = this.get(key);
         if(gameToDelete == null) {
-            logger.debug("No ServerChessGame to remove");
+            logger.debug("No AbstractServerChessGame to remove");
         } else {
             try {
                 gameMap.remove(key);
@@ -126,7 +126,7 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
      * Not implemented
      */
     @Override
-    public void putAll(Map<? extends Long, ? extends ServerChessGame> m) {
+    public void putAll(Map<? extends Long, ? extends AbstractServerChessGame> m) {
         logger.error("DatabaseGameMap.putAll(Map) is not implemented");
         throw new UnsupportedOperationException();
     }
@@ -146,9 +146,9 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
     }
 
     @Override
-    public Collection<ServerChessGame> values() {
+    public Collection<AbstractServerChessGame> values() {
         try {
-            Set<ServerChessGame> games = new HashSet<>(gameMap.values());
+            Set<AbstractServerChessGame> games = new HashSet<>(gameMap.values());
             games.addAll(serverChessGameDAO.findEntities());
             return games;
         } catch(DAOException de) {
@@ -158,17 +158,17 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
     }
 
     @Override
-    public Set<Entry<Long, ServerChessGame>> entrySet() {
-        Set<Map.Entry<Long, ServerChessGame>> gameSet = new HashSet<>();
-        Collection<ServerChessGame> games = values();
-        for(ServerChessGame game: games) {
-            gameSet.add(new AbstractMap.SimpleEntry<Long,ServerChessGame>(game.getUid(), game));
+    public Set<Entry<Long, AbstractServerChessGame>> entrySet() {
+        Set<Map.Entry<Long, AbstractServerChessGame>> gameSet = new HashSet<>();
+        Collection<AbstractServerChessGame> games = values();
+        for(AbstractServerChessGame game: games) {
+            gameSet.add(new AbstractMap.SimpleEntry<Long,AbstractServerChessGame>(game.getUid(), game));
         }
         return gameSet;
     }
     
     @Override
-    public ServerChessGame putIfAbsent(Long gameUID, ServerChessGame serverChessGame) {
+    public AbstractServerChessGame putIfAbsent(Long gameUID, AbstractServerChessGame serverChessGame) {
         return gameMap.putIfAbsent(gameUID, serverChessGame);
     }
 
@@ -178,7 +178,7 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
     }
 
     @Override
-    public boolean replace(Long gameUID, ServerChessGame oldServerChessGame, ServerChessGame newServerChessGame) {
+    public boolean replace(Long gameUID, AbstractServerChessGame oldServerChessGame, AbstractServerChessGame newServerChessGame) {
         serverChessGameDAO.detachEntity(newServerChessGame);
         return gameMap.replace(gameUID, oldServerChessGame, newServerChessGame);
     }
@@ -191,15 +191,15 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
         gameMap.clear();
     }
     
-    public ServerChessGame replace(Long gameUid, ServerChessGame serverChessGame) {
+    public AbstractServerChessGame replace(Long gameUid, AbstractServerChessGame serverChessGame) {
         serverChessGameDAO.detachEntity(serverChessGame);
         return gameMap.replace(gameUid, serverChessGame);
     }
     /**
-     * Retrieve a collection of ServerChessGames from the cache
-     * @return Collection of ServerChessGames
+     * Retrieve a collection of AbstractServerChessGames from the cache
+     * @return Collection of AbstractServerChessGames
      */
-    public Collection<ServerChessGame> cacheValues() {
+    public Collection<AbstractServerChessGame> cacheValues() {
         return gameMap.values();
     }
        
@@ -207,7 +207,7 @@ public class DatabaseGameMap implements ConcurrentMap<Long, ServerChessGame> {
         this.serverChessGameDAO = serverChessGameDAO;
     }
     
-    void setInternalHashMap(ConcurrentMap<Long, ServerChessGame> gameMap) {
+    void setInternalHashMap(ConcurrentMap<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
 }

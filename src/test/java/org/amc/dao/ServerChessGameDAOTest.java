@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.After;
 import org.junit.Before;
@@ -54,7 +54,7 @@ public class ServerChessGameDAOTest {
 
     @Test
     public void getServerChessGameTest() throws DAOException {
-        ServerChessGame scgGame = dao.getServerChessGame(serverChessGamesfixture.getUID());
+        AbstractServerChessGame scgGame = dao.getServerChessGame(serverChessGamesfixture.getUID());
         assertEquals(2, scgGame.getNoOfObservers());
     }
 }

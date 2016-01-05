@@ -40,13 +40,13 @@ public class GameMoveStompController extends StompController {
 
         logger.debug("PLAYER:" + player);
 
-        ServerChessGame game = getGameMap().get(gameUUID);
+        AbstractServerChessGame game = getGameMap().get(gameUUID);
 
         String message = "";
 
-        if (ServerChessGame.ServerGameStatus.IN_PROGRESS.equals(game.getCurrentStatus())) {
+        if (AbstractServerChessGame.ServerGameStatus.IN_PROGRESS.equals(game.getCurrentStatus())) {
             message = moveChessPiece(game, player, moveString);
-        } else if (ServerChessGame.ServerGameStatus.AWAITING_PLAYER.equals(game.getCurrentStatus())) {
+        } else if (AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER.equals(game.getCurrentStatus())) {
             message = String.format(ERROR_MSG_NOT_ENOUGH_PLAYERS, gameUUID);
         } else {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
@@ -58,7 +58,7 @@ public class GameMoveStompController extends StompController {
         sendMessageToUser(user, message, type);
     }
     
-    private String moveChessPiece(ServerChessGame game, Player player, String moveString) {
+    private String moveChessPiece(AbstractServerChessGame game, Player player, String moveString) {
         String message = "";
 
         try {
@@ -76,7 +76,7 @@ public class GameMoveStompController extends StompController {
     public void registerOneViewMoveMove(Principal user,
                     @DestinationVariable long gameUUID, @Payload String moveString) {
 
-        ServerChessGame game = getGameMap().get(gameUUID);
+        AbstractServerChessGame game = getGameMap().get(gameUUID);
         
         if(!(game instanceof OneViewServerChessGame)) {
             logger.error("Can only move Chess Piece on an One View Chess game");

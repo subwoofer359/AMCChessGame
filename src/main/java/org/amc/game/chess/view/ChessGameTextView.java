@@ -4,14 +4,14 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 
 public class ChessGameTextView implements Observer {
 
-    public ChessGameTextView(ServerChessGame chessGame) {
+    public ChessGameTextView(AbstractServerChessGame chessGame) {
         chessGame.attachObserver(this);
     }
 

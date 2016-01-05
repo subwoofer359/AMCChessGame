@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.amc.game.chessserver.ServerChessGame;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
@@ -29,8 +29,8 @@ public class FinishedChessGameRemovalThreadTest {
     // Countdown Latch used to synchonise removal threads
     private CountDownLatch latch = new CountDownLatch(NUMBER_OF_GAMES);
     private ExecutorService threadService;
-    private Map<Long, ServerChessGame> gameMap;
-    private ServerChessGame[] chessGames = new ServerChessGame[NUMBER_OF_GAMES];
+    private Map<Long, AbstractServerChessGame> gameMap;
+    private AbstractServerChessGame[] chessGames = new AbstractServerChessGame[NUMBER_OF_GAMES];
     private long[] uids = new long[NUMBER_OF_GAMES];
     private Player player = new HumanPlayer("Adrian McLaughlin");
     
@@ -40,7 +40,7 @@ public class FinishedChessGameRemovalThreadTest {
         scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(NUMBER_OF_GAMES);
         scheduler.afterPropertiesSet();
-        gameMap = new ConcurrentHashMap<Long, ServerChessGame>();
+        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         player.setUserName("adrian");
         for(int i = 0; i < uids.length; i++) {
             uids[i] = i;
@@ -87,10 +87,10 @@ public class FinishedChessGameRemovalThreadTest {
      *
      */
     public static class GameRemover implements Callable<String> {
-        private ServerChessGame chessGame;
+        private AbstractServerChessGame chessGame;
         private CountDownLatch latch;
         
-        public GameRemover(CountDownLatch latch, ServerChessGame chessGame) {
+        public GameRemover(CountDownLatch latch, AbstractServerChessGame chessGame) {
             this.latch = latch;
             this.chessGame = chessGame;
             

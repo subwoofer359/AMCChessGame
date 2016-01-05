@@ -114,11 +114,11 @@ public class StompControllerIntegrationTest {
         ServerChessGameFactory scgfactory = (ServerChessGameFactory) wac
                         .getBean("serverChessGameFactory");
 
-        ServerChessGame scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, stephen);
+        AbstractServerChessGame scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, stephen);
         scg.addOpponent(nobby);
         scg = gameMap.put(gameUUID, scg);
 
-        ServerChessGame oneViewChessGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, oneViewChessGameUUID,
+        AbstractServerChessGame oneViewChessGame = scgfactory.getServerChessGame(GameType.LOCAL_GAME, oneViewChessGameUUID,
                         stephen);
         oneViewChessGame.addOpponent(nobby);
 
@@ -139,14 +139,14 @@ public class StompControllerIntegrationTest {
         subscribe();
 
         for (int i = 0; i < moves.length; i++) {
-            ServerChessGame scg = gameMap.get(gameUUID);
+            AbstractServerChessGame scg = gameMap.get(gameUUID);
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
             testInfoMessageSent();
             verifyMove(scg, moves[i]);
         }
     }
 
-    private void verifyMove(ServerChessGame scg, String moveString) {
+    private void verifyMove(AbstractServerChessGame scg, String moveString) {
         scg = gameMap.get(scg.getUid());
         Move actualMove = scg.getChessGame().getTheLastMove();
         Move expectedMove = new Move(moveString);
@@ -177,7 +177,7 @@ public class StompControllerIntegrationTest {
     public void OneViewChessGameMove() throws Exception {
         subscribe();
         for (int i = 0; i < moves.length; i++) {
-            ServerChessGame oneViewChessGame = gameMap.get(oneViewChessGameUUID);
+            AbstractServerChessGame oneViewChessGame = gameMap.get(oneViewChessGameUUID);
             oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID,
                             moves[i]);
             testInfoMessageSent();
@@ -190,21 +190,21 @@ public class StompControllerIntegrationTest {
     @Test
     public void OneViewInvalidMove() throws Exception {
         subscribe();
-        ServerChessGame oneViewChessGame = gameMap.get(gameUUID);
+        AbstractServerChessGame oneViewChessGame = gameMap.get(gameUUID);
         oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID,
                         "A2-A5");
         testErrorMessageSent();
         assertEmptyMove(oneViewChessGame);
     }
 
-    private void assertEmptyMove(ServerChessGame scg) {
+    private void assertEmptyMove(AbstractServerChessGame scg) {
         assertEquals(Move.EMPTY_MOVE, scg.getChessGame().getTheLastMove());
     }
 
     @Test
     public void TwoViewInvalidMove() throws Exception {
         subscribe();
-        ServerChessGame scg = gameMap.get(gameUUID);
+        AbstractServerChessGame scg = gameMap.get(gameUUID);
         twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, "A2-A5");
         testErrorMessageSent();
         assertEmptyMove(scg);
@@ -267,7 +267,7 @@ public class StompControllerIntegrationTest {
         dao.setObserverFactoryChain(chain);
         
         for(String move : moves) {         
-            ServerChessGame scg = gameMap.get(gameUUID);
+            AbstractServerChessGame scg = gameMap.get(gameUUID);
             dao.detachEntity(scg);
             move(scg.getChessGame().getCurrentPlayer(), 
                             gameUUID, MESSAGE_DESTINATION, move);
@@ -275,7 +275,7 @@ public class StompControllerIntegrationTest {
             testInfoMessageSent();
             saveGame(scg);
             testInfoMessageSent();
-            ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
+            AbstractServerChessGame savedGame = dao.getServerChessGame(gameUUID);
             dao.detachEntity(savedGame);
             
             if (savedGame == null) {
@@ -300,7 +300,7 @@ public class StompControllerIntegrationTest {
             saveGameTest(dao, move);
         }
         
-        ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
+        AbstractServerChessGame savedGame = dao.getServerChessGame(gameUUID);
         Move move = savedGame.getChessGame().getTheLastMove();
         System.out.println("MOVE:" + move);
         assertTrue(move.equals(new Move(moves[moves.length-1])));
@@ -309,13 +309,13 @@ public class StompControllerIntegrationTest {
     }
     
     private void saveGameTest(ServerChessGameDAO dao, String move) throws Exception {
-        ServerChessGame scg = gameMap.get(gameUUID);
+        AbstractServerChessGame scg = gameMap.get(gameUUID);
         dao.detachEntity(scg);
         move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
         testInfoMessageSent();
         saveGame(scg);
         testInfoMessageSent();
-        ServerChessGame savedGame = null;
+        AbstractServerChessGame savedGame = null;
         
         
         int check = 0;
@@ -341,25 +341,25 @@ public class StompControllerIntegrationTest {
         
         dao.setObserverFactoryChain(chain);
         
-        ServerChessGame scg = gameMap.get(gameUUID);
+        AbstractServerChessGame scg = gameMap.get(gameUUID);
         saveGame(scg);
         testInfoMessageSent();
         
         SaveGameStompController controller = (SaveGameStompController)wac.getBean(SaveGameStompController.class);
         controller.setServerChessDAO(dao);
-        doThrow(new OptimisticLockException()).doReturn(scg).when(dao).saveServerChessGame(any(ServerChessGame.class));
+        doThrow(new OptimisticLockException()).doReturn(scg).when(dao).saveServerChessGame(any(AbstractServerChessGame.class));
         
         saveGameTest(dao, moves[0]);
        
         
-        ServerChessGame savedGame = dao.getServerChessGame(gameUUID);
+        AbstractServerChessGame savedGame = dao.getServerChessGame(gameUUID);
         assertTrue(savedGame.getChessGame().getTheLastMove().equals(Move.EMPTY_MOVE));
         
         
     }
     
     
-    private void saveGame(ServerChessGame scg) {
+    private void saveGame(AbstractServerChessGame scg) {
         StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.SEND);
         headers.setSubscriptionId(SUBSCRIPTION_ID);
         headers.setDestination(SAVE_MESSAGE_DESTINATION + scg.getUid());

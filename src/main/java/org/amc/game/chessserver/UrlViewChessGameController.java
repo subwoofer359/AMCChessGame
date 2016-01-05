@@ -22,7 +22,7 @@ public class UrlViewChessGameController {
     
     private static final Logger logger = Logger.getLogger(UrlViewChessGameController.class);
     
-    private ConcurrentMap<Long, ServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     
     static final String CANT_VIEW_CHESSGAME = "Can't not view the ChessGame:(%d)";
 
@@ -31,7 +31,7 @@ public class UrlViewChessGameController {
         
         ModelAndView mav = new ModelAndView();
         
-        ServerChessGame scgGame = gameMap.get(gameUid);
+        AbstractServerChessGame scgGame = gameMap.get(gameUid);
         
         if(canServerChessGameBeViewed(player, scgGame)) {
             mav.getModel().put(ServerConstants.GAME_UUID, gameUid);
@@ -46,27 +46,27 @@ public class UrlViewChessGameController {
         
     }
     
-    private boolean canServerChessGameBeViewed(Player player, ServerChessGame scgGame) {
+    private boolean canServerChessGameBeViewed(Player player, AbstractServerChessGame scgGame) {
         return scgGame !=null && instanceOfTwoServerChessGame(scgGame)
                         && isInProgressState(scgGame)
                         && isPlayerPartOfThisGame(player, scgGame);
     }
     
-    private boolean instanceOfTwoServerChessGame(ServerChessGame scgGame) {
+    private boolean instanceOfTwoServerChessGame(AbstractServerChessGame scgGame) {
         return scgGame instanceof TwoViewServerChessGame;
     }
     
-    private boolean isPlayerPartOfThisGame(Player player, ServerChessGame scgGame) {
+    private boolean isPlayerPartOfThisGame(Player player, AbstractServerChessGame scgGame) {
         return ComparePlayers.comparePlayers(player, scgGame.getPlayer()) ||
                         ComparePlayers.comparePlayers(player, scgGame.getOpponent());
     }
     
-    private boolean isInProgressState(ServerChessGame scgGame) {
+    private boolean isInProgressState(AbstractServerChessGame scgGame) {
         return ServerGameStatus.IN_PROGRESS.equals(scgGame.getCurrentStatus());
     }
      
     @Resource(name = "gameMap")
-    public void setDatabaseGameMap(ConcurrentMap<Long, ServerChessGame> databaseGameMap) {
+    public void setDatabaseGameMap(ConcurrentMap<Long, AbstractServerChessGame> databaseGameMap) {
         this.gameMap = databaseGameMap;
     }
 }
