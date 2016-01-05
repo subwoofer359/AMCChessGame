@@ -8,12 +8,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import org.amc.dao.GameMapPlayerSearch;
+import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -22,6 +26,7 @@ import java.util.concurrent.Callable;
 import javax.annotation.Resource;
 
 @Controller
+@SessionAttributes("PLAYER")
 public class GameTableController {
 
     private Map<Long, ServerChessGame> gameMap;
@@ -40,7 +45,7 @@ public class GameTableController {
     @Async
     @ResponseBody
     @RequestMapping(value = "/getGameMap", method = RequestMethod.POST)
-    public Callable<String> getGames(){
+    public Callable<String> getGames(@ModelAttribute("PLAYER") final Player player){
         logger.debug("async getGameMap received");
         return new Callable<String>() {
             @Override
@@ -48,7 +53,7 @@ public class GameTableController {
             	if(gameMap == null) {
             		throw new NullPointerException("GameMap is Null");
             	} else {
-            		return GSON.toJson(gameMap);
+            		return GSON.toJson(new GameMapPlayerSearch().getGames(gameMap, player));
             	}
             }
             

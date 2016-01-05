@@ -47,7 +47,7 @@ public class GameTableControllerTest {
 	
 	@Test
 	public void getGamesTest() throws Exception {
-		Callable<String> callable = gtController.getGames();
+		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();
 		Gson gson = new Gson();
 		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
@@ -64,7 +64,7 @@ public class GameTableControllerTest {
 	@Test(expected=NullPointerException.class)
 	public void getGamesGameMapNullTest() throws Exception {
 		gtController.setGameMap(null);
-		Callable<String> callable = gtController.getGames();
+		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();
 		Gson gson = new Gson();
 		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
