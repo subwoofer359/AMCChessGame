@@ -179,7 +179,7 @@ $(document).ready(function(){
     stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
     
     var stompClient = chessgameportal_module.setupOneViewStompConnection(stompObject);
-    chessGameInteract(new chessgameportal_module.OneViewInteractActions( stompClient, "${GAME_UUID}" ));
+    chessGameInteract(new OneViewInteractActions( stompClient, "${GAME_UUID}" ));
     
     chessgameportal_module.addMessageDialogListener();
     
