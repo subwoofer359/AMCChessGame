@@ -2,6 +2,7 @@ package org.amc.dao;
 
 import org.amc.DAOException;
 import org.amc.game.chessserver.AbstractServerChessGame;
+import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
@@ -32,7 +33,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
     private ObserverFactoryChain chain;
     
     public ServerChessGameDAO() {
-        super(AbstractServerChessGame.class);
+        super(ServerChessGame.class);
     }
     
     public Set<Long> getGameUids() {
