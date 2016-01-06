@@ -1,5 +1,4 @@
 /*global $*/
-/*global console*/
 /*global chesspieces_module*/
 /*global document*/
 
@@ -141,7 +140,7 @@ var chessboard_module = (function () {
         board.append(createChessPiecesElements(playerColour, chessboardJSON));
         chessBoardSVG.html(chessBoardSVG.html());
     }
-    
+
     return {
         boardWidth : boardWidth,
         createBlankChessBoardSVG : createBlankChessBoardSVG,

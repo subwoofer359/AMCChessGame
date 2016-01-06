@@ -4,7 +4,6 @@
  */
 
 /*global interact*/
-/*global console*/
 
 /*
  * Creates an InteractActions object
@@ -43,7 +42,6 @@ InteractActions.prototype = {
 
     onDragEnter : function (event) {
         "use strict";
-        console.log("Drop dragEnter");
         var draggableElement = event.relatedTarget,
             dropzoneElement = event.target;
 
@@ -54,14 +52,12 @@ InteractActions.prototype = {
 
     onDropActivate : function (event) {
         "use strict";
-        console.log("Drop onDropActivate");
         // add active dropzone feedback
         event.target.classList.add(this.ACTION_CLASSES.DROP_ACTIVE);
     },
 
     onDragLeave : function (event) {
         "use strict";
-        console.log("Drop onDragLeave");
         event.target.classList.remove(this.ACTION_CLASSES.DROP_TARGET);
         event.relatedTarget.classList.remove(this.ACTION_CLASSES.CAN_DROP);
         if (this.startOfMove) {
@@ -72,7 +68,6 @@ InteractActions.prototype = {
 
     onDrop : function (event) {
         "use strict";
-        console.log("Drop onDrop");
         this.destId = event.target.id;
         this.startOfMove = true;
         var move = this.sourceId + "-" + this.destId;
@@ -81,7 +76,6 @@ InteractActions.prototype = {
 
     onDropDeactivate : function (event) {
         "use strict";
-        console.log("Drop deactivate");
         // remove active dropzone feedback
         event.target.classList.remove(this.ACTION_CLASSES.DROP_ACTIVE);
         event.target.classList.remove(this.ACTION_CLASSES.DROP_TARGET);
@@ -109,7 +103,6 @@ OneViewInteractActions.constructor = InteractActions;
  */
 OneViewInteractActions.prototype.onDrop = function (event) {
     "use strict";
-    console.log("Drop onDrop");
     this.destId = event.target.id;
     this.startOfMove = true;
     var move = this.sourceId + "-" + this.destId;

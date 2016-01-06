@@ -3,7 +3,6 @@
 /*global WebSocket*/
 /*global updatePlayer*/
 /*global chessboard_module*/
-/*global console*/
 /*global Stomp*/
 /*global SockJS*/
 /*global headers*/
@@ -11,7 +10,6 @@
 
 var chessgameportal_module = (function () {
     "use strict";
-    
     /* makes Message disappear when chessboard is clicked*/
     function addMessageDialogListener() {
         $("#chessboard-surround").click(function () {
@@ -94,7 +92,6 @@ var chessgameportal_module = (function () {
                 if (/[A-Za-z]+/.test(message.body)) {
                     this.showFadingAlertMessage(message.body);
                 }
-                console.log(message.body);
             }
         },
 
@@ -130,8 +127,6 @@ var chessgameportal_module = (function () {
             } else if (message.headers.TYPE === "INFO") {
                 if (/has quit the game$/.test(message.body)) {
                     this.showAlertMessage(message.body);
-                } else {
-                    console.log("INFO:" + message.body);
                 }
             } else if (message.headers.TYPE === "UPDATE") {
                 this.updateChessBoard(message.body);
@@ -206,7 +201,6 @@ var chessgameportal_module = (function () {
             stompClient.send(APP_GET + stompCallBack.gameUID, PRIORITY, "Get ChessBoard");
         }, function onStompError() {
             stompCallBack.showAlertMessage.call(stompCallBack, "Couldn't connect to the STOMP server");
-            console.log("Stomp connection failure");
         });
         return stompClient;
     }
@@ -236,7 +230,7 @@ var chessgameportal_module = (function () {
 
         return stompClient;
     }
-    
+
     return {
         openStompConnection : openStompConnection,
         StompActions : StompActions,

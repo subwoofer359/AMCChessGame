@@ -1,5 +1,4 @@
 /*global $*/
-/*global console*/
 /*global document*/
 /*global window*/
 

@@ -1,6 +1,5 @@
 /*global document*/
 /*global $*/
-/*global console*/
 /*global alert*/
 /*global showPanelMessage*/
 
@@ -30,10 +29,9 @@ function isUsernameAvailable() {
     $.post('./isUserNameAvailable', formData, function (data) {
         var userNameBox = $("#userName");
         if (data) {
-            userNameBox.css("background-color","#28794a");
+            userNameBox.css("background-color", "#28794a");
         } else {
-            userNameBox.css("background-color","#dc4040");
-            
+            userNameBox.css("background-color", "#dc4040");
         }
     });
 }
@@ -49,18 +47,10 @@ function isUsernameAvailable() {
  */
 function checkPassword(inputElementOne, inputElementTwo) {
     "use strict";
-    console.log('Check Password function called');
     var password1 = document.getElementById(inputElementOne),
         password2 = document.getElementById(inputElementTwo);
 
-    if (password1.value === password2.value) {
-        console.log('Passwords are the same');
-        return true;
-    } else {
-        console.log('Passwords aren\'t the same');
-        alert('Passwords aren\'t the same');
-        return false;
-    }
+    return password1.value === password2.value;
 }
 
 

@@ -142,8 +142,8 @@
     <tags:BottomMenu>
     	<tags:NavMenuButton id="userToggle"><span class="glyphicon glyphicon-user"></span> User List</tags:NavMenuButton>
         <tags:NavMenuButton aclass="create-game"><span class="glyphicon glyphicon-plus"></span> Create Game</tags:NavMenuButton>   
-        <tags:FormMenuButton aclass="join-button"><span class="glyphicon glyphicon-play"></span> Join Button</tags:FormMenuButton>
-        <tags:NavMenuButton url="./userSearchPage"><span class="glyphicon glyphicon-search"></span> Search</tags:NavMenuButton>
+        <tags:FormMenuButton aclass="join-button"><span class="glyphicon glyphicon-play"></span> Join Game</tags:FormMenuButton>
+        <tags:NavMenuButton url="./userSearchPage"><span class="glyphicon glyphicon-search"></span> User Search</tags:NavMenuButton>
        	<tags:NavMenuButton url="./logout"><span class="glyphicon glyphicon-log-out"></span> Log out</tags:NavMenuButton> 
     </tags:BottomMenu>
 
@@ -153,8 +153,8 @@
         <tags:SideMenu>
             <li><button class="create-game" type="button">Create Game</button></li>
             <li><button class="join-button" type="submit">Join Game</button></li>
-            <li><a class="description" href="#">Delete Game</a></li>
-            <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">Search</a></li>
+            <%-- <li><a class="description" href="#">Delete Game</a></li> --%>
+            <li><a href="${pageContext.request.contextPath}/app/chessgame/userSearchPage">User Search</a></li>
             <li><a href="${pageContext.request.contextPath}/app/chessgame/logout">Log out</a></li>
         </tags:SideMenu>
         <div class="player-name col-sm-10 col-xs-12"><span class="title">Player:</span><span class="name"><c:out value="${PLAYER.name}"/></span></div>
