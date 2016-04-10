@@ -1,6 +1,7 @@
 package org.amc.dao;
 
 import org.amc.DAOException;
+import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
@@ -9,13 +10,17 @@ import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  * A DAO for ServerChessGames persisted to a database
@@ -23,6 +28,10 @@ import javax.persistence.Query;
  * @author Adrian Mclaughlin
  *
  */
+
+@NamedQueries({
+    @NamedQuery(name="getChessGamesByPlayer", query="SELECT x FROM ServerChessGame x where x.player or x.opponent = ?1"),
+})
 public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
@@ -103,6 +112,20 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
             em.flush();
             em.getTransaction().commit();
             return serverChessGame;
+        } catch (PersistenceException pe) {
+            logger.error(pe);
+            em.close();
+            throw new DAOException(pe);
+        }
+    }
+    
+    public List<AbstractServerChessGame> getGamesForPlayer(Player player) throws DAOException {
+        EntityManager em = getEntityManager();
+        TypedQuery<AbstractServerChessGame> query = em.createNamedQuery("getChessGamesByPlayer", 
+                        AbstractServerChessGame.class);
+        query.setParameter(1, player);
+        try {
+            return query.getResultList();
         } catch (PersistenceException pe) {
             logger.error(pe);
             em.close();
