@@ -22,7 +22,12 @@ import javax.persistence.Table;
 
 @NamedQueries({
     @NamedQuery(name="serverChessGameByUid", query="SELECT x FROM ServerChessGame x where x.uid = ?1"),
+    @NamedQuery(name="getChessGamesByPlayer", query="SELECT x FROM ServerChessGame x WHERE x.chessGame.whitePlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1) "
+                    + "OR x.chessGame.blackPlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1)")
 })
+
+    
+
 public abstract class ServerChessGame extends AbstractServerChessGame {
     
     private static final long serialVersionUID = 2147129152958398504L;

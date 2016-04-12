@@ -29,9 +29,6 @@ import javax.persistence.TypedQuery;
  *
  */
 
-@NamedQueries({
-    @NamedQuery(name="getChessGamesByPlayer", query="SELECT x FROM ServerChessGame x where x.player or x.opponent = ?1"),
-})
 public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
@@ -123,7 +120,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         EntityManager em = getEntityManager();
         TypedQuery<AbstractServerChessGame> query = em.createNamedQuery("getChessGamesByPlayer", 
                         AbstractServerChessGame.class);
-        query.setParameter(1, player);
+        query.setParameter(1, player.getUserName());
         try {
             return query.getResultList();
         } catch (PersistenceException pe) {
