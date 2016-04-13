@@ -162,9 +162,8 @@ public class GameActionsStompControllerTest {
         
         when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
         
-        
-        doThrow(DAOException.class).doNothing().when(serverChessGameDAO).updateEntity(any(AbstractServerChessGame.class));
-        
+        when(serverChessGameDAO.updateEntity(any(AbstractServerChessGame.class)))
+            .thenThrow(new DAOException()).thenReturn(scg);
         controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
         
         

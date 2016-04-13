@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.Resource;
 
@@ -30,7 +30,7 @@ public class ServerJoinChessGameController {
 
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
 
-    private Map<Long, AbstractServerChessGame> gameMap;
+    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     
     private ServerChessGameDAO serverChessGameDAO;
 
@@ -113,7 +113,8 @@ public class ServerJoinChessGameController {
     
     private void updateDatabase(AbstractServerChessGame chessGame) {
         try {
-            serverChessGameDAO.updateEntity(chessGame);
+            gameMap.replace(chessGame.getUid(),
+                            serverChessGameDAO.updateEntity(chessGame));
         } catch(DAOException de) {
             logger.error(de);
         }
@@ -160,7 +161,7 @@ public class ServerJoinChessGameController {
      *            Map<Log,AbstractServerChessGame>
      */
     @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
+    public void setGameMap(ConcurrentMap<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
     

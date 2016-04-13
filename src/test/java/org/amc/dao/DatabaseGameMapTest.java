@@ -218,7 +218,7 @@ public class DatabaseGameMapTest {
                         any(AbstractServerChessGame.class));
         gameMap.remove(gameUid);
         verify(hashMap,times(1)).remove(eq(gameUid));
-        verify(this.chessGameDAO, times(1)).deleteEntity(eq(game));
+        verify(this.chessGameDAO, times(2)).deleteEntity(eq(game));
     }
 
     @Test

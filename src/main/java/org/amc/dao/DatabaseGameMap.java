@@ -115,7 +115,16 @@ public class DatabaseGameMap implements ConcurrentMap<Long, AbstractServerChessG
                 gameMap.remove(key);
                 serverChessGameDAO.deleteEntity(gameToDelete);
             } catch (DAOException de) {
+                logger.error("GameMapRemove: Game in Database newer");
                 logger.error(de);
+                try {
+                    AbstractServerChessGame game = serverChessGameDAO.getServerChessGame(gameToDelete.getUid());
+                    serverChessGameDAO.deleteEntity(game);
+                    logger.info(String.format("ServerChessGame(%d) has been removed", gameToDelete.getUid()));
+                } catch (DAOException de2) {
+                    logger.error(de2);
+                }
+                    
             }
         }
         return gameToDelete;

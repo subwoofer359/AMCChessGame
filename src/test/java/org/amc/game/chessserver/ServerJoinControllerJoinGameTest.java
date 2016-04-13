@@ -1,7 +1,9 @@
 package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
+import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
@@ -28,6 +30,7 @@ public class ServerJoinControllerJoinGameTest {
     private Player whitePlayer;
     private Player blackPlayer;
     private long gameUUID = 1234L;
+    private AbstractServerChessGame chessGame;
     
     @Mock
     private ServerChessGameDAO serverChessGameDAO;
@@ -42,7 +45,7 @@ public class ServerJoinControllerJoinGameTest {
         controller.setServerChessGameDAO(serverChessGameDAO);
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
-        AbstractServerChessGame chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);
+        chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);
         chessGame.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
@@ -58,7 +61,8 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void test() {
+    public void test() throws DAOException {
+        when(serverChessGameDAO.updateEntity(eq(chessGame))).thenReturn(chessGame);
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         AbstractServerChessGame chessGame = gameMap.get(gameUUID);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
@@ -78,7 +82,9 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void testPlayerReJoinsGameAlreadyInProgress() {
+    public void testPlayerReJoinsGameAlreadyInProgress() throws DAOException {
+        when(serverChessGameDAO.updateEntity(eq(chessGame))).thenReturn(chessGame);
+        
         AbstractServerChessGame chessGame = gameMap.get(gameUUID);
         chessGame.addOpponent(blackPlayer);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());

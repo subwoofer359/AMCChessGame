@@ -224,12 +224,13 @@ public class DAO<T> {
      * @throws DAOException
      *             if a problem occurs in the underlying database
      */
-    public void updateEntity(T entity) throws DAOException {
+    public T updateEntity(T entity) throws DAOException {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(entity);
+            T mergedEntity = em.merge(entity);
             em.getTransaction().commit();
+            return mergedEntity;
         } catch (OptimisticLockException ole) {
             throw ole;
         } catch (PersistenceException pe) {
