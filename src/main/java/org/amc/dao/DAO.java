@@ -233,7 +233,7 @@ public class DAO<T> {
         } catch (OptimisticLockException ole) {
             throw ole;
         } catch (PersistenceException pe) {
-            em.close();
+            //em.close();
             LOG.error("DAO<"
                             + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to merge entity into the persistence context");

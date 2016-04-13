@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -13,6 +14,8 @@ import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,12 +28,18 @@ public class ServerJoinControllerJoinGameTest {
     private Player whitePlayer;
     private Player blackPlayer;
     private long gameUUID = 1234L;
+    
+    @Mock
+    private ServerChessGameDAO serverChessGameDAO;
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        
         gameMap = new ConcurrentHashMap<>();
         controller = new ServerJoinChessGameController();
         controller.setGameMap(gameMap);
+        controller.setServerChessGameDAO(serverChessGameDAO);
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
         AbstractServerChessGame chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);

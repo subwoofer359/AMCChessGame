@@ -1,11 +1,11 @@
 package org.amc.game.chessserver;
 
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
-import static org.junit.Assert.assertEquals;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -19,6 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
@@ -52,6 +54,9 @@ public class GameActionsStompControllerTest {
     private ArgumentCaptor<String> destinationArgument;
 
     private ArgumentCaptor<String> payoadArgument;
+    
+    @Mock
+    private ServerChessGameDAO serverChessGameDAO;
 
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
@@ -68,6 +73,7 @@ public class GameActionsStompControllerTest {
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         this.controller = new GameActionsStompController();
         scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
@@ -82,6 +88,7 @@ public class GameActionsStompControllerTest {
         gameMap.put(gameUUID, scg);
         
         controller.setGameMap(gameMap);
+        controller.setServerChessDAO(serverChessGameDAO);
         sessionAttributes = new HashMap<String, Object>();
 
         this.controller.setTemplate(template);
@@ -112,6 +119,58 @@ public class GameActionsStompControllerTest {
                         payoadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());
+    }
+    
+    @Test
+    public void testQuitChessGameGetServerChessGameDAOExceptionNoRecovery() throws DAOException {
+        scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        scg.attachObserver(messager);
+        doThrow(DAOException.class).when(serverChessGameDAO).updateEntity(any(AbstractServerChessGame.class));
+        for(int i = 0; i < GameActionsStompController.NO_OF_RETRIES; i++ ) {
+            doThrow(DAOException.class).when(serverChessGameDAO).getServerChessGame((anyLong()));
+        }
+        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        
+        verify(serverChessGameDAO, times(GameActionsStompController.NO_OF_RETRIES)).getServerChessGame(anyLong());
+        verify(serverChessGameDAO, times(1)).updateEntity(any(AbstractServerChessGame.class));
+        
+    }
+    
+    @Test
+    public void testQuitChessGameUpdateEntityDAOExceptionNoRecovery() throws DAOException {
+        scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        scg.attachObserver(messager);
+        
+        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
+        
+        doThrow(DAOException.class).when(serverChessGameDAO).updateEntity(any(AbstractServerChessGame.class));
+        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        
+        
+        final int noOfUpdateCalls = 1 + GameActionsStompController.NO_OF_RETRIES;
+        verify(serverChessGameDAO, times(noOfUpdateCalls)).updateEntity(any(AbstractServerChessGame.class));
+        
+    }
+    
+    @Test
+    public void testQuitChessGameUpdateEntityDAOException() throws DAOException {
+        scg.addOpponent(blackPlayer);
+        sessionAttributes.put("PLAYER", whitePlayer);
+        scg.attachObserver(messager);
+        
+        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
+        
+        
+        doThrow(DAOException.class).doNothing().when(serverChessGameDAO).updateEntity(any(AbstractServerChessGame.class));
+        
+        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
+        
+        
+        
+        verify(serverChessGameDAO, times(2)).updateEntity(any(AbstractServerChessGame.class));
+        
     }
     
     @Test

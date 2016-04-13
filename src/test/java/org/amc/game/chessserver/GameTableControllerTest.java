@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.amc.dao.DatabaseGameMap;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGameFixture;
+import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.ServerChessGameSerilaiserTest.ServerChessGameInfo;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
@@ -23,30 +26,32 @@ import com.google.gson.reflect.TypeToken;
 public class GameTableControllerTest {
 
 	private GameTableController gtController;
-	private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
 	private AbstractServerChessGame scgGame;
 	private ChessGameFixture cgFixture;
+	private ServerChessGameDAO serverChessGameDAO;
+	
 	private static final long GAME_UID = 1234L;
+	
 	
 	@Before
 	public void setUp() throws Exception {
 		gtController = new GameTableController();
-		gameMap = new DatabaseGameMap();
-		ServerChessGameDAO serverChessGameDAO = mock(ServerChessGameDAO.class);
-		((DatabaseGameMap)gameMap).setServerChessGameDAO(serverChessGameDAO);
-		
-		gtController.setGameMap(gameMap);
-		
+		serverChessGameDAO = mock(ServerChessGameDAO.class);
 		ServerChessGameFactory scgFactory = new ServerChessGameFactory();
 		ObserverFactoryChain chain = mock(ObserverFactoryChain.class);
 		scgFactory.setObserverFactoryChain(chain);
 		cgFixture = new ChessGameFixture();
 		scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, GAME_UID, cgFixture.getWhitePlayer());
-		gameMap.put(GAME_UID, scgGame);
+		gtController.setServerChessGameDAO(serverChessGameDAO);
 	}
 	
 	@Test
 	public void getGamesTest() throws Exception {
+	    Map<Long, AbstractServerChessGame> games = new HashMap<Long, AbstractServerChessGame>();
+	    games.put(GAME_UID, scgGame);
+	    when(serverChessGameDAO.getGamesForPlayer(any(Player.class)))
+	    .thenReturn((Map)games);
+	    
 		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();
 		Gson gson = new Gson();
@@ -61,14 +66,13 @@ public class GameTableControllerTest {
 		assertNull(serverCGInfo.getOpponent());
 	}
 
-	@Test(expected=NullPointerException.class)
-	public void getGamesGameMapNullTest() throws Exception {
-		gtController.setGameMap(null);
+	public void getNoGames() throws Exception {
 		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();
 		Gson gson = new Gson();
 		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
 		}.getType();
-		gson.fromJson(result, mapType);
+		Map<?,?> aMap = gson.fromJson(result, mapType);
+		assertTrue(aMap.isEmpty());
 	}
 }

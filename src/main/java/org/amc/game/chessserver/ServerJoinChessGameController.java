@@ -2,6 +2,8 @@ package org.amc.game.chessserver;
 
 import static org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
@@ -29,6 +31,8 @@ public class ServerJoinChessGameController {
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
 
     private Map<Long, AbstractServerChessGame> gameMap;
+    
+    private ServerChessGameDAO serverChessGameDAO;
 
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
@@ -79,6 +83,7 @@ public class ServerJoinChessGameController {
                 addPlayerToGame(chessGame, player);
             }
             setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
+            updateDatabase(chessGame);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
@@ -103,6 +108,14 @@ public class ServerJoinChessGameController {
             mav.setViewName(ONE_VIEW_CHESS_PAGE);
         } else {
             mav.setViewName(TWO_VIEW_CHESS_PAGE);
+        }
+    }
+    
+    private void updateDatabase(AbstractServerChessGame chessGame) {
+        try {
+            serverChessGameDAO.updateEntity(chessGame);
+        } catch(DAOException de) {
+            logger.error(de);
         }
     }
 
@@ -149,6 +162,11 @@ public class ServerJoinChessGameController {
     @Resource(name = "gameMap")
     public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
+    }
+    
+    @Resource(name = "myServerChessGameDAO")
+    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+        this.serverChessGameDAO =  serverChessGameDAO;
     }
 
     /**

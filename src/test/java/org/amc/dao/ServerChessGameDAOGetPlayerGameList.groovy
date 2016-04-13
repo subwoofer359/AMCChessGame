@@ -7,6 +7,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.OneViewServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
@@ -61,6 +62,21 @@ class ServerChessGameDAOGetPlayerGameList {
         
         s.addOpponent(player);
         scgDbEntity.addServerChessGameToDataBase(s);
+        def games = dao.getGamesForPlayer(player);
+        assert games?.isEmpty() == false;
+        assert games.size() == NO_OF_ENTRIES + 2;
+    }
+    
+    @Test
+    void testGetServerChessGamesGivenVirtualPlayer() {
+        AbstractServerChessGame s = new OneViewServerChessGame(12324L, player);
+        
+        s.setChessGameFactory(new StandardChessGameFactory());
+        Player virtualPlayer = new HumanPlayer("robot");
+        
+        s.addOpponent(virtualPlayer);
+        scgDbEntity.addServerChessGameToDataBase(s);
+        
         def games = dao.getGamesForPlayer(player);
         assert games?.isEmpty() == false;
         assert games.size() == NO_OF_ENTRIES + 2;

@@ -67,5 +67,4 @@ public class NewGameRequestController {
     public void setUserDAO(DAO<User> userDAO) {
         this.userDAO = userDAO;
     }
-    
 }

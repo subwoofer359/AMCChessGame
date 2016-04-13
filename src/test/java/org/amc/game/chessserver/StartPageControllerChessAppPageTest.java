@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -10,29 +11,30 @@ import org.amc.game.chess.RealChessGamePlayer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 public class StartPageControllerChessAppPageTest {
     private MockHttpSession session;
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     private StartPageController controller;
     private ChessGamePlayer whitePlayer;
     private ServerChessGameFactory scgFactory;
+    
+    @Mock
+    private ServerChessGameDAO sCGDAO;
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         scgFactory = new ServerChessGameFactory();
         session = new MockHttpSession();
-        gameMap = new ConcurrentHashMap<>();
         controller = new StartPageController(); 
+        controller.setServerChessGameDAO(sCGDAO);
         
-        controller.setGameMap(gameMap);
         controller.setServerChessGameFactory(scgFactory);
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
     }
@@ -44,7 +46,7 @@ public class StartPageControllerChessAppPageTest {
     @Test
     public void testPlayerAvailable() {
         session.setAttribute(ServerConstants.PLAYER.toString(), whitePlayer);
-        ModelAndView mav = controller.chessGameApplication(session);
+        ModelAndView mav = controller.chessGameApplication(session, whitePlayer);
         assertNotNull(session.getAttribute(ServerConstants.PLAYER.toString()));
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAMEMAP.toString());
         ModelAndViewAssert.assertViewName(mav,

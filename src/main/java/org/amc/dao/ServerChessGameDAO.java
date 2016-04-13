@@ -2,6 +2,7 @@ package org.amc.dao;
 
 import org.amc.DAOException;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
@@ -9,14 +10,14 @@ import org.apache.log4j.Logger;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -85,6 +86,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         try {
             scg = (AbstractServerChessGame)query.getSingleResult();
             addObservers(scg);
+            scg.setChessGameFactory(new StandardChessGameFactory());
             return scg;
         } catch(NoResultException nre) {
             logger.error(nre);
@@ -116,13 +118,27 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         }
     }
     
-    public List<AbstractServerChessGame> getGamesForPlayer(Player player) throws DAOException {
+    /**
+     * Returns Games for display purposes only. 
+     * Certain fields aren't initialised
+     * If a fully initialised is required use {@link #getServerChessGame(long)}
+     * 
+     * @param player
+     * @return Map Of partially initialised ServerChessGames
+     * @throws DAOException if database operation raises an exception 
+     */
+    public Map<Long, ServerChessGame> getGamesForPlayer(Player player) throws DAOException {
         EntityManager em = getEntityManager();
-        TypedQuery<AbstractServerChessGame> query = em.createNamedQuery("getChessGamesByPlayer", 
-                        AbstractServerChessGame.class);
+        TypedQuery<ServerChessGame> query = em.createNamedQuery("getChessGamesByPlayer", 
+                        ServerChessGame.class);
         query.setParameter(1, player.getUserName());
         try {
-            return query.getResultList();
+            Map<Long, ServerChessGame> games = new HashMap<Long, ServerChessGame>();
+            List<ServerChessGame> results = query.getResultList();
+            for(ServerChessGame game : results) {
+                games.put(game.getUid(), game);
+            }
+            return  games;
         } catch (PersistenceException pe) {
             logger.error(pe);
             em.close();

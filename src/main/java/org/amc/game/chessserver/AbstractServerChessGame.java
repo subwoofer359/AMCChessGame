@@ -193,6 +193,10 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         return chessGame;
     }
 
+    public int getVersion() {
+        return version;
+    }
+    
     /**
      * @return Player opposing player
      */

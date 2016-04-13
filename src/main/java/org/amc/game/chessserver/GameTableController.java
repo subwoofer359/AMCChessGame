@@ -7,8 +7,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-
-import org.amc.dao.GameMapPlayerSearch;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.lang.reflect.Type;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.annotation.Resource;
@@ -29,7 +27,7 @@ import javax.annotation.Resource;
 @SessionAttributes("PLAYER")
 public class GameTableController {
 
-    private Map<Long, AbstractServerChessGame> gameMap;
+    private ServerChessGameDAO dao;
     
     private static final Gson GSON;
     static {
@@ -50,20 +48,16 @@ public class GameTableController {
         return new Callable<String>() {
             @Override
             public String call() throws Exception {
-            	if(gameMap == null) {
-            		throw new NullPointerException("GameMap is Null");
-            	} else {
-            		return GSON.toJson(new GameMapPlayerSearch().getGames(gameMap, player));
-            	}
+            	return GSON.toJson(dao.getGamesForPlayer(player));
             }
             
         };
         
     }
     
-    @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
-        this.gameMap = gameMap;
+    @Resource(name = "myServerChessGameDAO")
+    public void setServerChessGameDAO(ServerChessGameDAO scgDAO) {
+        this.dao = scgDAO;
     }
     
     static class ServerChessGameSerialiser implements JsonSerializer<AbstractServerChessGame> {

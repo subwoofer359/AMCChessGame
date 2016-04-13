@@ -51,7 +51,7 @@
 	<bean id="gameMoveStompController" class="org.amc.game.chessserver.GameMoveStompController"/>
 	
 	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
-		<property name="gameMap" ref="gameMap"></property>
+		<property name="serverChessGameDAO" ref="myServerChessGameDAO"></property>
 	</bean>
 	
 	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">

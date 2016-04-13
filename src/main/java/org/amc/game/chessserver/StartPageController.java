@@ -1,6 +1,8 @@
 package org.amc.game.chessserver;
 
 import org.apache.log4j.Logger;
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -21,7 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -39,16 +40,21 @@ public class StartPageController {
     static final String TWOVIEW_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
     static final String ONE_VIEW_CHESS_PAGE = "OneViewChessGamePortal";
     static final String PLAYERS_NAME_FIELD = "playersName";
-    
-    private Map<Long, AbstractServerChessGame> gameMap;
+ 
     private static final Logger logger = Logger.getLogger(StartPageController.class);
     private ServerChessGameFactory scgFactory;
     
+    private ServerChessGameDAO serverChessGameDAO;
+    
 
     @RequestMapping("/chessapplication")
-    public ModelAndView chessGameApplication(HttpSession session) {
+    public ModelAndView chessGameApplication(HttpSession session, @ModelAttribute("PLAYER") Player player) {
         ModelAndView mav = new ModelAndView();
-        mav.getModel().put(ServerConstants.GAMEMAP, gameMap);
+        try {
+            mav.getModel().put(ServerConstants.GAMEMAP, serverChessGameDAO.getGamesForPlayer(player));
+        } catch(DAOException de) {
+            logger.error(de);
+        }
         mav.setViewName(CHESS_APPLICATION_PAGE);
         return mav;
     }
@@ -70,8 +76,13 @@ public class StartPageController {
     public String createGameNetwork(Model model, Player player) {
         long uuid = getNewGameUID();
         AbstractServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
-        gameMap.put(uuid, serverGame);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
+        
+        try {
+            serverChessGameDAO.saveServerChessGame(serverGame);
+        } catch(DAOException de) {
+            logger.error(de);
+        }
         
         return CHESS_APPLICATION_PAGE;
     }
@@ -102,7 +113,11 @@ public class StartPageController {
         Player opponent = new HumanPlayer(playersName);
         opponent.setUserName(generateUserName(playersName));
         serverGame.addOpponent(opponent);
-        gameMap.put(uuid, serverGame);
+        try {
+            serverChessGameDAO.saveServerChessGame(serverGame);
+        } catch(DAOException de) {
+            logger.error(de);
+        }
         return serverGame;
     }
     
@@ -130,9 +145,9 @@ public class StartPageController {
         return TWOVIEW_REDIRECT_PAGE;
     }
 
-    @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
-        this.gameMap = gameMap;
+    @Resource(name = "myServerChessGameDAO")
+    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+        this.serverChessGameDAO = serverChessGameDAO;
     }
     
     @Autowired
