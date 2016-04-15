@@ -1,5 +1,7 @@
 package org.amc.game.chessserver.observers;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.GameSubject;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -11,7 +13,6 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,22 +28,22 @@ import javax.annotation.Resource;
 public class GameFinishedListener extends GameObserver {
 
     /**
-     * Time in seconds to wait before deleting the chessGame from the gameMap.
+     * Time in seconds to wait before deleting the chessGame from the Database.
      */
     private int delayTime = 120;
 
     private TaskScheduler scheduler;
 
-    private Map<Long, AbstractServerChessGame> gameMap;
+    private ServerChessGameDAO serverChessGameDAO;
 
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
     public GameFinishedListener() {
     }
 
-    @Resource(name = "gameMap")
-    public void setGameMap(Map<Long, AbstractServerChessGame> gameMap) {
-        this.gameMap = gameMap;
+    @Resource(name = "myServerChessGameDAO")
+    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+        this.serverChessGameDAO = serverChessGameDAO;
     }
 
     @Resource(name = "myScheduler")
@@ -87,7 +88,7 @@ public class GameFinishedListener extends GameObserver {
         serverChessGame.removeObserver(this);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, delayTime);
-        scheduler.schedule(new DeleteChessGameJob(gameMap, serverChessGame), c.getTime());
+        scheduler.schedule(new DeleteChessGameJob(serverChessGameDAO, serverChessGame), c.getTime());
     }
 
     public int getDelayTime() {
@@ -100,22 +101,26 @@ public class GameFinishedListener extends GameObserver {
 
     private static class DeleteChessGameJob implements Runnable {
 
-        private Map<Long, AbstractServerChessGame> gameMap;
+        private ServerChessGameDAO serverChessGameDAO;
         private AbstractServerChessGame chessGame;
 
-        public DeleteChessGameJob(Map<Long, AbstractServerChessGame> gameMap, AbstractServerChessGame chessGame) {
-            this.gameMap = gameMap;
+        public DeleteChessGameJob(ServerChessGameDAO serverChessGameDAO, AbstractServerChessGame chessGame) {
+            this.serverChessGameDAO = serverChessGameDAO;
             this.chessGame = chessGame;
         }
 
         @Override
         public void run() {
             if(chessGame != null) {
-                synchronized (chessGame) {
-                    gameMap.remove(chessGame.getUid());
-                    chessGame.destroy();
+                try {
+                    synchronized (chessGame) {
+                        serverChessGameDAO.deleteEntity(chessGame);
+                        chessGame.destroy();
+                    }
+                } catch(DAOException de) {
+                    logger.error(de);
                 }
-                logger.debug(String.format("Game(%d) has been removed from gameMap", chessGame.getUid()));
+                logger.debug(String.format("Game(%d) has been removed from database", chessGame.getUid()));
             } else 
             {
                 logger.debug("GameFinishedLisnter:ServerChessGame is null, ignoring");

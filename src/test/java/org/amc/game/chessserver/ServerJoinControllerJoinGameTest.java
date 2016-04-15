@@ -21,11 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 public class ServerJoinControllerJoinGameTest {
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     private ServerJoinChessGameController controller;
     private Player whitePlayer;
     private Player blackPlayer;
@@ -38,10 +34,10 @@ public class ServerJoinControllerJoinGameTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        
-        gameMap = new ConcurrentHashMap<>();
+
         controller = new ServerJoinChessGameController();
-        controller.setGameMap(gameMap);
+        controller.setServerChessGameDAO(serverChessGameDAO);
+        
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
         chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);
@@ -52,7 +48,7 @@ public class ServerJoinControllerJoinGameTest {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
         });
-        gameMap.put(gameUUID, chessGame);
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(chessGame);
     }
 
     @After
@@ -63,7 +59,7 @@ public class ServerJoinControllerJoinGameTest {
     public void test() throws DAOException {
         when(serverChessGameDAO.updateEntity(eq(chessGame))).thenReturn(chessGame);
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
         assertTrue(ComparePlayers.comparePlayers(chessGame.getPlayer(), whitePlayer));
         assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
@@ -71,9 +67,9 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void testPlayerJoinsOwnGame() {
+    public void testPlayerJoinsOwnGame() throws DAOException {
         ModelAndView mav = controller.joinGame(whitePlayer, gameUUID);
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         assertEquals(AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER, chessGame.getCurrentStatus());
         assertNull(chessGame.getOpponent());
         assertModelAndViewAttributesOnFail(mav,
@@ -84,7 +80,7 @@ public class ServerJoinControllerJoinGameTest {
     public void testPlayerReJoinsGameAlreadyInProgress() throws DAOException {
         when(serverChessGameDAO.updateEntity(eq(chessGame))).thenReturn(chessGame);
         
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(blackPlayer);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
         assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
@@ -95,8 +91,8 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void testPlayerJoinsGameAlreadyInProgress() {
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+    public void testPlayerJoinsGameAlreadyInProgress() throws DAOException {
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(new HumanPlayer("Test"));
         assertNotEquals(AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER,
                         chessGame.getCurrentStatus());
@@ -108,8 +104,8 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void testPlayerJoinsGameWhichHasFinished() {
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+    public void testPlayerJoinsGameWhichHasFinished() throws DAOException {
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(new HumanPlayer("Test"));
         chessGame.setCurrentStatus(ServerGameStatus.FINISHED);
         assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, chessGame.getCurrentStatus());
@@ -119,8 +115,8 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void testPlayerJoinsCurrentGameWhichHasFinished() {
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+    public void testPlayerJoinsCurrentGameWhichHasFinished() throws DAOException {
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(blackPlayer);
         chessGame.setCurrentStatus(ServerGameStatus.FINISHED);
         assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, chessGame.getCurrentStatus());
@@ -130,8 +126,8 @@ public class ServerJoinControllerJoinGameTest {
     }
 
     @Test
-    public void testPlayerJoinsOwnGameAlreadyInProgress() {
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+    public void testPlayerJoinsOwnGameAlreadyInProgress() throws DAOException {
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(blackPlayer);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
         assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));

@@ -1,10 +1,9 @@
 package org.amc.game.chessserver;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
-import org.amc.dao.DatabaseGameMap;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
@@ -20,16 +19,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class UrlViewChessGameTest {
     private UrlViewChessGameController urlController;
     private static final long GAME_UID = 4321L;
-    private ChessGameFixture cgFixture;
-    
-    @Mock
-    private DatabaseGameMap gameMap; 
+    private ChessGameFixture cgFixture; 
     
     @Mock
     private TwoViewServerChessGame scgGame;
     
     @Mock
     private OneViewServerChessGame obscgGame;
+    
+    @Mock
+    private ServerChessGameDAO serverChessGameDAO;
 
     @Before
     public void setUp() throws Exception {
@@ -37,7 +36,7 @@ public class UrlViewChessGameTest {
         
         cgFixture = new  ChessGameFixture();
         urlController = new UrlViewChessGameController();
-        urlController.setDatabaseGameMap(gameMap);
+        urlController.setServerChessGameDAO(serverChessGameDAO);
         
         when(scgGame.getPlayer()).thenReturn(cgFixture.getWhitePlayer());
         when(scgGame.getOpponent()).thenReturn(cgFixture.getBlackPlayer());        
@@ -49,13 +48,13 @@ public class UrlViewChessGameTest {
 
     @Test
     public void test() throws DAOException {
-        when(gameMap.get(eq(GAME_UID))).thenReturn(scgGame);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(scgGame);
         when(scgGame.getCurrentStatus()).thenReturn(ServerGameStatus.IN_PROGRESS);
         when(scgGame.getPlayer(eq(cgFixture.getWhitePlayer()))).thenReturn(cgFixture.getWhitePlayer());
         
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.GAME_UUID, GAME_UID);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.GAME, scgGame);
@@ -65,13 +64,13 @@ public class UrlViewChessGameTest {
     
     @Test
     public void opponentViewTest() throws DAOException {
-        when(gameMap.get(eq(GAME_UID))).thenReturn(scgGame);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(scgGame);
         when(scgGame.getCurrentStatus()).thenReturn(ServerGameStatus.IN_PROGRESS);
         when(scgGame.getPlayer(eq(cgFixture.getBlackPlayer()))).thenReturn(cgFixture.getBlackPlayer());
         
         ModelAndView mav = urlController.viewChessGame(cgFixture.getBlackPlayer(), GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.GAME_UUID, GAME_UID);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.GAME, scgGame);
@@ -81,12 +80,12 @@ public class UrlViewChessGameTest {
     
     @Test
     public void serverChessGameNotInProcessStateTest() throws DAOException {
-        when(gameMap.get(eq(GAME_UID))).thenReturn(scgGame);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(scgGame);
         when(scgGame.getCurrentStatus()).thenReturn(ServerGameStatus.AWAITING_PLAYER);
         
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
@@ -94,12 +93,12 @@ public class UrlViewChessGameTest {
     
     @Test
     public void serverChessGameInFinishedStateTest() throws DAOException {
-        when(gameMap.get(eq(GAME_UID))).thenReturn(scgGame);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(scgGame);
         when(scgGame.getCurrentStatus()).thenReturn(ServerGameStatus.FINISHED);
         
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
@@ -107,11 +106,11 @@ public class UrlViewChessGameTest {
     
     @Test
     public void serverChessGameIsNullTest() throws DAOException {
-        when(gameMap.get(eq(GAME_UID))).thenReturn(null);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(null);
         
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
@@ -120,11 +119,11 @@ public class UrlViewChessGameTest {
     @Test
     public void serverChessGameIsNotTwoViewGameTest() throws DAOException {
         when(obscgGame.getCurrentStatus()).thenReturn(ServerGameStatus.IN_PROGRESS);
-        when(gameMap.get(eq(GAME_UID))).thenReturn(obscgGame);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(obscgGame);
         
         ModelAndView mav = urlController.viewChessGame(cgFixture.getWhitePlayer(), GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
         ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.ERRORS, 
                         String.format(UrlViewChessGameController.CANT_VIEW_CHESSGAME, GAME_UID)); 
@@ -133,13 +132,13 @@ public class UrlViewChessGameTest {
     @Test
     public void wrongPlayerTest() throws DAOException {
         Player villian = new HumanPlayer("Villian"); 
-        when(gameMap.get(eq(GAME_UID))).thenReturn(scgGame);
+        when(serverChessGameDAO.getServerChessGame(eq(GAME_UID))).thenReturn(scgGame);
         when(scgGame.getCurrentStatus()).thenReturn(ServerGameStatus.IN_PROGRESS);
         when(scgGame.getPlayer(eq(cgFixture.getWhitePlayer()))).thenReturn(cgFixture.getWhitePlayer());
         
         ModelAndView mav = urlController.viewChessGame(villian, GAME_UID);
         
-        verify(gameMap, times(1)).get(GAME_UID);
+        verify(serverChessGameDAO, times(1)).getServerChessGame(GAME_UID);
         ModelAndViewAssert.assertViewName(mav, ServerJoinChessGameController.ERROR_REDIRECT_PAGE);
     }
 }

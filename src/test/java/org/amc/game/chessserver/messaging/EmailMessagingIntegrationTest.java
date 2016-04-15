@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.Assert.*;
 
 import org.amc.User;
+import org.amc.dao.DAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
@@ -64,14 +65,17 @@ public class EmailMessagingIntegrationTest {
 
     private MockMvc mockMvc;
 
+    private DAO<Player> playerDAO;
+    
+    
     @Before
     public void setUp() throws Exception {
     	this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        Player stephen = new HumanPlayer("Stephen");
-        stephen.setUserName("stephen");
-        Player nobby = new HumanPlayer("Nobby");
-        nobby.setUserName("nobby");
+        playerDAO = (DAO<Player>)wac.getBean("myPlayerDAO");
+        Player stephen = playerDAO.findEntities("userName", "stephen").get(0);
+        Player nobby = playerDAO.findEntities("userName", "nobby").get(0);
+        
         whitePlayer = new RealChessGamePlayer(stephen, Colour.WHITE);
         
         blackPlayer = new RealChessGamePlayer(nobby, Colour.BLACK);
@@ -98,21 +102,12 @@ public class EmailMessagingIntegrationTest {
         this.gameUUID = (long) result.getModelAndView().getModelMap()
                         .get(ServerConstants.GAME_UUID);
         
-        this.mockMvc.perform(
+        result = this.mockMvc.perform(
                         post("/joinGame").param("gameUUID", String.valueOf(this.gameUUID))
                         .sessionAttr(ServerConstants.PLAYER, blackPlayer))
                         .andExpect(status()
                         .isOk())
-                        .andDo(print());
-        
-        result = this.mockMvc.perform(
-                        post("/joinGame").param("gameUUID", String.valueOf(this.gameUUID))
-                        .sessionAttr(ServerConstants.PLAYER, whitePlayer))
-                        .andExpect(status()
-                        .isOk())
-                        .andDo(print())
-                        .andReturn();
-      
+                        .andDo(print()).andReturn();  
         
         EmailTemplateFactory factory = (EmailTemplateFactory)wac.getBean("emailTemplateFactory");
         EmailTemplate template = factory.getEmailTemplate(ChessGame.class);

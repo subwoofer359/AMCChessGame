@@ -6,10 +6,7 @@ import static org.junit.Assert.*;
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -26,8 +23,8 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.QueryTimeoutException;
 import javax.persistence.TypedQuery;
+import javax.validation.OverridesAttribute;
 
-@Ignore("Issues with Mock EntityManager")
 public class DAOUnitTest {
     
     private DAO<TestEntity> dao;
@@ -50,18 +47,6 @@ public class DAOUnitTest {
     private static final String COLUMN = "name";
     private static final String VALUE = "Ted";
     
-    private static EntityManagerFactory oldFactory;
-    
-    @BeforeClass
-    public static void saveEntityManagerFactory() {
-        oldFactory = EntityManagerThreadLocal.getEntityManagerFactory();
-    }
-    
-    @AfterClass
-    public static void restoreEntityManagerFactory() {
-       EntityManagerThreadLocal.setEntityManagerFactory(oldFactory);
-    }
-    
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -72,7 +57,12 @@ public class DAOUnitTest {
         when(em.createQuery(queryString.capture(), eq(TestEntity.class))).thenReturn(query);
  
         EntityManagerThreadLocal.setEntityManagerFactory(emFactory);
-        dao = new DAO<DAOUnitTest.TestEntity>(TestEntity.class);       
+        dao = new DAO<DAOUnitTest.TestEntity>(TestEntity.class) {
+            @Override
+            public EntityManager getEntityManager() {
+                return em;
+            };
+        };
     }
 
     /**

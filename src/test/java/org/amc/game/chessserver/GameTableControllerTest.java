@@ -4,13 +4,11 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentMap;
 
-import org.amc.dao.DatabaseGameMap;
+
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.Player;

@@ -1,15 +1,14 @@
 package org.amc.game.chessserver;
 
+import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-
-import javax.annotation.Resource;
 
 /**
  * Handles a WebSocket message received for a move in a chess game
@@ -19,7 +18,7 @@ import javax.annotation.Resource;
  */
 public class StompController {
 
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
+    private static final Logger logger = Logger.getLogger(StompController.class);
 
     /**
      * STOMP messaging object to send stomp message to objects
@@ -69,11 +68,6 @@ public class StompController {
         return headers;
     }
     
-    @Resource(name = "gameMap")
-    public void setGameMap(ConcurrentMap<Long, AbstractServerChessGame> gameMap) {
-        this.gameMap = gameMap;
-    }
-
     /**
      * For adding a {@link SimpMessagingTemplate} object to be used for send
      * STOMP messages
@@ -91,15 +85,21 @@ public class StompController {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 
-    public ConcurrentMap<Long, AbstractServerChessGame> getGameMap() {
-        return gameMap;
-    }
-
     public SimpMessagingTemplate getTemplate() {
         return template;
     }
 
     public ServerChessGameDAO getServerChessGameDAO() {
         return serverChessGameDAO;
+    }
+    
+    AbstractServerChessGame getServerChessGame(long gameUid) {
+        try {
+            return getServerChessGameDAO().getServerChessGame(gameUid);
+        } catch(DAOException de) {
+            logger.error(de);
+            return null;
+        }
+        
     }
 }

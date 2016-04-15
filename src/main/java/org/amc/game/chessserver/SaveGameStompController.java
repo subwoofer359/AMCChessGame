@@ -3,7 +3,6 @@ package org.amc.game.chessserver;
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
 import org.amc.DAOException;
-import org.amc.EntityManagerThreadLocal;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -46,7 +45,13 @@ public class SaveGameStompController extends StompController {
     public void save(Principal user, 
                     @Header(SESSION_ATTRIBUTES)Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        AbstractServerChessGame serverChessGame = getGameMap().get(gameUUID);
+        AbstractServerChessGame serverChessGame = null;
+        try {
+            serverChessGame = getServerChessGameDAO().getServerChessGame(gameUUID);
+        } catch (DAOException de) {
+            logger.error(de);
+            logger.error("SaveGameStompController: Failed to retrieve game from database");
+        }
         String replyMessage="";
         logger.debug("IN STOMP SAVE METHOD");
         
@@ -80,21 +85,15 @@ public class SaveGameStompController extends StompController {
             logger.debug(SAVE_ERROR_GAME_IS_OVER);
             return SAVE_ERROR_GAME_IS_OVER;
         } else {
-            return saveServerChessGame(serverChessGame);
+            try {
+                getServerChessGameDAO().saveServerChessGame(serverChessGame);
+                return GAME_SAVED_SUCCESS;
+            } catch (DAOException | OptimisticLockException de) {
+                logger.error(de);
+                return SAVE_ERROR_CANT_BE_SAVED;
+            }
+            
         }
     }
-    
-    private String saveServerChessGame(AbstractServerChessGame serverChessGame) {
-        try {
-            getGameMap().replace(serverChessGame.getUid(), getServerChessGameDAO()
-                            .saveServerChessGame(serverChessGame));
-            EntityManagerThreadLocal.closeEntityManager();
-            logger.debug(GAME_SAVED_SUCCESS);
-            return GAME_SAVED_SUCCESS;
-        } catch(OptimisticLockException | DAOException de) {
-            logger.error(de);
-            logger.debug(SAVE_ERROR_CANT_BE_SAVED);
-            return SAVE_ERROR_CANT_BE_SAVED;
-        }
-    }
+   
 }

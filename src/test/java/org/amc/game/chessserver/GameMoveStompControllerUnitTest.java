@@ -4,6 +4,7 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -14,13 +15,13 @@ import org.amc.game.chess.RealChessGamePlayer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
@@ -57,10 +58,12 @@ public class GameMoveStompControllerUnitTest {
         }
     };
     
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
+    @Mock
+    private ServerChessGameDAO serverChessGameDAO;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         this.controller = new GameMoveStompController();
         scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
@@ -71,10 +74,6 @@ public class GameMoveStompControllerUnitTest {
             }
         });
         
-        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
-        gameMap.put(gameUUID, scg);
-        
-        controller.setGameMap(gameMap);
         sessionAttributes = new HashMap<String, Object>();
 
         this.controller.setTemplate(template);
@@ -82,6 +81,10 @@ public class GameMoveStompControllerUnitTest {
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
+        
+        controller.setServerChessDAO(serverChessGameDAO);
+        
+        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
     }
 
     @Test

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.dao.DAO;
+import org.amc.dao.EntityManagerCache;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.HumanPlayer;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import java.util.List;
 
 public class OneViewChessGamePlayerDeletion {
+    
     private DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
     private ServerChessGameDAO serverChessGameDao;
     private static final long GAME_UID = 1234L;
@@ -29,6 +31,11 @@ public class OneViewChessGamePlayerDeletion {
     public void setUp() throws Exception {
         fixture.setUp();
         serverChessGameDao = new ServerChessGameDAO();
+        EntityManagerCache cache = new EntityManagerCache();
+        cache.setEntityManagerFactory(fixture.getEntityManagerFactory());
+        
+        serverChessGameDao.setEntityManagerCache(cache);
+        
         playerDao = new DAO<>(HumanPlayer.class);
         setUpPlayers();
     }

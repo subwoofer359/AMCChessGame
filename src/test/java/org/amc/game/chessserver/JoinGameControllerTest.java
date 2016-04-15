@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.amc.dao.DatabaseGameMap;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.dao.ServerChessGameTestDatabaseEntity;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -44,14 +43,12 @@ public class JoinGameControllerTest {
 
     @Autowired
     private SimpMessagingTemplate template;
-
-    @Autowired
-    private DatabaseGameMap gameMap;
     
     private MockMvc mockMvc;
     
     @Autowired
     private ServerChessGameDAO serverChessGameDAO;
+    
     
 	@Before
 	public void setUp() throws Exception {
@@ -90,7 +87,7 @@ public class JoinGameControllerTest {
         		.andExpect(model().attributeExists(ServerConstants.CHESSPLAYER))
         		.andExpect(view().name(ServerJoinChessGameController.TWO_VIEW_CHESS_PAGE));
         
-        AbstractServerChessGame gameInGameMap = gameMap.get(gameUUID);
+        AbstractServerChessGame gameInGameMap = serverChessGameDAO.getServerChessGame(gameUUID);
         assertNotNull(gameInGameMap.getChessGame());
         assertEquals(ServerGameStatus.IN_PROGRESS, gameInGameMap.getCurrentStatus());
     }

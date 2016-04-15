@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
+import org.amc.DAOException;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
@@ -40,7 +41,13 @@ public class GameMoveStompController extends StompController {
 
         logger.debug("PLAYER:" + player);
 
-        AbstractServerChessGame game = getGameMap().get(gameUUID);
+        AbstractServerChessGame game = getServerChessGame(gameUUID);
+        
+        try {
+            getServerChessGameDAO().getServerChessGame(gameUUID);
+        } catch(DAOException de) {
+            logger.error(de);
+        }
 
         String message = "";
 
@@ -76,7 +83,7 @@ public class GameMoveStompController extends StompController {
     public void registerOneViewMoveMove(Principal user,
                     @DestinationVariable long gameUUID, @Payload String moveString) {
 
-        AbstractServerChessGame game = getGameMap().get(gameUUID);
+        AbstractServerChessGame game = getServerChessGame(gameUUID);
         
         if(!(game instanceof OneViewServerChessGame)) {
             logger.error("Can only move Chess Piece on an One View Chess game");

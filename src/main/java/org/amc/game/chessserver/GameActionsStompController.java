@@ -37,8 +37,7 @@ public class GameActionsStompController extends StompController {
     public void getChessBoard(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        ChessGame chessGame = getGameMap().get(gameUUID) == null ? null : getGameMap()
-                        .get(gameUUID).getChessGame();
+        ChessGame chessGame = getServerChessGame(gameUUID) == null ? null : getServerChessGame(gameUUID).getChessGame();
         String payLoadMessage = null;
         MessageType messageType;
         if(chessGame == null) {
@@ -60,18 +59,23 @@ public class GameActionsStompController extends StompController {
     public void quitChessGame(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        AbstractServerChessGame serverGame = getGameMap().get(gameUUID);
-        Player player = (Player) wsSession.get(PLAYER);
+        AbstractServerChessGame serverGame = getServerChessGame(gameUUID);
         
-        String replyMessage="";
+        if(serverGame == null) {
+            sendMessage(MSG_GAME_ALREADY_OVER, gameUUID, MessageType.INFO);
+        } else {
+            Player player = (Player) wsSession.get(PLAYER);
         
-        if(ServerGameStatus.FINISHED.equals(serverGame.getCurrentStatus())){
-            replyMessage = MSG_GAME_ALREADY_OVER;
-        } else {        
-            serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
-            serverGame.notifyObservers(player);
-            replyMessage = String.format(MSG_PLAYER_HAS_QUIT, player.getName());
+            String replyMessage="";
+        
+            if(ServerGameStatus.FINISHED.equals(serverGame.getCurrentStatus())){
+                replyMessage = MSG_GAME_ALREADY_OVER;
+            } else {        
+                serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
+                serverGame.notifyObservers(player);
+                replyMessage = String.format(MSG_PLAYER_HAS_QUIT, player.getName());
+            }
+            sendMessage(replyMessage, gameUUID, MessageType.INFO);
         }
-        sendMessage(replyMessage, gameUUID, MessageType.INFO);
     }
 }

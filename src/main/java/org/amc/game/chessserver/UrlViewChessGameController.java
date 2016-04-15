@@ -1,5 +1,7 @@
 package org.amc.game.chessserver;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.concurrent.ConcurrentMap;
-
 import javax.annotation.Resource;
 
 @Controller
@@ -22,7 +22,7 @@ public class UrlViewChessGameController {
     
     private static final Logger logger = Logger.getLogger(UrlViewChessGameController.class);
     
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
+    private ServerChessGameDAO serverChessGameDAO;
     
     static final String CANT_VIEW_CHESSGAME = "Can't not view the ChessGame:(%d)";
 
@@ -31,7 +31,12 @@ public class UrlViewChessGameController {
         
         ModelAndView mav = new ModelAndView();
         
-        AbstractServerChessGame scgGame = gameMap.get(gameUid);
+        AbstractServerChessGame scgGame = null;
+        try {
+            scgGame = serverChessGameDAO.getServerChessGame(gameUid);
+        } catch(DAOException de) {
+            logger.error(de);
+        }
         
         if(canServerChessGameBeViewed(player, scgGame)) {
             mav.getModel().put(ServerConstants.GAME_UUID, gameUid);
@@ -65,8 +70,8 @@ public class UrlViewChessGameController {
         return ServerGameStatus.IN_PROGRESS.equals(scgGame.getCurrentStatus());
     }
      
-    @Resource(name = "gameMap")
-    public void setDatabaseGameMap(ConcurrentMap<Long, AbstractServerChessGame> databaseGameMap) {
-        this.gameMap = databaseGameMap;
+    @Resource(name = "myServerChessGameDAO")
+    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+        this.serverChessGameDAO = serverChessGameDAO;
     }
 }

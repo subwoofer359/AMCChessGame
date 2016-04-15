@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
-import org.amc.dao.DatabaseGameMap;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
@@ -82,11 +81,6 @@ public class SaveGameStompControllerUnitTest {
         this.controller = new SaveGameStompController();
         controller.setServerChessDAO(serverChessGameDAO);
         
-        DatabaseGameMap gameMap = new DatabaseGameMap();
-        gameMap.setServerChessGameDAO(serverChessGameDAO);
-        gameMap.put(gameUUID, scg);
-        
-        controller.setGameMap(gameMap);
         sessionAttributes = new HashMap<String, Object>();
 
         this.controller.setTemplate(template);
@@ -108,6 +102,7 @@ public class SaveGameStompControllerUnitTest {
     public void testSaveGame() throws DAOException {
         setupMockEntityManagerThreadLocal();
         
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
         when(serverChessGameDAO.saveServerChessGame(eq(scg))).thenReturn(scg);
         controller.save(principal, sessionAttributes, gameUUID, "Save");
         verify(serverChessGameDAO,times(1)).saveServerChessGame(eq(scg));
@@ -154,6 +149,8 @@ public class SaveGameStompControllerUnitTest {
     
     @Test
     public void testSaveFinishedServerChessGame() throws DAOException {
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
+        
         this.scg.setCurrentStatus(ServerGameStatus.FINISHED);
         controller.save(principal, sessionAttributes, gameUUID, "Save");
         verify(serverChessGameDAO, never()).addEntity(eq(scg));
@@ -164,6 +161,8 @@ public class SaveGameStompControllerUnitTest {
     
     @Test
     public void testSaveServerChessGameDAOException() throws DAOException {
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
+        
         doThrow(new DAOException("Database connection closed"))
             .when(serverChessGameDAO).saveServerChessGame(eq(scg));
         controller.save(principal, sessionAttributes, gameUUID, "Save");
@@ -174,7 +173,21 @@ public class SaveGameStompControllerUnitTest {
     }
     
     @Test
+    public void testGetServerChessGameDAOException() throws DAOException {
+        
+        doThrow(new DAOException("Database connection closed"))
+            .when(serverChessGameDAO).getServerChessGame(eq(gameUUID));
+        controller.save(principal, sessionAttributes, gameUUID, "Save");
+        verify(serverChessGameDAO, times(0)).saveServerChessGame(eq(scg));
+        verifySimpMessagingTemplateCallToUser();
+        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        assertEquals(String.format(SaveGameStompController.SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, gameUUID), 
+                        payoadArgument.getValue());
+    }
+    
+    @Test
     public void testSaveServerChessGameByUnknownPlayer() throws DAOException {
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
         sessionAttributes.put("PLAYER", unknownPlayer);
         controller.save(principal, sessionAttributes, gameUUID, "Save");
         verify(serverChessGameDAO, never()).addEntity(eq(scg));
@@ -185,6 +198,8 @@ public class SaveGameStompControllerUnitTest {
     
     @Test
     public void testSaveThrowsOptimisticLockingException() throws DAOException {
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
+        
         doThrow(new OptimisticLockException())
         .when(serverChessGameDAO).saveServerChessGame(eq(scg));
         controller.save(principal, sessionAttributes, gameUUID, "Save");
@@ -196,11 +211,14 @@ public class SaveGameStompControllerUnitTest {
     
     @Test
     public void testSaveThrowsOptimisticLockingExceptionThenDAOException() throws DAOException {
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
+        
         doThrow(new OptimisticLockException())
         .when(serverChessGameDAO).saveServerChessGame(eq(scg));
         doThrow(new DAOException("Database connection closed"))
         .when(serverChessGameDAO).deleteEntity(eq(scg));
         controller.save(principal, sessionAttributes, gameUUID, "Save");
+        
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));

@@ -77,14 +77,17 @@ public class StartPageController {
         long uuid = getNewGameUID();
         AbstractServerChessGame serverGame = scgFactory.getServerChessGame(GameType.NETWORK_GAME, uuid, player);
         model.addAttribute(ServerConstants.GAME_UUID, uuid);
+        saveToDatabase(serverGame);
         
+        return CHESS_APPLICATION_PAGE;
+    }
+    
+    private void saveToDatabase(AbstractServerChessGame serverGame) {
         try {
             serverChessGameDAO.saveServerChessGame(serverGame);
         } catch(DAOException de) {
             logger.error(de);
         }
-        
-        return CHESS_APPLICATION_PAGE;
     }
     
     private long getNewGameUID() {
@@ -113,6 +116,7 @@ public class StartPageController {
         Player opponent = new HumanPlayer(playersName);
         opponent.setUserName(generateUserName(playersName));
         serverGame.addOpponent(opponent); 
+        saveToDatabase(serverGame);
         return serverGame;
     }
     

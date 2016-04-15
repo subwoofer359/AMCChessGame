@@ -1,10 +1,8 @@
 package org.amc.game.chessserver.observers;
 
-import static org.mockito.Mockito.mock;
-
 import static org.mockito.Mockito.*;
 
-import org.amc.dao.DatabaseGameMap;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chessserver.ServerChessGame;
 import org.junit.After;
@@ -27,7 +25,7 @@ public class ObserverFactoryChainImplTest {
                         @Override
                         public GameObserver createObserver() {
                             GameFinishedListener listener = new GameFinishedListener();
-                            listener.setGameMap(mock(DatabaseGameMap.class));
+                            listener.setServerChessGameDAO(mock(ServerChessGameDAO.class));
                             listener.setTaskScheduler(mock(TaskScheduler.class));
                             return listener;
                         }

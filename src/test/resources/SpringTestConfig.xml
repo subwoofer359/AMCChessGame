@@ -32,18 +32,9 @@
 	</bean>
 	
     <!-- Application beans -->
-    
-    <bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
-		scope="singleton">
-	</bean>
 	
 	<bean id="myEntityManagerCache" class="org.amc.dao.EntityManagerCache" scope="singleton">
 		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"></property>
-	</bean>
-	
-	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
-		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
-		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"/>
 	</bean>
 	
 	<bean id="serverChessGameFactory" class="org.amc.game.chessserver.ServerChessGameFactory">
@@ -59,7 +50,7 @@
 	</bean>
 	
 	<bean id="joinChessGameController" class="org.amc.game.chessserver.ServerJoinChessGameController">
-		<property name="gameMap" ref="gameMap"></property>
+		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
 	</bean>
 	
 	<bean id="userSearchController" class="org.amc.game.chessserver.UserSearchController" />

@@ -3,6 +3,8 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -13,20 +15,18 @@ import org.amc.game.chess.RealChessGamePlayer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 
 public class StompControllerOneViewUnitTest {
 
     private GameMoveStompController controller;
-    
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
     
     private ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
 
@@ -56,10 +56,16 @@ public class StompControllerOneViewUnitTest {
             return "Stephen";
         }
     };
+    
+    @Mock
+    private ServerChessGameDAO serverChessGameDAO;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        
         this.controller = new GameMoveStompController();
+        controller.setServerChessDAO(serverChessGameDAO);
         chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
@@ -69,9 +75,6 @@ public class StompControllerOneViewUnitTest {
         };
         scg = new OneViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);
-        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
-        gameMap.put(gameUUID, scg);
-        controller.setGameMap(gameMap);
 
         this.controller.setTemplate(template);
         userArgument = ArgumentCaptor.forClass(String.class);
@@ -79,6 +82,7 @@ public class StompControllerOneViewUnitTest {
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
 
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
     }
 
     @Test
@@ -143,10 +147,12 @@ public class StompControllerOneViewUnitTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testNotOneViewServerChessGame() {
+    public void testNotOneViewServerChessGame() throws DAOException {
         AbstractServerChessGame scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(chessGameFactory);
-        this.gameMap.put(gameUUID, scg);
+        reset(serverChessGameDAO);
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
+       
         scg.addOpponent(blackPlayer);
         String move = "A2-A3";
         controller.registerOneViewMoveMove(principal, gameUUID, move);

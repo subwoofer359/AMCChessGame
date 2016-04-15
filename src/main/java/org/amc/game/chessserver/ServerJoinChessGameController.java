@@ -2,6 +2,8 @@ package org.amc.game.chessserver;
 
 import static org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.concurrent.ConcurrentMap;
-
 import javax.annotation.Resource;
 
 @Controller
@@ -27,9 +27,8 @@ import javax.annotation.Resource;
 public class ServerJoinChessGameController {
 
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
-
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
-
+    private ServerChessGameDAO serverChessGameDAO;
+    
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
     static final String ERROR_GAMEOVER = "Chess game is over";
@@ -41,7 +40,7 @@ public class ServerJoinChessGameController {
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
                     @RequestParam long gameUUID) {
-        AbstractServerChessGame chessGame = gameMap.get(gameUUID);
+        AbstractServerChessGame chessGame = getServerChessGame(gameUUID);
         ModelAndView mav = new ModelAndView();
         if (isPlayerJoiningOwnGame(chessGame, player)) {
             enterChessGame(mav, chessGame, player, gameUUID);
@@ -51,6 +50,16 @@ public class ServerJoinChessGameController {
         return mav;
     }
 
+    private AbstractServerChessGame getServerChessGame(long gameUid) {
+        try {
+            return this.serverChessGameDAO.getServerChessGame(gameUid);
+        } catch(DAOException de) {
+            logger.error(de);
+            return null;
+        }
+        
+    }
+    
     private boolean isPlayerJoiningOwnGame(AbstractServerChessGame chessGame, Player player) {
         return ComparePlayers.comparePlayers(player, chessGame.getPlayer());
     }
@@ -95,7 +104,7 @@ public class ServerJoinChessGameController {
     private void setupModelForChessGameScreen(ModelAndView mav, ChessGamePlayer player,
                     long gameUUID) {
         mav.getModel().put(ServerConstants.GAME_UUID, gameUUID);
-        AbstractServerChessGame serverGame = gameMap.get(gameUUID);
+        AbstractServerChessGame serverGame = getServerChessGame(gameUUID);
         mav.getModel().put(ServerConstants.GAME, serverGame);
         mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
@@ -140,15 +149,9 @@ public class ServerJoinChessGameController {
         }
     }
 
-    /**
-     * Dependency Injection of Map containing current ChessGames
-     * 
-     * @param gameMap
-     *            Map<Log,AbstractServerChessGame>
-     */
-    @Resource(name = "gameMap")
-    public void setGameMap(ConcurrentMap<Long, AbstractServerChessGame> gameMap) {
-        this.gameMap = gameMap;
+    @Resource(name = "myServerChessGameDAO")
+    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+        this.serverChessGameDAO = serverChessGameDAO;
     }
 
     /**

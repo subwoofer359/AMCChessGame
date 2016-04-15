@@ -3,7 +3,7 @@ package org.amc.game.chessserver.observers;
 import static org.mockito.Mockito.*;
 
 import org.amc.dao.DAO;
-import org.amc.dao.DatabaseGameMap;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chessserver.messaging.EmailTemplateFactory;
 import org.amc.game.chessserver.messaging.GameMessageService;
@@ -31,7 +31,7 @@ public class ObserverFactoryChainFixture {
             @Override
             public GameObserver createObserver() {
                 GameFinishedListener listener = new GameFinishedListener();
-                listener.setGameMap(mock(DatabaseGameMap.class));
+                listener.setServerChessGameDAO(mock(ServerChessGameDAO.class));
                 listener.setTaskScheduler(mock(TaskScheduler.class));
                 return listener;
             }

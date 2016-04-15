@@ -1,7 +1,8 @@
 package org.amc.game.chessserver.observers;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -11,11 +12,11 @@ import org.amc.game.chessserver.observers.GameFinishedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,28 +30,30 @@ public class FinishedChessGameRemovalThreadTest {
     // Countdown Latch used to synchonise removal threads
     private CountDownLatch latch = new CountDownLatch(NUMBER_OF_GAMES);
     private ExecutorService threadService;
-    private Map<Long, AbstractServerChessGame> gameMap;
     private AbstractServerChessGame[] chessGames = new AbstractServerChessGame[NUMBER_OF_GAMES];
     private long[] uids = new long[NUMBER_OF_GAMES];
     private Player player = new HumanPlayer("Adrian McLaughlin");
     
+    @Mock
+    private ServerChessGameDAO serverChessGameDAO;
+    
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         threadService = Executors.newFixedThreadPool(NUMBER_OF_GAMES);
         scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(NUMBER_OF_GAMES);
         scheduler.afterPropertiesSet();
-        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
         player.setUserName("adrian");
         for(int i = 0; i < uids.length; i++) {
             uids[i] = i;
             chessGames[i] = new TwoViewServerChessGame(uids[i], player);
             GameFinishedListener listener =new GameFinishedListener();
-            listener.setGameMap(gameMap);
+            listener.setServerChessGameDAO(serverChessGameDAO);
+
             listener.setGameToObserver(chessGames[i]);
             listener.setTaskScheduler(scheduler);
             listener.setDelayTime(1);
-            gameMap.put(uids[i], chessGames[i]);
         }
         
         
@@ -58,7 +61,7 @@ public class FinishedChessGameRemovalThreadTest {
 
     @After
     public void tearDown() throws Exception {
-        gameMap.clear();
+
     }
     
     @Test
@@ -68,7 +71,7 @@ public class FinishedChessGameRemovalThreadTest {
         }
         latch.await();
         waitForThreadServicesShutdown();
-        assertTrue(gameMap.isEmpty());
+        verify(serverChessGameDAO, times(NUMBER_OF_GAMES)).deleteEntity(any(AbstractServerChessGame.class));
     }
     
     private void waitForThreadServicesShutdown() throws Exception {

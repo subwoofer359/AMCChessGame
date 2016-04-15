@@ -45,6 +45,10 @@ public class DatabaseSignUpFixture {
         EntityManagerThreadLocal.setEntityManagerFactory(factory);
     }
     
+    public EntityManagerFactory getEntityManagerFactory() {
+        return factory;
+    }
+    
     private EntityManager getEntityManager() {
     	return EntityManagerThreadLocal.getEntityManager();
     }

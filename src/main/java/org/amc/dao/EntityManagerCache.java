@@ -32,6 +32,10 @@ public class EntityManagerCache {
         return entityManagerMap.isEmpty();
     }
     
+    void putEntityManager(Long uid, EntityManager entityManager) {
+        entityManagerMap.put(uid, entityManager);
+    }
+    
     @Resource(name = "applicationEntityManagerFactory")
     public void setEntityManagerFactory(EntityManagerFactory emFactory) {
         this.entityManagerFactory = emFactory;

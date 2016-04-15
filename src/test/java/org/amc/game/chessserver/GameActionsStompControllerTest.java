@@ -26,8 +26,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class GameActionsStompControllerTest {
     
@@ -68,13 +66,12 @@ public class GameActionsStompControllerTest {
             return "Stephen";
         }
     };
-    
-    private ConcurrentMap<Long, AbstractServerChessGame> gameMap;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.controller = new GameActionsStompController();
+        
         scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
@@ -84,10 +81,6 @@ public class GameActionsStompControllerTest {
             }
         });
         
-        gameMap = new ConcurrentHashMap<Long, AbstractServerChessGame>();
-        gameMap.put(gameUUID, scg);
-        
-        controller.setGameMap(gameMap);
         controller.setServerChessDAO(serverChessGameDAO);
         sessionAttributes = new HashMap<String, Object>();
 
@@ -103,11 +96,13 @@ public class GameActionsStompControllerTest {
     }
 
     @Test
-    public void testQuitChessGame() {
+    public void testQuitChessGame() throws DAOException {
         
         scg.addOpponent(blackPlayer);
         sessionAttributes.put("PLAYER", whitePlayer);
         scg.attachObserver(messager);
+        
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
         controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
         
         verifySimpMessagingTemplateCall();
@@ -120,60 +115,10 @@ public class GameActionsStompControllerTest {
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());
     }
-    
+     
     @Test
-    public void testQuitChessGameGetServerChessGameDAOExceptionNoRecovery() throws DAOException {
-        scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        scg.attachObserver(messager);
-        doThrow(DAOException.class).when(serverChessGameDAO).updateEntity(any(AbstractServerChessGame.class));
-        for(int i = 0; i < GameActionsStompController.NO_OF_RETRIES; i++ ) {
-            doThrow(DAOException.class).when(serverChessGameDAO).getServerChessGame((anyLong()));
-        }
-        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
-        
-        verify(serverChessGameDAO, times(GameActionsStompController.NO_OF_RETRIES)).getServerChessGame(anyLong());
-        verify(serverChessGameDAO, times(1)).updateEntity(any(AbstractServerChessGame.class));
-        
-    }
-    
-    @Test
-    public void testQuitChessGameUpdateEntityDAOExceptionNoRecovery() throws DAOException {
-        scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        scg.attachObserver(messager);
-        
+    public void testQuitFinishedChessGame() throws DAOException {
         when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
-        
-        doThrow(DAOException.class).when(serverChessGameDAO).updateEntity(any(AbstractServerChessGame.class));
-        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
-        
-        
-        final int noOfUpdateCalls = 1 + GameActionsStompController.NO_OF_RETRIES;
-        verify(serverChessGameDAO, times(noOfUpdateCalls)).updateEntity(any(AbstractServerChessGame.class));
-        
-    }
-    
-    @Test
-    public void testQuitChessGameUpdateEntityDAOException() throws DAOException {
-        scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        scg.attachObserver(messager);
-        
-        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
-        
-        when(serverChessGameDAO.updateEntity(any(AbstractServerChessGame.class)))
-            .thenThrow(new DAOException()).thenReturn(scg);
-        controller.quitChessGame(principal, sessionAttributes, gameUUID, "Quit");
-        
-        
-        
-        verify(serverChessGameDAO, times(2)).updateEntity(any(AbstractServerChessGame.class));
-        
-    }
-    
-    @Test
-    public void testQuitFinishedChessGame() {
         scg.addOpponent(blackPlayer);
         scg.setCurrentStatus(ServerGameStatus.FINISHED);
         sessionAttributes.put("PLAYER", whitePlayer);
@@ -190,7 +135,9 @@ public class GameActionsStompControllerTest {
     }
     
     @Test
-    public void getChessBoardTest() {
+    public void getChessBoardTest() throws DAOException {
+        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
+        
         scg.addOpponent(blackPlayer);
         
         controller.getChessBoard(principal, sessionAttributes, gameUUID, "chessboard");
@@ -218,7 +165,7 @@ public class GameActionsStompControllerTest {
     
     @Test
     public void getChessBoardNoServerChessGameTest() {
-        gameMap.remove(gameUUID);
+        //gameMap.remove(gameUUID);
         controller.getChessBoard(principal, sessionAttributes, gameUUID, "chessboard");
         
         verifySimpMessagingTemplateCallToUser();
