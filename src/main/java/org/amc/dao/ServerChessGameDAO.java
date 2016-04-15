@@ -38,11 +38,13 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
     private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
     
     private ObserverFactoryChain chain;
+    private EntityManagerCache entityManagerCache;
     
     public ServerChessGameDAO() {
         super(ServerChessGame.class);
     }
     
+    @Deprecated
     public Set<Long> getGameUids() {
         EntityManager entityManager = getEntityManager();
         Query query = entityManager.createQuery("Select x.uid from " + getEntityClass().getSimpleName() + " x ORDER BY x.uid");
@@ -78,7 +80,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
      * @throws DAOException if the ServerChessGame can't be retrieved
      */
     public AbstractServerChessGame getServerChessGame(long uid) throws DAOException {
-        EntityManager entityManager = getEntityManager();
+        EntityManager entityManager = getEntityManager(uid);
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
         
@@ -95,7 +97,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
     }
     
     public AbstractServerChessGame saveServerChessGame(AbstractServerChessGame serverChessGame) throws DAOException {
-        EntityManager em = getEntityManager();
+        EntityManager em = getEntityManager(serverChessGame.getUid());
         try {
             em.getTransaction().begin();
             if(em.contains(serverChessGame)) {
@@ -146,11 +148,17 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         }
     }
     
+    public EntityManager getEntityManager(Long gameUid) {
+        return entityManagerCache.getEntityManager(gameUid);
+    }
+    
     @Resource(name="defaultObserverFactoryChain")
     public void setObserverFactoryChain(ObserverFactoryChain chain) {
         this.chain = chain;
     }
 
+    
+    
     /**
      * Helper Class to retrieve the list of observers in String
      * format in the database
@@ -179,8 +187,5 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         public void setUid(Long uid) {
             this.uid = uid;
         }
-        
-        
-        
     }
 }
