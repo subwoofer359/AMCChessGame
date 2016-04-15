@@ -42,7 +42,6 @@ public class ServerJoinControllerJoinGameTest {
         gameMap = new ConcurrentHashMap<>();
         controller = new ServerJoinChessGameController();
         controller.setGameMap(gameMap);
-        controller.setServerChessGameDAO(serverChessGameDAO);
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
         chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);

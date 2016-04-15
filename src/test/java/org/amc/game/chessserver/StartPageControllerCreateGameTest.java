@@ -74,8 +74,6 @@ public class StartPageControllerCreateGameTest {
     public void testOneViewServerGame() throws DAOException {
         assertSessionAttributeNull();
         String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, OPPONENT);
-
-        assertGameIsSavedInDatabase();
         assertPlayerIsAddedToChessGame();
 
         assertLongStoreInSessionAttribute();

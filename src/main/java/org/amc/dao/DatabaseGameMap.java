@@ -219,4 +219,8 @@ public class DatabaseGameMap implements ConcurrentMap<Long, AbstractServerChessG
     void setInternalHashMap(ConcurrentMap<Long, AbstractServerChessGame> gameMap) {
         this.gameMap = gameMap;
     }
+    
+    public ServerChessGameDAO getServerChessGameDAO() {
+        return this.serverChessGameDAO;
+    }
 }

@@ -112,12 +112,7 @@ public class StartPageController {
         AbstractServerChessGame serverGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, uuid, player);
         Player opponent = new HumanPlayer(playersName);
         opponent.setUserName(generateUserName(playersName));
-        serverGame.addOpponent(opponent);
-        try {
-            serverChessGameDAO.saveServerChessGame(serverGame);
-        } catch(DAOException de) {
-            logger.error(de);
-        }
+        serverGame.addOpponent(opponent); 
         return serverGame;
     }
     

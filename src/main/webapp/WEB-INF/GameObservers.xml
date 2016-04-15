@@ -26,6 +26,11 @@
 		<lookup-method name="createObserver" bean="offlineChessGameMessager"/>
 	</bean>
 	
+	<bean id ="databaseUpdateListener" class="org.amc.game.chessserver.observers.DatabaseUpdateListener" scope="prototype"/>
+	<bean id="databaseUpdateListenerFactory" class="org.amc.game.chessserver.observers.DatabaseUpdateListenerFactory">
+		<lookup-method name="createObserver" bean="databaseUpdateListener"/>
+	</bean>
+	
 	<bean id="defaultObserverFactoryChain" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
 		<property name="observerFactory" ref="jsonChessGameViewFactory"/>
 		<property name="successor" ref="gameFinishedListenerFilter"/>
@@ -43,6 +48,11 @@
 	
 	<bean id="offlineChessGameMessagerFilter" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
 		<property name="observerFactory" ref="offlineChessGameMessagerFactory" />
+		<property name="successor" ref="databaseChessGameListenerFilter"/>
+	</bean>
+	
+	<bean id="databaseChessGameListenerFilter" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
+		<property name="observerFactory" ref="databaseUpdateListenerFactory"/>
 	</bean>
 
 	</beans>
