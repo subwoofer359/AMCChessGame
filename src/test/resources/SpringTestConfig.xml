@@ -37,6 +37,10 @@
 		scope="singleton">
 	</bean>
 	
+	<bean id="myEntityManagerCache" class="org.amc.dao.EntityManagerCache" scope="singleton">
+		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"></property>
+	</bean>
+	
 	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
 		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
 		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"/>
@@ -84,6 +88,7 @@
 	
 	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
+		<property name="entityManagerCache" ref="myEntityManagerCache"/>
 	</bean>
 	
     

@@ -34,7 +34,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
     
-    private static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
+    static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
     private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
     
     private ObserverFactoryChain chain;
@@ -59,7 +59,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         
     }
     
-    private void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
+    void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
         EntityManager entityManager = getEntityManager();
         if(serverChessGame.getNoOfObservers() == 0) {
             Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY, SCGObservers.class);
@@ -87,7 +87,9 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         AbstractServerChessGame scg = null;
         try {
             scg = (AbstractServerChessGame)query.getSingleResult();
-            addObservers(scg);
+            if(scg.getNoOfObservers() == 0) {
+                addObservers(scg);
+            }
             scg.setChessGameFactory(new StandardChessGameFactory());
             return scg;
         } catch(NoResultException nre) {
@@ -157,6 +159,10 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         this.chain = chain;
     }
 
+    @Resource(name = "myEntityManagerCache")
+    public void setEntityManagerCache(EntityManagerCache entityManagerCache) {
+        this.entityManagerCache = entityManagerCache;
+    }
     
     
     /**

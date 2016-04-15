@@ -3,20 +3,37 @@ package org.amc.dao;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 public class EntityManagerCache {
     
-    ConcurrentMap<Long, EntityManager> entityManagerMap;
+    private ConcurrentMap<Long, EntityManager> entityManagerMap;
+    private EntityManagerFactory entityManagerFactory;
+    
     public EntityManagerCache() {
         entityManagerMap = new ConcurrentHashMap<Long, EntityManager>();
     }
     
     public EntityManager getEntityManager(Long gameUid) {
-        return entityManagerMap.get(gameUid);
+        EntityManager manager = entityManagerMap.get(gameUid);
+        if(manager == null) {
+            manager = entityManagerFactory.createEntityManager();
+            entityManagerMap.put(gameUid, manager);
+        } else if (!manager.isOpen()) {
+            manager = entityManagerFactory.createEntityManager();
+            entityManagerMap.replace(gameUid, manager);
+        }
+        return manager;
     }
     
-    public void putEntityManager(Long gameUid, EntityManager emManager) {
-        entityManagerMap.put(gameUid, emManager);
+    public boolean isEmpty() {
+        return entityManagerMap.isEmpty();
+    }
+    
+    @Resource(name = "applicationEntityManagerFactory")
+    public void setEntityManagerFactory(EntityManagerFactory emFactory) {
+        this.entityManagerFactory = emFactory;
     }
 }
