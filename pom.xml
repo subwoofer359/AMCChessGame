@@ -7,13 +7,13 @@
   <name>AMCChessGame</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-  		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>2.4.6</version>
-		</dependency>
+  	<dependency>
+		<groupId>org.codehaus.groovy</groupId>
+		<artifactId>groovy-all</artifactId>
+		<version>2.4.6</version>
+	</dependency>
  
-		<dependency>
+	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-core</artifactId>
 		<version>4.0.3.RELEASE</version>
@@ -152,6 +152,14 @@
 		<artifactId>openjpa-all</artifactId>
 		<version>2.4.0</version>
 	</dependency>	
+	<dependency>
+		<groupId>org.hsqldb</groupId>
+		<artifactId>hsqldb</artifactId>
+		<version>2.3.3</version>
+		<scope>test</scope>
+	</dependency>
+	
+	
 	<dependency>
 		<groupId>org.sonatype.gossip</groupId>
 		<artifactId>gossip-slf4j</artifactId>
