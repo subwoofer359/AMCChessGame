@@ -38,13 +38,8 @@
 	<task:scheduler id="myScheduler" pool-size="10" />
 
 	<!-- Application beans -->
-	<bean id="gameMap" factory-bean="gameMapFactory" factory-method="getGameMap"
-		scope="singleton">
-	</bean>
-
-	<bean id="gameMapFactory" class="org.amc.game.chessserver.DBGameMapFactoryBean" scope="singleton">
-		<property name="serverChessGameDAO" ref="myServerChessGameDAO"/>
-		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"/>
+	<bean id="myEntityManagerCache" class="org.amc.dao.EntityManagerCache" scope="singleton">
+		<property name="entityManagerFactory" ref="applicationEntityManagerFactory"></property>
 	</bean>
 	
 	<bean class="org.amc.game.chessserver.ServerChessGameFactory">

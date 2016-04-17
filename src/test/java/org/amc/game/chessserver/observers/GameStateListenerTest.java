@@ -3,6 +3,8 @@ package org.amc.game.chessserver.observers;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
+import org.amc.DAOException;
+import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -17,6 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 public class GameStateListenerTest {
@@ -31,8 +35,12 @@ public class GameStateListenerTest {
     private ArgumentCaptor<Object> messageArgument;
     private ChessGameFactory chessGameFactory;
     
+    @Mock
+    ServerChessGameDAO serverChessGameDAO;
+    
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         template = mock(SimpMessagingTemplate.class);
@@ -60,10 +68,13 @@ public class GameStateListenerTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test() {
-        listener = new GameStateListener(template);
+    public void test() throws DAOException {
+        listener = new GameStateListener();
         listener.setGameToObserver(serverGame);
+        listener.setSimpMessagingTemplate(template);
+
         listener.update(serverGame, ChessGame.GameState.RUNNING);
+        verify(serverChessGameDAO, never()).saveServerChessGame(eq(serverGame));
         verify(template).convertAndSend(destinationArgument.capture(),messageArgument.capture(),anyMap());
         assertEquals(String.format(GameStateListener.MESSAGE_DESTINATION + "/%d",serverGame.getUid()), 
                         destinationArgument.getValue());
@@ -73,23 +84,29 @@ public class GameStateListenerTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testSendCheckMateMessage() {
-        listener = new GameStateListener(template);
+    public void testSendCheckMateMessage() throws DAOException {
+        listener = new GameStateListener();
         listener.setGameToObserver(serverGame);
+        listener.setSimpMessagingTemplate(template);
+        listener.setServerChessGameDAO(serverChessGameDAO);
+        
         listener.update(serverGame, ServerChessGame.ServerGameStatus.FINISHED);
         verify(template, times(1)).convertAndSend(anyString(),anyObject(),anyMap());
+        verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(serverGame));
     }
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testMessageIsIgnored() {
-        listener = new GameStateListener(template);
+    public void testMessageIsIgnored() throws DAOException {
+        listener = new GameStateListener();
         listener.setGameToObserver(serverGame);
+        listener.setSimpMessagingTemplate(template);
         listener.update(serverGame, null);
         verify(template, never()).convertAndSend(anyString(),anyObject(),anyMap());
         
         listener.update(null, ChessGame.GameState.RUNNING);
         verify(template, never()).convertAndSend(anyString(),anyObject(),anyMap());
+        verify(serverChessGameDAO, never()).saveServerChessGame(eq(serverGame));
     }
 
 }

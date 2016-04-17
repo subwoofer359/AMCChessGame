@@ -52,7 +52,15 @@ public class ObserverFactoryChainFixture {
             }
         };
         
-        GameStateListenerFactory gameStateListenerFactory = new GameStateListenerFactory();
+        GameStateListenerFactory gameStateListenerFactory = new GameStateListenerFactory() {
+
+            @Override
+            public GameObserver createObserver() {
+                GameStateListener listener = new GameStateListener();
+                return listener;
+            }
+            
+        };
         gameStateListenerFactory.setMessagingTemplate(mock(SimpMessagingTemplate.class));
         
         ObserverFactoryChain jsonViewChain = new ObserverFactoryChainImpl();

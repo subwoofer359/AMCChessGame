@@ -30,7 +30,15 @@ public class ObserverFactoryChainImplTest {
                             return listener;
                         }
                     },
-                    new GameStateListenerFactory()
+                    new GameStateListenerFactory() {
+
+                        @Override
+                        public GameObserver createObserver() {
+                            GameStateListener listener = new GameStateListener();
+                            return listener;
+                        }
+                        
+                    }
                     };
     @Before
     public void setUp() throws Exception {

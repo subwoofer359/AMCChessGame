@@ -26,6 +26,9 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO"></bean>
+	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
+		<property name="entityManagerCache" ref="myEntityManagerCache"/>
+		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
+	</bean>
 	
 </beans>
