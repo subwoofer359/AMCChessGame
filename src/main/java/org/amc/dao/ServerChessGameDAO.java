@@ -33,7 +33,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
 
     static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
     
-    private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
+    static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
 
     private ObserverFactoryChain chain;
     
@@ -74,9 +74,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         AbstractServerChessGame scg = null;
         try {
             scg = (AbstractServerChessGame) query.getSingleResult();
-            if (scg.getNoOfObservers() == 0) {
-                addObservers(scg);
-            }
+            addObservers(scg);
             scg.setChessGameFactory(new StandardChessGameFactory());
             return scg;
         } catch (NoResultException nre) {
@@ -90,10 +88,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         EntityManager em = getEntityManager(serverChessGame.getUid());
         try {
             em.getTransaction().begin();
-            if (em.contains(serverChessGame)) {
-
-            } else {
-
+            if (isNotInThePersistenceContext(em, serverChessGame)) {
                 serverChessGame = em.merge(serverChessGame);
             }
 
@@ -105,9 +100,12 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
             return serverChessGame;
         } catch (PersistenceException pe) {
             logger.error(pe);
-            em.close();
             throw new DAOException(pe);
         }
+    }
+    
+    private boolean isNotInThePersistenceContext(EntityManager em, AbstractServerChessGame serverChessGame) {
+        return !em.contains(serverChessGame);
     }
 
     /**
@@ -134,7 +132,6 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
             return games;
         } catch (PersistenceException pe) {
             logger.error(pe);
-            em.close();
             throw new DAOException(pe);
         }
     }
