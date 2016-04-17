@@ -3,7 +3,6 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
-import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
@@ -16,8 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Set;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,13 +43,6 @@ public class ServerChessGameDAOTest {
     @After
     public void tearDown() throws Exception {
         this.signUpfixture.tearDown();
-    }
-
-    @Test
-    public void getGameUidsTest() {
-        Set<Long> uids = dao.getGameUids();
-        assertEquals(1, uids.size());
-        assertTrue(uids.contains(serverChessGamesfixture.getUID()));
     }
 
     @Test
