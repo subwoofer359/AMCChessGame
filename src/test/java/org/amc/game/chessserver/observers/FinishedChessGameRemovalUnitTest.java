@@ -1,6 +1,5 @@
 package org.amc.game.chessserver.observers;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.amc.dao.ServerChessGameDAO;
@@ -11,15 +10,12 @@ import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalUnitTest {

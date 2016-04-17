@@ -23,7 +23,6 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.QueryTimeoutException;
 import javax.persistence.TypedQuery;
-import javax.validation.OverridesAttribute;
 
 public class DAOUnitTest {
     
