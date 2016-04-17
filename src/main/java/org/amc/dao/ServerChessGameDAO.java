@@ -35,9 +35,11 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
 
     static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
+    
     private static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
 
     private ObserverFactoryChain chain;
+    
     private EntityManagerCache entityManagerCache;
 
     public ServerChessGameDAO() {
