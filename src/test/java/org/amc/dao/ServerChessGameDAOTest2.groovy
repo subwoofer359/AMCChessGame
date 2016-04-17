@@ -62,7 +62,7 @@ class ServerChessGameDAOTest2 {
         };
     };
 
-    static final String QUERY_STR = 'getChessGamesByPlayer';
+    static final String QUERY_NAME = 'getChessGamesByPlayer';
 
     @Mock
     EntityManager em;
