@@ -9,12 +9,9 @@ import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.apache.log4j.Logger;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
