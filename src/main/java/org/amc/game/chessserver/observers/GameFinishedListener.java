@@ -114,8 +114,8 @@ public class GameFinishedListener extends GameObserver {
             if(chessGame != null) {
                 try {
                     synchronized (chessGame) {
-                        serverChessGameDAO.deleteEntity(chessGame);
                         chessGame.destroy();
+                        serverChessGameDAO.deleteEntity(chessGame);   
                     }
                 } catch(DAOException de) {
                     logger.error(de);
