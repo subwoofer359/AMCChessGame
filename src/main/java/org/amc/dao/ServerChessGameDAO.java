@@ -44,22 +44,6 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         super(ServerChessGame.class);
     }
 
-    @Deprecated
-    public Set<Long> getGameUids() {
-        EntityManager entityManager = getEntityManager();
-        Query query = entityManager.createQuery("Select x.uid from "
-                        + getEntityClass().getSimpleName() + " x ORDER BY x.uid");
-        try {
-            @SuppressWarnings("unchecked")
-            Set<Long> gameUidsSet = new HashSet<Long>(query.getResultList());
-            return gameUidsSet;
-        } catch (PersistenceException pe) {
-            logger.error(pe);
-            return Collections.<Long> emptySet();
-        }
-
-    }
-
     void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
         EntityManager entityManager = getEntityManager();
         if (serverChessGame.getNoOfObservers() == 0) {
