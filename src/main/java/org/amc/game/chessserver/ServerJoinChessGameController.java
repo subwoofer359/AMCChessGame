@@ -86,6 +86,7 @@ public class ServerJoinChessGameController {
         if (canPlayerJoinGame(chessGame, player)) {
             if (inAwaitingPlayerState(chessGame)) {
                 addPlayerToGame(chessGame, player);
+                saveGameToDatabase(chessGame);
             }
             setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
         } else {
@@ -101,6 +102,14 @@ public class ServerJoinChessGameController {
         chessGame.addOpponent(player);
     }
 
+    private void saveGameToDatabase(AbstractServerChessGame chessGame) {
+        try {
+            serverChessGameDAO.saveServerChessGame(chessGame);
+        } catch (DAOException de) {
+            logger.error(de);
+        }
+    }
+    
     private void setupModelForChessGameScreen(ModelAndView mav, ChessGamePlayer player,
                     long gameUUID) {
         mav.getModel().put(ServerConstants.GAME_UUID, gameUUID);
