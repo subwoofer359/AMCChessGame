@@ -52,8 +52,9 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
             try {
                 SCGObservers scgObervers = (SCGObservers) query.getSingleResult();
                 chain.addObserver(scgObervers.getObservers(), serverChessGame);
-            } catch (NoResultException nre) {
-                logger.error(nre);
+            } catch (PersistenceException pe) {
+                logger.error(pe);
+                throw new DAOException(pe);
             }
         }
     }
