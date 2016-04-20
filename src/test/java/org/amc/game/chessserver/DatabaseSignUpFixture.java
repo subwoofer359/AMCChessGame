@@ -1,12 +1,15 @@
 package org.amc.game.chessserver;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
+
+import org.amc.Authorities;
 import org.amc.DAOException;
 import org.amc.EntityManagerThreadLocal;
 import org.amc.User;
@@ -27,14 +30,11 @@ public class DatabaseSignUpFixture {
     private static final Logger logger = Logger.getLogger(DatabaseSignUpFixture.class);
  
     private EntityManagerFactory factory;
-    private static final String[] userNames = { "nobby", "laura", "stephen" };
-    private static final String[] fullNames = { "Nobby Squeal", "Laura O'Neill", "Stephen Moran" };
-    private static final String[] emailAddresses = {"subwoofer359@gmail.com", "laura@adrianmclaughlin.ie",
+    static final String[] userNames = { "nobby", "laura", "stephen" };
+    static final String[] fullNames = { "Nobby Squeal", "Laura O'Neill", "Stephen Moran" };
+    static final String[] emailAddresses = {"subwoofer359@gmail.com", "laura@adrianmclaughlin.ie",
                     "subwoofer359@gmail.com" };
-    private static final String password = "C4096cr";
-    
-    private static final String[] TABLES= { "users", "players", "authorities", "serverChessGames", 
-        "chessGames", "chessBoards", "chessGamePlayers" };
+    static final String password = "C4096cr";
 
     public DatabaseSignUpFixture() {
 
@@ -49,77 +49,62 @@ public class DatabaseSignUpFixture {
         return factory;
     }
     
-    private EntityManager getEntityManager() {
-    	return EntityManagerThreadLocal.getEntityManager();
-    }
-    
     public void setUp() {
-        setUpEntitiyManagerFactory();
-        deleteUserPlayerTables();
-        EntityManagerThreadLocal.closeEntityManager();
         setUpEntitiyManagerFactory();
         addUsers();
     }
     
     public void tearDown() {
-        deleteUserPlayerTables();
         EntityManagerThreadLocal.closeEntityManager();
-    }
-    
-    private void deleteUserPlayerTables() {
-        EntityManager em = getEntityManager();
-    	if(em.getTransaction().isActive()) {
-            em.joinTransaction();
-        } else
-        {
-            em.getTransaction().begin();
-            em.clear();
+        try {
+            DriverManager.getConnection("jdbc:derby:memory:amcchessgametest;drop=true");
+        } catch(SQLException sqle) {
+            logger.info(sqle);
         }
-        for(String table : TABLES) {
-            if(tableExists(table)) {
-                Query q1 = em.createNativeQuery("drop table " + table);
-                q1.executeUpdate();
-            }
-        }
-        em.getTransaction().commit();
     }
     
     private void addUsers() {
         for(int i = 0; i < fullNames.length; i++) {
-            User user = new User();
-            user.setName(fullNames[i]);
-            user.setUserName(userNames[i]);
-            user.setEmailAddress(emailAddresses[i]);
-            user.setPassword(password.toCharArray());
-            DAO<User> userDAO = new DAO<>(User.class);
-            Player player = new HumanPlayer(user.getName());
-            player.setUserName(user.getUserName());
-            user.setPlayer(player);
-            try {
-                userDAO.addEntity(user);
-            } catch (DAOException e) {
-                logger.error("user:" + user.getName()+" not added to datbase");
-                e.printStackTrace();
-            }
+            User user = getUser(i);
+            addAuthortities(user);
+            addPlayer(user);
+            createUserEntry(user);
         }
     }
+    
+    private User getUser(int index) {
+        User user = new User();
+        
+        user.setName(fullNames[index]);
+        user.setUserName(userNames[index]);
+        user.setEmailAddress(emailAddresses[index]);
+        user.setPassword(password.toCharArray());
+        
+        return user;
+    }
+    
+    private void addAuthortities(User user) {
+        List<Authorities> authorities = new ArrayList<>();
+        Authorities authority = new Authorities();
+        authority.setAuthority("ROLE_USER");
+        authority.setUser(user);
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+    }
 
-    public boolean tableExists(String tableName) {
-    	EntityManager em = getEntityManager();
-    	Query tableExists = em.createNativeQuery("SHOW TABLES");
-        tableExists.executeUpdate();
-        List<?> tables = tableExists.getResultList();
-        boolean result = false;
-        if (tables.contains(tableName)) {
-            result = true;
+    private void addPlayer(User user) {
+        Player player = new HumanPlayer(user.getName());
+        player.setUserName(user.getUserName());
+        user.setPlayer(player);
+    }
+    
+    private void createUserEntry(User user) {
+        DAO<User> userDAO = new DAO<>(User.class);
+        try {
+            userDAO.addEntity(user);
+        } catch (DAOException e) {
+            logger.error("user:" + user.getName()+" not added to datbase");
+            e.printStackTrace();
         }
-        return result;
-    }
-
-    public EntityManagerFactory getFactory() {
-        return factory;
-    }
-    
-    
-
+    } 
 }

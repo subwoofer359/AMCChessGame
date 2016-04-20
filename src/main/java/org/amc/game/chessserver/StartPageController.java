@@ -87,6 +87,7 @@ public class StartPageController {
             serverChessGameDAO.saveServerChessGame(serverGame);
         } catch(DAOException de) {
             logger.error(de);
+            de.printStackTrace();
         }
     }
     

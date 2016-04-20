@@ -50,7 +50,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     private long uid;
     
     @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="chessGame", unique=true, nullable=true)
+    @JoinColumn(name="chessGame", nullable=true)
     private ChessGame chessGame = null;
     
     @Column(nullable=false)

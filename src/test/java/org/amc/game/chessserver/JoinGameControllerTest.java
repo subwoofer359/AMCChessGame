@@ -49,7 +49,6 @@ public class JoinGameControllerTest {
     @Autowired
     private ServerChessGameDAO serverChessGameDAO;
     
-    
 	@Before
 	public void setUp() throws Exception {
 		signUpfixture.setUp();
@@ -90,6 +89,7 @@ public class JoinGameControllerTest {
         AbstractServerChessGame gameInGameMap = serverChessGameDAO.getServerChessGame(gameUUID);
         assertNotNull(gameInGameMap.getChessGame());
         assertEquals(ServerGameStatus.IN_PROGRESS, gameInGameMap.getCurrentStatus());
+        assertEquals(gameUUID, gameInGameMap.getUid());
     }
 
 }

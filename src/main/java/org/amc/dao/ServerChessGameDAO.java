@@ -88,7 +88,8 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
         EntityManager em = getEntityManager(serverChessGame.getUid());
         try {
             em.getTransaction().begin();
-            if (isNotInThePersistenceContext(em, serverChessGame)) {
+            
+            if(isNotInThePersistenceContext(em, serverChessGame)) {
                 serverChessGame = em.merge(serverChessGame);
             }
 

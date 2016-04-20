@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.junit.Assert.*;
 
+import org.amc.EntityManagerThreadLocal;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.ChessBoard;
@@ -74,6 +75,10 @@ public class EmailMessagingIntegrationTest {
         playerDAO = (DAO<Player>)wac.getBean("myPlayerDAO");
         Player stephen = playerDAO.findEntities("userName", "stephen").get(0);
         Player nobby = playerDAO.findEntities("userName", "nobby").get(0);
+        
+        //detaching player from EntityManager to prevent exception on new Em.flush()
+        EntityManagerThreadLocal.getEntityManager().detach(stephen);
+        EntityManagerThreadLocal.getEntityManager().detach(nobby);
         
         whitePlayer = new RealChessGamePlayer(stephen, Colour.WHITE);
         

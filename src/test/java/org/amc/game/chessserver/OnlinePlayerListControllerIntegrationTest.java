@@ -3,15 +3,22 @@ package org.amc.game.chessserver;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.*;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
+import org.amc.User;
+import org.amc.dao.DAO;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.session.HttpSessionCreatedEvent;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;
@@ -32,45 +39,56 @@ import javax.servlet.http.HttpSession;
  *
  */
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations={"/SpringTestConfig.xml", "/UserLogging.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml"})
-@WithUserDetails("adrian")
 public class OnlinePlayerListControllerIntegrationTest {
 
     @Autowired
     private WebApplicationContext wac;
     
     private MockMvc mockMvc;
+    
+    private static final DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
  
+    @BeforeClass
+    public static void setUpDB() throws Exception {
+        
+        fixture.setUp();
+    }
+    
     @Before
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                         .apply(springSecurity())
                         .build();
+        
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
+        fixture.tearDown();
     }
 
     
 
     @Test
-    public void test() throws Exception{
+    @WithUserDetails("nobby")
+    public void test() throws Exception{  
         MvcResult result = this.mockMvc.perform(get("/onlinePlayerList"))
                         .andDo(print()).andExpect(status().isOk())
                         .andExpect(request().asyncStarted()).andReturn();
 
         String userListString = String.valueOf(result.getAsyncResult(5000));
         assertNotNull(userListString);
-        assertTrue(userListString.contains("nobby"));
+        assertTrue("Should return User's name", userListString.contains("nobby"));
         
         
     }
     
     @Test
-    public void UserLogsInOutTest() throws Exception {
+    public void userLogsInOutTest() throws Exception {
         this.mockMvc.perform(formLogin("/login").user("nobby").password("cr2032ux")).andExpect(status().is3xxRedirection());
         this.mockMvc.perform(logout());
         
