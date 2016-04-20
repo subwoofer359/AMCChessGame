@@ -10,13 +10,15 @@ import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.amc.game.chessserver.OneViewServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 class ServerChessGameDAOGetPlayerGameList {
     
-    DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
-    ServerChessGameTestDatabaseEntity scgDbEntity;
+    private static DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    private static ServerChessGameTestDatabaseEntity scgDbEntity;
     ServerChessGameDAO dao;
     Player player;
     Player opponent;
@@ -24,10 +26,16 @@ class ServerChessGameDAOGetPlayerGameList {
     DAO<Player> playerDAO;
     static final Integer NO_OF_ENTRIES = 10;
 
-    @Before
-    void setup() {
+    @BeforeClass
+    static void setUpBeforeClass() throws Exception {
         fixture.setUp();
         scgDbEntity = new ServerChessGameTestDatabaseEntity(NO_OF_ENTRIES);
+    }
+    
+    @Before
+    void setup() {
+        
+        
         dao = new ServerChessGameDAO();
         playerDAO = new DAO<Player>(HumanPlayer);
         
@@ -36,8 +44,8 @@ class ServerChessGameDAOGetPlayerGameList {
         otherPlayer = playerDAO.findEntities("userName", "stephen")?.get(0);
     }
     
-    @After
-    void tearDown() {
+    @AfterClass
+    static void tearDownAfterClass() {
         fixture.tearDown();
     }
     
@@ -56,7 +64,8 @@ class ServerChessGameDAOGetPlayerGameList {
     
     @Test
     void testGetServerChessGamesGivenPlayerInOpposition() {
-        AbstractServerChessGame s = new TwoViewServerChessGame(12324L, opponent);
+        final def GAME_UID = 12324L;
+        AbstractServerChessGame s = new TwoViewServerChessGame(GAME_UID, opponent);
         
         s.setChessGameFactory(new StandardChessGameFactory());
         
@@ -69,7 +78,8 @@ class ServerChessGameDAOGetPlayerGameList {
     
     @Test
     void testGetServerChessGamesGivenVirtualPlayer() {
-        AbstractServerChessGame s = new OneViewServerChessGame(12324L, player);
+        final def GAME_UID = 412324L;
+        AbstractServerChessGame s = new OneViewServerChessGame(GAME_UID, player);
         
         s.setChessGameFactory(new StandardChessGameFactory());
         Player virtualPlayer = new HumanPlayer("robot");
