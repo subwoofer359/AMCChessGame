@@ -307,6 +307,11 @@
   	<artifactId>maven-surefire-plugin</artifactId>
   	<version>2.15</version>
   	<configuration>
+  		<excludes>
+  			<exclude>*IT.*</exclude>
+  		</excludes>
+		<parallel>classes</parallel>
+		<threadCount>8</threadCount>
  		<argLine>${surefireArgLine}</argLine>
  		<skipTests>${skip.unit.tests}</skipTests>
   	</configuration>
