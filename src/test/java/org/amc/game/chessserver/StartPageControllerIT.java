@@ -27,7 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml" })
 
-public class StartPageControllerIntegrationTest {
+public class StartPageControllerIT {
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private static final String PLAYER_SESSION_ATTR = "PLAYER";
     private static final String FULLNAME = "adrian mclaughlin";

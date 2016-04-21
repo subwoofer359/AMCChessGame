@@ -15,10 +15,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-class ServerChessGameDAOGetPlayerGameList {
+class ServerChessGameDAOGetPlayerGameListIT {
     
     private static DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
-    private static ServerChessGameTestDatabaseEntity scgDbEntity;
+    private static ServerChessGameDatabaseEntityFixture scgDbEntity;
     ServerChessGameDAO dao;
     Player player;
     Player opponent;
@@ -29,7 +29,7 @@ class ServerChessGameDAOGetPlayerGameList {
     @BeforeClass
     static void setUpBeforeClass() throws Exception {
         fixture.setUp();
-        scgDbEntity = new ServerChessGameTestDatabaseEntity(NO_OF_ENTRIES);
+        scgDbEntity = new ServerChessGameDatabaseEntityFixture(NO_OF_ENTRIES);
     }
     
     @Before

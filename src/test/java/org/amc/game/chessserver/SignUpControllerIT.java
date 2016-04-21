@@ -23,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
-public class SignUpControllerIntegrationTest {
+public class SignUpControllerIT {
 
     private static final String URL = "/signup";
     private static final String MODEL_ATTR = "userForm";

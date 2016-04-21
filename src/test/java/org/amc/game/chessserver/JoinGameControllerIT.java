@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.amc.dao.ServerChessGameDAO;
-import org.amc.dao.ServerChessGameTestDatabaseEntity;
+import org.amc.dao.ServerChessGameDatabaseEntityFixture;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.junit.After;
@@ -30,13 +30,13 @@ import org.springframework.web.context.WebApplicationContext;
 @ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
-public class JoinGameControllerTest {
+public class JoinGameControllerIT {
 	
 	private static final String PLAYER_SESSION_ATTR = "PLAYER";
 	
 	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
 	
-	private ServerChessGameTestDatabaseEntity entity;
+	private ServerChessGameDatabaseEntityFixture entity;
 	
 	@Autowired
     private WebApplicationContext wac;
@@ -52,7 +52,7 @@ public class JoinGameControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		signUpfixture.setUp();
-		entity = new ServerChessGameTestDatabaseEntity();
+		entity = new ServerChessGameDatabaseEntityFixture();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 

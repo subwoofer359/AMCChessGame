@@ -26,7 +26,7 @@ import javax.persistence.EntityTransaction;
  * @author Adrian Mclaughlin
  *
  */
-public class ServerChessGameTestDatabaseEntity {
+public class ServerChessGameDatabaseEntityFixture {
     
     private Player whitePlayer;
     private Player blackPlayer;
@@ -36,7 +36,7 @@ public class ServerChessGameTestDatabaseEntity {
     private final ChessGameFixture cgFixture;
     private ChessGameFactory chessGamefactory; 
     
-    public ServerChessGameTestDatabaseEntity() throws DAOException {
+    public ServerChessGameDatabaseEntityFixture() throws DAOException {
         this.chessGamefactory = new StandardChessGameFactory();
         scgDAO = new ServerChessGameDAO();
         DAO<Player> playerDAO = new DAO<>(HumanPlayer.class);
@@ -51,7 +51,7 @@ public class ServerChessGameTestDatabaseEntity {
         addServerChessGameToDataBase(scgGame);
     }
     
-    public ServerChessGameTestDatabaseEntity(int noOfDBEntries) throws DAOException {
+    public ServerChessGameDatabaseEntityFixture(int noOfDBEntries) throws DAOException {
         this();
         EntityManager em = scgDAO.getEntityManager();
         EntityTransaction transaction = em.getTransaction();

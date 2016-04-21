@@ -43,7 +43,7 @@ import javax.servlet.http.HttpSession;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations={"/SpringTestConfig.xml", "/UserLogging.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml"})
-public class OnlinePlayerListControllerIntegrationTest {
+public class OnlinePlayerListControllerIT {
 
     @Autowired
     private WebApplicationContext wac;

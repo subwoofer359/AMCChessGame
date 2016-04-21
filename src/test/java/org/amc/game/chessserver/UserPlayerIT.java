@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-public class UserPlayerIntegrationTest {
+public class UserPlayerIT {
 
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private static final String name = "adrian mclaughlin";

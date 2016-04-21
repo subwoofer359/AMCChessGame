@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class OneViewChessGamePlayerDeletion {
+public class OneViewChessGamePlayerDeletionIT {
     
     private DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
     private ServerChessGameDAO serverChessGameDao;

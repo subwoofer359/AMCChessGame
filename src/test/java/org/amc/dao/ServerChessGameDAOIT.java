@@ -24,13 +24,13 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"/SpringTestConfig.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml", "/GameObservers.xml"})
-public class ServerChessGameDAOTest {
+public class ServerChessGameDAOIT {
 
     @Autowired
     private WebApplicationContext wac;
     
     private static DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
-    private static ServerChessGameTestDatabaseEntity serverChessGamesfixture;
+    private static ServerChessGameDatabaseEntityFixture serverChessGamesfixture;
     private ServerChessGameDAO dao;
     private EntityManagerCache emCache;
     private ServerChessGameFactory scgFactory;
@@ -38,7 +38,7 @@ public class ServerChessGameDAOTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         signUpfixture.setUp();
-        serverChessGamesfixture = new ServerChessGameTestDatabaseEntity();
+        serverChessGamesfixture = new ServerChessGameDatabaseEntityFixture();
     }
     
     @Before

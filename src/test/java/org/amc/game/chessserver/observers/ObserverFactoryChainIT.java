@@ -17,7 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameObservers.xml", "/GameServerSecurity.xml"})
-public class ObserverFactoryChainIntegrationTest {
+public class ObserverFactoryChainIT {
 
     @Autowired
     private WebApplicationContext wac;

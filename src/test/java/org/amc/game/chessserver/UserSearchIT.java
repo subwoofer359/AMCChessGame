@@ -35,7 +35,7 @@ import java.util.List;
 @ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
-public class UserSearchIntegrationTest {
+public class UserSearchIT {
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     
     @Autowired

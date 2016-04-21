@@ -13,7 +13,7 @@ import org.springframework.test.annotation.Repeat;
 
 import javax.persistence.EntityManagerFactory;
 
-class DatabaseSignUpFixtureTest {
+class DatabaseSignUpFixtureIT {
     
     static DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
     def FIRST = 0;

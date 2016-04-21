@@ -44,7 +44,7 @@ import javax.persistence.OptimisticLockException;
 @ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
         "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 @Ignore
-public class StompControllerIntegrationTest {
+public class StompControllerIT {
 
     private static final String SESSION_ID = "20";
 

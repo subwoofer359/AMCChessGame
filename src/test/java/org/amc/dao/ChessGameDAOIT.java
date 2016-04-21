@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class ChessGameDAOTest {
+public class ChessGameDAOIT {
 
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private DAO<ChessGame> chessGameDAO;
@@ -32,7 +32,7 @@ public class ChessGameDAOTest {
     @Before
     public void setUp() throws Exception {
         this.signUpfixture.setUp();
-        ServerChessGameTestDatabaseEntity serverChessGamesfixture = new ServerChessGameTestDatabaseEntity();
+        ServerChessGameDatabaseEntityFixture serverChessGamesfixture = new ServerChessGameDatabaseEntityFixture();
         laura = serverChessGamesfixture.getBlackPlayer();
         nobby = serverChessGamesfixture.getWhitePlayer();
         game = serverChessGamesfixture.getChessGame();

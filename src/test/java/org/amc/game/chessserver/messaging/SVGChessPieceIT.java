@@ -40,7 +40,7 @@ import org.w3c.dom.NodeList;
 import com.googlecode.junittoolbox.ParallelRunner;
 
 @RunWith(ParallelRunner.class)
-public class SVGChessPieceTest {
+public class SVGChessPieceIT {
 	
 	private static final String SVG_DOCTYPE = "\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "
 			+ "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n";
@@ -55,7 +55,7 @@ public class SVGChessPieceTest {
     private Transformer transformer;
     
     
-    public SVGChessPieceTest() {
+    public SVGChessPieceIT() {
     	dbFactory.setValidating(true);
     	try {
 			dBuilder = dbFactory.newDocumentBuilder();

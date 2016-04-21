@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
-public class EmailMessagingIntegrationTest {
+public class EmailMessagingIT {
 
 	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
 	

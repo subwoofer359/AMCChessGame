@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class UserSearchDAOTest {
+public class UserSearchDAOIT {
     
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private UserSearchDAO dao;
