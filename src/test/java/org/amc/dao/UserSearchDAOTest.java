@@ -1,5 +1,7 @@
 package org.amc.dao;
 
+import static org.junit.Assert.*;
+
 import org.amc.game.chessserver.DatabaseSignUpFixture;
 import org.junit.After;
 import org.junit.Before;
@@ -11,6 +13,7 @@ public class UserSearchDAOTest {
     
     private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
     private UserSearchDAO dao;
+    private static int NO_OF_USERS = 3;
     
     @Before
     public void setUp() throws Exception {
@@ -30,5 +33,8 @@ public class UserSearchDAOTest {
       for(UserDetails o:l){
           System.out.println(o.getFullName());
       }
+      
+      assertFalse(l.isEmpty());
+      assertEquals(NO_OF_USERS, l.size());
     }
 }
