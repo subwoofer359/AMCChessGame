@@ -42,10 +42,15 @@ import java.util.concurrent.Future;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+/**
+ * Tests Email integration with Google's gmail service
+ * @author Adrian Mclaughlin
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
-public class EmailMessagingIT {
+public class GmailEmailMessagingIT {
 
 	private static final String GAME_TYPE = "gameType";
 
