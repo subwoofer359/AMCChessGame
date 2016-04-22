@@ -47,9 +47,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
 public class EmailMessagingIT {
 
-	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+	private static final String GAME_TYPE = "gameType";
+
+    private static final String CHESSBOARD_CONFIG = "Ka6:kc6:qb1";
+
+    private static final String USER_FULLNAME = "Adrian McLaughlin";
+
+    private static final String USER_USERNAME = "adrian";
+
+    private static final String USER_EMAIL_ADDR = "subwoofer359@gmail.com";
+
+    private static final String MESSAGE_SERVICE = "messageService";
+
+    private static final String GAME_UUID = "gameUUID";
+
+    private static final String JOIN_GAME = "/joinGame";
+
+    private static final String USER_NAME = "userName";
+
+    private static final String NOBBY = "nobby";
+
+    private static final String STEPHEN = "stephen";
+
+    private static final String MY_PLAYER_DAO = "myPlayerDAO";
+
+    private static final String EMAIL_TEMPLATE_FACTORY = "emailTemplateFactory";
+
+    private static final String CREATE_GAME = "/createGame/";
 	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
+    
+    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
 
     private ChessGamePlayer whitePlayer;
 
@@ -67,24 +95,41 @@ public class EmailMessagingIT {
 
     private DAO<Player> playerDAO;
     
+    private EmailTemplateFactory factory;
+    
     
     @Before
     public void setUp() throws Exception {
     	this.signUpfixture.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        playerDAO = (DAO<Player>)wac.getBean("myPlayerDAO");
-        Player stephen = playerDAO.findEntities("userName", "stephen").get(0);
-        Player nobby = playerDAO.findEntities("userName", "nobby").get(0);
         
-        //detaching player from EntityManager to prevent exception on new Em.flush()
-        EntityManagerThreadLocal.getEntityManager().detach(stephen);
-        EntityManagerThreadLocal.getEntityManager().detach(nobby);
+        setUpPlayers();
         
+        factory = (EmailTemplateFactory)wac.getBean(EMAIL_TEMPLATE_FACTORY);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void setUpPlayers() throws Exception {
+        playerDAO = (DAO<Player>)wac.getBean(MY_PLAYER_DAO);
+        
+        Player stephen = getPlayerFromDatabase(STEPHEN);
+        Player nobby = getPlayerFromDatabase(NOBBY);
+ 
         whitePlayer = new RealChessGamePlayer(stephen, Colour.WHITE);
-        
         blackPlayer = new RealChessGamePlayer(nobby, Colour.BLACK);
-        
-        
+    }
+    
+    private Player getPlayerFromDatabase(String name) throws Exception {
+        Player player = playerDAO.findEntities(USER_NAME, name).get(0);
+        detachFromOldEntityManager(player);
+        return player;
+    }
+    
+    /*
+     * detaching player from EntityManager to prevent exception on new Em.flush()
+     */
+    private void detachFromOldEntityManager(Player player) {
+        EntityManagerThreadLocal.getEntityManager().detach(player);
     }
     
     @After
@@ -94,9 +139,17 @@ public class EmailMessagingIT {
 
     @Test
     public void testMove() throws Exception {
+         
+        MvcResult result = createAndJoinChessGame();   
+        AbstractServerChessGame serverChessGame = doMove(result);
+        send(serverChessGame);
+        
+    }
+    
+    private MvcResult createAndJoinChessGame() throws Exception {
         MvcResult result = this.mockMvc
-                        .perform(post("/createGame/").sessionAttr(SESSION_ATTRIBUTE, whitePlayer)
-                        .param("gameType", GameType.NETWORK_GAME.name()))
+                        .perform(post(CREATE_GAME).sessionAttr(SESSION_ATTRIBUTE, whitePlayer)
+                        .param(GAME_TYPE, GameType.NETWORK_GAME.name()))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(model()
@@ -107,23 +160,16 @@ public class EmailMessagingIT {
                         .get(ServerConstants.GAME_UUID);
         
         result = this.mockMvc.perform(
-                        post("/joinGame").param("gameUUID", String.valueOf(this.gameUUID))
+                        post(JOIN_GAME).param(GAME_UUID, String.valueOf(this.gameUUID))
                         .sessionAttr(ServerConstants.PLAYER, blackPlayer))
                         .andExpect(status()
                         .isOk())
-                        .andDo(print()).andReturn();  
-        
-        EmailTemplateFactory factory = (EmailTemplateFactory)wac.getBean("emailTemplateFactory");
-        EmailTemplate template = factory.getEmailTemplate(ChessGame.class);
-        template.setPlayer(whitePlayer);
-        
-        EmailTemplate playerJoinedGameEmail = factory.getEmailTemplate(Player.class);
-        EmailTemplate playerQuitGameEmail = factory.getEmailTemplate(Player.class, ServerGameStatus.FINISHED);
-        
-        playerJoinedGameEmail.setPlayer(blackPlayer);
-        playerQuitGameEmail.setPlayer(blackPlayer);
-        
-        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard("Ka6:kc6:qb1");
+                        .andDo(print()).andReturn();
+        return result;
+    }
+    
+    private AbstractServerChessGame doMove(MvcResult result) throws Exception {
+        ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard(CHESSBOARD_CONFIG);
         Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
         
         AbstractServerChessGame scg = (AbstractServerChessGame)result.getModelAndView().getModel().get("GAME");
@@ -132,24 +178,47 @@ public class EmailMessagingIT {
         
         scg.move(whitePlayer, queenMove);
         
-        template.setServerChessGame(scg);
-        playerJoinedGameEmail.setServerChessGame(scg);
-        playerQuitGameEmail.setServerChessGame(scg);
-        
-        EmailMessageService service = (EmailMessageService)wac.getBean("messageService");
-        User user =new User();
-        user.setEmailAddress("subwoofer359@gmail.com");
-        user.setUserName("adrian");
-        user.setName("Adrian McLaughlin");
-        
-        Future<String> mailresult = service.send(user, template);
-        Future<String> mailresult2 = service.send(user, playerJoinedGameEmail);
-        Future<String> mailresult3 = service.send(user, playerQuitGameEmail);
+        return scg;
+    }
+    
+    private void  send(AbstractServerChessGame serverChessGame) throws Exception {
+        EmailMessageService service = (EmailMessageService)wac.getBean(MESSAGE_SERVICE);
+        User user = getUser();
+        Future<String> mailresult = service.send(user, getEmailTemplate(serverChessGame));
+        Future<String> mailresult2 = service.send(user, getPlayerJoinedGameEmailTemplate(serverChessGame));
+        Future<String> mailresult3 = service.send(user, getPlayerQuitGameEmailTemplate(serverChessGame));
         
         assertEquals(SendMessage.SENT_SUCCESS, mailresult.get());
         assertEquals(SendMessage.SENT_SUCCESS, mailresult2.get());
         assertEquals(SendMessage.SENT_SUCCESS, mailresult3.get());
     }
-
     
+    private User getUser() {
+        User user = new User();
+        user.setEmailAddress(USER_EMAIL_ADDR);
+        user.setUserName(USER_USERNAME);
+        user.setName(USER_FULLNAME);
+        return user;
+    }
+    
+    private EmailTemplate getEmailTemplate(AbstractServerChessGame serverChessGame) throws Exception {
+        EmailTemplate template = factory.getEmailTemplate(ChessGame.class);
+        template.setPlayer(whitePlayer);
+        template.setServerChessGame(serverChessGame);
+        return template;
+    }
+    
+    private EmailTemplate getPlayerQuitGameEmailTemplate(AbstractServerChessGame serverChessGame) {
+        EmailTemplate playerQuitGameEmail = factory.getEmailTemplate(Player.class, ServerGameStatus.FINISHED);
+        playerQuitGameEmail.setPlayer(blackPlayer);
+        playerQuitGameEmail.setServerChessGame(serverChessGame);
+        return playerQuitGameEmail;  
+    }
+    
+    private EmailTemplate getPlayerJoinedGameEmailTemplate(AbstractServerChessGame serverChessGame) {
+        EmailTemplate playerJoinedGameEmail = factory.getEmailTemplate(Player.class);
+        playerJoinedGameEmail.setPlayer(blackPlayer);
+        playerJoinedGameEmail.setServerChessGame(serverChessGame);
+        return playerJoinedGameEmail;
+    }
 }
