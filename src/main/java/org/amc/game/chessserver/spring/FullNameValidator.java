@@ -24,7 +24,6 @@ public class FullNameValidator implements Validator {
     
     @Override
     public boolean supports(Class<?> arg0) {
-        // TODO Auto-generated method stub
         return String.class.equals(arg0);
     }
 

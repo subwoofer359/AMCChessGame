@@ -21,7 +21,7 @@ public class EmailValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> arg0) {
-		if(arg0.isAssignableFrom(String.class)) {
+		if(String.class.equals(arg0)) {
 			return true;
 		}
 		return false;
@@ -33,14 +33,28 @@ public class EmailValidator implements Validator {
 	        return;
 	    }
 	    
-		String emailAddress = (String)arg0;
-		Matcher matcher = emailAddrPattern.matcher(emailAddress);
-		if(matcher.matches()){
-			
-		} else {
-			errors.rejectValue(EMAIL_ADDR_FIELD, INVALID_EMAIL_ERROR);
-		}
-
+	    if(supports(arg0.getClass())) {
+	        validateEmailAddress(arg0, errors);
+	    } else {
+	        setEmailAddressFieldInvalid(errors);
+	    }
+	}
+	
+	private void validateEmailAddress(Object arg0, Errors errors) {
+	    String emailAddress = (String)arg0;
+        
+        if(isInvalidEmailladdress(emailAddress)) {
+            setEmailAddressFieldInvalid(errors);
+        }
+	}
+	
+	private boolean isInvalidEmailladdress(String emailAddress) {
+	    Matcher matcher = emailAddrPattern.matcher(emailAddress);
+	    return !matcher.matches();
+	}
+	
+	private void setEmailAddressFieldInvalid(Errors errors) {
+	    errors.rejectValue(EMAIL_ADDR_FIELD, INVALID_EMAIL_ERROR);
 	}
 
 }

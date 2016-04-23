@@ -54,6 +54,12 @@ public class InValidEmailAddrTest {
 	public void test() {
 		validator.validate(emailAddr, errors);
 		assertTrue(errors.hasErrors());
+		assertNotNull(errors.getFieldError(EmailValidator.EMAIL_ADDR_FIELD));
 	}
-
+	
+	@Test
+	public void testNull () {
+	    validator.validate(null, errors);
+	    assertNull(errors.getFieldError(EmailValidator.EMAIL_ADDR_FIELD));
+	}
 }
