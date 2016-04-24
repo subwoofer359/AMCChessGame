@@ -81,7 +81,8 @@ public class ChessGame implements Serializable {
         WHITE_IN_CHECK,
         BLACK_IN_CHECK,
         WHITE_CHECKMATE,
-        BLACK_CHECKMATE
+        BLACK_CHECKMATE,
+        PAWN_PROMOTION
     }
     
 
@@ -154,6 +155,7 @@ public class ChessGame implements Serializable {
      */
     public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
         isPlayersTurn(player);
+        isNeedToDoAPromotion();
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
         checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
@@ -174,6 +176,11 @@ public class ChessGame implements Serializable {
         }
     }
     
+    private void isNeedToDoAPromotion() throws IllegalMoveException {
+        if(gameState == GameState.PAWN_PROMOTION) {
+            throw new IllegalMoveException("Pawn Promotion need to be completed");
+        }
+    }
     
     private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
                     throws IllegalMoveException {
@@ -309,6 +316,10 @@ public class ChessGame implements Serializable {
         } else {
             return allGameMoves.get(allGameMoves.size() - 1);
         }
+    }
+    
+    public void setPromotionState() {
+        this.gameState = GameState.PAWN_PROMOTION;
     }
 
     void setGameRules(List<ChessMoveRule> rules) {

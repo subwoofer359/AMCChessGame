@@ -2,9 +2,9 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.ChessGame.GameState;
 import org.amc.game.chess.view.ChessBoardView;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -58,7 +58,7 @@ public class PawnIsPromotedTest {
         promotion.applyRule(chessGame, move);
         ChessPiece piece = board.getPieceFromBoardAt(move.getEnd());
         assertNotNull(piece);
-        assertFalse(piece instanceof PawnPiece);
+        assertEquals(chessGame.getGameState(), GameState.PAWN_PROMOTION);
     }
 
     @Test
@@ -73,9 +73,8 @@ public class PawnIsPromotedTest {
             chessGame.changePlayer();
         }
         chessGame.move(piece.getColour().equals(Colour.WHITE) ? whitePlayer : blackPlayer, move);
-        ChessPiece piece = board.getPieceFromBoardAt(move.getEnd());
-        assertNotNull(piece);
-        assertFalse(piece instanceof PawnPiece);
+        assertEquals(chessGame.getGameState(), GameState.PAWN_PROMOTION);
+        
     }
 
 }

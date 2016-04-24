@@ -5,6 +5,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.ChessGame.GameState;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -97,13 +98,18 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
         if (getChessGame() != null) {
             synchronized (getChessGame()) {
                 getChessGame().move(player, move);
-                getChessGame().changePlayer();
+                changePlayerIfNoPawnPromotion();
             }
             notifyObservers(getChessGame());
             checkGameStatus();
         }
     }
     
+    private void changePlayerIfNoPawnPromotion() {
+        if(getChessGame().getGameState() != GameState.PAWN_PROMOTION) {
+            getChessGame().changePlayer();
+        }
+    }
     
     boolean isGameAwaitingPlayer() {
         return ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus());
@@ -126,6 +132,7 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
 
         case BLACK_IN_CHECK:
         case WHITE_IN_CHECK:
+        case PAWN_PROMOTION:
             notifyObservers(getChessGame().getGameState());
             break;
 

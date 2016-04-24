@@ -151,7 +151,7 @@ public class ServerChessGameConstructorTest {
         scgGame.move(fixture.getCurrentPlayer(), move);
         verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
         verify(mockChessGame, times(1)).changePlayer();
-        verify(mockChessGame, times(1)).getGameState();
+        verify(mockChessGame, times(2)).getGameState();
     }
     
     @Test
@@ -165,7 +165,7 @@ public class ServerChessGameConstructorTest {
         scgGame.move(fixture.getCurrentPlayer(), move);
         verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
         verify(mockChessGame, times(1)).changePlayer();
-        verify(mockChessGame, times(2)).getGameState();
+        verify(mockChessGame, times(3)).getGameState();
     }
     
     @Test
@@ -179,7 +179,7 @@ public class ServerChessGameConstructorTest {
         scgGame.move(fixture.getCurrentPlayer(), move);
         verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
         verify(mockChessGame, times(1)).changePlayer();
-        verify(mockChessGame, times(1)).getGameState();
+        verify(mockChessGame, times(2)).getGameState();
         assertEquals(ServerGameStatus.FINISHED, scgGame.getCurrentStatus());
         
     }
