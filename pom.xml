@@ -279,6 +279,21 @@
   <build>
     <finalName>AMCChessGame</finalName>
    <plugins>
+	<plugin>
+	    <artifactId>maven-clean-plugin</artifactId>
+	    <version>3.0.0</version>
+	    <configuration>
+		      <filesets>
+		        <fileset>
+		          <directory>temp</directory>
+		          <includes>
+		            <include>**/*.jpg</include>
+		          </includes>
+		          <followSymlinks>false</followSymlinks>
+		        </fileset>
+		      </filesets>
+	    </configuration>
+  </plugin>
    <plugin>
 	<groupId>org.jacoco</groupId>
 	<artifactId>jacoco-maven-plugin</artifactId>
