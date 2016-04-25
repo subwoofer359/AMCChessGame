@@ -321,6 +321,35 @@ public class ChessGame implements Serializable {
     public void setPromotionState() {
         this.gameState = GameState.PAWN_PROMOTION;
     }
+    
+    public void promotePawnTo(Location location, ChessPiece piece) throws IllegalMoveException {
+        ChessPiece pieceToBePromoted = board.getPieceFromBoardAt(location);
+        validatePromotionMove(location, pieceToBePromoted, piece);
+        board.putPieceOnBoardAt(piece, location);
+        gameState = GameState.RUNNING;
+        changePlayer();
+    }
+    
+    private void validatePromotionMove(Location location,ChessPiece pieceToBePromoted, ChessPiece piece) throws IllegalMoveException {
+        if(isNotAPawn(pieceToBePromoted)) {
+            throw new IllegalMoveException("Can't promote Chess pieces other than a pawn");
+        } else if(isPieceNotInEndRank(location, pieceToBePromoted)) {
+         throw new IllegalMoveException("Pawn can't be promoted");   
+        } else if(pieceToBePromoted.getColour() != piece.getColour()) {
+            throw new IllegalMoveException("Promoted piece must be replaced with piece of the same colour");  
+        }
+    }
+    
+    private boolean isNotAPawn(ChessPiece piece) {
+        return piece == null || !(PawnPiece.class.equals(piece.getClass()));
+    }
+    
+    private boolean isPieceNotInEndRank(Location location, ChessPiece pieceToBePromoted) {
+        return pieceToBePromoted.getColour() == Colour.WHITE && location.getNumber() != 8 || 
+                        pieceToBePromoted.getColour() == Colour.BLACK && location.getNumber() != 1;
+    }
+    
+    
 
     void setGameRules(List<ChessMoveRule> rules) {
         this.chessRules = rules;
