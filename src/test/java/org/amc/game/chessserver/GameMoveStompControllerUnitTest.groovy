@@ -19,72 +19,26 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import groovy.transform.CompileStatic;
+
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class GameMoveStompControllerUnitTest {
+class GameMoveStompControllerUnitTest extends StompControllerFixture {
 
     private GameMoveStompController controller;
 
-    private ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
-
-    private ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
-
-    private long gameUUID = 1234L;
-
-    private AbstractServerChessGame scg;
-
-    private Map<String, Object> sessionAttributes;
-
-    private SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
-
-    private ArgumentCaptor<String> userArgument;
-
-    private ArgumentCaptor<String> destinationArgument;
-
-    private ArgumentCaptor<String> payoadArgument;
-
-    @SuppressWarnings("rawtypes")
-    private ArgumentCaptor<Map> headersArgument;
-
-    private Principal principal = new Principal() {
-
-        @Override
-        public String getName() {
-            return "Stephen";
-        }
-    };
     
-    @Mock
-    private ServerChessGameDAO serverChessGameDAO;
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        super.setUp();
         this.controller = new GameMoveStompController();
-        scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
-        scg.setChessGameFactory(new ChessGameFactory() {
-            @Override
-            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
-                            ChessGamePlayer playerBlack) {
-                return new ChessGame(board, playerWhite, playerBlack);
-            }
-        });
-        
-        sessionAttributes = new HashMap<String, Object>();
-
         this.controller.setTemplate(template);
-        userArgument = ArgumentCaptor.forClass(String.class);
-        destinationArgument = ArgumentCaptor.forClass(String.class);
-        payoadArgument = ArgumentCaptor.forClass(String.class);
-        headersArgument = ArgumentCaptor.forClass(Map.class);
-        
         controller.setServerChessDAO(serverChessGameDAO);
-        
-        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
     }
 
     @Test
@@ -96,13 +50,6 @@ public class GameMoveStompControllerUnitTest {
         verifySimpMessagingTemplateCallToUser();
         assertEquals("", payoadArgument.getValue());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-    }
-
-    @SuppressWarnings("unchecked")
-    private void verifySimpMessagingTemplateCallToUser() {
-        verify(template).convertAndSendToUser(userArgument.capture(),
-                        destinationArgument.capture(), payoadArgument.capture(),
-                        headersArgument.capture());
     }
 
     @Test
