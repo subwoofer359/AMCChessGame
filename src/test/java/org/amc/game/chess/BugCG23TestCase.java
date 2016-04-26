@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.junit.Assert.*;
+
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.After;
 import org.junit.Before;
@@ -7,6 +9,11 @@ import org.junit.Test;
 
 import java.text.ParseException;
 
+/**
+ * ChessBoard.isEndSquareEmpty method raises an ArrayIndexOutOfBoundsException
+ * @author Adrian Mclaughlin
+ *
+ */
 public class BugCG23TestCase {
     private ChessGameFixture chessGameFixture;
     private ChessBoardFactory factory;
@@ -31,7 +38,9 @@ public class BugCG23TestCase {
         Move move = new Move("C6-B7");
         chessGameFixture.move(chessGameFixture.getWhitePlayer(), move);
         chessGameFixture.changePlayer();
-        chessGameFixture.isCheckMate(chessGameFixture.getBlackPlayer(),chessGameFixture.getBoard());
+        PlayersKingCheckmateCondition pkcc = new PlayersKingCheckmateCondition(chessGameFixture.getBlackPlayer(), 
+                        chessGameFixture.getWhitePlayer(), chessGameFixture.getBoard());
+        assertFalse(pkcc.isCheckMate());
     }
 
 }

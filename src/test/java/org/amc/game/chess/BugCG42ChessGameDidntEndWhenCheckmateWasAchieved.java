@@ -57,7 +57,8 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
     public void test() throws IllegalMoveException {
         Move move = new Move("C6-B6");
         chessGame.move(whitePlayer, move);
-        assertTrue(chessGame.isCheckMate(blackPlayer, board));
+        PlayersKingCheckmateCondition pkcc = new PlayersKingCheckmateCondition(blackPlayer, whitePlayer, board);
+        assertTrue(pkcc.isCheckMate());
         assertTrue(chessGame.getGameState() == ChessGame.GameState.BLACK_CHECKMATE);
     }
 

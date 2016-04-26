@@ -152,11 +152,6 @@ public abstract class AbstractChessGame  implements Serializable {
         return gameState == GameState.STALEMATE || gameState == GameState.BLACK_CHECKMATE
                         || gameState == GameState.WHITE_CHECKMATE;
     }
-
-    boolean isCheckMate(ChessGamePlayer player, ChessBoard board) {
-        PlayersKingCheckmateCondition checkmate=new PlayersKingCheckmateCondition(player, getOpposingPlayer(player), board);
-        return checkmate.isCheckMate();
-    }
     
     /**
      * Checks to see if a game rule applies to the Player's move Only applies

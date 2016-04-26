@@ -47,10 +47,6 @@ public class ChessGameFixture {
         return chessGame.getCurrentPlayer();
     }
 
-    public boolean isCheckMate(ChessGamePlayer player, ChessBoard board) {
-        return chessGame.isCheckMate(player, board);
-    }
-
     public ChessBoard getBoard() {
         return board;
     }
