@@ -50,5 +50,39 @@ final class PawnPromotionRule extends PawnPieceRule {
         return false;
 
     }
+    
+    public void promotePawnTo(ChessGame chessGame, Location location, ChessPiece piece) throws IllegalMoveException {
+        ChessBoard board = chessGame.getChessBoard();
+        ChessPiece pieceToBePromoted = board.getPieceFromBoardAt(location);
+        validatePromotionMove(location, pieceToBePromoted, piece);
+        board.putPieceOnBoardAt(piece, location);
+        returnChessGameToRunningState(chessGame);
+    }
+    
+    private void validatePromotionMove(Location location,ChessPiece pieceToBePromoted, ChessPiece piece) throws IllegalMoveException {
+        if(isNotAPawn(pieceToBePromoted)) {
+            throw new IllegalMoveException("Can't promote Chess pieces other than a pawn");
+        } else if(isPieceNotInEndRank(location, pieceToBePromoted)) {
+         throw new IllegalMoveException("Pawn can't be promoted");   
+        } else if(pieceToBePromoted.getColour() != piece.getColour()) {
+            throw new IllegalMoveException("Promoted piece must be replaced with piece of the same colour");  
+        }
+    }
+    
+    private boolean isNotAPawn(ChessPiece piece) {
+        return piece == null || !(PawnPiece.class.equals(piece.getClass()));
+    }
+    
+    private boolean isPieceNotInEndRank(Location location, ChessPiece pieceToBePromoted) {
+        return pieceToBePromoted.getColour() == Colour.WHITE && location.getNumber() != 8 || 
+                        pieceToBePromoted.getColour() == Colour.BLACK && location.getNumber() != 1;
+    }
+    
+    private void returnChessGameToRunningState(ChessGame chessGame) {
+        synchronized (chessGame) {
+            chessGame.setRunningState();
+            chessGame.changePlayer();
+        }
+    }
 
 }

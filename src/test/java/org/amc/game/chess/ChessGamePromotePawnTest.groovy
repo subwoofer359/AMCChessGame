@@ -14,6 +14,7 @@ class ChessGamePromotePawnTest {
     
     ChessGame chessGame;
     ChessBoard board;
+    static PawnPromotionRule pawnPromotionRule = PawnPromotionRule.getInstance();
     static ChessGamePlayer playerWhite;
     static ChessGamePlayer playerBlack;
     
@@ -42,7 +43,7 @@ class ChessGamePromotePawnTest {
     public void test() {
         Location promotionLocation = new Location("a8");
         ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
-        chessGame.promotePawnTo(promotionLocation, pieceToBePromotedTo);
+        pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
         assertIsARook(promotionLocation);
         assert chessGame.getGameState() == GameState.RUNNING;
         assertCurrentPlayerHasChanged();
@@ -53,7 +54,7 @@ class ChessGamePromotePawnTest {
         Location promotionLocation = new Location("b7");
         ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
         try {
-            chessGame.promotePawnTo(promotionLocation, pieceToBePromotedTo);
+            pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
         } catch(IllegalMoveException ime) {
             assertIsAPawn(promotionLocation);
@@ -67,7 +68,7 @@ class ChessGamePromotePawnTest {
         Location promotionLocation = new Location("g8");
         ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
         try {
-            chessGame.promotePawnTo(promotionLocation, pieceToBePromotedTo);
+            pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
         } catch(IllegalMoveException ime) {
             assertIsNotAPawn(promotionLocation);
@@ -81,7 +82,7 @@ class ChessGamePromotePawnTest {
         Location promotionLocation = new Location("a8");
         ChessPiece pieceToBePromotedTo = new RookPiece(playerBlack.colour);
         try {
-            chessGame.promotePawnTo(promotionLocation, pieceToBePromotedTo);
+            pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
         } catch(IllegalMoveException ime) {
             assertIsAPawn(promotionLocation);
@@ -97,7 +98,7 @@ class ChessGamePromotePawnTest {
         assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == null;
         
         try {
-            chessGame.promotePawnTo(promotionLocation, pieceToBePromotedTo);
+            pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
         } catch(IllegalMoveException ime) {
             assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == null;
