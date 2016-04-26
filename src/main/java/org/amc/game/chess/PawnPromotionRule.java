@@ -8,7 +8,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-final class PawnPromotionRule extends PawnPieceRule {
+public final class PawnPromotionRule extends PawnPieceRule {
 
     private static final int BLACK_PROMOTION_RANK = 1;
     private static final int WHITE_PROMOTION_RANK = 8;
