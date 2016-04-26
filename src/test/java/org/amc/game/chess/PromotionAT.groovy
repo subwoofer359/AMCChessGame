@@ -35,6 +35,9 @@ public class PromotionAT {
         
         chessGame.move(playerWhite, move);
         
+        PawnPromotionRule ppr = PawnPromotionRule.getInstance();
+        ppr.promotePawnTo(chessGame, move.getEnd(), new RookPiece(Colour.WHITE));
+        
         ChessPiece promotedPiece = chessGame.getChessBoard().getPieceFromBoardAt(new Location("a8"));
         
         assert promotedPiece?.getClass() == RookPiece.class; 
