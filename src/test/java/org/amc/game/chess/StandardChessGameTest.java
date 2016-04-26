@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

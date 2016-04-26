@@ -21,7 +21,7 @@ final class EnPassantRule extends PawnPieceRule {
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
     @Override
-    public void applyRule(ChessGame chessGame, Move move) {
+    public void applyRule(AbstractChessGame chessGame, Move move) {
         if(isEnPassantCapture(chessGame,move)){
             Location endSquare=move.getEnd();
             ChessPiece piece=chessGame.getChessBoard().getPieceFromBoardAt(move.getStart());
@@ -50,7 +50,7 @@ final class EnPassantRule extends PawnPieceRule {
      * @param move
      * @return true if it's a valid en passant move
      */
-    boolean isEnPassantCapture(ChessGame game, Move move) {
+    boolean isEnPassantCapture(AbstractChessGame game, Move move) {
         Move opponentsMove = game.getTheLastMove();
         ChessPiece opponentsPiece = getOpponentsChessPieceThatMovedLast(game.getChessBoard(), opponentsMove);
         if (isEndSquareNotEmpty(game.getChessBoard(), move)) {
@@ -78,7 +78,7 @@ final class EnPassantRule extends PawnPieceRule {
      * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
      */
     @Override
-    public boolean isRuleApplicable(ChessGame game, Move move) {
+    public boolean isRuleApplicable(AbstractChessGame game, Move move) {
         return isEnPassantCapture(game, move);
     }
 }

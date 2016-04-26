@@ -4,7 +4,7 @@ import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;

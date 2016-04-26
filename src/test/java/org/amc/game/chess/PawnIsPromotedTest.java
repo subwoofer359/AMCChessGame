@@ -2,7 +2,7 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.*;
 import org.junit.runner.RunWith;

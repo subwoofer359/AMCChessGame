@@ -15,7 +15,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.Before;

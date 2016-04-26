@@ -26,7 +26,7 @@ final class PawnPromotionRule extends PawnPieceRule {
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
     @Override
-    public void applyRule(ChessGame chessGame, Move move) {
+    public void applyRule(AbstractChessGame chessGame, Move move) {
         if (isRuleApplicable(chessGame, move)) {
             chessGame.getChessBoard().move(move);
             chessGame.setPromotionState();
@@ -38,7 +38,7 @@ final class PawnPromotionRule extends PawnPieceRule {
      * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
      */
     @Override
-    public boolean isRuleApplicable(ChessGame game, Move move) {
+    public boolean isRuleApplicable(AbstractChessGame game, Move move) {
         ChessPiece piece = game.getChessBoard().getPieceFromBoardAt(move.getStart());
         return isRuleApplicable(move.getEnd(), piece);
     }

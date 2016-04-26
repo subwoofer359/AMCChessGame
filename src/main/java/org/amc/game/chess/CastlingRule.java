@@ -21,7 +21,7 @@ final class CastlingRule implements ChessMoveRule{
      * @see ChessMoveRule#applyRule(ChessGame, Move)
      */
     @Override
-    public void applyRule(ChessGame chessGame, Move move) {
+    public void applyRule(AbstractChessGame chessGame, Move move) {
         if (isRuleApplicable(chessGame, move)) {
             chessGame.getChessBoard().move(move);
             moveRook(chessGame.getChessBoard(), move);
@@ -67,7 +67,7 @@ final class CastlingRule implements ChessMoveRule{
      * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
      */
     @Override
-    public boolean isRuleApplicable(ChessGame game, Move move) {
+    public boolean isRuleApplicable(AbstractChessGame game, Move move) {
         if (isCastlingMove(game.getChessBoard(), move)) {
             int rank = move.getStart().getNumber();
             if (isKingCastlingToTheRight(move)) {

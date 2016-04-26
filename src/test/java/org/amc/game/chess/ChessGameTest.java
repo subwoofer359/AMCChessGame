@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.*;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
