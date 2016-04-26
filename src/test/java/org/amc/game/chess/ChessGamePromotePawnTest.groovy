@@ -41,12 +41,41 @@ class ChessGamePromotePawnTest {
 
     @Test
     public void test() {
+        assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         Location promotionLocation = new Location("a8");
         ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
         pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
         assertIsARook(promotionLocation);
         assert chessGame.getGameState() == GameState.RUNNING;
         assertCurrentPlayerHasChanged();
+    }
+    
+    @Test
+    public void testPromotionToKingNotAllowed() {
+        assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
+        Location promotionLocation = new Location("a8");
+        ChessPiece pieceToBePromotedTo = new KingPiece(playerWhite.colour);
+        try {
+            pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
+            fail("Promotion to king shouldn't be allowed");
+        } catch(IllegalMoveException ime) {
+            assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
+            assertCurrentPlayerHasNotChanged();
+        }
+    }
+    
+    @Test
+    public void testPromotionToPawnNotAllowed() {
+        assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
+        Location promotionLocation = new Location("a8");
+        ChessPiece pieceToBePromotedTo = new PawnPiece(playerWhite.colour);
+        try {
+            pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
+            fail("Promotion to king shouldn't be allowed");
+        } catch(IllegalMoveException ime) {
+            assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
+            assertCurrentPlayerHasNotChanged();
+        }
     }
     
     @Test
@@ -58,7 +87,7 @@ class ChessGamePromotePawnTest {
             fail();
         } catch(IllegalMoveException ime) {
             assertIsAPawn(promotionLocation);
-            assertCurrentPlayerHasNotChanged()
+            assertCurrentPlayerHasNotChanged();
             assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         }
     }
@@ -72,7 +101,7 @@ class ChessGamePromotePawnTest {
             fail();
         } catch(IllegalMoveException ime) {
             assertIsNotAPawn(promotionLocation);
-            assertCurrentPlayerHasNotChanged()
+            assertCurrentPlayerHasNotChanged();
             assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         }
     }
@@ -86,7 +115,7 @@ class ChessGamePromotePawnTest {
             fail();
         } catch(IllegalMoveException ime) {
             assertIsAPawn(promotionLocation);
-            assertCurrentPlayerHasNotChanged()
+            assertCurrentPlayerHasNotChanged();
             assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         }
     }
@@ -102,7 +131,7 @@ class ChessGamePromotePawnTest {
             fail();
         } catch(IllegalMoveException ime) {
             assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == null;
-            assertCurrentPlayerHasNotChanged()
+            assertCurrentPlayerHasNotChanged();
             assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         }
     }
