@@ -6,7 +6,8 @@ import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
-import org.junit.AfterClass;
+import org.junit.AfterClass
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.test.annotation.Repeat;
@@ -18,11 +19,19 @@ class DatabaseSignUpFixtureIT {
     static DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
     def FIRST = 0;
     def userNames = DatabaseSignUpFixture.userNames;
+	def userDAO;
+	def playerDAO;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpBeforeClass() throws Exception {
         fixture.setUp();
     }
+	
+	@Before
+	public void setUp() throws Exception {
+		userDAO = new DAO<>(User);
+		playerDAO = new DAO<>(HumanPlayer);
+	}
 
     @AfterClass
     public static void tearDown() throws Exception {
@@ -31,10 +40,6 @@ class DatabaseSignUpFixtureIT {
 
     @Test
     public void testUsers() {
-        DAO<User> userDAO = new DAO<>(User.class);
-        
-        
-        
         userNames.eachWithIndex(
             { item, index ->
                 def userName = item;
@@ -87,5 +92,15 @@ class DatabaseSignUpFixtureIT {
         assert fixture.getEntityManagerFactory() instanceof EntityManagerFactory;
         assert fixture.getEntityManagerFactory().isOpen() == true;
     }
+	
+	@Test
+	public void clearTables() {
+		fixture.clearTables();
+		List users = userDAO.findEntities();
+		assert users.size() == 0;
+		List players = playerDAO.findEntities();
+		assert players.size() == 0;
+		setUpBeforeClass();
+	}
 
 }

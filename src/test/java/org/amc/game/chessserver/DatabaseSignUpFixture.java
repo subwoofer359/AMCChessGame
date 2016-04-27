@@ -1,7 +1,10 @@
 package org.amc.game.chessserver;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,5 +109,24 @@ public class DatabaseSignUpFixture {
             logger.error("user:" + user.getName()+" not added to datbase");
             e.printStackTrace();
         }
-    } 
+    }
+    
+    public void clearTables() throws SQLException {
+    	Connection c = EntityManagerThreadLocal.getEntityManager().unwrap(Connection.class);
+    	List<String> tables = new ArrayList<>();
+    	try (Statement s = c.createStatement();	
+    			ResultSet r = s.executeQuery("SELECT * FROM sys.systables");) {
+    		while(r.next()) {
+    			String tableName = r.getString(2);
+    			String tableType = r.getString(3);
+    			if("T".equals(tableType)) {
+    				tables.add(tableName);
+    			}
+    		}
+    		
+    		for(String tableName : tables) {
+    			s.execute("DELETE FROM " + tableName);
+    		}
+    	}
+    }
 }

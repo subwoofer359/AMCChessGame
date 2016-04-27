@@ -34,8 +34,8 @@ class ServerChessGameDAOGetPlayerGameListIT {
     
     @Before
     void setup() {
-        
-        
+        fixture.clearTables();
+		setUpBeforeClass();     
         dao = new ServerChessGameDAO();
         playerDAO = new DAO<Player>(HumanPlayer);
         
