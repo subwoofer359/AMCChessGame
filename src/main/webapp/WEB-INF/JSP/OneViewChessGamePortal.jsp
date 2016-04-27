@@ -158,6 +158,35 @@
         }
     }
     
+    #promotionDialog {
+        width:40%;
+    }
+    
+    #promotionDialog .panel-body {
+        border-style: dashed;
+        border-width: 1px;
+        border-color: black;
+        background-color: white;
+    }
+    #promotionDialog button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width:120px;
+        height: 120px;
+        padding: 0;
+        border-radius: 122px 122px;
+        
+    }
+    
+    @media(max-width:992px) {
+        #promotionDialog button {
+            margin-bottom: 20px;
+            width: 100%;
+            border-radius: 12px 12px;
+        }   
+    }
+    
 </style>
 <script>
 $(document).ready(function(){
@@ -217,6 +246,7 @@ $(document).ready(function(){
     <div class="row bottom-spacer">
     </div>
   </div>
+<%@ include file="/WEB-INF/JSP/Promotion.jspf" %>
 <%@ include file="/BootStrapFooter.jsp" %>
 </body>
 </html>
