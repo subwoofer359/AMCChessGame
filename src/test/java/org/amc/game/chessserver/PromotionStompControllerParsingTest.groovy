@@ -29,7 +29,7 @@ class PromotionStompControllerParsingTest {
 			'promote  qa3',
 			'promote qa9',
 			'promote promote'
-			];
+			].collect { [it] as Object[] };
 
 	}
 	
