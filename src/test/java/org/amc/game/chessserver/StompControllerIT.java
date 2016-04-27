@@ -304,7 +304,6 @@ public class StompControllerIT {
 
     private void saveGameTest(ServerChessGameDAO dao, String move) throws Exception {
         AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
-        dao.detachEntity(scg);
         move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
         testInfoMessageSent();
         saveGame(scg);
@@ -318,7 +317,6 @@ public class StompControllerIT {
                 check++;
             }
         } while (check < 5 && savedGame == null);
-        dao.detachEntity(savedGame);
         assertNotNull(savedGame);
     }
 
