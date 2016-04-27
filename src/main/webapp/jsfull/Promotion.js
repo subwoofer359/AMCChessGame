@@ -5,7 +5,7 @@ var promotion = (function() {
             pawn = colour === "WHITE" ? 'p' : 'P';
        for(var s in chessBoardObj.squares) {
            if(chessBoardObj.squares[s] === pawn) {
-               return s;
+               return s.toLowerCase();
            }
        }
     }

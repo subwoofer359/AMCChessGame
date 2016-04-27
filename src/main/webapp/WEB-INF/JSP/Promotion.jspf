@@ -1,3 +1,4 @@
+<script src="${pageContext.request.contextPath}/jsfull/Promotion.js"></script>
 <script>
     $(document).ready(function(){
     
@@ -12,7 +13,10 @@
         APP_GET = "/app/get/",
         PRIORITY = {priority : 9},
         APP_PROMOTE = "/app/promote/",
-        PROMOTE = "promote ";
+        PROMOTE = "promote ",
+        chessboard,
+        playerColour = "${CHESSPLAYER.colour}",
+        squareOfPawn;
         
     stompObject.headers = {};
     stompObject.headers[headerName] = token;
@@ -26,17 +30,29 @@
             
         });
         
+		stompClient.subscribe(TOPIC_UPDATES + gameUUID, function(message){
+            if(message.headers.TYPE === "STATUS") {
+                if(message.body === "PAWN_PROMOTION" && undefined !== chessboard) {
+                    squareOfPawn = promotion.findPawnForPromotion(playerColour, chessboard);
+                }
+                
+            } else if (message.headers.TYPE === "UPDATE") {
+                chessboard = JSON.parse(message.body);
+            }
+            
+        });
+        
         $("#queenBtn").click(function() {
-            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "k");
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "q" + squareOfPawn);
         });
         $("#rookBtn").click(function() {
-            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "r");
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "r" + squareOfPawn);
         });
         $("#knightBtn").click(function() {
-            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "n");
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "n" + squareOfPawn);
         });
         $("#bishopBtn").click(function() {
-            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "b");
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "b" + squareOfPawn);
         });
     });
         

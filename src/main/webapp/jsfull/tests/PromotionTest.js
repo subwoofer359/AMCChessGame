@@ -15,7 +15,7 @@ QUnit.test("testing search through chessboard for white pawns for Promotion", fu
     var promotionCheck = promotion.findPawnForPromotion;
     var parsedJson = JSON.parse(json);
     var square = promotionCheck("WHITE", parsedJson);
-    assert.equal(square, "A8");
+    assert.equal(square, "a8");
 });
 
 QUnit.test("testing search through chessboard for black pawns for Promotion", function (assert) {
@@ -23,5 +23,5 @@ QUnit.test("testing search through chessboard for black pawns for Promotion", fu
     var promotionCheck = promotion.findPawnForPromotion;
     var parsedJson = JSON.parse(json);
     var square = promotionCheck("BLACK", parsedJson);
-    assert.equal(square, "A1");
+    assert.equal(square, "a1");
 });
