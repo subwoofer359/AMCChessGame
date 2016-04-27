@@ -1,0 +1,69 @@
+<script>
+    $(document).ready(function(){
+    
+    var headerName = "${_csrf.headerName}",
+        token = "${_csrf.token}",
+        stompObject = {},
+        stompClient,
+        socket,
+        USER_UPDATES = "/user/queue/updates",
+        TOPIC_UPDATES = "/topic/updates/",
+        APP_GET = "/app/get/",
+        PRIORITY = {priority : 9},
+        APP_PROMOTE = "/app/promote/",
+        PROMOTE = "PROMOTE ";
+        
+    stompObject.headers = {};
+    stompObject.headers[headerName] = token;
+    stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
+                        "${pageContext.request.contextPath}" +
+                        "/app/chessgame/chessgame";
+    socket = new SockJS(stompObject.URL);
+    stompClient = Stomp.over(socket);
+    stompClient.connect(stompObject.headers, function() {
+        stompClient.subscribe(USER_UPDATES, function(){
+            
+        });
+        
+        $("#queenBtn").click(function() {
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "k");
+        });
+        $("#rookBtn").click(function() {
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "r");
+        });
+        $("#knightBtn").click(function() {
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "n");
+        });
+        $("#bishopBtn").click(function() {
+            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "b");
+        });
+    });
+        
+        
+});
+</script>
+<div id="promotionDialog" class="container">
+    <div class="row">
+        <div class="panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Promote Chess Piece</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-3">
+                        <button id="queenBtn" class="btn btn-primary" type="button"><img src="../../img/Queen.svg" alt="Queen"></button>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <button id="rookBtn" class="btn btn-primary" type="button"><img src="../../img/Rook.svg" alt="Rook"></button>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <button id="knightBtn" class="btn btn-primary" type="button"><img src="../../img/Knight.svg" alt="Knight"></button>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <button id="bishopBtn" class="btn btn-primary" type="button"><img src="../../img/Bishop.svg" alt="Bishop"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
