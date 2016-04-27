@@ -42,6 +42,8 @@
             
         });
         
+        stompClient.send(APP_GET + stompCallBack.gameUUID, PRIORITY, "Get ChessBoard");
+        
         $("#queenBtn").click(function() {
             stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + "q" + squareOfPawn);
         });
