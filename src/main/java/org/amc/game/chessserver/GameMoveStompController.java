@@ -2,7 +2,6 @@ package org.amc.game.chessserver;
 
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
-import org.amc.DAOException;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
@@ -42,12 +41,6 @@ public class GameMoveStompController extends StompController {
         logger.debug("PLAYER:" + player);
 
         AbstractServerChessGame game = getServerChessGame(gameUUID);
-        
-        try {
-            getServerChessGameDAO().getServerChessGame(gameUUID);
-        } catch(DAOException de) {
-            logger.error(de);
-        }
 
         String message = "";
 
@@ -59,7 +52,7 @@ public class GameMoveStompController extends StompController {
             message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
         }
 
-        logger.error(message);
+        logger.info(message);
 
         MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
         sendMessageToUser(user, message, type);
