@@ -177,6 +177,10 @@ public class ChessBoard extends DefaultSubject {
     public ChessPiece getPieceFromBoardAt(Location location) {
         return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
     }
+    
+    public ChessPieceLocation getPawnToBePromoted() {
+    	return null;
+    }
 
     /**
      * Checks a square to see if it's empty

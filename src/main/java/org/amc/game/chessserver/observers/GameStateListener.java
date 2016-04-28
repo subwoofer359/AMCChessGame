@@ -5,6 +5,7 @@ import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.AbstractChessGame.GameState;
+import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -26,6 +27,8 @@ import javax.persistence.OptimisticLockException;
 @Scope(value="prototype")
 public class GameStateListener extends GameObserver {
 
+	static final String MESSAGE_USER_DESTINATION = "/queue/updates";
+	
     private static final Logger logger = Logger.getLogger(GameStateListener.class);
     
     /** 
@@ -58,8 +61,13 @@ public class GameStateListener extends GameObserver {
             AbstractServerChessGame serverChessGame = (AbstractServerChessGame)subject;
             if (message instanceof ChessGame.GameState) {
                 GameState gameState = (GameState) message;
-                sendMessage(serverChessGame, gameState.toString());
-                logGameState(gameState);   
+                if(GameState.PAWN_PROMOTION.equals(gameState)) {
+                	ChessPieceLocation cpl = serverChessGame.getChessGame().getChessBoard().getPawnToBePromoted();
+                	sendMessageToUser(serverChessGame.getChessGame().getCurrentPlayer().getUserName(), gameState.toString() + " " + cpl.getLocation());
+                } else {
+                	sendMessage(serverChessGame, gameState.toString());
+                	logGameState(gameState);
+                }   
             } else if(message instanceof AbstractServerChessGame.ServerGameStatus) {
                 ServerGameStatus status = (ServerGameStatus)message;
                 if(status == ServerGameStatus.FINISHED) {
@@ -73,6 +81,10 @@ public class GameStateListener extends GameObserver {
     private void sendMessage(AbstractServerChessGame serverChessGame, String message) {
         this.template.convertAndSend(getMessageDestination(serverChessGame), message, getDefaultHeaders()); 
         logger.debug("Message sent to" + getMessageDestination(serverChessGame));
+    }
+    
+    private void sendMessageToUser(String user, String message) {
+    	this.template.convertAndSendToUser(user, MESSAGE_USER_DESTINATION, message, getDefaultHeaders());
     }
     
     private String getMessageDestination(AbstractServerChessGame serverChessGame) {
