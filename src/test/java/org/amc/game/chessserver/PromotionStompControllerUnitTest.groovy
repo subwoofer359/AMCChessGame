@@ -57,8 +57,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
         def message = 'promote qa8';
         
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
-        this.verifySimpMessagingTemplateCallToUser();
-        assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.INFO;
+        verifyZeroInteractions(template);
     }
     
     @Test

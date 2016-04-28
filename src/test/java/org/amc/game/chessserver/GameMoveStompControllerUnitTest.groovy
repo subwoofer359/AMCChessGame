@@ -47,9 +47,10 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
         String move = "A2-A3";
         sessionAttributes.put("PLAYER", whitePlayer);
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals("", payoadArgument.getValue());
-        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        verifyZeroInteractions(template);
+        //verifySimpMessagingTemplateCallToUser();
+        //assertEquals("", payoadArgument.getValue());
+        //assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test

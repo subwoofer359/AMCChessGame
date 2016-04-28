@@ -148,7 +148,6 @@ public class StompControllerIT {
         for (int i = 0; i < moves.length; i++) {
             AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
-            testInfoMessageSent();
             verifyMove(scg, moves[i]);
         }
     }
@@ -188,7 +187,6 @@ public class StompControllerIT {
                             .getServerChessGame(oneViewChessGameUUID);
             oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID,
                             moves[i]);
-            testInfoMessageSent();
 
             verifyMove(oneViewChessGame, moves[i]);
         }
@@ -274,8 +272,6 @@ public class StompControllerIT {
         for (String move : moves) {
             scg = serverChessGameDAO.getServerChessGame(gameUUID);
             move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
-
-            testInfoMessageSent();
             saveGame(scg);
             testInfoMessageSent();
             serverChessGameDAO.getEntityManager(gameUUID).close();
@@ -304,8 +300,7 @@ public class StompControllerIT {
 
     private void saveGameTest(ServerChessGameDAO dao, String move) throws Exception {
         AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
-        move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
-        testInfoMessageSent();
+        move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);   
         saveGame(scg);
         testInfoMessageSent();
         AbstractServerChessGame savedGame = null;

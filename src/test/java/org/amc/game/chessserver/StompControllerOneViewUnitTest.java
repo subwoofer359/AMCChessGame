@@ -90,9 +90,7 @@ public class StompControllerOneViewUnitTest {
         scg.addOpponent(blackPlayer);
         String move = "A2-A3";
         controller.registerOneViewMoveMove(principal, gameUUID, move);
-        verifySimpMessagingTemplateCallToUser();
-        assertEquals("", payoadArgument.getValue());
-        assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+        verifyZeroInteractions(template);
     }
 
     @SuppressWarnings("unchecked")

@@ -54,8 +54,11 @@ public class GameMoveStompController extends StompController {
 
         logger.info(message);
 
-        MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
-        sendMessageToUser(user, message, type);
+        if("".equals(message)) {
+            
+        } else { 
+            sendMessageToUser(user, message, MessageType.ERROR);
+        }
     }
     
     private String moveChessPiece(AbstractServerChessGame game, Player player, String moveString) {
@@ -95,8 +98,12 @@ public class GameMoveStompController extends StompController {
                message = String.format(ERROR_MSG_GAME_OVER, gameUUID);
                logger.error(message);
            }
-        MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
-        sendMessageToUser(user, message, type);
+        
+        if("".equals(message)) {
+            
+        } else { 
+            sendMessageToUser(user, message, MessageType.ERROR);
+        }
          
     }
 }

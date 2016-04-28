@@ -40,8 +40,11 @@ public class PromotionStompController extends StompController {
             message = ime.getMessage();
         }
         
-        MessageType type = "".equals(message) ? MessageType.INFO : MessageType.ERROR;
-        sendMessageToUser(user, message, type);
+        if("".equals(message)) {
+            
+        } else {
+            sendMessageToUser(user, message, MessageType.ERROR);
+        }
     }
 
     ChessPieceLocation parsePromotionString(String promotionString) throws ParseException {
