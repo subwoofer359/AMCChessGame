@@ -11,8 +11,10 @@ public class ServerChessGameFactory {
 	
     private ObserverFactoryChain observerFactoryChain;
     
-    private static final String LOCAL_OBSERVERS = "JsonChessGameView|GameFinishedListener|GameStateListener";
-    private static final String NETWORK_OBSERVERS = LOCAL_OBSERVERS + "|OfflineChessGameMessager";
+    private static final String LOCAL_OBSERVERS = "JsonChessGameView|"
+                    + "GameFinishedListener|OneViewGameStateListener";
+    private static final String NETWORK_OBSERVERS = 
+                    "JsonChessGameView|GameFinishedListener|GameStateListener|OfflineChessGameMessager";
     
 	public enum GameType {
 		LOCAL_GAME,

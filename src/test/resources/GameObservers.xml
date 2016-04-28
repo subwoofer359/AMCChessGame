@@ -22,6 +22,12 @@
 	<bean id="gameFinishedListenerFactory" class="org.amc.game.chessserver.observers.GameFinishedListenerFactory">
 		<lookup-method name="createObserver" bean="gameFinishListener"/>
 	</bean>
+		
+	<bean id="oneViewGameStateListener" class="org.amc.game.chessserver.observers.OneViewGameStateListener" scope="prototype"/>
+	
+	<bean id="oneViewGameFinishedListenerFactory" class="org.amc.game.chessserver.observers.OneViewGameStateListenerFactory">
+		<lookup-method name="createObserver" bean="oneViewGameStateListener"/>
+	</bean>
 	
 	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
 	
@@ -41,6 +47,11 @@
 	
 	<bean id="gameStateListenerFilter" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
 		<property name="observerFactory" ref="gameStateListenerFactory" />
+		<property name="successor" ref="oneViewGameStateListenerFilter"/>
+	</bean>
+	
+	<bean id="oneViewGameStateListenerFilter" class="org.amc.game.chessserver.observers.ObserverFactoryChainImpl">
+		<property name="observerFactory" ref="oneViewGameFinishedListenerFactory" />
 		<property name="successor" ref="offlineChessGameMessagerFilter"/>
 	</bean>
 	

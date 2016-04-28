@@ -28,7 +28,15 @@ import javax.persistence.OptimisticLockException;
 @Scope(value="prototype")
 public class GameStateListener extends GameObserver {
 
+    /**
+     * STOMP user message subscription destination
+     */
 	static final String MESSAGE_USER_DESTINATION = "/queue/updates";
+	
+	/**
+     * STOMP message subscription destination
+     */
+    static final String MESSAGE_DESTINATION = "/topic/updates";
 	
     private static final Logger logger = Logger.getLogger(GameStateListener.class);
     
@@ -40,16 +48,11 @@ public class GameStateListener extends GameObserver {
     
     private ServerChessGameDAO serverChessGameDAO;
 
-    /**
-     * STOMP message subscription destination
-     */
-    static final String MESSAGE_DESTINATION = "/topic/updates";
+    
     
     public GameStateListener() {
     }
-    
-    
-    
+
     /**
      * Called by Model(ObservableChessGame) on change
      * 
@@ -60,27 +63,41 @@ public class GameStateListener extends GameObserver {
     public void update(Subject subject, Object message) {
         if(subject instanceof AbstractServerChessGame) {
             AbstractServerChessGame serverChessGame = (AbstractServerChessGame)subject;
-            if (message instanceof ChessGame.GameState) {
-                GameState gameState = (GameState) message;
-                if(GameState.PAWN_PROMOTION.equals(gameState)) {
-                    ChessGamePlayer player = serverChessGame.getChessGame().getCurrentPlayer();
-                	ChessPieceLocation cpl = serverChessGame.getChessGame().getChessBoard().getPawnToBePromoted(player.getColour());
-                	sendMessageToUser(player.getUserName(), gameState.toString() + " " + cpl.getLocation());
-                } else {
-                	sendMessage(serverChessGame, gameState.toString());
-                	logGameState(gameState);
-                }   
-            } else if(message instanceof AbstractServerChessGame.ServerGameStatus) {
-                ServerGameStatus status = (ServerGameStatus)message;
-                if(status == ServerGameStatus.FINISHED) {
-                    sendMessage(serverChessGame, serverChessGame.getChessGame().getGameState().toString());
-                    saveGameStateInDatabase(serverChessGame);
-                }
+               
+            handleGameState(serverChessGame, message);
+            handleGameStatusFinished(serverChessGame, message);    
+        }
+    }
+
+    void handleGameState(AbstractServerChessGame serverChessGame, Object message) {
+        if (message instanceof ChessGame.GameState) {
+            GameState gameState = (GameState) message;
+            if(GameState.PAWN_PROMOTION.equals(gameState)) {
+                handleGameStatePromotion(serverChessGame, gameState);
+            } else {
+                sendMessage(serverChessGame, gameState.toString());
+                logGameState(gameState);
+            }
+        }
+    }
+
+    void handleGameStatePromotion(AbstractServerChessGame serverChessGame, GameState gameState) {
+            ChessGamePlayer player = serverChessGame.getChessGame().getCurrentPlayer();
+            ChessPieceLocation cpl = serverChessGame.getChessGame().getChessBoard().getPawnToBePromoted(player.getColour());
+            sendMessageToUser(player.getUserName(), gameState.toString() + " " + cpl.getLocation()); 
+    }
+    
+    void handleGameStatusFinished(AbstractServerChessGame serverChessGame, Object message) {
+        if(message instanceof AbstractServerChessGame.ServerGameStatus) {
+            ServerGameStatus status = (ServerGameStatus)message;
+            if(status == ServerGameStatus.FINISHED) {
+                sendMessage(serverChessGame, serverChessGame.getChessGame().getGameState().toString());
+                saveGameStateInDatabase(serverChessGame);
             }
         }
     }
     
-    private void sendMessage(AbstractServerChessGame serverChessGame, String message) {
+    void sendMessage(AbstractServerChessGame serverChessGame, String message) {
         this.template.convertAndSend(getMessageDestination(serverChessGame), message, getDefaultHeaders()); 
         logger.debug("Message sent to" + getMessageDestination(serverChessGame));
     }
@@ -134,5 +151,9 @@ public class GameStateListener extends GameObserver {
     
     public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
         this.template = simpMessagingTemplate;
+    }
+    
+    SimpMessagingTemplate getSimpMessagingTemplate() {
+        return template;
     }
 }

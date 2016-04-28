@@ -1,13 +1,7 @@
 package org.amc.game.chessserver.observers;
 
 import static org.amc.game.chess.AbstractChessGame.GameState.PAWN_PROMOTION;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
@@ -29,16 +23,16 @@ import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+import edu.umd.cs.findbugs.detect.AnyMethodReturnValueStreamFactory;
 
 import java.text.ParseException;
 
 class GameStateListenerTestForOneView {
     
-    private GameStateListener listener;
+    GameStateListener listener;
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
     private ServerChessGame serverGame;
@@ -52,7 +46,7 @@ class GameStateListenerTestForOneView {
     private ServerChessGameDAO serverChessGameDAO;
     
     @Mock
-    private SimpMessagingTemplate template;
+    SimpMessagingTemplate template;
 
      @Before
     public void setUp() throws Exception {
@@ -81,7 +75,7 @@ class GameStateListenerTestForOneView {
     }
     
     private void setUpListener() {
-        listener = new GameStateListener();
+        listener = new OneViewGameStateListener();
         listener.setGameToObserver(serverGame);
         listener.setSimpMessagingTemplate(template);
         listener.setServerChessGameDAO(serverChessGameDAO);
@@ -101,8 +95,8 @@ class GameStateListenerTestForOneView {
         
         listener.update(serverGame, PAWN_PROMOTION);
         Player player = serverGame.getChessGame().getCurrentPlayer();
-        verify(template, times(1)).convertAndSendToUser(eq(player.getUserName()), 
-                eq(GameStateListener.MESSAGE_USER_DESTINATION), eq("PAWN_PROMOTION (A,8)"), anyMap());
+        def destination = GameStateListener.MESSAGE_DESTINATION + "/" +serverGame.uid;
+        verify(template, times(1)).convertAndSend(eq(destination), eq("PAWN_PROMOTION (A,8)"), anyMap());
     }
     
     @Test
@@ -116,8 +110,8 @@ class GameStateListenerTestForOneView {
         
         listener.update(serverGame, PAWN_PROMOTION);
         Player player = serverGame.getChessGame().getCurrentPlayer();
-        verify(template, times(1)).convertAndSendToUser(eq(player.getUserName()),
-                eq(GameStateListener.MESSAGE_USER_DESTINATION), eq("PAWN_PROMOTION (A,1)"), anyMap());
+        def destination = GameStateListener.MESSAGE_DESTINATION + "/" + serverGame.uid;
+        verify(template, times(1)).convertAndSend(eq(destination), eq("PAWN_PROMOTION (A,1)"), anyMap());
     }
 
 }
