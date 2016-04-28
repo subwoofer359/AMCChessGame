@@ -29,23 +29,32 @@ public class GameStateListenerTest {
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
     private ServerChessGame serverGame;
-    private SimpMessagingTemplate template;
+    
     private static final long GAME_UID = 1234l;
     private ArgumentCaptor<String> destinationArgument;
     private ArgumentCaptor<Object> messageArgument;
     private ChessGameFactory chessGameFactory;
     
     @Mock
-    ServerChessGameDAO serverChessGameDAO;
+    private ServerChessGameDAO serverChessGameDAO;
+    
+    @Mock
+    private SimpMessagingTemplate template;
     
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        template = mock(SimpMessagingTemplate.class);
+        destinationArgument = ArgumentCaptor.forClass(String.class);
+        messageArgument = ArgumentCaptor.forClass(Object.class);
+        setUpServerChessGame();
         
-        chessGameFactory = new ChessGameFactory() {
+        setUpListener();
+    }
+
+    private void setUpServerChessGame() {
+    	whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+    	chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
                             ChessGamePlayer playerBlack) {
@@ -56,12 +65,15 @@ public class GameStateListenerTest {
         serverGame = new TwoViewServerChessGame(GAME_UID, whitePlayer);
         serverGame.setChessGameFactory(chessGameFactory);
         serverGame.addOpponent(blackPlayer);
-        
-        
-        destinationArgument = ArgumentCaptor.forClass(String.class);
-        messageArgument = ArgumentCaptor.forClass(Object.class);
     }
-
+    
+    private void setUpListener() {
+    	listener = new GameStateListener();
+        listener.setGameToObserver(serverGame);
+        listener.setSimpMessagingTemplate(template);
+        listener.setServerChessGameDAO(serverChessGameDAO);
+    }
+    
     @After
     public void tearDown() throws Exception {
     }
@@ -69,10 +81,6 @@ public class GameStateListenerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws DAOException {
-        listener = new GameStateListener();
-        listener.setGameToObserver(serverGame);
-        listener.setSimpMessagingTemplate(template);
-
         listener.update(serverGame, ChessGame.GameState.RUNNING);
         verify(serverChessGameDAO, never()).saveServerChessGame(eq(serverGame));
         verify(template).convertAndSend(destinationArgument.capture(),messageArgument.capture(),anyMap());
@@ -85,11 +93,6 @@ public class GameStateListenerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testSendCheckMateMessage() throws DAOException {
-        listener = new GameStateListener();
-        listener.setGameToObserver(serverGame);
-        listener.setSimpMessagingTemplate(template);
-        listener.setServerChessGameDAO(serverChessGameDAO);
-        
         listener.update(serverGame, ServerChessGame.ServerGameStatus.FINISHED);
         verify(template, times(1)).convertAndSend(anyString(),anyObject(),anyMap());
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(serverGame));
@@ -98,9 +101,6 @@ public class GameStateListenerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testMessageIsIgnored() throws DAOException {
-        listener = new GameStateListener();
-        listener.setGameToObserver(serverGame);
-        listener.setSimpMessagingTemplate(template);
         listener.update(serverGame, null);
         verify(template, never()).convertAndSend(anyString(),anyObject(),anyMap());
         
@@ -109,4 +109,8 @@ public class GameStateListenerTest {
         verify(serverChessGameDAO, never()).saveServerChessGame(eq(serverGame));
     }
 
+    @Test
+    public void promotionTest() throws DAOException {
+    	
+    }
 }
