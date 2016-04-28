@@ -2,8 +2,11 @@ package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
+import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.IllegalMoveException;
+import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
+import org.amc.game.chess.PawnPromotionRule;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.AbstractChessGame.GameState;
 
@@ -140,4 +143,14 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
             break;
         }
     }
+
+    @Override
+    public void promotePawnTo(ChessPiece piece, Location location) throws IllegalMoveException {
+        PawnPromotionRule promotionRule = PawnPromotionRule.getInstance();
+        promotionRule.promotePawnTo(getChessGame(), location, piece);
+        notifyObservers(getChessGame());
+        checkGameStatus();
+    }
+    
+    
 }

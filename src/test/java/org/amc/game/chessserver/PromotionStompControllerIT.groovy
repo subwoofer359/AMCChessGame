@@ -22,6 +22,7 @@ import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.JsonChessGameView;
+import org.apache.openjpa.kernel.exps.This;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -54,12 +55,14 @@ import java.util.Map;
 class PromotionStompControllerIT extends StompControllerFixtureIT {
     
     static final String MESSAGE_DESTINATION = "/app/promote/";
+    
+    static final Long ONEVIEW_GAMEUUID  = 9409409L;
 
     @Before
     public void setup() throws Exception {
         super.setup();
         clearDAO();
-        createChessGame();
+        //createChessGame();
     }
 
     @After
@@ -81,15 +84,31 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
         def scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, stephen);
         scg.addOpponent(nobby);
         scg.setChessGame(sGameFactory.getChessGame(board, scg.getPlayer(stephen), scg.getPlayer(nobby)));
+        
         Move move = new Move("a7:a8");
-
         scg.move(scg.getPlayer(stephen), move);
+        serverChessGameDAO.saveServerChessGame(scg);
+    }
+    
+    private void createOneViewChessGame() {
+        def scgfactory = (ServerChessGameFactory) wac.getBean("serverChessGameFactory");
+        def chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
+        def board  = chessBoardFactory.getChessBoard("Ke8:ke1:pa7:Pa2");
+        def sGameFactory = new StandardChessGameFactory();
 
+        def scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, ONEVIEW_GAMEUUID, stephen);
+        scg.addOpponent(nobby);
+        scg.setChessGame(sGameFactory.getChessGame(board, scg.getPlayer(stephen), scg.getPlayer(nobby)));
+        
+        scg.chessGame.changePlayer();
+        Move move = new Move("a2:a1");
+        scg.move(scg.getPlayer(nobby), move);
         serverChessGameDAO.saveServerChessGame(scg);
     }
 
     @Test
-    public void testPromote() {
+    public void testWhitePromote() {
+        createChessGame()
         def game = serverChessGameDAO.getServerChessGame(gameUUID);
         assert game.getChessGame().gameState == GameState.PAWN_PROMOTION;
 
@@ -108,12 +127,35 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
         assert game.getChessGame().gameState == GameState.RUNNING;
     }
 
+    @Test
+    public void testBlackPromote() {
+        createOneViewChessGame();
+        def game = serverChessGameDAO.getServerChessGame(ONEVIEW_GAMEUUID);
+        assert game.getChessGame().gameState == GameState.PAWN_PROMOTION;
+
+        subscribe();
+        promote(nobby, ONEVIEW_GAMEUUID, MESSAGE_DESTINATION, "promote Qa1");
+        consumePromotionStatusUpdate();
+        testInfoMessageSent();
+
+        game = serverChessGameDAO.getServerChessGame(ONEVIEW_GAMEUUID);
+        
+
+        ChessPiece chessPiece =  game.getChessGame().getChessBoard().getPieceFromBoardAt(new Location("a1"));
+        assert chessPiece != null;
+        assert chessPiece.colour == Colour.BLACK;
+        assert chessPiece.getClass() == QueenPiece.class;
+        assert game.getChessGame().gameState == GameState.RUNNING;
+    }
+    
+    
     private void consumePromotionStatusUpdate() {
         testStatusMessageSent();
     }
     
     @Test
     public void testInvalidPromote() {
+        createChessGame()
         def game = serverChessGameDAO.getServerChessGame(gameUUID);
         assert game.getChessGame().gameState == GameState.PAWN_PROMOTION;
 

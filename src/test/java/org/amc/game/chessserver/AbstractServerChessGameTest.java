@@ -10,10 +10,12 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ChessGamePlayer;
+import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
+import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
@@ -211,6 +213,12 @@ public class AbstractServerChessGameTest {
 		}
 		
 		@Override
+        public void promotePawnTo(ChessPiece piece, Location location) throws IllegalMoveException {
+            // Do nothing
+            
+        }
+		
+		@Override
 		public void addOpponent(Player opponent) {
 			if(getChessGame() == null) {
 				ChessBoard board = new ChessBoard();
@@ -219,6 +227,5 @@ public class AbstractServerChessGameTest {
 				System.out.println("Opponent already set");
 			}
 		}
-		
 	}
 }

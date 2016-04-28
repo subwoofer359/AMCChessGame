@@ -4,9 +4,11 @@ import org.amc.game.GameSubject;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
+import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
+import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
@@ -221,6 +223,14 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      */
     public abstract void move(ChessGamePlayer player, Move move) throws IllegalMoveException;
 
+    
+    /**
+     * Called when a pawn needs to be promoted to another piece
+     * @param piece ChessPiece to promote pawn to
+     * @param location Location the location of the pawn
+     * @throws IllegalMoveException when the promotion is illegal
+     */
+    public abstract void promotePawnTo(ChessPiece piece, Location location) throws IllegalMoveException ;
     /**
      * Retrieve the Unique identifier of the {@link ServerChessGame}
      * 

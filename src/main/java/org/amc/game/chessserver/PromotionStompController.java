@@ -4,7 +4,6 @@ import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSI
 
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.IllegalMoveException;
-import org.amc.game.chess.PawnPromotionRule;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.apache.log4j.Logger;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -32,13 +31,11 @@ public class PromotionStompController extends StompController {
         
         AbstractServerChessGame scGame = getServerChessGame(gameUUID);
         
-        PawnPromotionRule promotionRule = PawnPromotionRule.getInstance();
-
         String message = "";
         
         try {
             ChessPieceLocation newPiece = parsePromotionString(promotionMessage);
-            promotionRule.promotePawnTo(scGame.getChessGame(), newPiece.getLocation(), newPiece.getPiece());
+            scGame.promotePawnTo(newPiece.getPiece(), newPiece.getLocation());
         } catch(IllegalMoveException | ParseException ime) {
             message = ime.getMessage();
         }
