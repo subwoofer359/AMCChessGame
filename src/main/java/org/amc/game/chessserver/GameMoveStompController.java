@@ -62,7 +62,7 @@ public class GameMoveStompController extends StompController {
         String message = "";
 
         try {
-            ChessGamePlayer gamePlayer = ComparePlayers.comparePlayers(game.getPlayer(), player) ? game.getPlayer() : game.getOpponent();
+            ChessGamePlayer gamePlayer = game.getPlayer(player);
             game.move(gamePlayer, new Move(moveString));
         } catch (IllegalMoveException | IllegalArgumentException e) {
             message = "Error:" + e.getMessage();
