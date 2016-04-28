@@ -4,6 +4,7 @@ import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chessserver.MessageType;
@@ -62,8 +63,9 @@ public class GameStateListener extends GameObserver {
             if (message instanceof ChessGame.GameState) {
                 GameState gameState = (GameState) message;
                 if(GameState.PAWN_PROMOTION.equals(gameState)) {
-                	ChessPieceLocation cpl = serverChessGame.getChessGame().getChessBoard().getPawnToBePromoted();
-                	sendMessageToUser(serverChessGame.getChessGame().getCurrentPlayer().getUserName(), gameState.toString() + " " + cpl.getLocation());
+                    ChessGamePlayer player = serverChessGame.getChessGame().getCurrentPlayer();
+                	ChessPieceLocation cpl = serverChessGame.getChessGame().getChessBoard().getPawnToBePromoted(player.getColour());
+                	sendMessageToUser(player.getUserName(), gameState.toString() + " " + cpl.getLocation());
                 } else {
                 	sendMessage(serverChessGame, gameState.toString());
                 	logGameState(gameState);

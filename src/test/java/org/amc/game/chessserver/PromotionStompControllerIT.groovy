@@ -95,17 +95,23 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
 
         subscribe();
         promote(stephen, gameUUID, MESSAGE_DESTINATION, "promote qa8");
+        consumePromotionStatusUpdate();
         testInfoMessageSent();
 
         game = serverChessGameDAO.getServerChessGame(gameUUID);
-        assert game.getChessGame().gameState == GameState.RUNNING;
+        
 
         ChessPiece chessPiece =  game.getChessGame().getChessBoard().getPieceFromBoardAt(new Location("a8"));
         assert chessPiece != null;
         assert chessPiece.colour == Colour.WHITE;
         assert chessPiece.getClass() == QueenPiece.class;
+        assert game.getChessGame().gameState == GameState.RUNNING;
     }
 
+    private void consumePromotionStatusUpdate() {
+        testStatusMessageSent();
+    }
+    
     @Test
     public void testInvalidPromote() {
         def game = serverChessGameDAO.getServerChessGame(gameUUID);
@@ -113,6 +119,7 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
 
         subscribe();
         promote(stephen, gameUUID, MESSAGE_DESTINATION, "promote qe1");
+        consumePromotionStatusUpdate();
         testErrorMessageSent();
 
         game = serverChessGameDAO.getServerChessGame(gameUUID);

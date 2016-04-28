@@ -72,7 +72,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     
     @Test
     public void testPromotionOfNonEligiblePiece() {
-        def message = 'promote qa6';
+        def message = 'promote qe1';
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         this.verifySimpMessagingTemplateCallToUser();
         assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.ERROR;
