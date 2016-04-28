@@ -12,7 +12,7 @@ QUnit.module("Promotion tests", {
 
 QUnit.test("testing search through chessboard for white pawns for Promotion", function (assert) {
     "use strict";
-    json = '{"squares":{"H7":"p", "A8":"p"}}'
+    json = '{"squares":{"H7":"p", "A8":"p"}}';
     var promotionCheck = promotion.findPawnForPromotion;
     var parsedJson = JSON.parse(json);
     var square = promotionCheck("WHITE", parsedJson);
