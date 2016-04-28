@@ -15,6 +15,10 @@ import java.util.List;
 public class ChessBoard extends DefaultSubject {
 	
 	public static final ChessBoard EMPTY_CHESSBOARD = new EmptyChessBoard();
+	
+	private static final int WHITE_PROMOTION_RANK = 8;
+	
+	private static final int BLACK_PROMOTION_RANK = 1;
 
     /**
      * Represents the Letter Coordinates of squares on a chess board
@@ -178,8 +182,23 @@ public class ChessBoard extends DefaultSubject {
         return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
     }
     
-    public ChessPieceLocation getPawnToBePromoted() {
-    	return null;
+    public ChessPieceLocation getPawnToBePromoted(Colour colour) {
+        int rank;
+        ChessPieceLocation cpl = null;
+        if (Colour.WHITE.equals(colour)) {
+            rank = WHITE_PROMOTION_RANK;
+        } else {
+            rank = BLACK_PROMOTION_RANK;
+        }
+        for (Coordinate c : Coordinate.values()) {
+            ChessPiece p = getPieceFromBoardAt(c.getIndex(), rank);
+            if (p instanceof PawnPiece && p.getColour() == colour) {
+                cpl = new ChessPieceLocation(p, new Location(c, rank));
+                break;
+            }
+        }
+        
+    	return cpl;
     }
 
     /**

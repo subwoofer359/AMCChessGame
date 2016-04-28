@@ -125,12 +125,12 @@ public class GameStateListenerTest {
     	ChessBoard board = mock(ChessBoard.class);
     	ChessPieceLocation cpl = new ChessPieceLocation(new PawnPiece(Colour.WHITE), new Location("A8"));
     	
-    	when(board.getPawnToBePromoted()).thenReturn(cpl);
+    	when(board.getPawnToBePromoted(Colour.WHITE)).thenReturn(cpl);
     	serverGame.getChessGame().setChessBoard(board);
     	
     	listener.update(serverGame, PAWN_PROMOTION);
     	Player player = serverGame.getChessGame().getCurrentPlayer();
     	verify(template, times(1)).convertAndSendToUser(eq(player.getUserName()), 
-    			eq(GameStateListener.MESSAGE_USER_DESTINATION), eq("PAWN_PROMOTION a8"), anyMap());
+    			eq(GameStateListener.MESSAGE_USER_DESTINATION), eq("PAWN_PROMOTION (A,8)"), anyMap());
     }
 }
