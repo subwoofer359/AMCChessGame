@@ -26,19 +26,13 @@
     socket = new SockJS(stompObject.URL);
     stompClient = Stomp.over(socket);
     stompClient.connect(stompObject.headers, function() {
-        stompClient.subscribe(USER_UPDATES, function(){
-            
+        stompClient.subscribe(USER_UPDATES, function(message){
+            if(message.headers.TYPE === "STATUS") {
+                squareOfPawn = promotion.parsePromotionMessage(message)
+            }
         });
         
 		stompClient.subscribe(TOPIC_UPDATES + gameUUID, function(message){
-            if(message.headers.TYPE === "STATUS") {
-                if(message.body === "PAWN_PROMOTION" && undefined !== chessboard) {
-                    squareOfPawn = promotion.findPawnForPromotion(playerColour, chessboard);
-                }
-                
-            } else if (message.headers.TYPE === "UPDATE") {
-                chessboard = JSON.parse(message.body);
-            }
             
         });
         

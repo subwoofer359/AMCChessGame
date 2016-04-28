@@ -1,4 +1,6 @@
 var promotion = (function() {
+    var messageRegex = /PAWN_PROMOTION\s\(([A-Ha-h]),([1-8])\)/;
+    
     function findPawnForPromotion(colour, chessBoardObj) {
         var whiteRank = 8,
             blackRank = 1,
@@ -14,7 +16,18 @@ var promotion = (function() {
        }
     }
     
+    function parsePromotionMessage(message) {
+        if(messageRegex.test(message)) {
+            var find = messageRegex.exec(message);
+            var letter = find[1].toLowerCase();
+            var number = find[2];
+            return letter + number;
+        }
+        throw "Message can't be parsed";
+    }
+    
     return {
-        findPawnForPromotion : findPawnForPromotion
+        findPawnForPromotion : findPawnForPromotion,
+        parsePromotionMessage : parsePromotionMessage
     };
 })();

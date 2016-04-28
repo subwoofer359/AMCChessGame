@@ -36,3 +36,23 @@ QUnit.test("testing search through chessboard for no valid Promotion", function 
     var square = promotionCheck("BLACK", parsedJson);
     assert.equal(square, null);
 });
+
+QUnit.test("testing parsing promotion string from server", function (assert) {
+    "use strict";
+    var message = "PAWN_PROMOTION (A,1)";
+    var square = promotion.parsePromotionMessage(message);
+    assert.equal(square, "a1" , "Not parsing message correctly");
+});
+
+QUnit.test("testing parsing promotion string from server", function (assert) {
+    "use strict";
+    var message = "PAWN_PROMOTION (A,8)";
+    var square = promotion.parsePromotionMessage(message);
+    assert.equal(square, "a8" , "Not parsing message correctly");
+});
+
+QUnit.test("throws", function (assert) {
+    "use strict";
+    var message = "PAWN_PROMOTION (K,8)";
+    assert.throws(function() {promotion.parsePromotionMessage(message);});
+});
