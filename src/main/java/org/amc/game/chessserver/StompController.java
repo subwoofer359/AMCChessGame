@@ -68,6 +68,9 @@ public class StompController {
         return headers;
     }
     
+    boolean isMessageNotEmpty(String message) {
+    	return !"".equals(message);
+    }
     /**
      * For adding a {@link SimpMessagingTemplate} object to be used for send
      * STOMP messages

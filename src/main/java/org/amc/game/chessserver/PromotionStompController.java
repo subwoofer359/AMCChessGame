@@ -40,9 +40,7 @@ public class PromotionStompController extends StompController {
             message = ime.getMessage();
         }
         
-        if("".equals(message)) {
-            
-        } else {
+        if(isMessageNotEmpty(message)) {
             sendMessageToUser(user, message, MessageType.ERROR);
         }
     }

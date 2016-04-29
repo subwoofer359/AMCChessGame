@@ -3,7 +3,6 @@ package org.amc.game.chessserver;
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
 import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
@@ -54,12 +53,11 @@ public class GameMoveStompController extends StompController {
 
         logger.info(message);
 
-        if("".equals(message)) {
-            
-        } else { 
+        if(isMessageNotEmpty(message)) { 
             sendMessageToUser(user, message, MessageType.ERROR);
         }
     }
+    
     
     private String moveChessPiece(AbstractServerChessGame game, Player player, String moveString) {
         String message = "";
@@ -99,9 +97,7 @@ public class GameMoveStompController extends StompController {
                logger.error(message);
            }
         
-        if("".equals(message)) {
-            
-        } else { 
+        if(isMessageNotEmpty(message)) { 
             sendMessageToUser(user, message, MessageType.ERROR);
         }
          
