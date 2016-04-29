@@ -56,3 +56,23 @@ QUnit.test("throws", function (assert) {
     var message = "PAWN_PROMOTION (K,8)";
     assert.throws(function() {promotion.parsePromotionMessage(message);});
 });
+
+QUnit.test("testing open stomp connection to Stomp Controller", function (assert) {
+    "use strict";
+    function stompClient() {
+    	
+    }
+    stompClient.prototype = {
+    	connect : function(header, callback) {
+    		
+    	}
+    };
+    var stompObject = {
+    		gameUUID : "1234",
+    	    playerColour : "WHITE",
+    	    headers : { headerName : "token"},
+    	    URL : "some url"
+    };
+    var stomp = promotion.setUpStompConnection(stompClient, stompObject);
+    assert.notNull(stomp);
+});

@@ -26,8 +26,67 @@ var promotion = (function() {
         throw "Message can't be parsed";
     }
     
+    function stompConnection(stompObject) {
+    	var stompClient,
+        	socket;
+    	socket = new SockJS(stompObject.URL);
+	    stompClient = Stomp.over(socket);
+	    setupStompConnection(stompClient, stompObject);
+    }
+    
+    function setUpStompConnection(stompClient, stompObject) {
+	    var	gameUUID = stompObject.gameUUID,
+	        USER_UPDATES = "/user/queue/updates",
+	        TOPIC_UPDATES = "/topic/updates/",
+	        APP_GET = "/app/get/",
+	        PRIORITY = {priority : 9},
+	        APP_PROMOTE = "/app/promote/",
+	        PROMOTE = "promote ",
+	        chessboard,
+	        squareOfPawn;
+	        
+	    
+	    stompClient.connect(stompObject.headers, function() {
+	        stompClient.subscribe(USER_UPDATES, function(message){
+	            if(message.headers.TYPE === "STATUS") {
+	                squareOfPawn = parsePromotionMessage(message)
+	            } 
+	        });
+	        
+			stompClient.subscribe(TOPIC_UPDATES + gameUUID, function(message){
+			    if(message.headers.TYPE === "UPDATE") {
+	                var board = $.parseJSON(message.body);
+	                playerColour = board.currentPlayer.colour;
+	            } else if(message.headers.TYPE === "STATUS") {
+	                squareOfPawn = parsePromotionMessage(message)
+	            }
+	        });
+	        
+	        stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
+	        
+	        $("#queenBtn").click(function() {
+	            var piece = playerColour === "WHITE" ? "q" : "Q";
+	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+	        });
+	        $("#rookBtn").click(function() {
+	            var piece = playerColour === "WHITE" ? "r" : "R";
+	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+	        });
+	        $("#knightBtn").click(function() {
+	            var piece = playerColour === "WHITE" ? "n" : "N";
+	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+	        });
+	        $("#bishopBtn").click(function() {
+	            var piece = playerColour === "WHITE" ? "b" : "B";
+	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+	        });
+	    });
+    }
+    
     return {
-        findPawnForPromotion : findPawnForPromotion,
-        parsePromotionMessage : parsePromotionMessage
+    	parsePromotionMessage : parsePromotionMessage,
+    	findPawnForPromotion : findPawnForPromotion,
+    	setUpStompConnection : setUpStompConnection,
+        stompConnection : stompConnection
     };
 })();
