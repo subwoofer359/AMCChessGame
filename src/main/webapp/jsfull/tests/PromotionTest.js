@@ -1,12 +1,21 @@
 /*global QUnit*/
 /*global chessboard_module*/
 /*global $*/
-var json;
+var json,
+    message,
+    stompObject;
 QUnit.module("Promotion tests", {
     beforeEach: function () {
         "use strict";
         json = '{"squares":{"C8":"B","A8":"p","A1":"P","C7":"P","A5":"R","A7":"P","E7":"P","E8":"K","G7":"P","G8":"N","E2":"p","E1":"k","G2":"p","G1":"n","C1":"b","C2":"p","D8":"Q","B2":"p","D7":"P","B8":"N","B7":"P","F8":"B","F7":"P","H8":"R","F1":"b","H7":"P","H2":"p","H1":"r","F2":"p","D2":"p","D1":"q","B1":"n"}}';
-
+        message = {};
+        message.headers = {};
+        stompObject = {
+            gameUUID : "1234",
+            playerColour : "WHITE",
+            headers : { headerName : "token"},
+            URL : "some url"
+        };
     }
 });
 
@@ -57,31 +66,75 @@ QUnit.test("throws", function (assert) {
     assert.throws(function() {promotion.parsePromotionMessage(message);});
 });
 
-QUnit.test("testing open stomp connection to Stomp Controller", function (assert) {
+QUnit.test("testing STATUS message from Stomp Server  to User receiver", function (assert) {
     "use strict";
-    function StompClient() {
-    	
-    }
+    
+    var StompClient = function StompClient() {},
+        stompClient,
+        squareOfPawn;
     
     StompClient.prototype = {
     	connect : function(header, callback) {
-    		console.log(header);
+    		callback();
     	},
     	subscribe : function (destination, callback) {
-    		
+    	    if("/user/queue/updates" === destination) {
+    	        this.userSubscribe = callback;
+    	    }
     	},
     	send : function (destination, priority, message) {
     		
+    	},
+    	getUserSubscribe : function () {
+    	    return this.userSubscribe;
     	}
     };
-    var stompClient = new StompClient();
-    var stompObject = {
-    		gameUUID : "1234",
-    	    playerColour : "WHITE",
-    	    headers : { headerName : "token"},
-    	    URL : "some url"
-    };
-    var stomp = promotion.setUpStompConnection(stompClient, stompObject);
-    assert.equal(undefined, stomp);
+    
+    stompClient = new StompClient();
+    message.headers.TYPE = "STATUS";
+    
+    promotion.setUpStompConnection(stompClient, stompObject);
+    
+    
+    message.body = "PAWN_PROMOTION (A,1)";
+    
+    
+    squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
+    assert.equal(squareOfPawn, "a1");
+    
+});
 
+QUnit.test("testing UPDATE message from Stomp Server to User receiver", function (assert) {
+    "use strict";
+    var StompClient = function StompClient() {},
+        stompClient,
+        squareOfPawn;
+    
+    StompClient.prototype = {
+        connect : function(header, callback) {
+            callback();
+        },
+        subscribe : function (destination, callback) {
+            if("/user/queue/updates" === destination) {
+                this.userSubscribe = callback;
+            }
+        },
+        send : function (destination, priority, message) {
+            
+        },
+        getUserSubscribe : function () {
+            return this.userSubscribe;
+        }
+    };
+    
+    stompClient = new StompClient();
+    message.headers.TYPE = "UPDATE";
+    
+    promotion.setUpStompConnection(stompClient, stompObject);
+    message.body = "CHESSBOARD";
+    squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
+    
+    assert.equal(undefined, squareOfPawn);
+    
+    
 });

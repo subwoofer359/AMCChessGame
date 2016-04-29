@@ -49,7 +49,8 @@ var promotion = (function() {
 	    stompClient.connect(stompObject.headers, function() {
 	        stompClient.subscribe(USER_UPDATES, function(message){
 	            if(message.headers.TYPE === "STATUS") {
-	                squareOfPawn = parsePromotionMessage(message)
+	                squareOfPawn = parsePromotionMessage(message.body);
+	                return squareOfPawn;
 	            } 
 	        });
 	        
@@ -58,7 +59,7 @@ var promotion = (function() {
 	                var board = $.parseJSON(message.body);
 	                playerColour = board.currentPlayer.colour;
 	            } else if(message.headers.TYPE === "STATUS") {
-	                squareOfPawn = parsePromotionMessage(message)
+	                squareOfPawn = parsePromotionMessage(message.body);
 	            }
 	        });
 	        
@@ -81,12 +82,13 @@ var promotion = (function() {
 	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
 	        });
 	    });
+	    
     }
     
     return {
     	parsePromotionMessage : parsePromotionMessage,
     	findPawnForPromotion : findPawnForPromotion,
     	setUpStompConnection : setUpStompConnection,
-        stompConnection : stompConnection
+        stompConnection : stompConnection,
     };
 })();
