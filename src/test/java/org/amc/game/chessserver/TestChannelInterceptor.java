@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TestChannelInterceptor extends ChannelInterceptorAdapter {
 
-    private final BlockingQueue<Message<?>> messages = new ArrayBlockingQueue<>(100);
+    private final BlockingQueue<Message<?>> messages = new ArrayBlockingQueue<>(150);
 
     private final List<String> destinationPatterns = new ArrayList<>();
 
