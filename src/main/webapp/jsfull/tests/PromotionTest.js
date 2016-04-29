@@ -59,14 +59,22 @@ QUnit.test("throws", function (assert) {
 
 QUnit.test("testing open stomp connection to Stomp Controller", function (assert) {
     "use strict";
-    function stompClient() {
+    function StompClient() {
     	
     }
-    stompClient.prototype = {
+    
+    StompClient.prototype = {
     	connect : function(header, callback) {
+    		console.log(header);
+    	},
+    	subscribe : function (destination, callback) {
+    		
+    	},
+    	send : function (destination, priority, message) {
     		
     	}
     };
+    var stompClient = new StompClient();
     var stompObject = {
     		gameUUID : "1234",
     	    playerColour : "WHITE",
@@ -74,5 +82,6 @@ QUnit.test("testing open stomp connection to Stomp Controller", function (assert
     	    URL : "some url"
     };
     var stomp = promotion.setUpStompConnection(stompClient, stompObject);
-    assert.notNull(stomp);
+    assert.equal(undefined, stomp);
+
 });
