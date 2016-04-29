@@ -43,8 +43,8 @@
 	
 	<bean id="gameActionsStompController" class="org.amc.game.chessserver.GameActionsStompController"/>
 	<bean id="saveGameStompController" class="org.amc.game.chessserver.SaveGameStompController" />
-	<bean id="gameMoveStompController" class="org.amc.game.chessserver.GameMoveStompController"/>
-	<bean id="promotionStompController" class="org.amc.game.chessserver.PromotionStompController" />
+	<bean id="gameMoveStompController" class="org.amc.game.chessserver.StompControllerIT.GameMoveStompControllerHelper"/>
+	<bean id="promotionStompController" class="org.amc.game.chessserver.PromotionStompControllerIT.PromotionStompControllerHelper" />
 	
 	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
 		<property name="serverChessGameDAO" ref="myServerChessGameDAO"></property>

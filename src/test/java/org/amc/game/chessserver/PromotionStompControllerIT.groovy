@@ -46,6 +46,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
+
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.stereotype.Controller;
+
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -188,4 +197,23 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
         System.out.println(message);
         this.clientInboundChannel.send(message);
     }
+    
+    @Controller
+	public static class PromotionStompControllerHelper extends PromotionStompController {
+
+		static final String TEST_MESSAGE = "Testing message";
+	
+		@Override
+		@MessageMapping("/promote/{gameUUID}")
+    	@SendToUser(value = "/queue/updates", broadcast = false)
+		public void promotePawnTo(Principal user,
+        	    @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
+            	@DestinationVariable long gameUUID, @Payload String promotionMessage) {
+			super.promotePawnTo(user, wsSession, gameUUID, promotionMessage);
+			sendMessageToUser(user, TEST_MESSAGE, MessageType.INFO);
+		}
+
+	
+}
+    
 }

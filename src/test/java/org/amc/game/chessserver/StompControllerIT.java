@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
 import org.amc.DAOException;
 import org.amc.dao.DAO;
@@ -22,11 +23,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -148,6 +155,7 @@ public class StompControllerIT {
         for (int i = 0; i < moves.length; i++) {
             AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
             twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, moves[i]);
+            testInfoMessageSent();
             verifyMove(scg, moves[i]);
         }
     }
@@ -187,7 +195,7 @@ public class StompControllerIT {
                             .getServerChessGame(oneViewChessGameUUID);
             oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID,
                             moves[i]);
-
+            testInfoMessageSent();
             verifyMove(oneViewChessGame, moves[i]);
         }
 
@@ -272,6 +280,7 @@ public class StompControllerIT {
         for (String move : moves) {
             scg = serverChessGameDAO.getServerChessGame(gameUUID);
             move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
+            testInfoMessageSent();
             saveGame(scg);
             testInfoMessageSent();
             serverChessGameDAO.getEntityManager(gameUUID).close();
@@ -300,7 +309,8 @@ public class StompControllerIT {
 
     private void saveGameTest(ServerChessGameDAO dao, String move) throws Exception {
         AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
-        move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);   
+        move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
+        testInfoMessageSent();
         saveGame(scg);
         testInfoMessageSent();
         AbstractServerChessGame savedGame = null;
@@ -327,5 +337,31 @@ public class StompControllerIT {
         Message<byte[]> message = MessageBuilder.createMessage("save".getBytes(),
                         headers.getMessageHeaders());
         this.clientInboundChannel.send(message);
+    }
+    
+    @Controller
+    public static class GameMoveStompControllerHelper extends GameMoveStompController {
+
+    	static final String TEST_MESSAGE = "Testing message";
+
+    	@MessageMapping("/move/{gameUUID}")
+    	@SendToUser(value = "/queue/updates", broadcast = false)
+    	@Override
+    	public void registerMove(Principal user,
+    			@Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
+    			@DestinationVariable long gameUUID, @Payload String moveString) {
+    		super.registerMove(user, wsSession, gameUUID, moveString);
+    		sendMessageToUser(user, TEST_MESSAGE, MessageType.INFO);
+    	}
+
+    	@MessageMapping("/oneViewMove/{gameUUID}")
+    	@SendToUser(value = "/queue/updates", broadcast = false)
+    	@Override
+    	public void registerOneViewMoveMove(Principal user, @DestinationVariable long gameUUID,
+    			@Payload String moveString) {
+    		super.registerOneViewMoveMove(user, gameUUID, moveString);
+    		sendMessageToUser(user, TEST_MESSAGE, MessageType.INFO);
+    	}
+
     }
 }
