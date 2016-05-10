@@ -159,7 +159,19 @@
     }
     
     #promotionDialog {
-        width:40%;
+        width: 50%;
+        
+    }
+    
+    .hidePromotionDialog {
+        display: none;
+    }
+    .displayPromotionDialog {
+        position: absolute;
+        display: block;
+        top: 20%;
+        left: 25%;
+        right: 25%;
     }
     
     #promotionDialog .panel-body {
