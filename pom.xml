@@ -10,6 +10,7 @@
   	<dependency>
 		<groupId>org.codehaus.groovy</groupId>
 		<artifactId>groovy-all</artifactId>
+		<classifier>indy</classifier>
 		<version>2.4.6</version>
 	</dependency>
  
