@@ -17,7 +17,7 @@
     var connection = promotion.stompConnection(stompObject);
 });
 </script>
-<div id="promotionDialog" class="container">
+<div id="promotionDialog" class="container hidePromotionDialog">
     <div class="row">
         <div class="panel-primary">
             <div class="panel-heading">

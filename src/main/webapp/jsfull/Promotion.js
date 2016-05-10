@@ -31,7 +31,19 @@ var promotion = (function() {
         	socket;
     	socket = new SockJS(stompObject.URL);
 	    stompClient = Stomp.over(socket);
-	    setupStompConnection(stompClient, stompObject);
+	    setUpStompConnection(stompClient, stompObject);
+    }
+    
+    function showPromotionDialog() {
+        var $dialog = $("#promotionDialog");
+        $dialog.removeClass("hidePromotionDialog");
+        $dialog.addClass("displayPromotionDialog");
+    }
+    
+    function hidePromotionDialog() {
+        var $dialog = $("#promotionDialog");
+        $dialog.removeClass("displayPromotionDialog");
+        $dialog.addClass("hidePromotionDialog");
     }
     
     function setUpStompConnection(stompClient, stompObject) {
@@ -50,6 +62,9 @@ var promotion = (function() {
 	        stompClient.subscribe(USER_UPDATES, function(message){
 	            if(message.headers.TYPE === "STATUS") {
 	                squareOfPawn = parsePromotionMessage(message.body);
+                    if(undefined !== squareOfPawn) {
+                        showPromotionDialog();
+                    }
 	                return squareOfPawn;
 	            } 
 	        });
@@ -68,18 +83,22 @@ var promotion = (function() {
 	        $("#queenBtn").click(function() {
 	            var piece = playerColour === "WHITE" ? "q" : "Q";
 	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+                hidePromotionDialog();
 	        });
 	        $("#rookBtn").click(function() {
 	            var piece = playerColour === "WHITE" ? "r" : "R";
 	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+                hidePromotionDialog();
 	        });
 	        $("#knightBtn").click(function() {
 	            var piece = playerColour === "WHITE" ? "n" : "N";
 	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+                hidePromotionDialog();
 	        });
 	        $("#bishopBtn").click(function() {
 	            var piece = playerColour === "WHITE" ? "b" : "B";
 	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+                hidePromotionDialog();
 	        });
 	    });
 	    
