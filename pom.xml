@@ -82,12 +82,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>pl.allegro</groupId>
-			<artifactId>grunt-maven-plugin</artifactId>
-			<version>1.5.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.7.6.201602180812</version>
@@ -411,6 +405,36 @@
 						<version>2.4.3-01</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<!-- optional: default phase is "generate-resources" -->
+						<phase>generate-resources</phase>
+						<configuration>
+						<nodeVersion>v0.10.18</nodeVersion>
+						<npmVersion>1.3.8</npmVersion>
+					</configuration>
+					</execution>
+					<execution>
+						<id>Run QUnit</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<phase>test</phase>
+						<configuration>
+							<arguments>qunit</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
