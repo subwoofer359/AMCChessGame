@@ -4,7 +4,8 @@
     
     var headerName = "${_csrf.headerName}",
         token = "${_csrf.token}",
-        stompObject = {};
+        stompObject = {},
+        promotionModule;
 
     stompObject.gameUUID = "${GAME_UUID}";
     stompObject.playerColour = "${CHESSPLAYER.colour}";
@@ -13,8 +14,9 @@
     stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame";
-
-    var connection = promotion.stompConnection(stompObject);
+    
+    promotionModule = promotion(stompObject, promotionAction);
+    var connection = promotionModule.stompConnection();
 });
 </script>
 <div id="promotionDialog" class="container hidePromotionDialog">

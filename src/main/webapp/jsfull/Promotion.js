@@ -1,113 +1,137 @@
-var promotion = (function() {
-    var messageRegex = /PAWN_PROMOTION\s\(([A-Ha-h]),([1-8])\)/;
-    
+/*global $*/
+/*global SockJS*/
+/*global Stomp*/
+
+var promotion = function (stompObject, promotionHandler) {
+    "use strict";
+    var messageRegex = /PAWN_PROMOTION\s\(([A-Ha-h]),([1-8])\)/,
+        gameUUID = stompObject.gameUUID,
+        USER_UPDATES = "/user/queue/updates",
+        TOPIC_UPDATES = "/topic/updates/",
+        APP_GET = "/app/get/",
+        PRIORITY = {priority : 9},
+        APP_PROMOTE = "/app/promote/",
+        PROMOTE = "promote ",
+        playerColour = stompObject.playerColour,
+        squareOfPawn;
+
     function findPawnForPromotion(colour, chessBoardObj) {
-        var whiteRank = 8,
-            blackRank = 1,
-            rank = colour === "WHITE" ? whiteRank : blackRank;
-            pawn = colour === "WHITE" ? 'p' : 'P';
-       for(var s in chessBoardObj.squares) {
-           if(chessBoardObj.squares[s] === pawn) {
-               var rankExp = new RegExp(rank + "$");
-               if(rankExp.test(s)) {
-                   return s.toLowerCase();
-               }
-           }
-       }
+        var WHITE_RANK = 8,
+            BLACK_RANK = 1,
+            rank = colour === "WHITE" ? WHITE_RANK : BLACK_RANK,
+            pawn = colour === "WHITE" ? 'p' : 'P',
+            s,
+            rankExp;
+        for (s in chessBoardObj.squares) {
+            if (chessBoardObj.squares[s] === pawn) {
+                rankExp = new RegExp(rank + "$");
+                if (rankExp.test(s)) {
+                    return s.toLowerCase();
+                }
+            }
+        }
     }
-    
+
     function parsePromotionMessage(message) {
-        if(messageRegex.test(message)) {
-            var find = messageRegex.exec(message);
-            var letter = find[1].toLowerCase();
-            var number = find[2];
+        if (messageRegex.test(message)) {
+            var find = messageRegex.exec(message),
+                letter = find[1].toLowerCase(),
+                number = find[2];
             return letter + number;
         }
         throw "Message can't be parsed";
     }
-    
-    function stompConnection(stompObject) {
-    	var stompClient,
-        	socket;
-    	socket = new SockJS(stompObject.URL);
-	    stompClient = Stomp.over(socket);
-	    setUpStompConnection(stompClient, stompObject);
+
+    function handleUserMessage(message) {
+        if (message.headers.TYPE === "STATUS") {
+            squareOfPawn = parsePromotionMessage(message.body);
+            if (undefined !== squareOfPawn) {
+                promotionHandler.showPromotionDialog();
+            }
+            return squareOfPawn;
+        }
     }
-    
+
+    function handleTopicMessage(message) {
+        if (message.headers.TYPE === "UPDATE") {
+            var board = $.parseJSON(message.body);
+            playerColour = board.currentPlayer.colour;
+        } else if (message.headers.TYPE === "STATUS") {
+            squareOfPawn = parsePromotionMessage(message.body);
+            if(undefined !== squareOfPawn) {
+                promotionHandler.showPromotionDialog();
+            }
+            return squareOfPawn;
+        }
+    }
+
+    function setUpStompConnection(stompClient, uiHandler) {
+        stompClient.connect(stompObject.headers, function () {
+            stompClient.subscribe(USER_UPDATES, handleUserMessage);
+            stompClient.subscribe(TOPIC_UPDATES + gameUUID, handleTopicMessage);
+            stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
+            uiHandler(playerColour, function (piece) {
+                stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+            });
+        });
+    }
+
+    function stompConnection() {
+        var stompClient,
+            socket;
+        socket = new SockJS(stompObject.URL);
+        stompClient = Stomp.over(socket);
+        setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+    }
+
+    return {
+        parsePromotionMessage : parsePromotionMessage,
+        findPawnForPromotion : findPawnForPromotion,
+        setUpStompConnection : setUpStompConnection,
+        stompConnection : stompConnection
+    };
+};
+
+var promotionAction = (function () {
+    "use strict";
     function showPromotionDialog() {
         var $dialog = $("#promotionDialog");
         $dialog.removeClass("hidePromotionDialog");
         $dialog.addClass("displayPromotionDialog");
     }
-    
+
     function hidePromotionDialog() {
         var $dialog = $("#promotionDialog");
         $dialog.removeClass("displayPromotionDialog");
         $dialog.addClass("hidePromotionDialog");
     }
-    
-    function setUpStompConnection(stompClient, stompObject) {
-	    var	gameUUID = stompObject.gameUUID,
-	        USER_UPDATES = "/user/queue/updates",
-	        TOPIC_UPDATES = "/topic/updates/",
-	        APP_GET = "/app/get/",
-	        PRIORITY = {priority : 9},
-	        APP_PROMOTE = "/app/promote/",
-	        PROMOTE = "promote ",
-	        chessboard,
-	        squareOfPawn;
-	        
-	    
-	    stompClient.connect(stompObject.headers, function() {
-	        stompClient.subscribe(USER_UPDATES, function(message){
-	            if(message.headers.TYPE === "STATUS") {
-	                squareOfPawn = parsePromotionMessage(message.body);
-                    if(undefined !== squareOfPawn) {
-                        showPromotionDialog();
-                    }
-	                return squareOfPawn;
-	            } 
-	        });
-	        
-			stompClient.subscribe(TOPIC_UPDATES + gameUUID, function(message){
-			    if(message.headers.TYPE === "UPDATE") {
-	                var board = $.parseJSON(message.body);
-	                playerColour = board.currentPlayer.colour;
-	            } else if(message.headers.TYPE === "STATUS") {
-	                squareOfPawn = parsePromotionMessage(message.body);
-	            }
-	        });
-	        
-	        stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
-	        
-	        $("#queenBtn").click(function() {
-	            var piece = playerColour === "WHITE" ? "q" : "Q";
-	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
-                hidePromotionDialog();
-	        });
-	        $("#rookBtn").click(function() {
-	            var piece = playerColour === "WHITE" ? "r" : "R";
-	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
-                hidePromotionDialog();
-	        });
-	        $("#knightBtn").click(function() {
-	            var piece = playerColour === "WHITE" ? "n" : "N";
-	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
-                hidePromotionDialog();
-	        });
-	        $("#bishopBtn").click(function() {
-	            var piece = playerColour === "WHITE" ? "b" : "B";
-	            stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
-                hidePromotionDialog();
-	        });
-	    });
-	    
+
+    function handleUserInteract(playerColour, stompSendPromotion) {
+        $("#queenBtn").click(function () {
+            var piece = playerColour === "WHITE" ? "q" : "Q";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+        $("#rookBtn").click(function () {
+            var piece = playerColour === "WHITE" ? "r" : "R";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+        $("#knightBtn").click(function () {
+            var piece = playerColour === "WHITE" ? "n" : "N";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+        $("#bishopBtn").click(function () {
+            var piece = playerColour === "WHITE" ? "b" : "B";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
     }
-    
+
     return {
-    	parsePromotionMessage : parsePromotionMessage,
-    	findPawnForPromotion : findPawnForPromotion,
-    	setUpStompConnection : setUpStompConnection,
-        stompConnection : stompConnection,
+        showPromotionDialog : showPromotionDialog,
+        hidePromotionDialog : hidePromotionDialog,
+        handleUserInteract : handleUserInteract
     };
-})();
+}());
