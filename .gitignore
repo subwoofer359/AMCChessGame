@@ -1,0 +1,15 @@
+/target/
+src/main/resources/smtp.properties
+src/main/resources/database.properties
+src/main/webapp/css
+node/
+.settings/
+node_modules/
+node/
+doc/html/
+compile.sh
+compile2.sh
+.project
+.tern-project
+.settings
+run.sh
