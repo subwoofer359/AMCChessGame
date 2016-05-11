@@ -12,8 +12,10 @@ var promotion = function (stompObject, promotionHandler) {
         PRIORITY = {priority : 9},
         APP_PROMOTE = "/app/promote/",
         PROMOTE = "promote ",
-        playerColour = stompObject.playerColour,
+        player = {},
         squareOfPawn;
+    
+    player.colour = stompObject.playerColour;
 
     function findPawnForPromotion(colour, chessBoardObj) {
         var WHITE_RANK = 8,
@@ -55,7 +57,7 @@ var promotion = function (stompObject, promotionHandler) {
     function handleTopicMessage(message) {
         if (message.headers.TYPE === "UPDATE") {
             var board = $.parseJSON(message.body);
-            playerColour = board.currentPlayer.colour;
+            player.colour = board.currentPlayer.colour;
         } else if (message.headers.TYPE === "STATUS") {
             squareOfPawn = parsePromotionMessage(message.body);
             if(undefined !== squareOfPawn) {
@@ -70,7 +72,7 @@ var promotion = function (stompObject, promotionHandler) {
             stompClient.subscribe(USER_UPDATES, handleUserMessage);
             stompClient.subscribe(TOPIC_UPDATES + gameUUID, handleTopicMessage);
             stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
-            uiHandler(playerColour, function (piece) {
+            uiHandler(player, function (piece) {
                 stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
             });
         });
@@ -106,24 +108,24 @@ var promotionAction = (function () {
         $dialog.addClass("hidePromotionDialog");
     }
 
-    function handleUserInteract(playerColour, stompSendPromotion) {
+    function handleUserInteract(player, stompSendPromotion) {
         $("#queenBtn").click(function () {
-            var piece = playerColour === "WHITE" ? "q" : "Q";
+            var piece = player.colour === "WHITE" ? "q" : "Q";
             stompSendPromotion(piece);
             hidePromotionDialog();
         });
         $("#rookBtn").click(function () {
-            var piece = playerColour === "WHITE" ? "r" : "R";
+            var piece = player.colour === "WHITE" ? "r" : "R";
             stompSendPromotion(piece);
             hidePromotionDialog();
         });
         $("#knightBtn").click(function () {
-            var piece = playerColour === "WHITE" ? "n" : "N";
+            var piece = player.colour === "WHITE" ? "n" : "N";
             stompSendPromotion(piece);
             hidePromotionDialog();
         });
         $("#bishopBtn").click(function () {
-            var piece = playerColour === "WHITE" ? "b" : "B";
+            var piece = player.colour === "WHITE" ? "b" : "B";
             stompSendPromotion(piece);
             hidePromotionDialog();
         });

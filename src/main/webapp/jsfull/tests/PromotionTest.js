@@ -231,12 +231,24 @@ QUnit.test("Testing promotion dialogue is hidden for Topic", function (assert) {
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 });
 
-QUnit.test("Testing promotion handling interact", function (assert) {
+QUnit.test("Testing promotion handling interact white", function (assert) {
     "use strict";
     
-    var colour = "BLACK",
+    var player = {},
         testFunction = function(piece) {assert.equal("Q", piece); },
-        handler = promotionAction.handleUserInteract(colour, testFunction);
-     $("#queenBtn").trigger("click");
+        handler = promotionAction.handleUserInteract(player, testFunction);
+    player.colour = "BLACK"; 
+    $("#queenBtn").trigger("click");
+        
+});
+
+QUnit.test("Testing promotion handling interact white", function (assert) {
+    "use strict";
+    
+    var player = {},
+        testFunction = function(piece) {assert.equal("q", piece); },
+        handler = promotionAction.handleUserInteract(player, testFunction);
+    player.colour = "WHITE";
+    $("#queenBtn").trigger("click");
         
 });
