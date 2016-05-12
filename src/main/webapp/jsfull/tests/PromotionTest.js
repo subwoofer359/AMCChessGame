@@ -27,53 +27,6 @@ QUnit.module("Promotion tests", {
     }
 });
 
-QUnit.test("testing search through chessboard for white pawns for Promotion", function (assert) {
-    "use strict";
-    json = '{"squares":{"H7":"p", "A8":"p"}}';
-    var promotionCheck = promotionModule.findPawnForPromotion,
-        parsedJson = JSON.parse(json),
-        square = promotionCheck("WHITE", parsedJson);
-    assert.equal(square, "a8");
-});
-
-QUnit.test("testing search through chessboard for black pawns for Promotion", function (assert) {
-    "use strict";
-    json = '{"squares":{"H2":"P", "A1":"P"}}';
-    var promotionCheck = promotionModule.findPawnForPromotion,
-        parsedJson = JSON.parse(json),
-        square = promotionCheck("BLACK", parsedJson);
-    assert.equal(square, "a1");
-});
-
-QUnit.test("testing search through chessboard for no valid Promotion", function (assert) {
-    "use strict";
-    json = '{"squares":{"H2":"P", "A2":"P", "H7":"P", "Gp":"p"}}';
-    var promotionCheck = promotionModule.findPawnForPromotion,
-        parsedJson = JSON.parse(json),
-        square = promotionCheck("BLACK", parsedJson);
-    assert.equal(square, null);
-});
-
-QUnit.test("testing parsing promotion string from server", function (assert) {
-    "use strict";
-    var message = "PAWN_PROMOTION (A,1)",
-        square = promotionModule.parsePromotionMessage(message);
-    assert.equal(square, "a1", "Not parsing message correctly");
-});
-
-QUnit.test("testing parsing promotion string from server", function (assert) {
-    "use strict";
-    var message = "PAWN_PROMOTION (A,8)",
-        square = promotionModule.parsePromotionMessage(message);
-    assert.equal(square, "a8", "Not parsing message correctly");
-});
-
-QUnit.test("throws", function (assert) {
-    "use strict";
-    var message = "PAWN_PROMOTION (K,8)";
-    assert.throws(function () {promotionModule.parsePromotionMessage(message); });
-});
-
 QUnit.test("testing STATUS message from Stomp Server to User receiver", function (assert) {
     "use strict";
 
