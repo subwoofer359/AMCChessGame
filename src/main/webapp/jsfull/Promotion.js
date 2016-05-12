@@ -2,6 +2,50 @@
 /*global SockJS*/
 /*global Stomp*/
 
+var promotionAction = (function () {
+    "use strict";
+    function showPromotionDialog() {
+        var $dialog = $("#promotionDialog");
+        $dialog.removeClass("hidePromotionDialog");
+        $dialog.addClass("displayPromotionDialog");
+    }
+
+    function hidePromotionDialog() {
+        var $dialog = $("#promotionDialog");
+        $dialog.removeClass("displayPromotionDialog");
+        $dialog.addClass("hidePromotionDialog");
+    }
+
+    function handleUserInteract(player, stompSendPromotion) {
+        $("#queenBtn").click(function () {
+            var piece = player.colour === "WHITE" ? "q" : "Q";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+        $("#rookBtn").click(function () {
+            var piece = player.colour === "WHITE" ? "r" : "R";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+        $("#knightBtn").click(function () {
+            var piece = player.colour === "WHITE" ? "n" : "N";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+        $("#bishopBtn").click(function () {
+            var piece = player.colour === "WHITE" ? "b" : "B";
+            stompSendPromotion(piece);
+            hidePromotionDialog();
+        });
+    }
+
+    return {
+        showPromotionDialog : showPromotionDialog,
+        hidePromotionDialog : hidePromotionDialog,
+        handleUserInteract : handleUserInteract
+    };
+}());
+
 var promotion = function (stompObject, promotionHandler) {
     "use strict";
     var messageRegex = /PAWN_PROMOTION\s\(([A-Ha-h]),([1-8])\)/,
@@ -14,7 +58,7 @@ var promotion = function (stompObject, promotionHandler) {
         PROMOTE = "promote ",
         player = {},
         squareOfPawn;
-    
+
     player.colour = stompObject.playerColour;
 
     function findPawnForPromotion(colour, chessBoardObj) {
@@ -60,7 +104,7 @@ var promotion = function (stompObject, promotionHandler) {
             player.colour = board.currentPlayer.colour;
         } else if (message.headers.TYPE === "STATUS") {
             squareOfPawn = parsePromotionMessage(message.body);
-            if(undefined !== squareOfPawn) {
+            if (undefined !== squareOfPawn) {
                 promotionHandler.showPromotionDialog();
             }
             return squareOfPawn;
@@ -93,47 +137,3 @@ var promotion = function (stompObject, promotionHandler) {
         stompConnection : stompConnection
     };
 };
-
-var promotionAction = (function () {
-    "use strict";
-    function showPromotionDialog() {
-        var $dialog = $("#promotionDialog");
-        $dialog.removeClass("hidePromotionDialog");
-        $dialog.addClass("displayPromotionDialog");
-    }
-
-    function hidePromotionDialog() {
-        var $dialog = $("#promotionDialog");
-        $dialog.removeClass("displayPromotionDialog");
-        $dialog.addClass("hidePromotionDialog");
-    }
-
-    function handleUserInteract(player, stompSendPromotion) {
-        $("#queenBtn").click(function () {
-            var piece = player.colour === "WHITE" ? "q" : "Q";
-            stompSendPromotion(piece);
-            hidePromotionDialog();
-        });
-        $("#rookBtn").click(function () {
-            var piece = player.colour === "WHITE" ? "r" : "R";
-            stompSendPromotion(piece);
-            hidePromotionDialog();
-        });
-        $("#knightBtn").click(function () {
-            var piece = player.colour === "WHITE" ? "n" : "N";
-            stompSendPromotion(piece);
-            hidePromotionDialog();
-        });
-        $("#bishopBtn").click(function () {
-            var piece = player.colour === "WHITE" ? "b" : "B";
-            stompSendPromotion(piece);
-            hidePromotionDialog();
-        });
-    }
-
-    return {
-        showPromotionDialog : showPromotionDialog,
-        hidePromotionDialog : hidePromotionDialog,
-        handleUserInteract : handleUserInteract
-    };
-}());
