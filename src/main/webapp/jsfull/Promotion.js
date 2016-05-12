@@ -2,6 +2,11 @@
 /*global SockJS*/
 /*global Stomp*/
 
+/**
+ * A Callback function to encapsulate UI actions to be taken on
+ * chess piece promotion
+ *
+ */
 var promotionAction = (function () {
     "use strict";
     function showPromotionDialog() {
@@ -16,6 +21,14 @@ var promotionAction = (function () {
         $dialog.addClass("hidePromotionDialog");
     }
 
+    /**
+     * Adds event listeners to buttons in the UI
+     * Using the player's colour passes the correct piece symbol to the
+     * callback function
+     *
+     * @param {object} player - represents a player
+     * @param {function} stompSendPromotion - callback function
+     */
     function handleUserInteract(player, stompSendPromotion) {
         $("#queenBtn").click(function () {
             var piece = player.colour === "WHITE" ? "q" : "Q";
@@ -46,6 +59,12 @@ var promotionAction = (function () {
     };
 }());
 
+/**
+  * @module promotion
+  * Contains methods for parsing promotion messages
+  * from the Stomp server and setting up connection to
+  * to the Stomp server
+  */
 var promotion = function (stompObject, promotionHandler) {
     "use strict";
     var messageRegex = /PAWN_PROMOTION\s\(([A-Ha-h]),([1-8])\)/,
@@ -56,10 +75,10 @@ var promotion = function (stompObject, promotionHandler) {
         PRIORITY = {priority : 9},
         APP_PROMOTE = "/app/promote/",
         PROMOTE = "promote ",
-        player = {},
+        player = {
+            colour : stompObject.playerColour
+        },
         squareOfPawn;
-
-    player.colour = stompObject.playerColour;
 
     function findPawnForPromotion(colour, chessBoardObj) {
         var WHITE_RANK = 8,
