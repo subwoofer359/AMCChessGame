@@ -107,26 +107,37 @@ var promotion = function (stompObject, promotionHandler) {
         throw "Message can't be parsed";
     }
 
+    function doPromotionHandlerAction() {
+        if (undefined !== squareOfPawn) {
+            promotionHandler.showPromotionDialog();
+        }
+    }
+
     function handleUserMessage(message) {
-        if (message.headers.TYPE === "STATUS") {
+        switch (message.headers.TYPE) {
+        case "STATUS":
             squareOfPawn = parsePromotionMessage(message.body);
-            if (undefined !== squareOfPawn) {
-                promotionHandler.showPromotionDialog();
-            }
+            doPromotionHandlerAction();
             return squareOfPawn;
+        case "ERROR":
+            doPromotionHandlerAction();
+            break;
         }
     }
 
     function handleTopicMessage(message) {
-        if (message.headers.TYPE === "UPDATE") {
+        switch (message.headers.TYPE) {
+        case "UPDATE":
             var board = $.parseJSON(message.body);
             player.colour = board.currentPlayer.colour;
-        } else if (message.headers.TYPE === "STATUS") {
+            break;
+        case "STATUS":
             squareOfPawn = parsePromotionMessage(message.body);
-            if (undefined !== squareOfPawn) {
-                promotionHandler.showPromotionDialog();
-            }
+            doPromotionHandlerAction();
             return squareOfPawn;
+        case "ERROR":
+            doPromotionHandlerAction();
+            break;
         }
     }
 

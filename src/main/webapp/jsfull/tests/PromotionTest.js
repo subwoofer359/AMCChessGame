@@ -112,6 +112,70 @@ QUnit.test("Testing promotion dialogue is hidden for Topic", function (assert) {
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 });
 
+QUnit.test("Testing promotion dialogue is reshown for Topic promotion ERROR message", function (assert) {
+    "use strict";
+
+    var $dialog = $("#promotionDialog");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendStatusMessageToTopic(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("displayPromotionDialog"));
+
+    $("#queenBtn").trigger("click");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendErrorMessageToTopic(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion error");
+});
+
+QUnit.test("Testing promotion dialogue is reshown for User promotion ERROR message", function (assert) {
+    "use strict";
+
+    var $dialog = $("#promotionDialog");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendStatusMessageToUser(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("displayPromotionDialog"));
+
+    $("#queenBtn").trigger("click");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendErrorMessageToUser(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion error");
+});
+
+QUnit.test("Testing promotion dialogue is not reshown for Topic non promotion ERROR message", function (assert) {
+    "use strict";
+
+    var $dialog = $("#promotionDialog");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendErrorMessageToTopic(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"), "Dialog should not be display on promotion error");
+});
+
+QUnit.test("Testing promotion dialogue is not reshown for User non promotion ERROR message", function (assert) {
+    "use strict";
+
+    var $dialog = $("#promotionDialog");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendErrorMessageToUser(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"), "Dialog should not be display on promotion error");
+});
+
 QUnit.test("Testing promotion handling interact white", function (assert) {
     "use strict";
 

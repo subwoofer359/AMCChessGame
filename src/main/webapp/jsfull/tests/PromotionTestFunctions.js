@@ -65,9 +65,39 @@ var promotionFixture = (function () {
         squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
         return squareOfPawn;
     }
+
+    function sendErrorMessageToTopic(promotionModule, promotionAction) {
+        var stompClient = getStompClient(),
+            squareOfPawn,
+            message = {
+                headers : { TYPE : "ERROR" }
+            };
+
+        promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        message.body = "Error can't promoted other player piece";
+
+        squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
+        return squareOfPawn;
+    }
+
+    function sendErrorMessageToUser(promotionModule, promotionAction) {
+        var stompClient = getStompClient(),
+            squareOfPawn,
+            message = {
+                headers : { TYPE : "ERROR" }
+            };
+
+        promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        message.body = "Error can't promoted other player piece";
+
+        squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
+        return squareOfPawn;
+    }
     return {
         sendStatusMessageToUser : sendStatusMessageToUser,
         sendStatusMessageToTopic : sendStatusMessageToTopic,
+        sendErrorMessageToTopic : sendErrorMessageToTopic,
+        sendErrorMessageToUser : sendErrorMessageToUser,
         getStompClient : getStompClient
     };
 }());
