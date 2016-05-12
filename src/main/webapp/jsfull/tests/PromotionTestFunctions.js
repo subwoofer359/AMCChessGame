@@ -67,6 +67,7 @@ var promotionFixture = (function () {
     }
     return {
         sendStatusMessageToUser : sendStatusMessageToUser,
-        sendStatusMessageToTopic : sendStatusMessageToTopic
+        sendStatusMessageToTopic : sendStatusMessageToTopic,
+        getStompClient : getStompClient
     };
 }());
