@@ -73,72 +73,16 @@ QUnit.test("throws", function (assert) {
     assert.throws(function () {promotionModule.parsePromotionMessage(message); });
 });
 
-
-function getStompClient() {
-    var StompClient = function StompClient() {};
-    StompClient.prototype = {
-        connect : function (header, callback) {
-            callback();
-        },
-        subscribe : function (destination, callback) {
-            if ("/user/queue/updates" === destination) {
-                this.userSubscribe = callback;
-            } else {
-                this.topicSubscribe = callback;
-            }
-        },
-        send : function (destination, priority, message) {
-
-        },
-        getUserSubscribe : function () {
-            return this.userSubscribe;
-        },
-        getTopicSubscribe : function () {
-            return this.topicSubscribe;
-        }
-    };
-    
-    return new StompClient();
-}
-
-function sendStatusMessageToUser() {
-    var stompClient = getStompClient(),
-        squareOfPawn;
-    message.headers.TYPE = "STATUS";
-
-    promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
-
-
-    message.body = "PAWN_PROMOTION (A,1)";
-
-    squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
-    return squareOfPawn;
-}
-
-function sendStatusMessageToTopic() {
-    var stompClient = getStompClient(),
-        squareOfPawn;
-    message.headers.TYPE = "STATUS";
-
-    promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
-
-
-    message.body = "PAWN_PROMOTION (A,1)";
-
-    squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
-    return squareOfPawn;
-}
-
 QUnit.test("testing STATUS message from Stomp Server to User receiver", function (assert) {
     "use strict";
 
-    var squareOfPawn = sendStatusMessageToUser();
+    var squareOfPawn = sendStatusMessageToUser(promotionModule, promotionAction);
     assert.equal(squareOfPawn, "a1");
 });
 
 QUnit.test("testing STATUS message from Stomp Server to Topic receiver", function (assert) {
     "use strict";
-    var squareOfPawn = sendStatusMessageToTopic();
+    var squareOfPawn = sendStatusMessageToTopic(promotionModule, promotionAction);
     assert.equal(squareOfPawn, "a1");
 });
 
@@ -182,7 +126,7 @@ QUnit.test("Testing promotion dialogue is displayed using User", function (asser
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToUser();
+    sendStatusMessageToUser(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
 });
@@ -194,7 +138,7 @@ QUnit.test("Testing promotion dialogue is displayed using Topic", function (asse
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToTopic();
+    sendStatusMessageToTopic(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
 });
@@ -206,7 +150,7 @@ QUnit.test("Testing promotion dialogue is hidden", function (assert) {
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToUser();
+    sendStatusMessageToUser(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
     
@@ -222,7 +166,7 @@ QUnit.test("Testing promotion dialogue is hidden for Topic", function (assert) {
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToTopic();
+    sendStatusMessageToTopic(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
     
