@@ -2,6 +2,7 @@
 /*global chessboard_module*/
 /*global $*/
 /*global promotion*/
+/*global promotionFixture*/
 var json,
     message,
     stompObject,
@@ -76,13 +77,13 @@ QUnit.test("throws", function (assert) {
 QUnit.test("testing STATUS message from Stomp Server to User receiver", function (assert) {
     "use strict";
 
-    var squareOfPawn = sendStatusMessageToUser(promotionModule, promotionAction);
+    var squareOfPawn = promotionFixture.sendStatusMessageToUser(promotionModule, promotionAction);
     assert.equal(squareOfPawn, "a1");
 });
 
 QUnit.test("testing STATUS message from Stomp Server to Topic receiver", function (assert) {
     "use strict";
-    var squareOfPawn = sendStatusMessageToTopic(promotionModule, promotionAction);
+    var squareOfPawn = promotionFixture.sendStatusMessageToTopic(promotionModule, promotionAction);
     assert.equal(squareOfPawn, "a1");
 });
 
@@ -126,7 +127,7 @@ QUnit.test("Testing promotion dialogue is displayed using User", function (asser
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToUser(promotionModule, promotionAction);
+    promotionFixture.sendStatusMessageToUser(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
 });
@@ -138,7 +139,7 @@ QUnit.test("Testing promotion dialogue is displayed using Topic", function (asse
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToTopic(promotionModule, promotionAction);
+    promotionFixture.sendStatusMessageToTopic(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
 });
@@ -150,7 +151,7 @@ QUnit.test("Testing promotion dialogue is hidden", function (assert) {
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToUser(promotionModule, promotionAction);
+    promotionFixture.sendStatusMessageToUser(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
     
@@ -166,7 +167,7 @@ QUnit.test("Testing promotion dialogue is hidden for Topic", function (assert) {
     
     assert.ok($dialog.hasClass("hidePromotionDialog"));
     
-    sendStatusMessageToTopic(promotionModule, promotionAction);
+    promotionFixture.sendStatusMessageToTopic(promotionModule, promotionAction);
     
     assert.ok($dialog.hasClass("displayPromotionDialog"));
     
