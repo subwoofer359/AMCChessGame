@@ -2,7 +2,10 @@
 /*global chessboard_module*/
 /*global $*/
 /*global promotion*/
+/*global promotionAction*/
 /*global promotionFixture*/
+/*jslint unparam: true*/
+
 var message,
     stompObject,
     $fixture,
@@ -18,7 +21,7 @@ QUnit.module("Promotion tests", {
             headers : { headerName : "token"},
             URL : "some url"
         };
-        
+
         promotionModule = promotion(stompObject, promotionAction);
         $fixture = $("#qunit-fixture");
         $fixture.append('<div id="promotionDialog" class="container hidePromotionDialog"><div class="row"><div class="panel-primary"><div class="panel-heading"><h3 class="panel-title">Promote Chess Piece</h3></div><div class="panel-body">      <div class="row"><div class="col-xs-12 col-md-3"><button id="queenBtn" class="btn btn-primary" type="button"><img src="../../img/Queen.svg" alt="Queen"></button></div><div class="col-xs-12 col-md-3"><button id="rookBtn" class="btn btn-primary" type="button"><img src="../../img/Rook.svg" alt="Rook"></button></div><div class="col-xs-12 col-md-3">             <button id="knightBtn" class="btn btn-primary" type="button"><img src="../../img/Knight.svg" alt="Knight"></button>         </div><div class="col-xs-12 col-md-3"><button id="bishopBtn" class="btn btn-primary" type="button"><img src="../../img/Bishop.svg" alt="Bishop"></button></div></div></div></div></div></div>');
@@ -40,28 +43,10 @@ QUnit.test("testing STATUS message from Stomp Server to Topic receiver", functio
 
 QUnit.test("testing UPDATE message from Stomp Server to User receiver", function (assert) {
     "use strict";
-    var StompClient = function () {},
-        stompClient,
+    var stompClient,
         squareOfPawn;
 
-    StompClient.prototype = {
-        connect : function (header, callback) {
-            callback();
-        },
-        subscribe : function (destination, callback) {
-            if ("/user/queue/updates" === destination) {
-                this.userSubscribe = callback;
-            }
-        },
-        send : function (destination, priority, message) {
-
-        },
-        getUserSubscribe : function () {
-            return this.userSubscribe;
-        }
-    };
-
-    stompClient = new StompClient();
+    stompClient = promotionFixture.getStompClient();
     message.headers.TYPE = "UPDATE";
 
     promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
@@ -73,78 +58,78 @@ QUnit.test("testing UPDATE message from Stomp Server to User receiver", function
 
 QUnit.test("Testing promotion dialogue is displayed using User", function (assert) {
     "use strict";
-    
+
     var $dialog = $("#promotionDialog");
-    
+
     assert.ok($dialog.hasClass("hidePromotionDialog"));
-    
+
     promotionFixture.sendStatusMessageToUser(promotionModule, promotionAction);
-    
+
     assert.ok($dialog.hasClass("displayPromotionDialog"));
 });
 
 QUnit.test("Testing promotion dialogue is displayed using Topic", function (assert) {
     "use strict";
-    
+
     var $dialog = $("#promotionDialog");
-    
+
     assert.ok($dialog.hasClass("hidePromotionDialog"));
-    
+
     promotionFixture.sendStatusMessageToTopic(promotionModule, promotionAction);
-    
+
     assert.ok($dialog.hasClass("displayPromotionDialog"));
 });
 
 QUnit.test("Testing promotion dialogue is hidden", function (assert) {
     "use strict";
-    
+
     var $dialog = $("#promotionDialog");
-    
+
     assert.ok($dialog.hasClass("hidePromotionDialog"));
-    
+
     promotionFixture.sendStatusMessageToUser(promotionModule, promotionAction);
-    
+
     assert.ok($dialog.hasClass("displayPromotionDialog"));
-    
+
     $("#queenBtn").trigger("click");
-    
+
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 });
 
 QUnit.test("Testing promotion dialogue is hidden for Topic", function (assert) {
     "use strict";
-    
+
     var $dialog = $("#promotionDialog");
-    
+
     assert.ok($dialog.hasClass("hidePromotionDialog"));
-    
+
     promotionFixture.sendStatusMessageToTopic(promotionModule, promotionAction);
-    
+
     assert.ok($dialog.hasClass("displayPromotionDialog"));
-    
+
     $("#queenBtn").trigger("click");
-    
+
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 });
 
 QUnit.test("Testing promotion handling interact white", function (assert) {
     "use strict";
-    
+
     var player = {},
-        testFunction = function(piece) {assert.equal("Q", piece); },
-        handler = promotionAction.handleUserInteract(player, testFunction);
-    player.colour = "BLACK"; 
+        testFunction = function (piece) {assert.equal("Q", piece); };
+
+    promotionAction.handleUserInteract(player, testFunction);
+    player.colour = "BLACK";
     $("#queenBtn").trigger("click");
-        
+
 });
 
 QUnit.test("Testing promotion handling interact white", function (assert) {
     "use strict";
-    
+
     var player = {},
-        testFunction = function(piece) {assert.equal("q", piece); },
-        handler = promotionAction.handleUserInteract(player, testFunction);
+        testFunction = function (piece) {assert.equal("q", piece); };
+    promotionAction.handleUserInteract(player, testFunction);
     player.colour = "WHITE";
     $("#queenBtn").trigger("click");
-        
 });
