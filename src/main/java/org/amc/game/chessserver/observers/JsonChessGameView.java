@@ -3,6 +3,7 @@ package org.amc.game.chessserver.observers;
 import com.google.gson.Gson;
 
 import org.amc.game.GameObserver;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessGame;
@@ -83,6 +84,7 @@ public class JsonChessGameView extends GameObserver {
 
         private Map<String, String> squares;
         private ChessGamePlayer currentPlayer;
+        private GameState gameState;
        
         private JsonChessGame(){
             squares = new HashMap<>();
@@ -109,6 +111,7 @@ public class JsonChessGameView extends GameObserver {
             this();
             convertChessBoard(chessGame.getChessBoard());
             currentPlayer = chessGame.getCurrentPlayer();
+            gameState = chessGame.getGameState();
         }
        
 
@@ -118,6 +121,10 @@ public class JsonChessGameView extends GameObserver {
         
         ChessGamePlayer getCurrentPlayer(){
             return this.currentPlayer;
+        }
+        
+        GameState getGameState() {
+            return this.gameState;
         }
         
     }
