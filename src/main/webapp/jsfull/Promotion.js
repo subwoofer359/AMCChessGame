@@ -69,6 +69,7 @@ var promotion = function (stompObject, promotionHandler) {
     "use strict";
     var messageRegex = /PAWN_PROMOTION\s\(([A-Ha-h]),([1-8])\)/,
         gameUUID = stompObject.gameUUID,
+        gameState,
         USER_UPDATES = "/user/queue/updates",
         TOPIC_UPDATES = "/topic/updates/",
         APP_GET = "/app/get/",
@@ -108,40 +109,81 @@ var promotion = function (stompObject, promotionHandler) {
     }
 
     function doPromotionHandlerAction() {
-        if (undefined !== squareOfPawn) {
-            promotionHandler.showPromotionDialog();
+        promotionHandler.showPromotionDialog();
+    }
+
+    function checkBoardInPromotionState() {
+        if (gameState === "PAWN_PROMOTION") {
+            doPromotionHandlerAction();
         }
     }
 
+    function updateMessageHandler(message) {
+        var board = $.parseJSON(message.body);
+        player.colour = board.currentPlayer.colour;
+        gameState = board.gameState;
+    }
+
     function handleUserMessage(message) {
-        switch (message.headers.TYPE) {
-        case "STATUS":
-            squareOfPawn = parsePromotionMessage(message.body);
-            doPromotionHandlerAction();
-            return squareOfPawn;
-        case "ERROR":
-            doPromotionHandlerAction();
-            break;
+        if (gameState === "PAWN_PROMOTION") {
+            switch (message.headers.TYPE) {
+            case "STATUS":
+                squareOfPawn = parsePromotionMessage(message.body);
+                doPromotionHandlerAction();
+                return squareOfPawn;
+            case "ERROR":
+                doPromotionHandlerAction();
+                break;
+            }
+        } else {
+            switch (message.headers.TYPE) {
+            case "UPDATE":
+                updateMessageHandler(message);
+                checkBoardInPromotionState();
+                break;
+            }
         }
     }
 
     function handleTopicMessage(message) {
         switch (message.headers.TYPE) {
         case "UPDATE":
-            var board = $.parseJSON(message.body);
-            player.colour = board.currentPlayer.colour;
+            updateMessageHandler(message);
             break;
-        case "STATUS":
-            squareOfPawn = parsePromotionMessage(message.body);
-            doPromotionHandlerAction();
-            return squareOfPawn;
-        case "ERROR":
-            doPromotionHandlerAction();
-            break;
+        }
+        if (gameState === "PAWN_PROMOTION") {
+            switch (message.headers.TYPE) {
+            case "STATUS":
+                squareOfPawn = parsePromotionMessage(message.body);
+                doPromotionHandlerAction();
+                return squareOfPawn;
+            case "ERROR":
+                doPromotionHandlerAction();
+                break;
+            }
         }
     }
 
-    function setUpStompConnection(stompClient, uiHandler) {
+    function twoViewHandleTopicMessage(message) {
+        switch (message.headers.TYPE) {
+        case "UPDATE":
+            updateMessageHandler(message);
+            break;
+        }
+        if (gameState === "PAWN_PROMOTION") {
+            switch (message.headers.TYPE) {
+            case "STATUS":
+                squareOfPawn = parsePromotionMessage(message.body);
+                doPromotionHandlerAction();
+                return squareOfPawn;
+            case "ERROR":
+                doPromotionHandlerAction();
+                break;
+            }
+        }
+    }
+
+    function setUpOneViewStompConnection(stompClient, uiHandler) {
         stompClient.connect(stompObject.headers, function () {
             stompClient.subscribe(USER_UPDATES, handleUserMessage);
             stompClient.subscribe(TOPIC_UPDATES + gameUUID, handleTopicMessage);
@@ -152,18 +194,45 @@ var promotion = function (stompObject, promotionHandler) {
         });
     }
 
-    function stompConnection() {
+    function setUpTwoViewStompConnection(stompClient, uiHandler) {
+        stompClient.connect(stompObject.headers, function () {
+            stompClient.subscribe(USER_UPDATES, handleUserMessage);
+            stompClient.subscribe(TOPIC_UPDATES + gameUUID, twoViewHandleTopicMessage);
+            stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
+            uiHandler(player, function (piece) {
+                stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+            });
+        });
+    }
+
+    function oneViewStompConnection() {
         var stompClient,
             socket;
         socket = new SockJS(stompObject.URL);
         stompClient = Stomp.over(socket);
-        setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
+    }
+
+    function twoViewStompConnection() {
+        var stompClient,
+            socket;
+        socket = new SockJS(stompObject.URL);
+        stompClient = Stomp.over(socket);
+        setUpTwoViewStompConnection(stompClient, promotionAction.handleUserInteract);
+    }
+
+    function setGameState(state) {
+        gameState = state;
     }
 
     return {
         parsePromotionMessage : parsePromotionMessage,
         findPawnForPromotion : findPawnForPromotion,
-        setUpStompConnection : setUpStompConnection,
-        stompConnection : stompConnection
+        setUpOneViewStompConnection : setUpOneViewStompConnection,
+        setUpTwoViewStompConnection : setUpTwoViewStompConnection,
+        checkBoardInPromotionState : checkBoardInPromotionState,
+        oneViewStompConnection : oneViewStompConnection,
+        twoViewStompConnection : twoViewStompConnection,
+        setGameState : setGameState
     };
 };

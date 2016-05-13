@@ -23,6 +23,7 @@ QUnit.module("Promotion tests", {
         };
 
         promotionModule = promotion(stompObject, promotionAction);
+        promotionModule.setGameState("PAWN_PROMOTION");
         $fixture = $("#qunit-fixture");
         $fixture.append('<div id="promotionDialog" class="container hidePromotionDialog"><div class="row"><div class="panel-primary"><div class="panel-heading"><h3 class="panel-title">Promote Chess Piece</h3></div><div class="panel-body">      <div class="row"><div class="col-xs-12 col-md-3"><button id="queenBtn" class="btn btn-primary" type="button"><img src="../../img/Queen.svg" alt="Queen"></button></div><div class="col-xs-12 col-md-3"><button id="rookBtn" class="btn btn-primary" type="button"><img src="../../img/Rook.svg" alt="Rook"></button></div><div class="col-xs-12 col-md-3">             <button id="knightBtn" class="btn btn-primary" type="button"><img src="../../img/Knight.svg" alt="Knight"></button>         </div><div class="col-xs-12 col-md-3"><button id="bishopBtn" class="btn btn-primary" type="button"><img src="../../img/Bishop.svg" alt="Bishop"></button></div></div></div></div></div></div>');
     }
@@ -49,7 +50,7 @@ QUnit.test("testing UPDATE message from Stomp Server to User receiver", function
     stompClient = promotionFixture.getStompClient();
     message.headers.TYPE = "UPDATE";
 
-    promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+    promotionModule.setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
     message.body = "CHESSBOARD";
     squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
 
@@ -159,6 +160,8 @@ QUnit.test("Testing promotion dialogue is not reshown for Topic non promotion ER
 
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 
+    promotionModule.setGameState("RUNNING");
+
     promotionFixture.sendErrorMessageToTopic(promotionModule, promotionAction);
 
     assert.ok($dialog.hasClass("hidePromotionDialog"), "Dialog should not be display on promotion error");
@@ -170,6 +173,8 @@ QUnit.test("Testing promotion dialogue is not reshown for User non promotion ERR
     var $dialog = $("#promotionDialog");
 
     assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionModule.setGameState("RUNNING");
 
     promotionFixture.sendErrorMessageToUser(promotionModule, promotionAction);
 
@@ -196,4 +201,15 @@ QUnit.test("Testing promotion handling interact white", function (assert) {
     promotionAction.handleUserInteract(player, testFunction);
     player.colour = "WHITE";
     $("#queenBtn").trigger("click");
+});
+
+QUnit.test("test chessboard is already in promotion state", function (assert) {
+    "use strict";
+    var $dialog = $("#promotionDialog");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionModule.checkBoardInPromotionState();
+
+    assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion check");
 });

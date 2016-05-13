@@ -159,7 +159,18 @@
     }
     
     #promotionDialog {
-        width:40%;
+        width:50%;
+    }
+    
+    .hidePromotionDialog {
+        display: none;
+    }
+    .displayPromotionDialog {
+        position: absolute;
+        display: block;
+        top: 20%;
+        left: 25%;
+        right: 25%;
     }
     
     #promotionDialog .panel-body {
@@ -243,7 +254,7 @@ $(document).ready(function(){
     <div class="row bottom-spacer">
     </div>
   </div>
-<%@ include file="/WEB-INF/JSP/Promotion.jspf" %>
+<%@ include file="/WEB-INF/JSP/Promotion2.jspf" %>
 <%@ include file="/BootStrapFooter.jsp" %>
 </body>
 </html>

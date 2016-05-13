@@ -42,7 +42,7 @@ var promotionFixture = (function () {
         message.headers = {};
         message.headers.TYPE = "STATUS";
 
-        promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        promotionModule.setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
 
 
         message.body = "PAWN_PROMOTION (A,1)";
@@ -59,7 +59,7 @@ var promotionFixture = (function () {
         message.headers = {};
         message.headers.TYPE = "STATUS";
 
-        promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        promotionModule.setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
         message.body = "PAWN_PROMOTION (A,1)";
 
         squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
@@ -73,7 +73,7 @@ var promotionFixture = (function () {
                 headers : { TYPE : "ERROR" }
             };
 
-        promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        promotionModule.setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
         message.body = "Error can't promoted other player piece";
 
         squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
@@ -87,7 +87,7 @@ var promotionFixture = (function () {
                 headers : { TYPE : "ERROR" }
             };
 
-        promotionModule.setUpStompConnection(stompClient, promotionAction.handleUserInteract);
+        promotionModule.setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
         message.body = "Error can't promoted other player piece";
 
         squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);

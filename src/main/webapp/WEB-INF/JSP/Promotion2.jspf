@@ -16,7 +16,7 @@
     
     stompObject.headers[headerName] = token;
     promotionModule = promotion(stompObject, promotionAction);
-    promotionModule.oneViewStompConnection();
+    promotionModule.twoViewStompConnection();
 });
 </script>
 <div id="promotionDialog" class="container hidePromotionDialog">
