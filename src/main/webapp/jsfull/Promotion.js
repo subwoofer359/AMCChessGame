@@ -139,29 +139,13 @@ var promotion = function (stompObject, promotionHandler) {
             switch (message.headers.TYPE) {
             case "UPDATE":
                 updateMessageHandler(message);
-                checkBoardInPromotionState();
                 break;
             }
         }
     }
 
     function handleTopicMessage(message) {
-        switch (message.headers.TYPE) {
-        case "UPDATE":
-            updateMessageHandler(message);
-            break;
-        }
-        if (gameState === "PAWN_PROMOTION") {
-            switch (message.headers.TYPE) {
-            case "STATUS":
-                squareOfPawn = parsePromotionMessage(message.body);
-                doPromotionHandlerAction();
-                return squareOfPawn;
-            case "ERROR":
-                doPromotionHandlerAction();
-                break;
-            }
-        }
+        return handleUserMessage(message);
     }
 
     function twoViewHandleTopicMessage(message) {
@@ -169,17 +153,6 @@ var promotion = function (stompObject, promotionHandler) {
         case "UPDATE":
             updateMessageHandler(message);
             break;
-        }
-        if (gameState === "PAWN_PROMOTION") {
-            switch (message.headers.TYPE) {
-            case "STATUS":
-                squareOfPawn = parsePromotionMessage(message.body);
-                doPromotionHandlerAction();
-                return squareOfPawn;
-            case "ERROR":
-                doPromotionHandlerAction();
-                break;
-            }
         }
     }
 

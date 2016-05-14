@@ -96,11 +96,31 @@ var promotionFixture = (function () {
         squareOfPawn =  obj.stompClient.getUserSubscribe().call(obj.stompClient, message);
         return squareOfPawn;
     }
+
+    function sendStatusMessageToTwoViewTopic(promotionModule, promotionAction) {
+        var squareOfPawn,
+            stompClient = getStompClient(),
+            message = {
+                headers : {
+                    TYPE : "STATUS"
+                },
+                body : "PAWN_PROMOTION (A,1)"
+            },
+            connection;
+
+        connection = new promotionModule.TwoViewStompConnection();
+        connection.stompClient = stompClient;
+        connection.setUpStompConnection(promotionAction.handleUserInteract);
+
+        squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
+        return squareOfPawn;
+    }
     return {
         sendStatusMessageToUser : sendStatusMessageToUser,
         sendStatusMessageToTopic : sendStatusMessageToTopic,
         sendErrorMessageToTopic : sendErrorMessageToTopic,
         sendErrorMessageToUser : sendErrorMessageToUser,
+        sendStatusMessageToTwoViewTopic : sendStatusMessageToTwoViewTopic,
         getStompClient : getStompClient
     };
 }());

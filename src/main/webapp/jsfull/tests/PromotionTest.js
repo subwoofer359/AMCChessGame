@@ -217,3 +217,15 @@ QUnit.test("test chessboard is already in promotion state", function (assert) {
 
     assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion check");
 });
+
+QUnit.test("test TwoViewStompConnection", function (assert) {
+    "use strict";
+
+    var $dialog = $("#promotionDialog");
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+
+    promotionFixture.sendStatusMessageToTwoViewTopic(promotionModule, promotionAction);
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"), "Dialog should not be display on promotion error");
+});
