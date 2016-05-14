@@ -3,6 +3,7 @@
 /*exported  promotionFixture */
 var promotionFixture = (function () {
     "use strict";
+
     function getStompClient() {
         var StompClient = function StompClient() {return this; };
         StompClient.prototype = {
@@ -34,74 +35,65 @@ var promotionFixture = (function () {
         return new StompClient();
     }
 
-    function sendStatusMessageToUser(promotionModule, promotionAction) {
+    function setUp(promotionModule, promotionAction) {
         var stompClient = getStompClient(),
-            squareOfPawn,
-            message = {},
+            message = {
+                headers : {
+                    TYPE : "STATUS"
+                },
+                body : "PAWN_PROMOTION (A,1)"
+            },
             connection;
-
-        message.headers = {};
-        message.headers.TYPE = "STATUS";
 
         connection = new promotionModule.OneViewStompConnection();
         connection.stompClient = stompClient;
         connection.setUpStompConnection(promotionAction.handleUserInteract);
 
-        message.body = "PAWN_PROMOTION (A,1)";
+        return {
+            message : message,
+            stompClient : stompClient
+        };
+    }
 
-        squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
+    function sendStatusMessageToUser(promotionModule, promotionAction) {
+        var squareOfPawn,
+            obj = setUp(promotionModule, promotionAction);
+        squareOfPawn =  obj.stompClient.getUserSubscribe().call(obj.stompClient, obj.message);
         return squareOfPawn;
     }
 
     function sendStatusMessageToTopic(promotionModule, promotionAction) {
-        var stompClient = getStompClient(),
-            squareOfPawn,
-            message = {},
-            connection;
+        var squareOfPawn,
+            obj = setUp(promotionModule, promotionAction);
 
-        message.headers = {};
-        message.headers.TYPE = "STATUS";
-
-        connection = new promotionModule.OneViewStompConnection();
-        connection.stompClient = stompClient;
-        connection.setUpStompConnection(promotionAction.handleUserInteract);
-        message.body = "PAWN_PROMOTION (A,1)";
-
-        squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
+        squareOfPawn =  obj.stompClient.getTopicSubscribe().call(obj.stompClient, obj.message);
         return squareOfPawn;
     }
 
     function sendErrorMessageToTopic(promotionModule, promotionAction) {
-        var stompClient = getStompClient(),
-            squareOfPawn,
+        var squareOfPawn,
+            obj = setUp(promotionModule, promotionAction),
             message = {
-                headers : { TYPE : "ERROR" }
-            },
-            connection;
+                headers : { TYPE : "ERROR" },
+                body : "Error can't promoted other player piece"
+            };
 
-        connection = new promotionModule.OneViewStompConnection();
-        connection.stompClient = stompClient;
-        connection.setUpStompConnection(promotionAction.handleUserInteract);
-        message.body = "Error can't promoted other player piece";
+        squareOfPawn =  obj.stompClient.getTopicSubscribe().call(obj.stompClient, message);
 
-        squareOfPawn =  stompClient.getTopicSubscribe().call(stompClient, message);
         return squareOfPawn;
     }
 
     function sendErrorMessageToUser(promotionModule, promotionAction) {
-        var stompClient = getStompClient(),
-            squareOfPawn,
+        var squareOfPawn,
+            obj = setUp(promotionModule, promotionAction),
             message = {
-                headers : { TYPE : "ERROR" }
-            },
-            connection;
+                headers : {
+                    TYPE : "ERROR"
+                },
+                body : "Error can't promoted other player piece"
+            };
 
-        connection = new promotionModule.OneViewStompConnection();
-        connection.stompClient = stompClient;
-        connection.setUpStompConnection(promotionAction.handleUserInteract);
-        message.body = "Error can't promoted other player piece";
-
-        squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
+        squareOfPawn =  obj.stompClient.getUserSubscribe().call(obj.stompClient, message);
         return squareOfPawn;
     }
     return {
