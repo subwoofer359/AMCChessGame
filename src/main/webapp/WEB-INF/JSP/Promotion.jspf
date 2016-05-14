@@ -12,11 +12,13 @@
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame"
         },
-        promotionModule;
+        promotionModule,
+        connection;
     
     stompObject.headers[headerName] = token;
     promotionModule = promotion(stompObject, promotionAction);
-    promotionModule.oneViewStompConnection();
+    connection = new promotionModule.oneViewStompConnection();
+    connection.connect();
 });
 </script>
 <div id="promotionDialog" class="container hidePromotionDialog">
