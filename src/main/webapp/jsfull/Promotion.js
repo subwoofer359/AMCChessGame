@@ -183,43 +183,48 @@ var promotion = function (stompObject, promotionHandler) {
         }
     }
 
-    function setUpOneViewStompConnection(stompClient, uiHandler) {
-        stompClient.connect(stompObject.headers, function () {
-            stompClient.subscribe(USER_UPDATES, handleUserMessage);
-            stompClient.subscribe(TOPIC_UPDATES + gameUUID, handleTopicMessage);
-            stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
-            uiHandler(player, function (piece) {
-                stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+    function OneViewStompConnection() {
+        if (this === undefined) {
+            return new OneViewStompConnection();
+        }
+        this.socket = null;
+        this.stompClient = null;
+    }
+
+    OneViewStompConnection.prototype = {
+        setUpStompConnection : function (uiHandler) {
+            var that = this;
+            this.stompClient.connect(stompObject.headers, function () {
+                that.stompClient.subscribe(USER_UPDATES, handleUserMessage);
+                that.stompClient.subscribe(TOPIC_UPDATES + gameUUID, that.getHandleTopicMessage());
+                that.stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
+                uiHandler(player, function (piece) {
+                    that.stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
+                });
             });
-        });
+        },
+        connect : function () {
+            this.socket = new SockJS(stompObject.URL);
+            this.stompClient = Stomp.over(this.socket);
+            this.setUpStompConnection();
+        },
+        getHandleTopicMessage : function () {
+            return handleTopicMessage;
+        }
+    };
+
+    function TwoViewStompConnection() {
+        if (this === undefined) {
+            return new TwoViewStompConnection();
+        }
+        OneViewStompConnection.call(this);
     }
 
-    function setUpTwoViewStompConnection(stompClient, uiHandler) {
-        stompClient.connect(stompObject.headers, function () {
-            stompClient.subscribe(USER_UPDATES, handleUserMessage);
-            stompClient.subscribe(TOPIC_UPDATES + gameUUID, twoViewHandleTopicMessage);
-            stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
-            uiHandler(player, function (piece) {
-                stompClient.send(APP_PROMOTE + gameUUID, PRIORITY, PROMOTE + piece + squareOfPawn);
-            });
-        });
-    }
+    TwoViewStompConnection.prototype = Object.create(OneViewStompConnection.prototype);
 
-    function oneViewStompConnection() {
-        var stompClient,
-            socket;
-        socket = new SockJS(stompObject.URL);
-        stompClient = Stomp.over(socket);
-        setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
-    }
-
-    function twoViewStompConnection() {
-        var stompClient,
-            socket;
-        socket = new SockJS(stompObject.URL);
-        stompClient = Stomp.over(socket);
-        setUpTwoViewStompConnection(stompClient, promotionAction.handleUserInteract);
-    }
+    TwoViewStompConnection.prototype.getHandleTopicMessage = function () {
+        return twoViewHandleTopicMessage;
+    };
 
     function setGameState(state) {
         gameState = state;
@@ -228,11 +233,9 @@ var promotion = function (stompObject, promotionHandler) {
     return {
         parsePromotionMessage : parsePromotionMessage,
         findPawnForPromotion : findPawnForPromotion,
-        setUpOneViewStompConnection : setUpOneViewStompConnection,
-        setUpTwoViewStompConnection : setUpTwoViewStompConnection,
         checkBoardInPromotionState : checkBoardInPromotionState,
-        oneViewStompConnection : oneViewStompConnection,
-        twoViewStompConnection : twoViewStompConnection,
+        OneViewStompConnection : OneViewStompConnection,
+        TwoViewStompConnection : TwoViewStompConnection,
         setGameState : setGameState
     };
 };

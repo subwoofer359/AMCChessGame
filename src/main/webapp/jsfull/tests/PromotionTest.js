@@ -13,7 +13,7 @@ var message,
 QUnit.module("Promotion tests", {
     beforeEach: function () {
         "use strict";
-        var message = {};
+        message = {};
         message.headers = {};
         stompObject = {
             gameUUID : "1234",
@@ -45,12 +45,16 @@ QUnit.test("testing STATUS message from Stomp Server to Topic receiver", functio
 QUnit.test("testing UPDATE message from Stomp Server to User receiver", function (assert) {
     "use strict";
     var stompClient,
-        squareOfPawn;
+        squareOfPawn,
+        connection;
 
     stompClient = promotionFixture.getStompClient();
+
+    connection = new promotionModule.OneViewStompConnection();
+    connection.stompClient = stompClient;
     message.headers.TYPE = "UPDATE";
 
-    promotionModule.setUpOneViewStompConnection(stompClient, promotionAction.handleUserInteract);
+    connection.setUpStompConnection(promotionAction.handleUserInteract);
     message.body = "CHESSBOARD";
     squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
 
