@@ -22,6 +22,7 @@
 <title>Chess Game</title>
 <style>
     @import url(${pageContext.request.contextPath}/css/General.css);
+    @import url(${pageContext.request.contextPath}/css/PromotionDialog.css);
     body{
           background-image: url(${pageContext.request.contextPath}/img/1700128.jpg);
           background-size: cover;
@@ -156,49 +157,7 @@
             overflow-y: auto;
             background-repeat: repeat-y;
         }
-    }
-    
-    #promotionDialog {
-        width: 50%;
-        
-    }
-    
-    .hidePromotionDialog {
-        display: none;
-    }
-    .displayPromotionDialog {
-        position: absolute;
-        display: block;
-        top: 20%;
-        left: 25%;
-        right: 25%;
-    }
-    
-    #promotionDialog .panel-body {
-        border-style: dashed;
-        border-width: 1px;
-        border-color: black;
-        background-color: white;
-    }
-    #promotionDialog button {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width:120px;
-        height: 120px;
-        padding: 0;
-        border-radius: 122px 122px;
-        
-    }
-    
-    @media(max-width:992px) {
-        #promotionDialog button {
-            margin-bottom: 20px;
-            width: 100%;
-            border-radius: 12px 12px;
-        }   
-    }
-    
+    }    
 </style>
 <script>
 $(document).ready(function(){

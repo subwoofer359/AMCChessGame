@@ -22,6 +22,7 @@
 <title>Chess Game</title>
 <style>
     @import url(${pageContext.request.contextPath}/css/General.css);
+    @import url(${pageContext.request.contextPath}/css/PromotionDialog.css);
     body{
           background-image: url(${pageContext.request.contextPath}/img/1700128.jpg);
           background-size: cover;
