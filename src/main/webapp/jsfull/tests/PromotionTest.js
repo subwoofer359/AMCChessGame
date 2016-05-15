@@ -55,7 +55,7 @@ QUnit.test("testing UPDATE message from Stomp Server to User receiver", function
     message.headers.TYPE = "UPDATE";
 
     connection.setUpStompConnection(promotionAction.handleUserInteract);
-    message.body = "CHESSBOARD";
+    message.body = '{"squares":{"C8":"B"},"currentPlayer":{"colour":"WHITE"},"gameState":"PAWN_PROMOTION"}';
     squareOfPawn =  stompClient.getUserSubscribe().call(stompClient, message);
 
     assert.equal(undefined, squareOfPawn);

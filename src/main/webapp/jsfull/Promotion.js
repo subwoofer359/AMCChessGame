@@ -125,6 +125,11 @@ var promotion = function (stompObject, promotionHandler) {
     }
 
     function handleUserMessage(message) {
+        switch (message.headers.TYPE) {
+        case "UPDATE":
+            updateMessageHandler(message);
+            break;
+        }
         if (gameState === "PAWN_PROMOTION") {
             switch (message.headers.TYPE) {
             case "STATUS":
@@ -133,12 +138,6 @@ var promotion = function (stompObject, promotionHandler) {
                 return squareOfPawn;
             case "ERROR":
                 doPromotionHandlerAction();
-                break;
-            }
-        } else {
-            switch (message.headers.TYPE) {
-            case "UPDATE":
-                updateMessageHandler(message);
                 break;
             }
         }
@@ -179,7 +178,7 @@ var promotion = function (stompObject, promotionHandler) {
         connect : function () {
             this.socket = new SockJS(stompObject.URL);
             this.stompClient = Stomp.over(this.socket);
-            this.setUpStompConnection();
+            this.setUpStompConnection(promotionAction.handleUserInteract);
         },
         getHandleTopicMessage : function () {
             return handleTopicMessage;
