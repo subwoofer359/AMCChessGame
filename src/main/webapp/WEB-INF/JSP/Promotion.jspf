@@ -17,7 +17,7 @@
     
     stompObject.headers[headerName] = token;
     promotionModule = promotion(stompObject, promotionAction);
-    connection = new promotionModule.oneViewStompConnection();
+    connection = new promotionModule.OneViewStompConnection();
     connection.connect();
 });
 </script>
