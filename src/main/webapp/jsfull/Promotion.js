@@ -112,8 +112,9 @@ var promotion = function (stompObject, promotionHandler) {
         promotionHandler.showPromotionDialog();
     }
 
-    function checkBoardInPromotionState() {
+    function checkBoardInPromotionState(board) {
         if (gameState === "PAWN_PROMOTION") {
+            squareOfPawn = findPawnForPromotion(player.colour, board);
             doPromotionHandlerAction();
         }
     }
@@ -122,13 +123,15 @@ var promotion = function (stompObject, promotionHandler) {
         var board = $.parseJSON(message.body);
         player.colour = board.currentPlayer.colour;
         gameState = board.gameState;
+        return board;
     }
 
     function handleUserMessage(message) {
         switch (message.headers.TYPE) {
         case "UPDATE":
-            updateMessageHandler(message);
-            break;
+            var board = updateMessageHandler(message);
+            checkBoardInPromotionState(board);
+            return squareOfPawn;
         }
         if (gameState === "PAWN_PROMOTION") {
             switch (message.headers.TYPE) {

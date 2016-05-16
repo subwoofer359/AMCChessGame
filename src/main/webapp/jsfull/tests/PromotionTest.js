@@ -9,7 +9,8 @@
 var message,
     stompObject,
     $fixture,
-    promotionModule;
+    promotionModule,
+    jsonChessBoard;
 QUnit.module("Promotion tests", {
     beforeEach: function () {
         "use strict";
@@ -24,6 +25,7 @@ QUnit.module("Promotion tests", {
 
         promotionModule = promotion(stompObject, promotionAction);
         promotionModule.setGameState("PAWN_PROMOTION");
+        jsonChessBoard = '{"squares":{"C8":"p"},"currentPlayer":{"colour":"WHITE"},"gameState":"PAWN_PROMOTION"}';
         $fixture = $("#qunit-fixture");
         $fixture.append('<div id="promotionDialog" class="container hidePromotionDialog"><div class="row"><div class="panel-primary"><div class="panel-heading"><h3 class="panel-title">Promote Chess Piece</h3></div><div class="panel-body">      <div class="row"><div class="col-xs-12 col-md-3"><button id="queenBtn" class="btn btn-primary" type="button"><img src="../../img/Queen.svg" alt="Queen"></button></div><div class="col-xs-12 col-md-3"><button id="rookBtn" class="btn btn-primary" type="button"><img src="../../img/Rook.svg" alt="Rook"></button></div><div class="col-xs-12 col-md-3">             <button id="knightBtn" class="btn btn-primary" type="button"><img src="../../img/Knight.svg" alt="Knight"></button>         </div><div class="col-xs-12 col-md-3"><button id="bishopBtn" class="btn btn-primary" type="button"><img src="../../img/Bishop.svg" alt="Bishop"></button></div></div></div></div></div></div>');
     }
@@ -213,7 +215,7 @@ QUnit.test("test chessboard is already in promotion state", function (assert) {
 
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 
-    promotionModule.checkBoardInPromotionState();
+    promotionModule.checkBoardInPromotionState(jsonChessBoard);
 
     assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion check");
 });
@@ -228,4 +230,28 @@ QUnit.test("test TwoViewStompConnection", function (assert) {
     promotionFixture.sendStatusMessageToTwoViewTopic(promotionModule, promotionAction);
 
     assert.ok($dialog.hasClass("hidePromotionDialog"), "Dialog should not be display on promotion error");
+});
+
+QUnit.test("On promotion configured board display dialogue", function (assert) {
+    "use strict";
+    var stompClient,
+        squareOfPawn,
+        connection,
+        $dialog = $("#promotionDialog");
+
+    stompClient = promotionFixture.getStompClient();
+
+    connection = new promotionModule.OneViewStompConnection();
+    connection.stompClient = stompClient;
+    message.headers.TYPE = "UPDATE";
+
+    connection.setUpStompConnection(promotionAction.handleUserInteract);
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+    message.body = jsonChessBoard;
+    squareOfPawn = stompClient.getUserSubscribe().call(stompClient, message);
+    assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion check");
+
+    assert.notEqual(undefined, squareOfPawn, "squareOfPawn should not be undefined");
+    assert.notEqual(null, squareOfPawn, "squareOfPawn should not be null");
 });
