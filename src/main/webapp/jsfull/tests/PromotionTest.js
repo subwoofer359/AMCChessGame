@@ -215,7 +215,7 @@ QUnit.test("test chessboard is already in promotion state", function (assert) {
 
     assert.ok($dialog.hasClass("hidePromotionDialog"));
 
-    promotionModule.checkBoardInPromotionState(jsonChessBoard);
+    promotionModule.checkBoardInPromotionState(JSON.parse(jsonChessBoard));
 
     assert.ok($dialog.hasClass("displayPromotionDialog"), "Dialog should be display on promotion check");
 });
@@ -254,4 +254,32 @@ QUnit.test("On promotion configured board display dialogue", function (assert) {
 
     assert.notEqual(undefined, squareOfPawn, "squareOfPawn should not be undefined");
     assert.notEqual(null, squareOfPawn, "squareOfPawn should not be null");
+});
+
+
+QUnit.test("On promotion configured board don't display dialogue in Two view game", function (assert) {
+    "use strict";
+    var stompClient,
+        squareOfPawn,
+        connection,
+        $dialog = $("#promotionDialog");
+
+    stompObject.playerColour = "BLACK";
+    promotionModule = promotion(stompObject, promotionAction);
+    promotionModule.setGameState("PAWN_PROMOTION");
+
+    stompClient = promotionFixture.getStompClient();
+
+    connection = new promotionModule.TwoViewStompConnection();
+    connection.stompClient = stompClient;
+    message.headers.TYPE = "UPDATE";
+
+    connection.setUpStompConnection(promotionAction.handleUserInteract);
+
+    assert.ok($dialog.hasClass("hidePromotionDialog"));
+    message.body = jsonChessBoard;
+    squareOfPawn = stompClient.getUserSubscribe().call(stompClient, message);
+    assert.ok($dialog.hasClass("hidePromotionDialog"), "Dialog should not be display on promotion check");
+
+    assert.equal(undefined, squareOfPawn, "squareOfPawn should be undefined");
 });

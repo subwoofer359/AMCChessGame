@@ -109,7 +109,9 @@ var promotion = function (stompObject, promotionHandler) {
     }
 
     function doPromotionHandlerAction() {
-        promotionHandler.showPromotionDialog();
+        if (undefined !== squareOfPawn && null !== squareOfPawn) {
+            promotionHandler.showPromotionDialog();
+        }
     }
 
     function checkBoardInPromotionState(board) {
@@ -126,28 +128,36 @@ var promotion = function (stompObject, promotionHandler) {
         return board;
     }
 
-    function handleUserMessage(message) {
-        switch (message.headers.TYPE) {
-        case "UPDATE":
-            var board = updateMessageHandler(message);
-            checkBoardInPromotionState(board);
-            return squareOfPawn;
-        }
-        if (gameState === "PAWN_PROMOTION") {
+    function updateTwoViewMessageHandler(message) {
+        var board = $.parseJSON(message.body);
+        gameState = board.gameState;
+        return board;
+    }
+
+    function handleUserMessage(updateMessageHandlerCallback) {
+        return function (message) {
             switch (message.headers.TYPE) {
-            case "STATUS":
-                squareOfPawn = parsePromotionMessage(message.body);
-                doPromotionHandlerAction();
+            case "UPDATE":
+                var board = updateMessageHandlerCallback(message);
+                checkBoardInPromotionState(board);
                 return squareOfPawn;
-            case "ERROR":
-                doPromotionHandlerAction();
-                break;
             }
-        }
+            if (gameState === "PAWN_PROMOTION") {
+                switch (message.headers.TYPE) {
+                case "STATUS":
+                    squareOfPawn = parsePromotionMessage(message.body);
+                    doPromotionHandlerAction();
+                    return squareOfPawn;
+                case "ERROR":
+                    doPromotionHandlerAction();
+                    break;
+                }
+            }
+        };
     }
 
     function handleTopicMessage(message) {
-        return handleUserMessage(message);
+        return handleUserMessage(updateMessageHandler)(message);
     }
 
     function twoViewHandleTopicMessage(message) {
@@ -170,7 +180,7 @@ var promotion = function (stompObject, promotionHandler) {
         setUpStompConnection : function (uiHandler) {
             var that = this;
             this.stompClient.connect(stompObject.headers, function () {
-                that.stompClient.subscribe(USER_UPDATES, handleUserMessage);
+                that.stompClient.subscribe(USER_UPDATES, that.getHandleUserMessage());
                 that.stompClient.subscribe(TOPIC_UPDATES + gameUUID, that.getHandleTopicMessage());
                 that.stompClient.send(APP_GET + gameUUID, PRIORITY, "Get ChessBoard");
                 uiHandler(player, function (piece) {
@@ -185,6 +195,9 @@ var promotion = function (stompObject, promotionHandler) {
         },
         getHandleTopicMessage : function () {
             return handleTopicMessage;
+        },
+        getHandleUserMessage : function () {
+            return handleUserMessage(updateMessageHandler);
         }
     };
 
@@ -199,6 +212,10 @@ var promotion = function (stompObject, promotionHandler) {
 
     TwoViewStompConnection.prototype.getHandleTopicMessage = function () {
         return twoViewHandleTopicMessage;
+    };
+
+    TwoViewStompConnection.prototype.getHandleUserMessage = function () {
+        return handleUserMessage(updateTwoViewMessageHandler);
     };
 
     function setGameState(state) {
