@@ -72,6 +72,12 @@
 			org.amc.util.web.StartupShutdownListener
 		</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>
+			org.amc.game.chessserver.spring.ChessGameCleanUp
+		</listener-class>
+	</listener>
 
 	<!-- MyFilters -->
 	<filter>
