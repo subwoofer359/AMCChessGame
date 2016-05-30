@@ -26,6 +26,7 @@ class ChessGameCleanUpIT {
     WebApplicationContext wac;
     
     DatabaseFixture fixture = new DatabaseFixture();
+
     ServerChessGameDatabaseEntityFixture scgFixture;
     ServerChessGameDAO serverChessGameDAO;
     
