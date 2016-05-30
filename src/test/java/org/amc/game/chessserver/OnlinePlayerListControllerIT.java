@@ -50,7 +50,7 @@ public class OnlinePlayerListControllerIT {
     
     private MockMvc mockMvc;
     
-    private static final DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    private static final DatabaseFixture fixture = new DatabaseFixture();
  
     @BeforeClass
     public static void setUpDB() throws Exception {

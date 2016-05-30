@@ -28,11 +28,17 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/GameServerContext.xml 
-			/WEB-INF/EntityManagerFactory.xml
+			/WEB-INF/EntityManagerFactory.groovy
 			/WEB-INF/GameServerSecurity.xml
 			/WEB-INF/GameServerWebSockets.xml
 			/WEB-INF/EmailServiceContext.xml
 		</param-value>
+	</context-param>
+	<context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+			org.springframework.web.context.support.GroovyWebApplicationContext
+        </param-value>
 	</context-param>
 	
 	<!-- Spring controllers -->
@@ -40,6 +46,12 @@
 	<servlet>
 		<servlet-name>chessgame</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+        <param-name>contextClass</param-name>
+        	<param-value>
+				org.springframework.web.context.support.GroovyWebApplicationContext
+        	</param-value>
+    	</init-param>
 		<init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>/WEB-INF/chessgame-servlet.xml</param-value>
@@ -78,6 +90,11 @@
 			org.amc.game.chessserver.spring.ChessGameCleanUp
 		</listener-class>
 	</listener>
+	
+	 <!-- Required for Request scope Spring beans -->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
 
 	<!-- MyFilters -->
 	<filter>
@@ -90,12 +107,6 @@
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-		<async-supported>true</async-supported>
-	</filter>
-	 
-	<filter>
-		<filter-name>EntityManagerFilter</filter-name>
-		<filter-class>org.amc.game.chessserver.EntityManagerFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
 	 
@@ -113,15 +124,6 @@
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	<filter-mapping>
-		<filter-name>EntityManagerFilter</filter-name>
-		<url-pattern>/app/chessgame/*</url-pattern>
-		<url-pattern>/signup</url-pattern>
-		<url-pattern>/isUserNameAvailable</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-    	<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
 	
 	<filter-mapping>

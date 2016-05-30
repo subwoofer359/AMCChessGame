@@ -3,7 +3,6 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
-import org.amc.EntityManagerThreadLocal;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardUtilities;
 import org.amc.game.chess.ChessGame;
@@ -11,7 +10,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.view.ChessBoardView;
-import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.DatabaseFixture;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +19,7 @@ import org.junit.Test;
 
 public class ChessGameDAOIT {
 
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture signUpfixture = new DatabaseFixture();
     private DAO<ChessGame> chessGameDAO;
 
     private Player laura;
@@ -32,11 +31,13 @@ public class ChessGameDAOIT {
     @Before
     public void setUp() throws Exception {
         this.signUpfixture.setUp();
-        ServerChessGameDatabaseEntityFixture serverChessGamesfixture = new ServerChessGameDatabaseEntityFixture();
+        ServerChessGameDatabaseEntityFixture serverChessGamesfixture = 
+                        new ServerChessGameDatabaseEntityFixture(signUpfixture.getNewEntityManager());
         laura = serverChessGamesfixture.getBlackPlayer();
         nobby = serverChessGamesfixture.getWhitePlayer();
         game = serverChessGamesfixture.getChessGame();
         chessGameDAO = new ChessGameDAO();
+        chessGameDAO.setEntityManager(signUpfixture.getNewEntityManager());
         
         id = game.getId();
     }
@@ -51,7 +52,7 @@ public class ChessGameDAOIT {
         ChessGame game = chessGameDAO.getEntity(id);
         game.changePlayer();
         
-        EntityManagerThreadLocal.closeEntityManager();
+    
         
         assertTrue(ComparePlayers.comparePlayers(game.getCurrentPlayer(), laura));
         assertTrue(ComparePlayers.comparePlayers(game.getBlackPlayer(), laura));
@@ -75,7 +76,7 @@ public class ChessGameDAOIT {
             newBoard.move(gameMove);
         }
         
-        EntityManagerThreadLocal.closeEntityManager();
+  
         
         game = chessGameDAO.getEntity(id);
         ChessBoardUtilities.compareBoards(newBoard, game.getChessBoard());

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.game.chess.ComparePlayers;
-import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.DatabaseFixture;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -23,13 +23,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/SpringTestConfig.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml", "/GameObservers.xml"})
+@ContextConfiguration({"/EntityManagerFactory.groovy", "/SpringTestConfig.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml", "/GameObservers.xml"})
 public class ServerChessGameDAOIT {
 
     @Autowired
     private WebApplicationContext wac;
     
-    private static DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private static DatabaseFixture signUpfixture = new DatabaseFixture();
     private static ServerChessGameDatabaseEntityFixture serverChessGamesfixture;
     private ServerChessGameDAO dao;
     private EntityManagerCache emCache;
@@ -38,7 +38,7 @@ public class ServerChessGameDAOIT {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         signUpfixture.setUp();
-        serverChessGamesfixture = new ServerChessGameDatabaseEntityFixture();
+        serverChessGamesfixture = new ServerChessGameDatabaseEntityFixture(signUpfixture.getNewEntityManager());
     }
     
     @Before

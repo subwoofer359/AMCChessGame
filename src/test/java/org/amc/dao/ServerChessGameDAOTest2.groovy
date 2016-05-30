@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 import groovy.mock.interceptor.StubFor;
 
 import org.amc.DAOException;
-import org.amc.EntityManagerThreadLocal;
 import org.amc.game.chess.*;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGame

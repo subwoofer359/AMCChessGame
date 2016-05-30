@@ -16,9 +16,9 @@ import javax.persistence.EntityManagerFactory;
 
 class DatabaseSignUpFixtureIT {
     
-    static DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    static DatabaseFixture fixture = new DatabaseFixture();
     def FIRST = 0;
-    def userNames = DatabaseSignUpFixture.userNames;
+    def userNames = DatabaseFixture.userNames;
 	def userDAO;
 	def playerDAO;
 
@@ -30,7 +30,9 @@ class DatabaseSignUpFixtureIT {
 	@Before
 	public void setUp() throws Exception {
 		userDAO = new DAO<>(User);
+        userDAO.entityManager = fixture.entityManager;
 		playerDAO = new DAO<>(HumanPlayer);
+        playerDAO.entityManager = fixture.entityManager;
 	}
 
     @AfterClass
@@ -52,11 +54,11 @@ class DatabaseSignUpFixtureIT {
                 
                 assert user?.authorities[FIRST]?.authority == "ROLE_USER";
                 
-                assert user?.emailAddress == DatabaseSignUpFixture.emailAddresses[index];
+                assert user?.emailAddress == DatabaseFixture.emailAddresses[index];
                 
-                assert user?.name == DatabaseSignUpFixture.fullNames[index];
+                assert user?.name == DatabaseFixture.fullNames[index];
                 
-                assert String.valueOf(user?.password) == DatabaseSignUpFixture.password;
+                assert String.valueOf(user?.password) == DatabaseFixture.password;
                 
                 assert user?.player?.userName == userName;
                 
@@ -68,6 +70,7 @@ class DatabaseSignUpFixtureIT {
     @Test
     public void testPlayers() {
         def dao = new DAO(HumanPlayer.class);
+        dao.entityManager = fixture.entityManager;
         
         userNames.eachWithIndex ( 
             { item, index -> 
@@ -80,7 +83,7 @@ class DatabaseSignUpFixtureIT {
                 
                 assert player?.userName == userName;
                 
-                assert player?.name == DatabaseSignUpFixture.fullNames[index];
+                assert player?.name == DatabaseFixture.fullNames[index];
                 
                 assert player?.id != 0;
             }

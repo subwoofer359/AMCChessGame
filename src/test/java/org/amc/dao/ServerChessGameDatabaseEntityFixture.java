@@ -35,11 +35,15 @@ public class ServerChessGameDatabaseEntityFixture {
     private final ServerChessGameDAO scgDAO;
     private final ChessGameFixture cgFixture;
     private ChessGameFactory chessGamefactory; 
+    private EntityManager entityManager;
     
-    public ServerChessGameDatabaseEntityFixture() throws DAOException {
+    public ServerChessGameDatabaseEntityFixture(EntityManager entityManager) throws DAOException {
         this.chessGamefactory = new StandardChessGameFactory();
+        this.entityManager = entityManager;
         scgDAO = new ServerChessGameDAO();
+        scgDAO.setEntityManager(entityManager);
         DAO<Player> playerDAO = new DAO<>(HumanPlayer.class);
+        playerDAO.setEntityManager(entityManager);
         cgFixture = new ChessGameFixture();
         
         whitePlayer = playerDAO.findEntities("userName", "laura").get(0);
@@ -51,8 +55,8 @@ public class ServerChessGameDatabaseEntityFixture {
         addServerChessGameToDataBase(scgGame);
     }
     
-    public ServerChessGameDatabaseEntityFixture(int noOfDBEntries) throws DAOException {
-        this();
+    public ServerChessGameDatabaseEntityFixture(EntityManager entityManager, int noOfDBEntries) throws DAOException {
+        this(entityManager);
         EntityManager em = scgDAO.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();

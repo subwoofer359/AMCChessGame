@@ -32,11 +32,11 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+@ContextConfiguration({"/EntityManagerFactory.groovy", "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
 public class UserSearchIT {
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture signUpfixture = new DatabaseFixture();
     
     @Autowired
     private WebApplicationContext wac;

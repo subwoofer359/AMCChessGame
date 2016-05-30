@@ -59,7 +59,7 @@ import org.springframework.stereotype.Controller;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration([ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+@ContextConfiguration(['/EntityManagerFactory.groovy', "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" ])
 class PromotionStompControllerIT extends StompControllerFixtureIT {
     

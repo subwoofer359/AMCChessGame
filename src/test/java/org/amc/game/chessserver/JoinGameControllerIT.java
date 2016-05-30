@@ -27,14 +27,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+@ContextConfiguration({"/EntityManagerFactory.groovy", "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
 public class JoinGameControllerIT {
 	
 	private static final String PLAYER_SESSION_ATTR = "PLAYER";
 	
-	private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+	private DatabaseFixture signUpfixture = new DatabaseFixture();
 	
 	private ServerChessGameDatabaseEntityFixture entity;
 	
@@ -52,7 +52,7 @@ public class JoinGameControllerIT {
 	@Before
 	public void setUp() throws Exception {
 		signUpfixture.setUp();
-		entity = new ServerChessGameDatabaseEntityFixture();
+		entity = new ServerChessGameDatabaseEntityFixture(signUpfixture.getNewEntityManager());
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 

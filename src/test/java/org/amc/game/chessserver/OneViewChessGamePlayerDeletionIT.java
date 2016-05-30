@@ -18,7 +18,7 @@ import java.util.List;
 
 public class OneViewChessGamePlayerDeletionIT {
     
-    private DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    private DatabaseFixture fixture = new DatabaseFixture();
     private ServerChessGameDAO serverChessGameDao;
     private static final long GAME_UID = 1234L;
     private final ChessGameFactory chessGameFactory = new StandardChessGameFactory(); 
@@ -31,12 +31,14 @@ public class OneViewChessGamePlayerDeletionIT {
     public void setUp() throws Exception {
         fixture.setUp();
         serverChessGameDao = new ServerChessGameDAO();
+        serverChessGameDao.setEntityManager(fixture.getEntityManager());
         EntityManagerCache cache = new EntityManagerCache();
         cache.setEntityManagerFactory(fixture.getEntityManagerFactory());
         
         serverChessGameDao.setEntityManagerCache(cache);
         
         playerDao = new DAO<>(HumanPlayer.class);
+        playerDao.setEntityManager(fixture.getEntityManager());
         setUpPlayers();
     }
     

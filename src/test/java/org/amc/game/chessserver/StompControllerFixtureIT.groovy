@@ -58,7 +58,7 @@ public class StompControllerFixtureIT {
 
     final long gameUUID = 1234L;
 
-    DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    DatabaseFixture fixture = new DatabaseFixture();
 
     DAO<Player> playerDAO;
 
@@ -74,6 +74,7 @@ public class StompControllerFixtureIT {
     public void setup() throws Exception {
         fixture.setUp();
         playerDAO = new DAO<Player>(HumanPlayer.class);
+        playerDAO.setEntityManager(fixture.getEntityManager());
         stephen = playerDAO.findEntities("userName", "stephen").get(0);
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
         setUpStompChannels();

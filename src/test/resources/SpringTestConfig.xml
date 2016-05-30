@@ -17,7 +17,6 @@
 	<context:component-scan  base-package="org.amc.game.chessserver.messaging." />
 	<mvc:annotation-driven/>
 	
-	<import resource="/EntityManagerFactory.xml"/>
 	<import resource="/GameObservers.xml"/>
 	
 	<!-- creates Properties configuration values -->
@@ -58,29 +57,35 @@
 	
 	
 
-	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
+	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype">
+		<property name="entityManager" ref="appEntityManager"/>
+	</bean>
 
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.User</value>
 		</constructor-arg>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 
 	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
 		</constructor-arg>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 
 	<bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.Authorities</value>
 		</constructor-arg>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 	
 	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
 		<property name="entityManagerCache" ref="myEntityManagerCache"/>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 	
     

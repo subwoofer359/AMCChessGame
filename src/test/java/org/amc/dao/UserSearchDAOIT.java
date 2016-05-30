@@ -2,7 +2,7 @@ package org.amc.dao;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.DatabaseFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserSearchDAOIT {
     
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture signUpfixture = new DatabaseFixture();
     private UserSearchDAO dao;
     private static int NO_OF_USERS = 3;
     
@@ -19,6 +19,7 @@ public class UserSearchDAOIT {
     public void setUp() throws Exception {
         signUpfixture.setUp();
         dao = new UserSearchDAO();
+        dao.setEntityManager(signUpfixture.getNewEntityManager());
     }
     
     @After

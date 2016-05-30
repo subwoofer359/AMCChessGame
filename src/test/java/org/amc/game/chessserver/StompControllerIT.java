@@ -46,7 +46,7 @@ import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+@ContextConfiguration({"/EntityManagerFactory.groovy", "/SpringTestConfig.xml", "/GameServerSecurity.xml",
         "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 public class StompControllerIT {
 
@@ -84,7 +84,7 @@ public class StompControllerIT {
     private String[] moves = { "A2-A3", "A7-A6", "B2-B3", "B7-B6", "C2-C3", "C7-C6", "D2-D3",
             "D7-D6", "E2-E3", "E7-E6", "F2-F3", "F7-F6", "G2-G3", "G7-G6", "H2-H3", "H7-H6" };
 
-    private DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    private DatabaseFixture fixture = new DatabaseFixture();
 
     private DAO<Player> playerDAO;
 
@@ -103,6 +103,7 @@ public class StompControllerIT {
         fixture.setUp();
 
         playerDAO = new DAO<Player>(HumanPlayer.class);
+        playerDAO.setEntityManager(fixture.getEntityManager());
         stephen = playerDAO.findEntities("userName", "stephen").get(0);
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
 

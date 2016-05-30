@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+@ContextConfiguration({"/EntityManagerFactory.groovy", "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 public class SignUpControllerIT {
 
@@ -44,7 +44,7 @@ public class SignUpControllerIT {
 
     private MockMvc mockMvc;
 
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture signUpfixture = new DatabaseFixture();
 
     @Before
     public void setUp() throws Exception {

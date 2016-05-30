@@ -6,7 +6,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
-import org.amc.EntityManagerThreadLocal;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
@@ -18,6 +17,8 @@ import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.*;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.security.Principal;
@@ -25,10 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.OptimisticLockException;
-import javax.persistence.Persistence;
 
 public class SaveGameStompControllerUnitTest {
     private SaveGameStompController controller;
@@ -56,7 +55,14 @@ public class SaveGameStompControllerUnitTest {
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
     
+    @Mock
     private ServerChessGameDAO serverChessGameDAO;
+    
+    @Mock
+    private EntityManager entityManager;
+    
+    @Mock
+    private EntityTransaction transaction;
 
     private Principal principal = new Principal() {
 
@@ -68,6 +74,8 @@ public class SaveGameStompControllerUnitTest {
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        
         scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
@@ -77,7 +85,6 @@ public class SaveGameStompControllerUnitTest {
             }
         });
         
-        this.serverChessGameDAO = mock(ServerChessGameDAO.class);
         this.controller = new SaveGameStompController();
         controller.setServerChessDAO(serverChessGameDAO);
         
@@ -91,16 +98,18 @@ public class SaveGameStompControllerUnitTest {
             
         scg.addOpponent(blackPlayer);
         sessionAttributes.put("PLAYER", whitePlayer);
+        
+        when(entityManager.getTransaction()).thenReturn(transaction);
+        when(serverChessGameDAO.getEntityManager()).thenReturn(entityManager);
     }
     
     @AfterClass
     public static void tearDownClass() {
-    	restoreEntityManagerThreadLocal();
+
     }
     
     @Test
     public void testSaveGame() throws DAOException {
-        setupMockEntityManagerThreadLocal();
         
         when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
         when(serverChessGameDAO.saveServerChessGame(eq(scg))).thenReturn(scg);
@@ -110,22 +119,6 @@ public class SaveGameStompControllerUnitTest {
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(SaveGameStompController.GAME_SAVED_SUCCESS, payoadArgument.getValue());
         
-        restoreEntityManagerThreadLocal();
-    }
-    
-    private void setupMockEntityManagerThreadLocal() {
-        EntityTransaction mockTransaction = mock(EntityTransaction.class);
-        EntityManagerFactory emFactory = mock(EntityManagerFactory.class);
-        EntityManagerThreadLocal.setEntityManagerFactory(emFactory);
-        EntityManager mockEmManager = mock(EntityManager.class);
-        
-        when(emFactory.createEntityManager()).thenReturn(mockEmManager);
-        when(mockEmManager.getTransaction()).thenReturn(mockTransaction);
-    }
-    
-    private static void restoreEntityManagerThreadLocal() {
-        EntityManagerThreadLocal.setEntityManagerFactory(
-                        Persistence.createEntityManagerFactory("myDatabaseTest"));
     }
     
     @SuppressWarnings("unchecked")

@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameObservers.xml", "/GameServerSecurity.xml"})
+@ContextConfiguration({"/EntityManagerFactory.groovy", "/GameServerWebSockets.xml", "/SpringTestConfig.xml", "/GameObservers.xml", "/GameServerSecurity.xml"})
 public class ObserverFactoryChainIT {
 
     @Autowired

@@ -6,7 +6,7 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.AbstractServerChessGame;
-import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.DatabaseFixture;
 import org.amc.game.chessserver.OneViewServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
@@ -15,10 +15,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.persistence.EntityManager;
+
 class ServerChessGameDAOGetPlayerGameListIT {
     
-    private static DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
-    private static ServerChessGameDatabaseEntityFixture scgDbEntity;
+    private static DatabaseFixture fixture = new DatabaseFixture();
+    private ServerChessGameDatabaseEntityFixture scgDbEntity;
+    EntityManager entityManager;
     ServerChessGameDAO dao;
     Player player;
     Player opponent;
@@ -28,16 +31,20 @@ class ServerChessGameDAOGetPlayerGameListIT {
 
     @BeforeClass
     static void setUpBeforeClass() throws Exception {
-        fixture.setUp();
-        scgDbEntity = new ServerChessGameDatabaseEntityFixture(NO_OF_ENTRIES);
+        fixture.setUp();      
     }
     
     @Before
     void setup() {
         fixture.clearTables();
-		setUpBeforeClass();     
+        fixture.addUsers();
+        scgDbEntity = new ServerChessGameDatabaseEntityFixture(fixture.newEntityManager, NO_OF_ENTRIES);
+            
+        entityManager = scgDbEntity.entityManager;
         dao = new ServerChessGameDAO();
+        dao.setEntityManager(entityManager);
         playerDAO = new DAO<Player>(HumanPlayer);
+        playerDAO.setEntityManager(entityManager);
         
         player = playerDAO.findEntities("userName", "laura")?.get(0);
         opponent = playerDAO.findEntities("userName", "nobby")?.get(0);

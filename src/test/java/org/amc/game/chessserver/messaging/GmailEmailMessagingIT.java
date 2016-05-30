@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.junit.Assert.*;
 
-import org.amc.EntityManagerThreadLocal;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.game.chess.ChessBoard;
@@ -18,7 +17,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
-import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.DatabaseFixture;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -49,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
+@ContextConfiguration(locations = { "/EntityManagerFactory.groovy", "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
 public class GmailEmailMessagingIT {
 
 	private static final String GAME_TYPE = "gameType";
@@ -82,7 +81,7 @@ public class GmailEmailMessagingIT {
 	
     private static final String SESSION_ATTRIBUTE = "PLAYER";
     
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture signUpfixture = new DatabaseFixture();
 
     private ChessGamePlayer whitePlayer;
 
@@ -126,15 +125,8 @@ public class GmailEmailMessagingIT {
     
     private Player getPlayerFromDatabase(String name) throws Exception {
         Player player = playerDAO.findEntities(USER_NAME, name).get(0);
-        detachFromOldEntityManager(player);
+        playerDAO.getEntityManager().detach(player);
         return player;
-    }
-    
-    /*
-     * detaching player from EntityManager to prevent exception on new Em.flush()
-     */
-    private void detachFromOldEntityManager(Player player) {
-        EntityManagerThreadLocal.getEntityManager().detach(player);
     }
     
     @After

@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 public class UserPlayerIT {
 
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture fixture = new DatabaseFixture();
     private static final String name = "adrian mclaughlin";
     private static final String userName = "adrian";
     private static final String password = "password";
@@ -31,10 +31,13 @@ public class UserPlayerIT {
     
     @Before
     public void setUp() {
-        this.signUpfixture.setUp();
+        this.fixture.setUp();
         userDAO = new DAO<>(User.class);
+        userDAO.setEntityManager(fixture.getEntityManager());
         playerDAO = new DAO<>(HumanPlayer.class);
+        playerDAO.setEntityManager(fixture.getEntityManager());
         authoritiesDAO = new DAO<>(Authorities.class);
+        authoritiesDAO.setEntityManager(fixture.getEntityManager());
         
         player = new HumanPlayer(name);
         player.setUserName(userName);
@@ -55,7 +58,7 @@ public class UserPlayerIT {
     
     @After
     public void tearDown() {
-        this.signUpfixture.tearDown();
+        this.fixture.tearDown();
     }
     
     @Test

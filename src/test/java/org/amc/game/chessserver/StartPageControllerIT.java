@@ -25,10 +25,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml" })
+@ContextConfiguration(locations = {"/EntityManagerFactory.groovy", "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/GameServerSecurity.xml", "/EmailServiceContext.xml" })
 
 public class StartPageControllerIT {
-    private DatabaseSignUpFixture signUpfixture = new DatabaseSignUpFixture();
+    private DatabaseFixture signUpfixture = new DatabaseFixture();
     private static final String PLAYER_SESSION_ATTR = "PLAYER";
     private static final String FULLNAME = "adrian mclaughlin";
     private static final String USERNAME = "adrian";

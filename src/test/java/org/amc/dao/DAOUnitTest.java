@@ -4,7 +4,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
-import org.amc.EntityManagerThreadLocal;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +54,6 @@ public class DAOUnitTest {
         when(em.getTransaction()).thenReturn(transaction);
         when(em.createQuery(queryString.capture(), eq(TestEntity.class))).thenReturn(query);
  
-        EntityManagerThreadLocal.setEntityManagerFactory(emFactory);
         dao = new DAO<DAOUnitTest.TestEntity>(TestEntity.class) {
             @Override
             public EntityManager getEntityManager() {
@@ -71,7 +69,6 @@ public class DAOUnitTest {
     @After
     public void tearDown() throws Exception {
         reset(transaction);
-        EntityManagerThreadLocal.closeEntityManager();
     }
 
     @Test

@@ -2,7 +2,7 @@ package org.amc.game.chessserver.spring
 
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.dao.ServerChessGameDatabaseEntityFixture;
-import org.amc.game.chessserver.DatabaseSignUpFixture;
+import org.amc.game.chessserver.DatabaseFixture;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,13 +19,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration([ "/SpringTestConfig.xml", "/GameServerSecurity.xml",
+@ContextConfiguration(['/EntityManagerFactory.groovy', "/SpringTestConfig.xml", "/GameServerSecurity.xml",
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" ])
 class ChessGameCleanUpIT {
     @Autowired
     WebApplicationContext wac;
     
-    DatabaseSignUpFixture fixture = new DatabaseSignUpFixture();
+    DatabaseFixture fixture = new DatabaseFixture();
     ServerChessGameDatabaseEntityFixture scgFixture;
     ServerChessGameDAO serverChessGameDAO;
     

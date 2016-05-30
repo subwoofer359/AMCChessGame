@@ -1,7 +1,6 @@
 package org.amc.dao;
 
 import org.amc.DAOException;
-import org.amc.EntityManagerThreadLocal;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 
@@ -34,6 +33,8 @@ public class DAO<T> {
      * The class this DAO is handling
      */
     private final Class<?> entityClass;
+    
+    private EntityManager entityManager;
 
     public DAO(Class<?> entityClass) {
         this.entityClass = entityClass;
@@ -203,7 +204,11 @@ public class DAO<T> {
      * @see EntityManagerThreadLocal
      */
     public EntityManager getEntityManager() {
-        return EntityManagerThreadLocal.getEntityManager();
+        return entityManager;
+    }
+    
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
