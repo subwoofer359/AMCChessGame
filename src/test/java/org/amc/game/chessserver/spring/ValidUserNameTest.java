@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class ValidUserNameTest {
 
 	private String userName;
 	private Errors errors;
-	private DAO<User> userDAO;
+	private DAOInterface<User> userDAO;
 	private UserNameValidator userNameValidator;
 	
 	public ValidUserNameTest(String userName) {

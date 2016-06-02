@@ -6,6 +6,7 @@ import org.amc.Authorities;
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.junit.After;
@@ -22,9 +23,9 @@ public class UserPlayerIT {
     private static final String password = "password";
     private static final String ROLE = "ROLE_USER";
     
-    private DAO<User> userDAO;
-    private DAO<Player> playerDAO;
-    private DAO<Authorities> authoritiesDAO;
+    private DAOInterface<User> userDAO;
+    private DAOInterface<Player> playerDAO;
+    private DAOInterface<Authorities> authoritiesDAO;
     private Player player;
     private User user;
     private Authorities authorities;

@@ -4,6 +4,7 @@ import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
+import org.amc.dao.DAOInterface;
 import org.amc.dao.DAO;
 import org.amc.dao.EntityManagerCache;
 import org.amc.dao.ServerChessGameDAO;
@@ -60,7 +61,7 @@ public class StompControllerFixtureIT {
 
     DatabaseFixture fixture = new DatabaseFixture();
 
-    DAO<Player> playerDAO;
+    DAOInterface<Player> playerDAO;
 
     Player stephen;
 

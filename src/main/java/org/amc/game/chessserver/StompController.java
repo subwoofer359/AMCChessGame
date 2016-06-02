@@ -10,6 +10,8 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 /**
  * Handles a WebSocket message received for a move in a chess game
  * 
@@ -83,7 +85,7 @@ public class StompController {
         this.template = template;
     }
     
-    @Autowired
+    @Resource(name="wsServerChessGameDAO")
     public void setServerChessDAO(ServerChessGameDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }

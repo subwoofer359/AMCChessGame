@@ -9,6 +9,7 @@ import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSI
 
 import org.amc.DAOException;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.dao.EntityManagerCache;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessBoardUtilities;
@@ -86,7 +87,7 @@ public class StompControllerIT {
 
     private DatabaseFixture fixture = new DatabaseFixture();
 
-    private DAO<Player> playerDAO;
+    private DAOInterface<Player> playerDAO;
 
     private Player stephen;
 

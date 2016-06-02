@@ -41,7 +41,7 @@ public class GameFinishedListener extends GameObserver {
     public GameFinishedListener() {
     }
 
-    @Resource(name = "myServerChessGameDAO")
+    @Resource(name = "wsServerChessGameDAO")
     public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }

@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -25,7 +26,7 @@ public class NewGameRequestControllerTest {
 	private WebApplicationContext wac;
 	private StartPageController spController;
 	private ServerJoinChessGameController sjController;
-	private DAO<User> userDAO;
+	private DAOInterface<User> userDAO;
 	private Player player;
 	private Player opponent;
 	private static final String userToPlay = "Robert";

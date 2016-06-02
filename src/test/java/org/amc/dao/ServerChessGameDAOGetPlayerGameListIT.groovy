@@ -26,7 +26,7 @@ class ServerChessGameDAOGetPlayerGameListIT {
     Player player;
     Player opponent;
     Player otherPlayer;
-    DAO<Player> playerDAO;
+    DAOInterface<Player> playerDAO;
     static final Integer NO_OF_ENTRIES = 10;
 
     @BeforeClass

@@ -12,20 +12,19 @@ public class ManagedUserDAOFactory {
     
     private EntityManagerFactory emFactory;
     
-    public DAO<?> getUserDAO() {
+    public DAOInterface<?> getUserDAO() {
         EntityManager entityManager = emFactory.createEntityManager();
-        DAO<User> userDAO = new DAO<>(User.class);
+        DAOInterface<User> userDAO = new DAO<>(User.class);
         userDAO.setEntityManager(entityManager);
         return userDAO;
     }
     
-    static class ManagedDAO<T> extends DAO<T> {
+    static class ManagedDAO<T> implements DAOInterface<T> {
         private EntityManagerFactory entityManagerFactory;
         private EntityManager entityManager;
-        private DAO<T> dao;
+        private DAOInterface<T> dao;
         
-        public ManagedDAO(DAO<T> dao) {
-            super(dao.getEntityClass());
+        public ManagedDAO(DAOInterface<T> dao) {
             this.dao = dao;
             
         }
@@ -90,6 +89,13 @@ public class ManagedUserDAOFactory {
         public void setEntityManager(EntityManager entityManager) {
             dao.setEntityManager(entityManager);
         }
+
+        @Override
+        public Class<?> getEntityClass() {
+            return dao.getEntityClass();
+        }
+        
+        
     }
        
 }

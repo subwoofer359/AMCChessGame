@@ -2,7 +2,7 @@ package org.amc.game.chessserver.messaging;
 
 import org.amc.DAOException;
 import org.amc.User;
-import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
@@ -28,7 +28,7 @@ public class OfflineChessGameMessager extends GameObserver {
     private GameMessageService<EmailTemplate> messageService;
     private static final Logger logger = Logger.getLogger(OfflineChessGameMessager.class);
     private EmailTemplateFactory templateFactory;
-    private DAO<User> userDAO;
+    private DAOInterface<User> userDAO;
 
     @Override
     public void update(Subject subject, Object message) {
@@ -138,7 +138,7 @@ public class OfflineChessGameMessager extends GameObserver {
     }
    
     @Resource(name="myUserDAO")
-    public void setUserDAO(DAO<User> userDAO) {
+    public void setUserDAO(DAOInterface<User> userDAO) {
         this.userDAO = userDAO;
     }
     

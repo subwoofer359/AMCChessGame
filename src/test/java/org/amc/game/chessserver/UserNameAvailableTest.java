@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import java.util.concurrent.Callable;
 
 public class UserNameAvailableTest {
 
-    private DAO<User> userDAO;
+    private DAOInterface<User> userDAO;
     private UserNameAvailable controller;
     private static final String USERNAME = "adrian";
     private static final String USERNAME_NOT_VALID = "ed";

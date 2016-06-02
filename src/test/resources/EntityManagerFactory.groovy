@@ -22,4 +22,15 @@ beans {
         bean.destroyMethod = 'close';
         aop.'scoped-proxy'();
     };
+
+    /**
+     *A websocket scoped EntityManager proxy
+     */
+    webSocketscopedEntityManager(EntityManager) { bean ->
+        bean.factoryBean = 'applicationEntityManagerFactory';
+        bean.factoryMethod = 'createEntityManager';
+        bean.scope = 'websocket';
+        bean.destroyMethod = 'close';
+        aop.'scoped-proxy'();
+    };
 }

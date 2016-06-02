@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.dao.EntityManagerCache;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.ChessGameFactory;
@@ -23,7 +24,7 @@ public class OneViewChessGamePlayerDeletionIT {
     private static final long GAME_UID = 1234L;
     private final ChessGameFactory chessGameFactory = new StandardChessGameFactory(); 
 
-    private DAO<Player> playerDao;
+    private DAOInterface<Player> playerDao;
     private Player whitePlayer;
     private Player blackPlayer;
     

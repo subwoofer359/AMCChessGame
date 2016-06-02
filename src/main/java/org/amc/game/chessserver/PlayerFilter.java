@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import org.amc.DAOException;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -103,7 +104,7 @@ public class PlayerFilter implements Filter {
                             SPRING_WEBAPPCONTEXT);
         }
 
-        DAO<Player> playerDAO = context2.getBean(PLAYERDAO, DAO.class);
+        DAOInterface<Player> playerDAO = context2.getBean(PLAYERDAO, DAO.class);
 
         try {
             List<Player> listOfPlayer = playerDAO.findEntities(PLAYER_USERNAME, playerName);

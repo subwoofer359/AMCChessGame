@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.User;
-import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -29,7 +29,7 @@ public class NewGameRequestController {
     @Autowired
     WebApplicationContext context;
 
-    private DAO<User> userDAO;
+    private DAOInterface<User> userDAO;
     
     @RequestMapping(method=RequestMethod.POST, value="/requestGame")
     @ResponseBody
@@ -64,7 +64,7 @@ public class NewGameRequestController {
     }
 
     @Resource(name="myUserDAO")
-    public void setUserDAO(DAO<User> userDAO) {
+    public void setUserDAO(DAOInterface<User> userDAO) {
         this.userDAO = userDAO;
     }
 }

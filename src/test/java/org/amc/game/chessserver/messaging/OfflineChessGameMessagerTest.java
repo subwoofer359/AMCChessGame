@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -39,7 +40,7 @@ public class OfflineChessGameMessagerTest {
     private EmailMessageService emailService;
     private EmailTemplateFactory templateFactory;
     private SessionRegistry registry;
-    private DAO<User> userDAO;
+    private DAOInterface<User> userDAO;
     private JavaMailSender mailSender;
 
     private ArgumentCaptor<User> userCaptor;

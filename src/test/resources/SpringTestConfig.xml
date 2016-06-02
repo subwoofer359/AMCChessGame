@@ -88,6 +88,12 @@
 		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 	
+	<bean id="wsServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
+		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
+		<property name="entityManagerCache" ref="myEntityManagerCache"/>
+		<property name="entityManager" ref="webSocketscopedEntityManager"/>
+	</bean>
+	
     
     <bean id="myExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" destroy-method="shutdown">
     	<property name="corePoolSize" value="5"/>

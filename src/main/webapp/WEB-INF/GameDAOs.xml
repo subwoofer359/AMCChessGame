@@ -6,29 +6,41 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype"/>
+	<bean id="userSearchDAO" class="org.amc.dao.UserSearchDAO" scope="prototype">
+		<property name="entityManager" ref="appEntityManager"/>
+	</bean>
 
 	<bean id="myUserDAO" class="org.amc.dao.DAO" scope="prototype">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.User</value>
 		</constructor-arg>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 
 	<bean id="myPlayerDAO" class="org.amc.dao.DAO">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.game.chess.HumanPlayer</value>
 		</constructor-arg>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 
 	<bean id="myAuthoritiesDAO" class="org.amc.dao.DAO">
 		<constructor-arg>
 			<value type="java.lang.Class">org.amc.Authorities</value>
 		</constructor-arg>
+		<property name="entityManager" ref="appEntityManager"/>
 	</bean>
 	
 	<bean id="myServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
 		<property name="entityManagerCache" ref="myEntityManagerCache"/>
 		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
+		<property name="entityManager" ref="appEntityManager"/>
+	</bean>
+	
+	<bean id="wsServerChessGameDAO" class="org.amc.dao.ServerChessGameDAO">
+		<property name="entityManagerCache" ref="myEntityManagerCache"/>
+		<property name="observerFactoryChain" ref="defaultObserverFactoryChain"/>
+		<property name="entityManager" ref="webSocketEntityManager"/>
 	</bean>
 	
 </beans>

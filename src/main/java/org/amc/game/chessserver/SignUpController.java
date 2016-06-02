@@ -3,7 +3,7 @@ package org.amc.game.chessserver;
 import org.amc.Authorities;
 import org.amc.DAOException;
 import org.amc.User;
-import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.spring.EmailValidator;
@@ -41,7 +41,7 @@ public class SignUpController {
     
     private PasswordEncoder encoder;
     
-    private DAO<User> userDAO;
+    private DAOInterface<User> userDAO;
     
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView signUp(@ModelAttribute UserForm user , BindingResult errors) {
@@ -115,7 +115,7 @@ public class SignUpController {
     }
     
     @Resource(name="myUserDAO")
-    public void setUserDAO(DAO<User> userDAO){
+    public void setUserDAO(DAOInterface<User> userDAO){
         this.userDAO = userDAO;
     }
     

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.amc.DAOException;
 import org.amc.User;
-import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -19,9 +19,9 @@ public class UserNameValidator implements Validator {
 	public static final String DATABASE_ERROR = "Can't connect to the Database";
 	
 	private static final Pattern usernamePattern = Pattern.compile("[a-z][a-z0-9_]{4,50}");
-	private DAO<User> userDAO;
+	private DAOInterface<User> userDAO;
 	
-	public UserNameValidator(DAO<User> userDAO) {
+	public UserNameValidator(DAOInterface<User> userDAO) {
 		this.userDAO = userDAO;
 	}
 	

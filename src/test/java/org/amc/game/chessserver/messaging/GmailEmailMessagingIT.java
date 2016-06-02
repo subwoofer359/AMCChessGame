@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.Assert.*;
 
 import org.amc.User;
-import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
@@ -97,7 +97,7 @@ public class GmailEmailMessagingIT {
 
     private MockMvc mockMvc;
 
-    private DAO<Player> playerDAO;
+    private DAOInterface<Player> playerDAO;
     
     private EmailTemplateFactory factory;
     
@@ -114,7 +114,7 @@ public class GmailEmailMessagingIT {
     
     @SuppressWarnings("unchecked")
     private void setUpPlayers() throws Exception {
-        playerDAO = (DAO<Player>)wac.getBean(MY_PLAYER_DAO);
+        playerDAO = (DAOInterface<Player>)wac.getBean(MY_PLAYER_DAO);
         
         Player stephen = getPlayerFromDatabase(STEPHEN);
         Player nobby = getPlayerFromDatabase(NOBBY);

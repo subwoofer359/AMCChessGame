@@ -20,7 +20,7 @@ import org.junit.Test;
 public class ChessGameDAOIT {
 
     private DatabaseFixture signUpfixture = new DatabaseFixture();
-    private DAO<ChessGame> chessGameDAO;
+    private DAOInterface<ChessGame> chessGameDAO;
 
     private Player laura;
     private Player nobby;

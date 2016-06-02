@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.amc.User;
 import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class InValidUserNameTest {
 
 	private String userName;
 	private Errors errors;
-	private DAO<User> userDAO;
+	private DAOInterface<User> userDAO;
 	
 	
 	public InValidUserNameTest(String userName) {

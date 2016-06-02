@@ -25,6 +25,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.Resource;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"/EntityManagerFactory.groovy", "/SpringTestConfig.xml", "/GameServerSecurity.xml",
@@ -46,7 +48,7 @@ public class JoinGameControllerIT {
     
     private MockMvc mockMvc;
     
-    @Autowired
+    @Resource(name="myServerChessGameDAO")
     private ServerChessGameDAO serverChessGameDAO;
     
 	@Before

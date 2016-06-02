@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.User;
-import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class UserNameAvailable {
     
     private static final Pattern pattern = Pattern.compile("[a-z]{1}[a-z0-9]{4,}");
     
-    private DAO<User> userDAO;
+    private DAOInterface<User> userDAO;
     
     @Async
     @RequestMapping(method = RequestMethod.POST, value = "/isUserNameAvailable")
@@ -44,7 +44,7 @@ public class UserNameAvailable {
     }
     
     @Resource(name="myUserDAO")
-    public void setUserDAO(DAO<User> userDAO){
+    public void setUserDAO(DAOInterface<User> userDAO){
         this.userDAO = userDAO;
     }
 

@@ -20,7 +20,7 @@ import groovy.transform.TypeChecked;
 @TypeChecked
 class ManagedUserDAOTest {
 
-    ManagedDAO dao;
+    ManagedDAO<User> dao;
     
     @Mock
     EntityManagerFactory entityManagerFactory;
@@ -37,7 +37,7 @@ class ManagedUserDAOTest {
     @Mock
     User user;
     
-    DAO<User> userDAO;
+    DAOInterface<User> userDAO;
     
     @Before
     void setUp() {

@@ -34,7 +34,7 @@ class ChessGameCleanUpIT {
     @Before
     public void setup() throws Exception {
         fixture.setUp();
-        scgFixture = new ServerChessGameDatabaseEntityFixture(5);
+        scgFixture = new ServerChessGameDatabaseEntityFixture(fixture.getEntityManager(), 5);
         serverChessGameDAO = (ServerChessGameDAO) wac.getBean("myServerChessGameDAO");
         serverChessGameDAO.getServerChessGame(1).setCurrentStatus(ServerGameStatus.FINISHED);
         List games = serverChessGameDAO.findEntities("currentStatus", ServerGameStatus.FINISHED);

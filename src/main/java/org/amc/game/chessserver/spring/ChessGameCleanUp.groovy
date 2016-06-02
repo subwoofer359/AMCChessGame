@@ -1,5 +1,6 @@
 package org.amc.game.chessserver.spring
 
+import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGame;
@@ -24,10 +25,22 @@ class ChessGameCleanUp implements ServletContextListener {
 
     @Override
     void contextInitialized(ServletContextEvent arg0) {
-        WebApplicationContext wac = (WebApplicationContext)arg0.getServletContext().getAttribute(SPRING_ROOT);
+        def wac = arg0.getServletContext().getAttribute(SPRING_ROOT);
         def factory = wac.getBean("applicationEntityManagerFactory");
+        def entityManager = factory.createEntityManager();
         
-        ServerChessGameDAO scgDAO = wac.getBean("myServerChessGameDAO");
+        ServerChessGameDAO scgDAO = new ServerChessGameDAO();
+        scgDAO.setEntityManager(entityManager);
+        try {
+            deleteGames(scgDAO);
+        } catch(DAOException de) {
+            logger.error(de);
+        } finally {
+            entityManager.close();
+        }
+    }
+    
+    private void deleteGames(def scgDAO) {
         List games = scgDAO.findEntities("currentStatus", AbstractServerChessGame.ServerGameStatus.FINISHED);
         games.each({
             logger.info("======================================================");

@@ -22,7 +22,7 @@ import javax.persistence.Query;
  * @version 1
  * @param <T> WorkEntity
  */
-public class DAO<T> {
+public class DAO<T> implements DAOInterface<T> {
 
     /**
      * Logger used by the object
@@ -40,14 +40,10 @@ public class DAO<T> {
         this.entityClass = entityClass;
     }
 
-    /**
-     * Adds the {@link Player} object to the database
-     * 
-     * @param entity
-     *            the new <code>Player</code> to be stored in the database
-     * @throws DAOException
-     *             if a problem occurs in the underlying database
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#addEntity(T)
      */
+    @Override
     public void addEntity(T entity) throws DAOException {
         EntityManager em = getEntityManager();
         try {
@@ -63,14 +59,10 @@ public class DAO<T> {
         }
     }
 
-    /**
-     * Deletes the {@link Player} object from the database
-     * 
-     * @param entity
-     *            the <code>Player</code> to be deleted
-     * @throws DAOException
-     *             if a problem occurs in the underlying database
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#deleteEntity(T)
      */
+    @Override
     public void deleteEntity(T entity) throws DAOException {
         EntityManager em = getEntityManager();
         try {
@@ -88,19 +80,10 @@ public class DAO<T> {
         }
     }
 
-    /**
-     * Fetchs a list of all objects of {@link Player} stored in the
-     * underlying database. The results from the database are stored in a
-     * <code>java.util.List</code>.
-     * <p>
-     * Caution if there are a lot of rows in the database if may return a very
-     * large <code>Collection</code> of objects.
-     * 
-     * @return List of all WorkEntities in the database
-     * @throws DAOException
-     *             if a problem occurs in the underlying database
-     * 
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#findEntities()
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> findEntities() throws DAOException {
         try {
@@ -115,19 +98,10 @@ public class DAO<T> {
         }
     }
 
-    /**
-     * Fetchs a list of objects of class {@link Player} stored in the
-     * underlying database. The results from the database are stored in a
-     * <code>java.util.List</code>.
-     * 
-     * @param col
-     *            String name of the column in the database to query
-     * @param value
-     *            Object to query for in the database
-     * @return List of WorkEntities
-     * @throws DAOException
-     *             if a problem occurs in the underlying database
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#findEntities(java.lang.String, java.lang.Object)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> findEntities(String col, Object value) throws DAOException {
 
@@ -148,20 +122,10 @@ public class DAO<T> {
     }
 
 
-    /**
-     * Retrieves a {@link Player} object who's database ID value is equal to
-     * <code>workEntityId</code>
-     * <p>
-     * A DAOException is thrown if there is no entry in the database with the
-     * given <code>workEntityId</code>.
-     * 
-     * @param workEntityId
-     *            The String representation of the number corresponding to the
-     *            ID of the <code>Player</code> in the database.
-     * @return a Player object
-     * @throws DAOException
-     *             if a problem occurs in the underlying database
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#getEntity(int)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public T getEntity(int id) throws DAOException {
 
@@ -191,22 +155,23 @@ public class DAO<T> {
      * @return Class object which this DAO is handling
      * @see Player
      */
-    protected Class<?> getEntityClass() {
+    @Override
+    public Class<?> getEntityClass() {
         return this.entityClass;
     }
 
-    /**
-     * Provides access to {@link EntityManagerThreadLocal} which contains the
-     * reference for the {@link EntityManager}
-     * 
-     * @return EntityManager for this class subclasses to use
-     * @see EntityManager
-     * @see EntityManagerThreadLocal
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#getEntityManager()
      */
+    @Override
     public EntityManager getEntityManager() {
         return entityManager;
     }
     
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#setEntityManager(javax.persistence.EntityManager)
+     */
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -221,14 +186,10 @@ public class DAO<T> {
         return "DAO<" + getEntityClass().getSimpleName() + ">";
     }
 
-    /**
-     * Updates the current {@link Player} object in the database.
-     * 
-     * @param entity
-     *            the <code>Player</code> to be updated.
-     * @throws DAOException
-     *             if a problem occurs in the underlying database
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#updateEntity(T)
      */
+    @Override
     public T updateEntity(T entity) throws DAOException {
         EntityManager em = getEntityManager();
         try {
@@ -248,12 +209,10 @@ public class DAO<T> {
 
     }
     
-    /**
-     * Detaches Entity from the Persistence context
-     *
-     * @param entity
-     * @see EntityManager#detach(Object)
+    /* (non-Javadoc)
+     * @see org.amc.dao.DAOInterface#detachEntity(T)
      */
+    @Override
     public void detachEntity(T entity) {
         EntityManager em = getEntityManager();
         try {
