@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.SCGameDAO;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -26,7 +25,7 @@ public class GameTableControllerTest {
 	private GameTableController gtController;
 	private AbstractServerChessGame scgGame;
 	private ChessGameFixture cgFixture;
-	private ServerChessGameDAO serverChessGameDAO;
+	private SCGameDAO serverChessGameDAO;
 	
 	private static final long GAME_UID = 1234L;
 	
@@ -34,7 +33,7 @@ public class GameTableControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		gtController = new GameTableController();
-		serverChessGameDAO = mock(ServerChessGameDAO.class);
+		serverChessGameDAO = mock(SCGameDAO.class);
 		ServerChessGameFactory scgFactory = new ServerChessGameFactory();
 		ObserverFactoryChain chain = mock(ObserverFactoryChain.class);
 		scgFactory.setObserverFactoryChain(chain);

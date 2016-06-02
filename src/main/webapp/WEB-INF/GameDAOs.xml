@@ -43,4 +43,7 @@
 		<property name="entityManager" ref="webSocketEntityManager"/>
 	</bean>
 	
+	<bean id="managedDAOFactory" class="org.amc.dao.ManagedDAOFactory">
+		<property name="emFactory" ref="applicationEntityManagerFactory" />
+	</bean>  
 </beans>

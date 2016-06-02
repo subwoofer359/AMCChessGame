@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 
 import org.amc.DAOException;
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.SCGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -54,7 +54,7 @@ public class GameActionsStompControllerTest {
     private ArgumentCaptor<String> payoadArgument;
     
     @Mock
-    private ServerChessGameDAO serverChessGameDAO;
+    private SCGameDAO serverChessGameDAO;
 
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;

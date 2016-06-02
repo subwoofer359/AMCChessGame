@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -27,7 +28,7 @@ import javax.persistence.TypedQuery;
  *
  */
 
-public class ServerChessGameDAO extends DAO<AbstractServerChessGame> {
+public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements SCGameDAO {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
 

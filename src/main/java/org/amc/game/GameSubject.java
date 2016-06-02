@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
@@ -20,7 +21,7 @@ import javax.persistence.MappedSuperclass;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class GameSubject implements Subject  {
 
-    @PersistentCollection(elementCascade=CascadeType.ALL, elementType=GameObserver.class)
+    @PersistentCollection(elementCascade=CascadeType.ALL, elementType=GameObserver.class, fetch = FetchType.EAGER)
     @Externalizer("GameSubject.saveObservers")
     @Factory("GameSubject.loadObservers")
     @Column(length=1000)

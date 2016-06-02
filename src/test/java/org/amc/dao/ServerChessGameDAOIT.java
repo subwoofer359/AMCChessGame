@@ -31,7 +31,7 @@ public class ServerChessGameDAOIT {
     
     private static DatabaseFixture signUpfixture = new DatabaseFixture();
     private static ServerChessGameDatabaseEntityFixture serverChessGamesfixture;
-    private ServerChessGameDAO dao;
+    private SCGameDAO dao;
     private EntityManagerCache emCache;
     private ServerChessGameFactory scgFactory;
     
@@ -44,7 +44,7 @@ public class ServerChessGameDAOIT {
     @Before
     public void setUp() throws Exception {
         
-        dao = (ServerChessGameDAO) wac.getBean("myServerChessGameDAO");
+        dao = (SCGameDAO) wac.getBean("myServerChessGameDAO");
         ObserverFactoryChain chain = (ObserverFactoryChain) wac.getBean("defaultObserverFactoryChain");
         emCache = (EntityManagerCache) wac.getBean("myEntityManagerCache");
         dao.setObserverFactoryChain(chain);

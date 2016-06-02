@@ -41,7 +41,10 @@
 	<bean id="offlineChessGameMessager" class="org.amc.game.chessserver.messaging.OfflineChessGameMessager" scope="prototype">
 		<property name="messageService" ref="messageService"></property>
 		<property name="sessionRegistry" ref="sessionRegistry"></property>
-		<property name="userDAO" ref="myUserDAO"></property>
+		<property name="userDAO">
+			<bean factory-bean="managedDAOFactory"
+				  factory-method="getUserDAO"/>
+		</property>
 		<property name="emailTemplateFactory" ref="emailTemplateFactory"></property>
 	</bean>
 	

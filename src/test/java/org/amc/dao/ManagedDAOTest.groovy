@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
 import org.amc.User;
-import org.amc.dao.ManagedUserDAOFactory.ManagedDAO;
+import org.amc.dao.ManagedDAOFactory.ManagedDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
 import groovy.transform.TypeChecked;
 
 @TypeChecked
-class ManagedUserDAOTest {
+class ManagedDAOTest {
 
     ManagedDAO<User> dao;
     

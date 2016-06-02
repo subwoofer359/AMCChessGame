@@ -29,7 +29,12 @@
 		<lookup-method name="createObserver" bean="oneViewGameStateListener"/>
 	</bean>
 	
-	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener"/>
+	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener">
+		<property name="serverChessGameDAO">
+			<bean factory-bean="managedDAOFactory"
+				  factory-method="getServerChessGameDAO"/>
+		</property>
+	</bean>
 	
 	<bean id="offlineChessGameMessagerFactory" class="org.amc.game.chessserver.spring.OfflineChessGameMessagerFactory">
 		<lookup-method name="createObserver" bean="mockOfflineChessGameMessager"/>

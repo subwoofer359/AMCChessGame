@@ -137,7 +137,6 @@ public class OfflineChessGameMessager extends GameObserver {
         return template;
     }
    
-    @Resource(name="myUserDAO")
     public void setUserDAO(DAOInterface<User> userDAO) {
         this.userDAO = userDAO;
     }

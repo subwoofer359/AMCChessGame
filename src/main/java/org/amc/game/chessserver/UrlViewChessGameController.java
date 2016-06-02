@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.DAOException;
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.SCGameDAO;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -22,7 +22,7 @@ public class UrlViewChessGameController {
     
     private static final Logger logger = Logger.getLogger(UrlViewChessGameController.class);
     
-    private ServerChessGameDAO serverChessGameDAO;
+    private SCGameDAO serverChessGameDAO;
     
     static final String CANT_VIEW_CHESSGAME = "Can't not view the ChessGame:(%d)";
 
@@ -71,7 +71,7 @@ public class UrlViewChessGameController {
     }
      
     @Resource(name = "myServerChessGameDAO")
-    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+    public void setServerChessGameDAO(SCGameDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 }

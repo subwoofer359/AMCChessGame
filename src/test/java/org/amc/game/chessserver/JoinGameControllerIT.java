@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.SCGameDAO;
 import org.amc.dao.ServerChessGameDatabaseEntityFixture;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -49,7 +49,7 @@ public class JoinGameControllerIT {
     private MockMvc mockMvc;
     
     @Resource(name="myServerChessGameDAO")
-    private ServerChessGameDAO serverChessGameDAO;
+    private SCGameDAO serverChessGameDAO;
     
 	@Before
 	public void setUp() throws Exception {

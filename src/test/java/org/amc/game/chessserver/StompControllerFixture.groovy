@@ -1,11 +1,9 @@
 package org.amc.game.chessserver
 
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.*;
 
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.SCGameDAO;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -55,7 +53,7 @@ class StompControllerFixture {
     };
 
     @Mock
-    ServerChessGameDAO serverChessGameDAO;
+    SCGameDAO serverChessGameDAO;
     
     @Before
     void setUp() throws Exception {

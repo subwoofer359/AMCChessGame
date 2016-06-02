@@ -3,7 +3,7 @@ package org.amc.game.chessserver;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.SCGameDAO;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -25,7 +25,7 @@ public class StartPageControllerChessAppPageTest {
     private ServerChessGameFactory scgFactory;
     
     @Mock
-    private ServerChessGameDAO sCGDAO;
+    private SCGameDAO sCGDAO;
 
     @Before
     public void setUp() throws Exception {

@@ -30,7 +30,7 @@ class ServerChessGameDAOTest2 {
     /**
      * stub getEntityManager to return a mock
      */
-    final ServerChessGameDAO dao = new ServerChessGameDAO() {
+    final SCGameDAO dao = new ServerChessGameDAO() {
         @Override
         public EntityManager getEntityManager() {
             return em;

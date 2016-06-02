@@ -5,7 +5,11 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
+import org.amc.dao.DAO;
+import org.amc.dao.ManagedDAOFactory;
+import org.amc.dao.SCGameDAO;
 import org.amc.dao.ServerChessGameDAO;
+import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGame;
 import org.junit.*;
 import org.mockito.Mock;
@@ -38,35 +42,27 @@ class ChessGameCleanUpTest {
     WebApplicationContext wac;
     
     @Mock
-    EntityManagerFactory entityManagerFactory;
+    DAO<AbstractServerChessGame> scgDao;
     
     @Mock
-    EntityManager entityManager;
-    
-    @Mock
-    TypedQuery query;
-    
-    @Mock
-    EntityTransaction transaction;
+    ManagedDAOFactory daoFactory;
     
     @Before
     void setUp() {
         MockitoAnnotations.initMocks(this);
         cleanUpListener = new ChessGameCleanUp();
+        
+    
         games = new ArrayList();
         (1..5).each({
             games.add(mock(ServerChessGame.class));
         });
     
-        when(wac.getBean(ENTITYMANAGER_FACTORY)).thenReturn(entityManagerFactory);
+        when(wac.getBean(ChessGameCleanUp.DAO_FACTORY)).thenReturn(daoFactory);
         
-        when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
+        when(daoFactory.getServerChessGameDAO()).thenReturn(scgDao);
         
-        when(entityManager.createQuery(anyString(), any())).thenReturn(query);
-        
-        when(entityManager.getTransaction()).thenReturn(transaction);
-        
-        when(query.getResultList()).thenReturn(games);
+        when(scgDao.findEntities('currentStatus', AbstractServerChessGame.ServerGameStatus.FINISHED)).thenReturn(games);    
         
         when(event.getServletContext()).thenReturn(servletContext);
         
@@ -77,16 +73,16 @@ class ChessGameCleanUpTest {
     @Test
     void test() {
         cleanUpListener.contextInitialized(event);
-        verify(entityManager, times(5)).remove(any());
+        verify(scgDao, times(5)).deleteEntity(any());
     }
     
     @Test
     void testThrowsException() {
-        when(query.getResultList()).thenThrow(new PersistenceException());
+        when(scgDao.deleteEntity(any())).thenThrow(new DAOException());
         try {
             cleanUpListener.contextInitialized(event);
             
-        } catch (DAOException) {
+        } catch (DAOException de) {
             fail('DAOException not caught');
         }
     }

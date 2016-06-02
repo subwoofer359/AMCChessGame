@@ -111,4 +111,8 @@
 		<property name="passwordEncoder" ref="myPasswordEncoder"/>
 		<property name="userDAO" ref="myUserDAO"/>
 	</bean>	
+	
+	<bean id="managedDAOFactory" class="org.amc.dao.ManagedDAOFactory">
+		<property name="emFactory" ref="applicationEntityManagerFactory" />
+	</bean>  
 </beans>

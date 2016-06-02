@@ -1,7 +1,8 @@
 package org.amc.game.chessserver.observers;
 
 import org.amc.DAOException;
-import org.amc.dao.ServerChessGameDAO;
+import org.amc.dao.DAO;
+import org.amc.dao.DAOInterface;
 import org.amc.game.GameObserver;
 import org.amc.game.GameSubject;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -34,15 +35,14 @@ public class GameFinishedListener extends GameObserver {
 
     private TaskScheduler scheduler;
 
-    private ServerChessGameDAO serverChessGameDAO;
+    private DAOInterface<AbstractServerChessGame> serverChessGameDAO;
 
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
     public GameFinishedListener() {
     }
 
-    @Resource(name = "wsServerChessGameDAO")
-    public void setServerChessGameDAO(ServerChessGameDAO serverChessGameDAO) {
+    public void setServerChessGameDAO(DAOInterface<AbstractServerChessGame> serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 
@@ -101,10 +101,11 @@ public class GameFinishedListener extends GameObserver {
 
     private static class DeleteChessGameJob implements Runnable {
 
-        private ServerChessGameDAO serverChessGameDAO;
+        private DAOInterface<AbstractServerChessGame> serverChessGameDAO;
         private AbstractServerChessGame chessGame;
 
-        public DeleteChessGameJob(ServerChessGameDAO serverChessGameDAO, AbstractServerChessGame chessGame) {
+        public DeleteChessGameJob(DAOInterface<AbstractServerChessGame> serverChessGameDAO,
+                        AbstractServerChessGame chessGame) {
             this.serverChessGameDAO = serverChessGameDAO;
             this.chessGame = chessGame;
         }

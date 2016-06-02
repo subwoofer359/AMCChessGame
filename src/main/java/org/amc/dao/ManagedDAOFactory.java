@@ -3,20 +3,32 @@ package org.amc.dao;
 import org.amc.DAOException;
 import org.amc.User;
 
+import org.amc.game.chessserver.AbstractServerChessGame;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-public class ManagedUserDAOFactory {
+public class ManagedDAOFactory {
     
     private EntityManagerFactory emFactory;
     
     public DAOInterface<?> getUserDAO() {
-        EntityManager entityManager = emFactory.createEntityManager();
-        DAOInterface<User> userDAO = new DAO<>(User.class);
-        userDAO.setEntityManager(entityManager);
+        ManagedDAO<User> userDAO = new ManagedDAO<>(new DAO<User>(User.class));
+        userDAO.setEntityManagerFactory(emFactory);
         return userDAO;
+    }
+    
+    public DAOInterface<?> getServerChessGameDAO() {
+        ManagedDAO<AbstractServerChessGame> serverChessGameDAO = new ManagedDAO<>(
+                        new DAO<AbstractServerChessGame>(AbstractServerChessGame.class));
+        serverChessGameDAO.setEntityManagerFactory(emFactory);
+        return serverChessGameDAO;
+    }
+    
+    public void setEmFactory(EntityManagerFactory emFactory) {
+        this.emFactory = emFactory;
     }
     
     static class ManagedDAO<T> implements DAOInterface<T> {
@@ -30,48 +42,48 @@ public class ManagedUserDAOFactory {
         }
 
         public void addEntity(T entity) throws DAOException {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             dao.addEntity(entity);
             entityManager.close();
         }
 
 
         public void deleteEntity(T entity) throws DAOException {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             dao.deleteEntity(entity);
             entityManager.close();
         }
 
         public List<T> findEntities() throws DAOException {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             List<T> entityList = dao.findEntities();
             entityManager.close();
             return entityList;
         }
 
         public List<T> findEntities(String col, Object value) throws DAOException {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             List<T> entityList = dao.findEntities(col, value);
             entityManager.close();
             return entityList;
         }
 
         public T getEntity(int id) throws DAOException {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             T entity = dao.getEntity(id);
             entityManager.close();
             return entity;
         }
 
         public T updateEntity(T entity) throws DAOException {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             T entityTemp = dao.updateEntity(entity);
             entityManager.close();
             return entityTemp;
         }
 
         public void detachEntity(T entity) {
-            dao.setEntityManager(getEntityManager());
+            setUpEntityManager();
             dao.detachEntity(entity);
             entityManager.close();
         }
@@ -89,13 +101,19 @@ public class ManagedUserDAOFactory {
         public void setEntityManager(EntityManager entityManager) {
             dao.setEntityManager(entityManager);
         }
+        
+        public void setUpEntityManager() {
+            entityManager = entityManagerFactory.createEntityManager();
+            dao.setEntityManager(entityManager);
+        }
 
         @Override
         public Class<?> getEntityClass() {
             return dao.getEntityClass();
         }
         
-        
+        DAOInterface<T> getDAO() {
+            return this.dao;
+        }
     }
-       
 }

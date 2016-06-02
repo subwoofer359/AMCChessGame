@@ -39,7 +39,7 @@ class ServerChessGameDAOAddObserversTest {
     
     static final OBSERVERS_STR = "observers";
 
-    final ServerChessGameDAO dao = new ServerChessGameDAO() {
+    final SCGameDAO dao = new ServerChessGameDAO() {
         @Override
         public EntityManager getEntityManager() {
             return em;
