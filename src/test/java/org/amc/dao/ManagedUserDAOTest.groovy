@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
 import org.amc.User;
-import org.amc.dao.ManagedUserDAOFactory.ManagedUserDAO;
+import org.amc.dao.ManagedUserDAOFactory.ManagedDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -20,7 +20,7 @@ import groovy.transform.TypeChecked;
 @TypeChecked
 class ManagedUserDAOTest {
 
-    ManagedUserDAO dao;
+    ManagedDAO dao;
     
     @Mock
     EntityManagerFactory entityManagerFactory;
@@ -37,10 +37,13 @@ class ManagedUserDAOTest {
     @Mock
     User user;
     
+    DAO<User> userDAO;
+    
     @Before
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        dao = new ManagedUserDAO();
+        userDAO = new DAO<>(User);
+        dao = new ManagedDAO<User>(userDAO);
         dao.setEntityManagerFactory(entityManagerFactory);
         when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
         when(entityManager.getTransaction()).thenReturn(transaction);
