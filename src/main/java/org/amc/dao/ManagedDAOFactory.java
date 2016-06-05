@@ -10,6 +10,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+/**
+ * Create a factory for DAO with the PersistenceContext controller by
+ * a Decorator object
+ * 
+ * @author Adrian Mclaughlin
+ *
+ */
 public class ManagedDAOFactory {
     
     private EntityManagerFactory emFactory;
@@ -43,49 +50,71 @@ public class ManagedDAOFactory {
 
         public void addEntity(T entity) throws DAOException {
             setUpEntityManager();
-            dao.addEntity(entity);
-            entityManager.close();
+            try {
+                dao.addEntity(entity);
+            } finally {
+                entityManager.close();
+            }
         }
 
 
         public void deleteEntity(T entity) throws DAOException {
             setUpEntityManager();
-            dao.deleteEntity(entity);
-            entityManager.close();
+            try {
+                dao.deleteEntity(entity);
+            } finally {
+                entityManager.close();
+            }
         }
 
         public List<T> findEntities() throws DAOException {
             setUpEntityManager();
-            List<T> entityList = dao.findEntities();
-            entityManager.close();
-            return entityList;
+            try {
+                List<T> entityList = dao.findEntities();
+                return entityList;
+            } finally {
+                entityManager.close();
+            }
         }
 
         public List<T> findEntities(String col, Object value) throws DAOException {
             setUpEntityManager();
-            List<T> entityList = dao.findEntities(col, value);
-            entityManager.close();
-            return entityList;
+            try {
+                List<T> entityList = dao.findEntities(col, value);
+                return entityList;
+            } finally {
+                entityManager.close();
+            }
         }
 
         public T getEntity(int id) throws DAOException {
             setUpEntityManager();
-            T entity = dao.getEntity(id);
-            entityManager.close();
-            return entity;
+            try {
+                T entity = dao.getEntity(id);
+                return entity;
+            } finally {
+                entityManager.close();
+            }
         }
 
         public T updateEntity(T entity) throws DAOException {
             setUpEntityManager();
-            T entityTemp = dao.updateEntity(entity);
-            entityManager.close();
-            return entityTemp;
+            try {
+                T entityTemp = dao.updateEntity(entity);
+                return entityTemp;
+            } finally {
+                entityManager.close();
+            }
+            
         }
 
         public void detachEntity(T entity) {
             setUpEntityManager();
-            dao.detachEntity(entity);
-            entityManager.close();
+            try {
+                dao.detachEntity(entity);
+            } finally {
+                entityManager.close();
+            }            
         }
         
         public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {

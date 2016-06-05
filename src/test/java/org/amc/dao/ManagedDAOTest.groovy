@@ -1,6 +1,7 @@
 package org.amc.dao
 
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
 
 import org.amc.DAOException;
 import org.amc.User;
@@ -13,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import groovy.transform.TypeChecked;
@@ -57,7 +59,7 @@ class ManagedDAOTest {
     }
     
     @Test
-    void adddeleteTest() {
+    void deleteTest() {
         dao.deleteEntity(user);
         verify(entityManager, times(1)).close();
     }
@@ -90,5 +92,70 @@ class ManagedDAOTest {
     void detachEntityTest() {
         dao.detachEntity(user);
         verify(entityManager, times(1)).close();
+    }
+    
+    @Test
+    void updateEntityTestThrowsExceptiopn() {
+        try {
+            when(entityManager.merge(user)).thenThrow(new PersistenceException('Test Exception'));
+            dao.updateEntity(user);
+            fail('DAOException not thrown');
+        } catch(DAOException de) {
+            // Caught exception;   
+        } finally {
+            verify(entityManager, times(1)).close();
+        }
+    }
+    
+    @Test
+    void addEntityTestThrowsExceptiopn() {
+        try {
+            when(entityManager.persist(user)).thenThrow(new PersistenceException('Test Exception'));
+            dao.addEntity(user);
+            fail('DAOException not thrown');
+        } catch(DAOException de) {
+            // Caught exception;
+        } finally {
+            verify(entityManager, times(1)).close();
+        }
+    }
+    
+    @Test
+    void deleteTestThrowsExceptiopn() {
+        try {
+            when(entityManager.remove(any())).thenThrow(new PersistenceException('Test Exception'));
+            dao.deleteEntity(user);
+            fail('DAOException not thrown');
+        } catch(DAOException de) {
+            // Caught exception;
+        } finally {
+            verify(entityManager, times(1)).close();
+        }
+    }
+    
+    @Test
+    void findEntitiesTestThrowsExceptiopn() {
+        try {
+            when(query.getResultList()).thenThrow(new PersistenceException('Test Exception'));
+            dao.findEntities();
+            fail('DAOException not thrown');
+        } catch(DAOException de) {
+            // Caught exception;
+        } finally {
+            verify(entityManager, times(1)).close();
+        }
+    }
+    
+    @Test
+    void findEntitiesWithArgumentsTestThrowsExceptiopn() {
+        try {
+            when(query.getResultList()).thenThrow(new PersistenceException('Test Exception'));
+            dao.findEntities('userName', 'Ted');
+            fail('DAOException not thrown');
+        } catch(DAOException de) {
+            // Caught exception;
+        } finally {
+            verify(entityManager, times(1)).close();
+        }
     }
 }
