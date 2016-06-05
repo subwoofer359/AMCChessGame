@@ -73,7 +73,6 @@ public class DAO<T> implements DAOInterface<T> {
         } catch (OptimisticLockException ole) {
             throw ole;
         } catch (PersistenceException pe) {
-            em.close();
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to delete entity");
             throw new DAOException(pe);
