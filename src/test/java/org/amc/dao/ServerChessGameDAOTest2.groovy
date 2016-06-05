@@ -117,9 +117,16 @@ class ServerChessGameDAOTest2 {
         when(emCache.getEntityManager(eq(GAME_UID))).thenReturn(em);
         when(em.createNamedQuery(eq(ServerChessGameDAO.GET_SERVERCHESSGAME_QUERY))).thenReturn(query);
         when(query.getSingleResult()).thenThrow(new NoResultException('More than one result'));
-        def game  = dao.getServerChessGame(GAME_UID);
-        
-        assert game == null;
+        def game;
+        try {
+            game  = dao.getServerChessGame(GAME_UID);
+            fail('No Exception thrown');
+        } catch(DAOException de) {
+            //ignore caught exception
+        }
+            finally {
+            assert game == null;
+        }
         
     }
     

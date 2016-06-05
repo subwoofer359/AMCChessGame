@@ -16,7 +16,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -73,16 +72,15 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
 
-        AbstractServerChessGame scg = null;
         try {
-            scg = (AbstractServerChessGame) query.getSingleResult();
+            AbstractServerChessGame scg = (AbstractServerChessGame) query.getSingleResult();
             addObservers(scg);
             scg.setChessGameFactory(new StandardChessGameFactory());
             return scg;
         } catch (NoResultException nre) {
             logger.error(nre);
+            throw new DAOException(nre);
         }
-        return scg;
     }
 
     public AbstractServerChessGame saveServerChessGame(AbstractServerChessGame serverChessGame)
