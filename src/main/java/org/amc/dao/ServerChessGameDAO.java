@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -44,7 +45,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
     }
 
     void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
-        EntityManager entityManager = getEntityManager();
+        EntityManager entityManager = getEntityManager(serverChessGame.getUid());
         if (serverChessGame.getNoOfObservers() == 0) {
             Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY,
                             SCGObservers.class);
@@ -71,7 +72,6 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
         EntityManager entityManager = getEntityManager(uid);
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
-
         try {
             AbstractServerChessGame scg = (AbstractServerChessGame) query.getSingleResult();
             addObservers(scg);

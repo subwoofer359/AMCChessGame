@@ -41,7 +41,7 @@ class ServerChessGameDAOAddObserversTest {
 
     final SCGameDAO dao = new ServerChessGameDAO() {
         @Override
-        public EntityManager getEntityManager() {
+        public EntityManager getEntityManager(Long gameUid) {
             return em;
         }
     };
