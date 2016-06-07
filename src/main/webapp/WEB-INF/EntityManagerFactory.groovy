@@ -1,3 +1,5 @@
+import org.amc.dao.EntityManagerCacheCleaner;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
@@ -33,4 +35,9 @@ beans {
         bean.destroyMethod = 'close';
         aop.'scoped-proxy'();
     };
+
+    entityManagerCacheCleaner(EntityManagerCacheCleaner, ref('myEntityManagerCache'), 1 ,1) { bean ->
+        bean.initMethod = 'init';
+        scheduler = ref('myScheduler');
+    }
 }

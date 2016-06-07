@@ -81,5 +81,35 @@ class EntityCacheMapTest {
         
         assert enManager.isOpen() == true;
     }
+    
+    @Test
+    public void checkDateUpdateOnAccessOfEntityManager() {
+        when(factory.createEntityManager()).thenReturn(newEm);
+        when(newEm.isOpen()).thenReturn(true);
+        
+        Long uid = 1L;
+        
+        emc.getEntityManager(uid);
+        
+        Calendar firstAccess = emc.entityManagerMap?.get(uid)?.lastUsedDate;
+        
+        emc.getEntityManager(uid);
+        Calendar secondAccess = emc.entityManagerMap?.get(uid)?.lastUsedDate;
+        assert firstAccess.before(secondAccess);
+    }
+
+    @Test
+    void getOldestEntity() {
+        when(factory.createEntityManager()).thenReturn(newEm);
+        when(newEm.isOpen()).thenReturn(true);
+        (1..100).each() {
+            emc.getEntityManager(it);
+        }
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MINUTE, -1);
+        def oldEms = emc.getOldestEntityManagers(c);
+        assert oldEms.isEmpty() == true;
+        assert emc.isEmpty() == false;
+    }
 
 }
