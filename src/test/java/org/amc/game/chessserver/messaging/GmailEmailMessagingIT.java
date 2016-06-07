@@ -25,6 +25,7 @@ import org.amc.game.chessserver.ServerConstants;
 import org.amc.game.chessserver.messaging.EmailMessageService.SendMessage;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
  * @author Adrian Mclaughlin
  *
  */
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = { "/EntityManagerFactory.groovy", "/SpringTestConfig.xml" ,"/GameServerWebSockets.xml", "/EmailServiceContext.xml", "/GameServerSecurity.xml" })
