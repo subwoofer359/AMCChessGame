@@ -58,7 +58,8 @@ final class EnPassantRule extends PawnPieceRule {
         }
         return isPawnChessPiece(opponentsPiece) && 
                         opponentsMove.getAbsoluteDistanceY() == 2
-                        && isMoveToSameFile(move, opponentsMove);
+                        && isMoveToSameFile(move, opponentsMove)
+                        && isMoveBehindPieceToBeCaptured(opponentsPiece, move, opponentsMove);
         
     }
     
@@ -72,6 +73,14 @@ final class EnPassantRule extends PawnPieceRule {
    
     private boolean isMoveToSameFile(Move myMove, Move lastOpposingMove) {
         return myMove.getEnd().getLetter().equals(lastOpposingMove.getEnd().getLetter());
+    }
+    
+    private boolean isMoveBehindPieceToBeCaptured(ChessPiece enemyPiece, Move myMove, Move lastOpposingMove) {
+        if(Colour.WHITE.equals(enemyPiece.getColour())) {
+            return lastOpposingMove.getEnd().getNumber() - myMove.getEnd().getNumber() == 1;
+        } else {
+            return myMove.getEnd().getNumber() - lastOpposingMove.getEnd().getNumber() == 1;
+        }
     }
 
     /**

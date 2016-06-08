@@ -15,12 +15,15 @@ public class EnPassantTest {
     private ChessBoard board;
     private EnPassantRule enPassantRule;
     private ChessBoardFactory factory;
+    private ChessGameFactory chessGamefactory;
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
+    
 
     @Before
     public void setUp() {
-        ChessGameFactory chessGamefactory = new StandardChessGameFactory();
+        chessGamefactory = new StandardChessGameFactory();
+        
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         
@@ -33,20 +36,14 @@ public class EnPassantTest {
     }
 
     @Test
-    public void testIsEnPassantCapture() {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn = new PawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(Coordinate.E, 5);
-        Location blackPawnStartPosition = new Location(Coordinate.F, 7);
-        Location blackPawnEndPosition = new Location(Coordinate.F, 5);
-        board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
-        board.putPieceOnBoardAt(blackPawn, blackPawnEndPosition);
+    public void testIsEnPassantCapture() throws Exception {
+        board = factory.getChessBoard("ke1:Ke8:pe5:Pf7");
+        chessGame = chessGamefactory.getChessGame(board, whitePlayer, blackPlayer);
+        chessGame.changePlayer();
+        chessGame.move(blackPlayer, new Move("f7-f5"));
+        chessGame.changePlayer();
 
-        Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
-        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.F, 6));
-
-        chessGame.allGameMoves.add(blackMove);
-        assertTrue(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
+        assertTrue(enPassantRule.isEnPassantCapture(chessGame, new Move("e5-f6")));
     }
 
     @Test
