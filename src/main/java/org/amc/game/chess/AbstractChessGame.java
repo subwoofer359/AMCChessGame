@@ -219,15 +219,15 @@ public abstract class AbstractChessGame  implements Serializable {
         this.gameState = GameState.RUNNING;
     }
     
-    public final ChessGamePlayer getCurrentPlayer() {
+    public ChessGamePlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public final ChessGamePlayer getWhitePlayer() {
+    public ChessGamePlayer getWhitePlayer() {
         return whitePlayer;
     }
 
-    public final ChessGamePlayer getBlackPlayer() {
+    public ChessGamePlayer getBlackPlayer() {
         return blackPlayer;
     }
  

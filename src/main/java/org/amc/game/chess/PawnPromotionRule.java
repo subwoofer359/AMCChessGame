@@ -9,6 +9,8 @@ package org.amc.game.chess;
  *
  */
 public final class PawnPromotionRule extends PawnPieceRule {
+	
+	public static String ERROR_CAN_ONLY_PROMOTE_PAWN = "Can't promote Chess pieces other than a pawn";
 
     private static final int BLACK_PROMOTION_RANK = 1;
     private static final int WHITE_PROMOTION_RANK = 8;
@@ -64,7 +66,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
     
     private void validatePromotionMove(Location location,ChessPiece pieceToBePromoted, ChessPiece promotedPiece) throws IllegalMoveException {
         if(isNotAPawn(pieceToBePromoted)) {
-            throw new IllegalMoveException("Can't promote Chess pieces other than a pawn");
+            throw new IllegalMoveException(ERROR_CAN_ONLY_PROMOTE_PAWN);
         } else if(isKingOrPawn(promotedPiece)) {
             throw new IllegalMoveException("Pawn can't be promoted to " + promotedPiece);
         } else if(!isRuleApplicable(location, pieceToBePromoted)) {

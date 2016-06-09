@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
@@ -13,7 +12,8 @@ import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.Move;
+import org.amc.game.chess.Move
+import org.amc.game.chess.PawnPromotionRule;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.junit.After;
@@ -35,6 +35,9 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+		
+		sessionAttributes.put('PLAYER', whitePlayer);
+		
         controller = new PromotionStompController();
         controller.setTemplate(template);
         controller.setServerChessDAO(serverChessGameDAO);
@@ -55,7 +58,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     @Test
     public void test() {
         def message = 'promote qa8';
-        
+		       
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         verifyZeroInteractions(template);
     }
@@ -67,6 +70,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         this.verifySimpMessagingTemplateCallToUser();
         assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.ERROR;
+		assert this.payoadArgument.getValue() == PromotionStompController.PARSE_ERROR;
     }
     
     @Test
@@ -75,5 +79,6 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         this.verifySimpMessagingTemplateCallToUser();
         assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.ERROR;
+		assert this.payoadArgument.getValue() == PawnPromotionRule.ERROR_CAN_ONLY_PROMOTE_PAWN;
     }
 }
