@@ -1,6 +1,7 @@
 package org.amc.dao;
 
 import static org.amc.game.chess.ChessBoardSetupNotation.ChessPieceNotation.*;
+import static org.amc.game.chess.SimpleChessBoardSetupNotation.MOVE_TOKEN;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
@@ -41,6 +42,9 @@ public final class ChessBoardExternalizer {
                 if(piece != null) {
                     sb.append(getChessPieceSymbol(piece));
                     sb.append(location.asString().toLowerCase());
+                    if(piece.hasMoved()) {
+                    	sb.append(MOVE_TOKEN);
+                    }
                 }
             }
         }

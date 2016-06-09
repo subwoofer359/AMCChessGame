@@ -2,6 +2,7 @@ package org.amc.game.chess;
 
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
+import static org.amc.game.chess.SimpleChessBoardSetupNotation.MOVE_TOKEN;
 
 import org.junit.After;
 import org.junit.Before;
@@ -53,6 +54,25 @@ public class SimpleChessBoardSetupNotationTest {
     @Test(expected = ParseException.class)
     public void testInvalidPattern() throws ParseException {
         chessBoardFactory.getChessBoard("Be3:Me3");
+    }
+    
+    @Test
+    public void testMovedNotationValid() {
+    	final String boardStr = setupNotation + ":pa4" + MOVE_TOKEN;
+    	try {
+    		chessBoardFactory.getChessBoard(boardStr);
+    	} catch (ParseException pe) {
+    		fail("Should be valid setUp Notation:" + boardStr);
+    	}
+    	
+    }
+    
+    @Test
+    public void testMovedNotation() throws Exception {
+    	final String boardStr = setupNotation + ":pa4" + MOVE_TOKEN;
+        ChessBoard board = chessBoardFactory.getChessBoard(boardStr);
+        assertTrue("Pawn should have field moved set to true", board.getPieceFromBoardAt(new Location("a4")).hasMoved());
+        assertFalse("Pawn should have field moved set to false", board.getPieceFromBoardAt(new Location("f4")).hasMoved());
     }
 
 }
