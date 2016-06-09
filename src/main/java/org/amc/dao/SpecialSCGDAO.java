@@ -36,12 +36,32 @@ public interface SpecialSCGDAO {
      */
     Map<Long, ServerChessGame> getGamesForPlayer(Player player) throws DAOException;
 
+    /**
+     * Retrieve specific EntityManager
+     * If the EntityManager is closed a new EntityManager
+     * will be created
+     * @param gameUid key or identifier of EntityManager
+     * @return Open EntityManager
+     */
     EntityManager getEntityManager(Long gameUid);
     
+    /**
+     * Delete the Server Chess Game using the shared entityManager
+     * @param serverChessGame to be deleted
+     * @throws DAOException if game can't be deleted
+     */
     void deleteEntity(AbstractServerChessGame serverChessGame) throws DAOException;
 
+    /**
+     * Set the Factory chain to create observers for each ServerChessGame
+     * @param chain {@link ObserverFactoryChain}
+     */
     void setObserverFactoryChain(ObserverFactoryChain chain);
 
+    /**
+     * Set the EntityManagerCache to be used to store shared entityManagers
+     * @param entityManagerCache
+     */
     void setEntityManagerCache(EntityManagerCache entityManagerCache);
 
 }
