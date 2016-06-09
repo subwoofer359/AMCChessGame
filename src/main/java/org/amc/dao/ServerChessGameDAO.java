@@ -69,16 +69,24 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
      */
     public AbstractServerChessGame getServerChessGame(long uid) throws DAOException {
         EntityManager entityManager = getEntityManager(uid);
+        
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
         try {
             AbstractServerChessGame scg = (AbstractServerChessGame) query.getSingleResult();
+            markChessBoardFieldDirty(entityManager, scg);
             addObservers(scg);
             scg.setChessGameFactory(new StandardChessGameFactory());
             return scg;
         } catch (NoResultException nre) {
             logger.error(nre);
             throw new DAOException(nre);
+        }
+    }
+    
+    private void markChessBoardFieldDirty(EntityManager entityManager, AbstractServerChessGame scg) {
+        if (entityManager instanceof OpenJPAEntityManager) {
+            ((OpenJPAEntityManager) entityManager).dirty(scg.getChessGame(), "board");
         }
     }
 
@@ -92,9 +100,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
                 serverChessGame = em.merge(serverChessGame);
             }
 
-            if (em instanceof OpenJPAEntityManager) {
-                ((OpenJPAEntityManager) em).dirty(serverChessGame.getChessGame(), "board");
-            }
+            markChessBoardFieldDirty(em, serverChessGame);
             em.flush();
             em.getTransaction().commit();
             return serverChessGame;
@@ -108,6 +114,14 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
         return !em.contains(serverChessGame);
     }
 
+    @Override
+    public void deleteEntity(AbstractServerChessGame serverChessGame) throws DAOException {
+        EntityManager em = getEntityManager(serverChessGame.getUid());
+        em.getTransaction().begin();
+        em.remove(serverChessGame);
+        em.getTransaction().commit();
+    }
+    
     /**
      * Returns Games for display purposes only.
      * Certain fields aren't initialised

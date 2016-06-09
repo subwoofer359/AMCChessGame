@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 
 public class EntityManagerCacheCleaner {
     private TaskScheduler scheduler;
@@ -62,7 +63,7 @@ public class EntityManagerCacheCleaner {
 
         @Override
         public void run() {
-            logger.info("EntityManagerCacheCleaner task started");
+            logger.debug("EntityManagerCacheCleaner task started");
             Calendar oldTime = Calendar.getInstance();
             oldTime.add(livePeriod, -1 * minutesToLive);
             
@@ -72,14 +73,24 @@ public class EntityManagerCacheCleaner {
                 EntityManager entityManager = enCache.getEntityManager(gameUid);
                 enCache.remove(gameUid);
                 if(entityManager.isOpen()) {
-                    entityManager.close();
+                    try {
+                        entityManager.getTransaction().begin();
+                        entityManager.flush();
+                        entityManager.getTransaction().commit();
+                    } catch(OptimisticLockException ole) {
+                        logger.debug(String.format("OptimisticLockException thrown on flush of entityManager for game: %d ", 
+                                        gameUid));
+                    } finally {
+                        entityManager.close();
+                    }
+                    
                 }
                 logger.info("========================================");
                 logger.info(" Removed Game:" + gameUid);
                 logger.info("========================================");
             }
             
-            logger.info("EntityManagerCacheCleaner has run");
+            logger.debug("EntityManagerCacheCleaner has run");
             
         }
         

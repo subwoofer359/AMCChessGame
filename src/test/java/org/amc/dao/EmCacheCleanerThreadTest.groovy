@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 import groovy.transform.TypeChecked;
 
@@ -22,6 +23,9 @@ class EmCacheCleanerThreadTest {
     
     @Mock
     EntityManager entityManager;
+    
+    @Mock
+    EntityTransaction transaction;
     
     EmCacheCleanerThread thread;
     
@@ -36,6 +40,7 @@ class EmCacheCleanerThreadTest {
         oldGameUids = new HashSet([1L, 33L, 44L]);
         when(cache.getEntityManager(anyLong())).thenReturn(entityManager);
         when(cache.getOldestEntityManagers(any(Calendar.class))).thenReturn(oldGameUids);
+        when(entityManager.getTransaction()).thenReturn(transaction);
     }
     
     @Test

@@ -1,8 +1,7 @@
 package org.amc.game.chessserver.observers;
 
 import org.amc.DAOException;
-import org.amc.dao.DAO;
-import org.amc.dao.DAOInterface;
+import org.amc.dao.SCGDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.GameSubject;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -35,14 +34,14 @@ public class GameFinishedListener extends GameObserver {
 
     private TaskScheduler scheduler;
 
-    private DAOInterface<AbstractServerChessGame> serverChessGameDAO;
+    private SCGDAO serverChessGameDAO;
 
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
     public GameFinishedListener() {
     }
 
-    public void setServerChessGameDAO(DAOInterface<AbstractServerChessGame> serverChessGameDAO) {
+    public void setServerChessGameDAO(SCGDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 
@@ -101,10 +100,10 @@ public class GameFinishedListener extends GameObserver {
 
     private static class DeleteChessGameJob implements Runnable {
 
-        private DAOInterface<AbstractServerChessGame> serverChessGameDAO;
+        private SCGDAO serverChessGameDAO;
         private AbstractServerChessGame chessGame;
 
-        public DeleteChessGameJob(DAOInterface<AbstractServerChessGame> serverChessGameDAO,
+        public DeleteChessGameJob(SCGDAO serverChessGameDAO,
                         AbstractServerChessGame chessGame) {
             this.serverChessGameDAO = serverChessGameDAO;
             this.chessGame = chessGame;
@@ -115,8 +114,8 @@ public class GameFinishedListener extends GameObserver {
             if(chessGame != null) {
                 try {
                     synchronized (chessGame) {
+                        serverChessGameDAO.deleteEntity(chessGame);
                         chessGame.destroy();
-                        serverChessGameDAO.deleteEntity(chessGame);   
                     }
                 } catch(DAOException de) {
                     logger.error(de);

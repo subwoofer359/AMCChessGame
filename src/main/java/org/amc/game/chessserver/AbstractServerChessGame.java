@@ -251,12 +251,13 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     
     /**
      * Remove Observers from receiving updates
-     * Sets Status to FINISHED
+     * Sets Status to FINISHED after Observers removed to stop
+     * Observers being updated on State change
      * Tidys up references
      */
     public void destroy() {
-        setCurrentStatus(ServerGameStatus.FINISHED);
         removeAllObservers();
+        setCurrentStatus(ServerGameStatus.FINISHED);
         this.chessGame = null;
     }
     

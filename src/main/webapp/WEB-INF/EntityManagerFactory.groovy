@@ -26,7 +26,7 @@ beans {
     };
 
     /**
-     * A request scoped EntityManager proxy
+     * A websocket scoped EntityManager proxy
      */
     webSocketEntityManager(EntityManager) { bean ->
         bean.factoryBean = 'applicationEntityManagerFactory';
@@ -36,7 +36,7 @@ beans {
         aop.'scoped-proxy'();
     };
 
-    entityManagerCacheCleaner(EntityManagerCacheCleaner, ref('myEntityManagerCache'), 1 ,1) { bean ->
+    entityManagerCacheCleaner(EntityManagerCacheCleaner, ref('myEntityManagerCache'), 1 ,4) { bean ->
         bean.initMethod = 'init';
         scheduler = ref('myScheduler');
     }

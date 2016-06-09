@@ -31,8 +31,11 @@
 	
 	<bean id="gameFinishListener" class="org.amc.game.chessserver.observers.GameFinishedListener">
 	<property name="serverChessGameDAO">
-		<bean factory-bean="managedDAOFactory"
-		factory-method="getServerChessGameDAO"/>  
+		<bean class="org.amc.dao.ServerChessGameDAO"> 
+			<property name="entityManagerCache" ref="myEntityManagerCache"/>
+			<property name="entityManager"><null/></property>
+			<property name="observerFactoryChain"><null/></property>
+		</bean>  
 	</property>
 	</bean>
 
