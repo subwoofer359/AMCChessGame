@@ -32,11 +32,11 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
 
     static final String GET_SERVERCHESSGAME_QUERY = "serverChessGameByUid";
-    
+
     static final String NATIVE_OBSERVERS_QUERY = "Select uid,observers from serverChessGames where uid = ?1";
 
     private ObserverFactoryChain chain;
-    
+
     private EntityManagerCache entityManagerCache;
 
     public ServerChessGameDAO() {
@@ -45,17 +45,29 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
 
     void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
         EntityManager entityManager = getEntityManager(serverChessGame.getUid());
+        synchronized (entityManager) {
+            addObserversIfNone(entityManager, serverChessGame);
+        }
+    }
+
+    private void addObserversIfNone(EntityManager entityManager,
+                    AbstractServerChessGame serverChessGame) throws DAOException {
         if (serverChessGame.getNoOfObservers() == 0) {
             Query query = entityManager.createNativeQuery(NATIVE_OBSERVERS_QUERY,
                             SCGObservers.class);
             query.setParameter(1, serverChessGame.getUid());
-            try {
-                SCGObservers scgObervers = (SCGObservers) query.getSingleResult();
-                chain.addObserver(scgObervers.getObservers(), serverChessGame);
-            } catch (PersistenceException pe) {
-                logger.error(pe);
-                throw new DAOException(pe);
-            }
+            queryAndAddObservers(query, serverChessGame);
+        }
+    }
+
+    private void queryAndAddObservers(Query query, AbstractServerChessGame serverChessGame)
+                    throws DAOException {
+        try {
+            SCGObservers scgObervers = (SCGObservers) query.getSingleResult();
+            chain.addObserver(scgObervers.getObservers(), serverChessGame);
+        } catch (PersistenceException pe) {
+            logger.error(pe);
+            throw new DAOException(pe);
         }
     }
 
@@ -69,21 +81,32 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
      */
     public AbstractServerChessGame getServerChessGame(long uid) throws DAOException {
         EntityManager entityManager = getEntityManager(uid);
-        
+        synchronized (entityManager) {
+            return getSCGame(entityManager, uid);
+        }
+    }
+
+    private AbstractServerChessGame getSCGame(EntityManager entityManager, long uid)
+                    throws DAOException {
         Query query = entityManager.createNamedQuery(GET_SERVERCHESSGAME_QUERY);
         query.setParameter(1, uid);
         try {
             AbstractServerChessGame scg = (AbstractServerChessGame) query.getSingleResult();
-            markChessBoardFieldDirty(entityManager, scg);
-            addObservers(scg);
-            scg.setChessGameFactory(new StandardChessGameFactory());
-            return scg;
+            return configureServerChessGame(entityManager, scg);
         } catch (NoResultException nre) {
             logger.error(nre);
             throw new DAOException(nre);
         }
     }
-    
+
+    private AbstractServerChessGame configureServerChessGame(EntityManager entityManager,
+                    AbstractServerChessGame serverChessGame) throws DAOException {
+        markChessBoardFieldDirty(entityManager, serverChessGame);
+        addObservers(serverChessGame);
+        serverChessGame.setChessGameFactory(new StandardChessGameFactory());
+        return serverChessGame;
+    }
+
     private void markChessBoardFieldDirty(EntityManager entityManager, AbstractServerChessGame scg) {
         if (entityManager instanceof OpenJPAEntityManager) {
             ((OpenJPAEntityManager) entityManager).dirty(scg.getChessGame(), "board");
@@ -92,36 +115,46 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
 
     public AbstractServerChessGame saveServerChessGame(AbstractServerChessGame serverChessGame)
                     throws DAOException {
-        EntityManager em = getEntityManager(serverChessGame.getUid());
-        try {
-            em.getTransaction().begin();
-            
-            if(isNotInThePersistenceContext(em, serverChessGame)) {
-                serverChessGame = em.merge(serverChessGame);
+        EntityManager entityManager = getEntityManager(serverChessGame.getUid());
+        synchronized (entityManager) {
+            try {
+                return saveGame(entityManager, serverChessGame);
+            } catch (PersistenceException pe) {
+                logger.error(pe);
+                throw new DAOException(pe);
             }
-
-            markChessBoardFieldDirty(em, serverChessGame);
-            em.flush();
-            em.getTransaction().commit();
-            return serverChessGame;
-        } catch (PersistenceException pe) {
-            logger.error(pe);
-            throw new DAOException(pe);
         }
     }
-    
-    private boolean isNotInThePersistenceContext(EntityManager em, AbstractServerChessGame serverChessGame) {
+
+    private AbstractServerChessGame saveGame(EntityManager entityManager,
+                    AbstractServerChessGame serverChessGame) {
+        entityManager.getTransaction().begin();
+
+        if (isNotInThePersistenceContext(entityManager, serverChessGame)) {
+            serverChessGame = entityManager.merge(serverChessGame);
+        }
+
+        markChessBoardFieldDirty(entityManager, serverChessGame);
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        return serverChessGame;
+    }
+
+    private boolean isNotInThePersistenceContext(EntityManager em,
+                    AbstractServerChessGame serverChessGame) {
         return !em.contains(serverChessGame);
     }
 
     @Override
     public void deleteEntity(AbstractServerChessGame serverChessGame) throws DAOException {
-        EntityManager em = getEntityManager(serverChessGame.getUid());
-        em.getTransaction().begin();
-        em.remove(serverChessGame);
-        em.getTransaction().commit();
+        EntityManager entityManager = getEntityManager(serverChessGame.getUid());
+        synchronized (entityManager) {
+            entityManager.getTransaction().begin();
+            entityManager.remove(serverChessGame);
+            entityManager.getTransaction().commit();
+        }
     }
-    
+
     /**
      * Returns Games for display purposes only.
      * Certain fields aren't initialised
