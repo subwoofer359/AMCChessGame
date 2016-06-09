@@ -37,9 +37,13 @@ public class GameActionsStompController extends StompController {
     public void getChessBoard(Principal user,
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
-        ChessGame chessGame = getServerChessGame(gameUUID) == null ? null : getServerChessGame(gameUUID).getChessGame();
+        
+    	ChessGame chessGame = getServerChessGame(gameUUID) == null ? null : getServerChessGame(gameUUID).getChessGame();
+        
         String payLoadMessage = null;
+        
         MessageType messageType;
+        
         if(chessGame == null) {
             payLoadMessage = ERROR_CHESSBOARD_DOESNT_EXIST;
             logger.error("Game:" + gameUUID + " has a null ChessGame");
@@ -65,16 +69,16 @@ public class GameActionsStompController extends StompController {
             sendMessage(MSG_GAME_ALREADY_OVER, gameUUID, MessageType.INFO);
         } else {
             Player player = (Player) wsSession.get(PLAYER);
-        
+            
             String replyMessage="";
         
             if(ServerGameStatus.FINISHED.equals(serverGame.getCurrentStatus())){
                 replyMessage = MSG_GAME_ALREADY_OVER;
-            } else {        
-                serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
-                serverGame.notifyObservers(player);
-                replyMessage = String.format(MSG_PLAYER_HAS_QUIT, player.getName());
-            }
+            } else if(isValidPlayer(player, serverGame)) {
+            		serverGame.setCurrentStatus(ServerGameStatus.FINISHED);
+                	serverGame.notifyObservers(player);
+                	replyMessage = String.format(MSG_PLAYER_HAS_QUIT, player.getName());
+            	}
             sendMessage(replyMessage, gameUUID, MessageType.INFO);
         }
     }

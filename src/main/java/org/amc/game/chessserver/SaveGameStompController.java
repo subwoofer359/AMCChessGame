@@ -3,7 +3,6 @@ package org.amc.game.chessserver;
 import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSION_ATTRIBUTES;
 
 import org.amc.DAOException;
-import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.apache.log4j.Logger;
@@ -66,10 +65,7 @@ public class SaveGameStompController extends StompController {
         
     }
     
-    private boolean isValidPlayer(Player player, AbstractServerChessGame serverChessGame) {
-        return (ComparePlayers.comparePlayers(player, serverChessGame.getPlayer()) || 
-                        ComparePlayers.comparePlayers(player, serverChessGame.getOpponent()));
-    }
+    
     
     private String saveServerChessGameIfValidPlayer(Player player, AbstractServerChessGame serverChessGame) {
         if(isValidPlayer(player, serverChessGame)) {

@@ -9,7 +9,6 @@ package org.amc.game.chess;
 
 public final class ComparePlayers {
 
-   
         /**
          * Compares Two players
          *  
@@ -22,11 +21,19 @@ public final class ComparePlayers {
         }
         
         private static boolean isSameUid(Player playerOne, Player playerTwo) {
-            return playerOne.getId() == playerTwo.getId();
+        	if(playerOne == null || playerTwo == null) {
+        		return false;
+        	} else {
+        		return playerOne.getId() == playerTwo.getId();
+        	}
         }
         
         private static boolean isSameName(Player playerOne, Player playerTwo) {
-            return playerOne.getName().equals(playerTwo.getName());
+        	if(playerOne == null || playerTwo == null) {
+        		return false;
+        	} else {
+        		return playerOne.getName().equals(playerTwo.getName());
+        	}
         }
         
         private ComparePlayers() {

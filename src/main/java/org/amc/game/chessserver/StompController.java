@@ -2,6 +2,8 @@ package org.amc.game.chessserver;
 
 import org.amc.DAOException;
 import org.amc.dao.SCGDAOInterface;
+import org.amc.game.chess.ComparePlayers;
+import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -106,5 +108,10 @@ public class StompController {
             return null;
         }
         
+    }
+    
+    boolean isValidPlayer(Player player, AbstractServerChessGame serverChessGame) {
+        return (ComparePlayers.comparePlayers(player, serverChessGame.getPlayer()) || 
+                        ComparePlayers.comparePlayers(player, serverChessGame.getOpponent()));
     }
 }
