@@ -36,7 +36,7 @@ public abstract class AbstractChessGame  implements Serializable {
     @Persistent(cascade=CascadeType.ALL)
     @Externalizer("org.amc.dao.ChessBoardExternalizer.getChessBoardString")
     @Factory("org.amc.dao.ChessBoardExternalizer.getChessBoard")
-    @Column(length=96)
+    @Column(length=128)
     private ChessBoard board;
     
     @OneToOne(cascade=CascadeType.ALL)
