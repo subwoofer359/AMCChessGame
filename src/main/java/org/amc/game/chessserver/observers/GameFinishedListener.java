@@ -1,7 +1,7 @@
 package org.amc.game.chessserver.observers;
 
 import org.amc.DAOException;
-import org.amc.dao.SCGDAO;
+import org.amc.dao.SpecialSCGDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.GameSubject;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -34,14 +34,14 @@ public class GameFinishedListener extends GameObserver {
 
     private TaskScheduler scheduler;
 
-    private SCGDAO serverChessGameDAO;
+    private SpecialSCGDAO serverChessGameDAO;
 
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
     public GameFinishedListener() {
     }
 
-    public void setServerChessGameDAO(SCGDAO serverChessGameDAO) {
+    public void setServerChessGameDAO(SpecialSCGDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 
@@ -100,10 +100,10 @@ public class GameFinishedListener extends GameObserver {
 
     private static class DeleteChessGameJob implements Runnable {
 
-        private SCGDAO serverChessGameDAO;
+        private SpecialSCGDAO serverChessGameDAO;
         private AbstractServerChessGame chessGame;
 
-        public DeleteChessGameJob(SCGDAO serverChessGameDAO,
+        public DeleteChessGameJob(SpecialSCGDAO serverChessGameDAO,
                         AbstractServerChessGame chessGame) {
             this.serverChessGameDAO = serverChessGameDAO;
             this.chessGame = chessGame;

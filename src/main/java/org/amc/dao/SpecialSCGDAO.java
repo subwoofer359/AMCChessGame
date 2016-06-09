@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-public interface SCGDAO {
+public interface SpecialSCGDAO {
     /**
      * 
      * @param uid
