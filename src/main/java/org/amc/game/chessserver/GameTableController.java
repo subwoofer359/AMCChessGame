@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 @SessionAttributes("PLAYER")
 public class GameTableController {
 
-    private SCGameDAO dao;
+    private SCGDAOInterface dao;
     
     private static final Gson GSON;
     static {
@@ -57,7 +57,7 @@ public class GameTableController {
     }
     
     @Resource(name = "myServerChessGameDAO")
-    public void setServerChessGameDAO(SCGameDAO scgDAO) {
+    public void setServerChessGameDAO(SCGDAOInterface scgDAO) {
         this.dao = scgDAO;
     }
     

@@ -22,7 +22,7 @@ class ServerChessGameDAOGetPlayerGameListIT {
     private static DatabaseFixture fixture = new DatabaseFixture();
     private ServerChessGameDatabaseEntityFixture scgDbEntity;
     EntityManager entityManager;
-    SCGameDAO dao;
+    SCGDAOInterface dao;
     Player player;
     Player opponent;
     Player otherPlayer;

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import org.amc.DAOException;
 import org.amc.dao.DAO;
 import org.amc.dao.ManagedDAOFactory;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.ServerChessGame;

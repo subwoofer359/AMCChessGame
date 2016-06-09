@@ -27,7 +27,7 @@ import javax.persistence.TypedQuery;
  *
  */
 
-public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements SCGameDAO {
+public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements SCGDAOInterface {
 
     private static final Logger logger = Logger.getLogger(ServerChessGameDAO.class);
 

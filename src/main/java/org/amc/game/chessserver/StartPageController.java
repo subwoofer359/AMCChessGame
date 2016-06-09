@@ -2,7 +2,7 @@ package org.amc.game.chessserver;
 
 import org.apache.log4j.Logger;
 import org.amc.DAOException;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
@@ -44,7 +44,7 @@ public class StartPageController {
     private static final Logger logger = Logger.getLogger(StartPageController.class);
     private ServerChessGameFactory scgFactory;
     
-    private SCGameDAO serverChessGameDAO;
+    private SCGDAOInterface serverChessGameDAO;
     
 
     @RequestMapping("/chessapplication")
@@ -146,7 +146,7 @@ public class StartPageController {
     }
 
     @Resource(name = "myServerChessGameDAO")
-    public void setServerChessGameDAO(SCGameDAO serverChessGameDAO) {
+    public void setServerChessGameDAO(SCGDAOInterface serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
     

@@ -3,7 +3,7 @@ package org.amc.game.chessserver;
 import static org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 
 import org.amc.DAOException;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
@@ -27,7 +27,7 @@ import javax.annotation.Resource;
 public class ServerJoinChessGameController {
 
     private static final Logger logger = Logger.getLogger(ServerJoinChessGameController.class);
-    private SCGameDAO serverChessGameDAO;
+    private SCGDAOInterface serverChessGameDAO;
     
     static final String ERROR_GAME_HAS_NO_OPPONENT = "Game has no opponent assigned";
     static final String ERROR_PLAYER_NOT_OPPONENT = "Player is not playing this chess game";
@@ -159,7 +159,7 @@ public class ServerJoinChessGameController {
     }
 
     @Resource(name = "myServerChessGameDAO")
-    public void setServerChessGameDAO(SCGameDAO serverChessGameDAO) {
+    public void setServerChessGameDAO(SCGDAOInterface serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 

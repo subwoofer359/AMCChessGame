@@ -1,7 +1,7 @@
 package org.amc.game.chessserver.observers;
 
 import org.amc.DAOException;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.GameObserver;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
@@ -46,7 +46,7 @@ public class GameStateListener extends GameObserver {
     @Autowired
     private SimpMessagingTemplate template;
     
-    private SCGameDAO serverChessGameDAO;
+    private SCGDAOInterface serverChessGameDAO;
 
     
     
@@ -145,7 +145,7 @@ public class GameStateListener extends GameObserver {
     }
     
     @Resource(name = "myServerChessGameDAO")
-    public void setServerChessGameDAO(SCGameDAO serverChessGameDAO) {
+    public void setServerChessGameDAO(SCGDAOInterface serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
     

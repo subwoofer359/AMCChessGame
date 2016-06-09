@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import org.amc.dao.DAOInterface;
 import org.amc.dao.DAO;
 import org.amc.dao.EntityManagerCache;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Move;
@@ -69,7 +69,7 @@ public class StompControllerFixtureIT {
 
     SimpMessagingTemplate template;
 
-    SCGameDAO serverChessGameDAO;
+    SCGDAOInterface serverChessGameDAO;
 
     @Before
     public void setup() throws Exception {
@@ -79,7 +79,7 @@ public class StompControllerFixtureIT {
         stephen = playerDAO.findEntities("userName", "stephen").get(0);
         nobby = playerDAO.findEntities("userName", "nobby").get(0);
         setUpStompChannels();
-        serverChessGameDAO = (SCGameDAO) wac.getBean("myServerChessGameDAO");
+        serverChessGameDAO = (SCGDAOInterface) wac.getBean("myServerChessGameDAO");
         template = mock(SimpMessagingTemplate.class);
     }
 

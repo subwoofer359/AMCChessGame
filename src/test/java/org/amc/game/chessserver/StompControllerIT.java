@@ -11,7 +11,7 @@ import org.amc.DAOException;
 import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
 import org.amc.dao.EntityManagerCache;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.ChessBoardUtilities;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Move;
@@ -97,7 +97,7 @@ public class StompControllerIT {
 
     private SimpMessagingTemplate template;
 
-    private SCGameDAO serverChessGameDAO;
+    private SCGDAOInterface serverChessGameDAO;
 
     @Before
     public void setup() throws Exception {
@@ -116,7 +116,7 @@ public class StompControllerIT {
         this.clientOutboundChannelInterceptor.setIncludedDestinations(MESSAGE_DESTINATION);
         this.clientOutboundChannel.addInterceptor(this.clientOutboundChannelInterceptor);
 
-        serverChessGameDAO = (SCGameDAO) wac.getBean("myServerChessGameDAO");
+        serverChessGameDAO = (SCGDAOInterface) wac.getBean("myServerChessGameDAO");
         clearDAO();
 
         ServerChessGameFactory scgfactory = (ServerChessGameFactory) wac
@@ -309,7 +309,7 @@ public class StompControllerIT {
         assertTrue(move.equals(new Move(moves[moves.length - 1])));
     }
 
-    private void saveGameTest(SCGameDAO dao, String move) throws Exception {
+    private void saveGameTest(SCGDAOInterface dao, String move) throws Exception {
         AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
         move(scg.getChessGame().getCurrentPlayer(), gameUUID, MESSAGE_DESTINATION, move);
         testInfoMessageSent();

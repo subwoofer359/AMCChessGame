@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.DAOException;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -28,7 +28,7 @@ public class StompController {
 
     private SimpMessagingTemplate template;
     
-    private SCGameDAO serverChessGameDAO;
+    private SCGDAOInterface serverChessGameDAO;
     
     public static final String MESSAGE_HEADER_TYPE = "TYPE";
     
@@ -86,7 +86,7 @@ public class StompController {
     }
     
     @Resource(name="wsServerChessGameDAO")
-    public void setServerChessDAO(SCGameDAO serverChessGameDAO) {
+    public void setServerChessDAO(SCGDAOInterface serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }
 
@@ -94,7 +94,7 @@ public class StompController {
         return template;
     }
 
-    public SCGameDAO getServerChessGameDAO() {
+    public SCGDAOInterface getServerChessGameDAO() {
         return serverChessGameDAO;
     }
     

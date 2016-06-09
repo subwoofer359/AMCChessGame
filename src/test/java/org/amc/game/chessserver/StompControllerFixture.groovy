@@ -3,7 +3,7 @@ package org.amc.game.chessserver
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -53,7 +53,7 @@ class StompControllerFixture {
     };
 
     @Mock
-    SCGameDAO serverChessGameDAO;
+    SCGDAOInterface serverChessGameDAO;
     
     @Before
     void setUp() throws Exception {

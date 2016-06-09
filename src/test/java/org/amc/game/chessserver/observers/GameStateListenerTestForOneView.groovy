@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
-import org.amc.dao.SCGameDAO;
+import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -43,7 +43,7 @@ class GameStateListenerTestForOneView {
     private ChessGameFactory chessGameFactory;
     
     @Mock
-    private SCGameDAO serverChessGameDAO;
+    private SCGDAOInterface serverChessGameDAO;
     
     @Mock
     SimpMessagingTemplate template;
