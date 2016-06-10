@@ -18,11 +18,11 @@ public class ServerChessGameFactory {
     
 	public enum GameType {
 		LOCAL_GAME,
-		NETWORK_GAME;
+		NETWORK_GAME
 	}
 	public ServerChessGame getServerChessGame(GameType gameType, long uid, Player player) {
 	    ServerChessGame serverChessGame;
-	    String observerStr = "";
+	    String observerStr;
 	    
 		switch(gameType) {
 		case LOCAL_GAME:

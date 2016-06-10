@@ -41,7 +41,7 @@ public class GameMoveStompController extends StompController {
 
         AbstractServerChessGame game = getServerChessGame(gameUUID);
 
-        String message = "";
+        String message;
 
         if (AbstractServerChessGame.ServerGameStatus.IN_PROGRESS.equals(game.getCurrentStatus())) {
             message = moveChessPiece(game, player, moveString);
@@ -84,7 +84,7 @@ public class GameMoveStompController extends StompController {
             return;
         }
 
-        String message = "";
+        String message;
        
         if (ServerGameStatus.IN_PROGRESS.equals(game.getCurrentStatus())) {
             Player player = game.getChessGame().getCurrentPlayer();

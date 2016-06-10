@@ -36,25 +36,21 @@ public class OfflineChessGameMessager extends GameObserver {
             AbstractServerChessGame serverChessGame = (AbstractServerChessGame) subject;
             try {
                 Player player = serverChessGame.getChessGame().getCurrentPlayer(); 
-                if (isOnline(player) || doesUserNotHaveEmailAddress(player)) {
-                    return;
-                } else if (message instanceof ChessGame) {
-                    handleChessGameUpdate(serverChessGame, message);
-                } else if(message instanceof Player) {
-                	handlePlayerUpdate(serverChessGame, message);
+                if (isOffline(player) && doesUserHaveEmailAddress(player)) {
+                    if (message instanceof ChessGame) {
+                        handleChessGameUpdate(serverChessGame, message);
+                    } else if(message instanceof Player) {
+                        handlePlayerUpdate(serverChessGame, message);
+                    }
                 }
-            } catch (MailException e) {
+            } catch (MailException | MessagingException | DAOException e) {
                 logger.error(e);
-            } catch(MessagingException me) {
-                logger.error(me);
-            } catch (DAOException de) {
-                logger.error(de);
             }
             
         }
     }
     
-    boolean isOnline(Player player) throws DAOException {
+    boolean isOffline(Player player) throws DAOException {
         logger.debug(String.format("OfflineChessMessager: %s in Registry", registry.getAllPrincipals()));
         
         List<Object> principals = registry.getAllPrincipals(); 
@@ -63,23 +59,19 @@ public class OfflineChessGameMessager extends GameObserver {
                 org.springframework.security.core.userdetails.User user = 
                                 (org.springframework.security.core.userdetails.User)principal;
                 if(user.getUsername().equals(player.getUserName())){
-                    return true;
+                    return false;
                 }
             }
         }
         logger.debug(String.format("OfflineChessMessager: %s is online", player));
-        return false;
+        return true;
         
     }
     
-    private boolean doesUserNotHaveEmailAddress(Player player) throws DAOException {
+    private boolean doesUserHaveEmailAddress(Player player) throws DAOException {
         User user = getUser(player);
-        if(user.getEmailAddress() == null) {
-            logger.debug(String.format("OfflineChessMessager: %s has no email address", player.getName() ));
-            return true;
-        } else {
-            return false;
-        }
+        return user.getEmailAddress() != null;
+
     }
     
     private void handleChessGameUpdate(AbstractServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{

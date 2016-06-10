@@ -51,7 +51,7 @@ public class SaveGameStompController extends StompController {
             logger.error(de);
             logger.error("SaveGameStompController: Failed to retrieve game from database");
         }
-        String replyMessage="";
+        String replyMessage;
         logger.debug("IN STOMP SAVE METHOD");
         
         if(serverChessGame == null ){

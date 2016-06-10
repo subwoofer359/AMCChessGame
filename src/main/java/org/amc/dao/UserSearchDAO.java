@@ -26,9 +26,8 @@ public class UserSearchDAO extends DAO<User> {
             Query query = getEntityManager().createQuery(
                             "Select NEW org.amc.dao.UserDetails(x.userName, x.name) from " + getEntityClass().getSimpleName() + " x where x.userName LIKE ?1");
             query.setParameter(1, value);
-            
-            List<UserDetails> resultList = query.getResultList();
-            return resultList;
+
+            return query.getResultList();
         } catch (PersistenceException pe) {
             
             throw new DAOException(pe);

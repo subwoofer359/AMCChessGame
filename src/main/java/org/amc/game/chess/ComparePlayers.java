@@ -21,21 +21,17 @@ public final class ComparePlayers {
         }
         
         private static boolean isSameUid(Player playerOne, Player playerTwo) {
-        	if(playerOne == null || playerTwo == null) {
-        		return false;
-        	} else {
-        		return playerOne.getId() == playerTwo.getId();
-        	}
+        	return isPlayersNotNull(playerOne, playerTwo) && playerOne.getId() == playerTwo.getId();
         }
         
         private static boolean isSameName(Player playerOne, Player playerTwo) {
-        	if(playerOne == null || playerTwo == null) {
-        		return false;
-        	} else {
-        		return playerOne.getName().equals(playerTwo.getName());
-        	}
+        	return isPlayersNotNull(playerOne, playerTwo) && playerOne.getName().equals(playerTwo.getName());
         }
-        
+
+        private static boolean isPlayersNotNull(Player playerOne, Player playerTwo) {
+            return !(playerOne == null || playerTwo == null);
+        }
+
         private ComparePlayers() {
             throw new RuntimeException("Can't be instantiated");
         }

@@ -46,10 +46,10 @@ public final class ConsoleController implements Controller {
      * @author Adrian Mclaughlin
      *
      */
-    static interface UserConsole {
-        public String readLine(String fmt, Object... args);
+    interface UserConsole {
+        String readLine(String fmt, Object... args);
 
-        public String readLine();
+        String readLine();
     }
 
     /**

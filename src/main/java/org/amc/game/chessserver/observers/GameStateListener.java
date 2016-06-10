@@ -111,7 +111,7 @@ public class GameStateListener extends GameObserver {
     }
     
     private Map<String,Object> getDefaultHeaders(){
-        Map<String,Object> headers = new HashMap<String, Object>();
+        Map<String,Object> headers = new HashMap<>();
         headers.put(StompController.MESSAGE_HEADER_TYPE, MessageType.STATUS);
         return headers;
     }

@@ -40,9 +40,9 @@ public abstract class EmailTemplate {
 
     private Player otherPlayer;
     
-    private Map<String, EmbeddedMailImage> images = new HashMap<String,EmbeddedMailImage>();
+    private Map<String, EmbeddedMailImage> images = new HashMap<>();
     
-    private Map<String, Object> contextVariables = new HashMap<String,Object>();
+    private Map<String, Object> contextVariables = new HashMap<>();
     
     private String emailSubject;
     

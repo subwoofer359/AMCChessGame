@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -54,7 +53,7 @@ public class MoveUpdateEmail extends EmailTemplate {
         Player opponent = chessGame
                         .getOpposingPlayer(getServerChessGame().getPlayer(getPlayer()));
         
-        addContextVariable("player", (ChessGamePlayer)getPlayer());
+        addContextVariable("player", getPlayer());
         addContextVariable("status", getServerChessGame().getCurrentStatus().toString());
         addContextVariable("gameState", chessGame.getGameState().toString());
         addContextVariable("opponent", opponent);

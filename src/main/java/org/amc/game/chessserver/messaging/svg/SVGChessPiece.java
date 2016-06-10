@@ -18,7 +18,7 @@ public abstract class SVGChessPiece {
         String stroke;
         String fill;
 
-        private SVGColour(String fill, String stroke) {
+        SVGColour(String fill, String stroke) {
             this.stroke = stroke;
             this.fill = fill;
         }
@@ -34,20 +34,14 @@ public abstract class SVGChessPiece {
 
     /**
      * x-axis origin in the SVG chessboard
-     * 
-     * @member
      */
     static final float X = 0f;
     /**
      * y-axis origin in the SVG chessboard
-     * 
-     * @member
      */
     static final float Y = -2655f;
     /**
      * The size of the SVG squares
-     * 
-     * @member
      */
     static final float offsetXY = 62.5f;
 

@@ -25,7 +25,7 @@ public class SVGBlankChessBoard {
     }
 
     public void createBlankChessBoard(Element layer) {
-        float x = 0f, y = 0f;
+        float x, y = 0f;
         boolean whiteToggle = true;
 
         Element basicRectangle = document.createElementNS(svgNS, "rect");

@@ -27,10 +27,7 @@ public class UserNameValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> arg0) {
-		if(arg0.isAssignableFrom(String.class)) {
-			return true;
-		}
-		return false;
+		return arg0.isAssignableFrom(String.class);
 	}
 
 	@Override

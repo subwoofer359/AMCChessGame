@@ -18,7 +18,7 @@ final class CastlingRule implements ChessMoveRule{
 	private CastlingRule() {
 	}
     /**
-     * @see ChessMoveRule#applyRule(ChessGame, Move)
+     * @see ChessMoveRule#applyRule(AbstractChessGame, Move)
      */
     @Override
     public void applyRule(AbstractChessGame chessGame, Move move) {
@@ -30,8 +30,8 @@ final class CastlingRule implements ChessMoveRule{
 
     private void moveRook(ChessBoard board, Move move) {
         int rank = move.getStart().getNumber();
-        Location rookLocation = null;
-        Location rookNewLocation = null;
+        Location rookLocation;
+        Location rookNewLocation;
         if (isKingCastlingToTheRight(move)) {
             rookLocation = new Location(H, rank);
             rookNewLocation = new Location(F, rank);
@@ -50,12 +50,8 @@ final class CastlingRule implements ChessMoveRule{
 
     private boolean isCastlingMove(ChessBoard board, Move move) {
         ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
-        if (piece instanceof KingPiece) {
-            return isKingsFirstMoveTwoSquaresRightOrLeft(piece, move);
-        } else {
-            return false;
-        }
-
+        return  piece instanceof KingPiece &&
+                isKingsFirstMoveTwoSquaresRightOrLeft(piece, move);
     }
 
     private boolean isKingsFirstMoveTwoSquaresRightOrLeft(ChessPiece piece, Move move) {
@@ -64,7 +60,7 @@ final class CastlingRule implements ChessMoveRule{
     }
 
     /**
-     * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
+     * @see ChessMoveRule#isRuleApplicable(AbstractChessGame, Move)
      */
     @Override
     public boolean isRuleApplicable(AbstractChessGame game, Move move) {

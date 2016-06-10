@@ -70,8 +70,7 @@ public class ManagedDAOFactory {
         public List<T> findEntities() throws DAOException {
             setUpEntityManager();
             try {
-                List<T> entityList = dao.findEntities();
-                return entityList;
+                return dao.findEntities();
             } finally {
                 entityManager.close();
             }
@@ -80,8 +79,7 @@ public class ManagedDAOFactory {
         public List<T> findEntities(String col, Object value) throws DAOException {
             setUpEntityManager();
             try {
-                List<T> entityList = dao.findEntities(col, value);
-                return entityList;
+                return dao.findEntities(col, value);
             } finally {
                 entityManager.close();
             }
@@ -90,8 +88,7 @@ public class ManagedDAOFactory {
         public T getEntity(int id) throws DAOException {
             setUpEntityManager();
             try {
-                T entity = dao.getEntity(id);
-                return entity;
+                return dao.getEntity(id);
             } finally {
                 entityManager.close();
             }
@@ -100,8 +97,7 @@ public class ManagedDAOFactory {
         public T updateEntity(T entity) throws DAOException {
             setUpEntityManager();
             try {
-                T entityTemp = dao.updateEntity(entity);
-                return entityTemp;
+                return dao.updateEntity(entity);
             } finally {
                 entityManager.close();
             }

@@ -31,7 +31,7 @@ public interface ChessBoardSetupNotation {
         /** white knight */
         n,
         /** white pawn */
-        p;
+        p
     }
     
     /**

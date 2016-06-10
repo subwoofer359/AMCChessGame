@@ -80,13 +80,12 @@ public final class Location implements Comparable<Location> {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append('(');
-        sb.append(this.letter.name());
-        sb.append(',');
-        sb.append(this.number);
-        sb.append(')');
-        return sb.toString();
+        return "(" +
+                this.letter.name() +
+                ',' +
+                this.number +
+                ')';
+
     }
 
     @Override

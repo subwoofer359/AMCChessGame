@@ -37,8 +37,6 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 public class ChessBoardSVGFactory {
 
     private static final Logger logger = Logger.getLogger(ChessBoardSVGFactory.class);
@@ -53,6 +51,8 @@ public class ChessBoardSVGFactory {
     
     private static final String TEMP_FILE_SUFFIX = ".jpg";
 
+    private static final float KEY_QUALITY = .8f;
+
     private SVGBlankChessBoard blankChessBoardFactory;
 
     private Map<Class<? extends ChessPiece>, SVGChessPiece> sVGElementfactory;
@@ -62,11 +62,11 @@ public class ChessBoardSVGFactory {
     private Element layer;
     private String svgNS;
 
-    public ChessBoardSVGFactory() throws ParserConfigurationException {
+    public ChessBoardSVGFactory() {
         svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
     }
 
-    public ChessBoardSVGFactory(AbstractServerChessGame serverChessGame) throws ParserConfigurationException {
+    public ChessBoardSVGFactory(AbstractServerChessGame serverChessGame) {
         this();
         this.serverChessGame = serverChessGame;
 
@@ -112,9 +112,7 @@ public class ChessBoardSVGFactory {
             for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
                 for (Coordinate letter : ChessBoard.Coordinate.values()) {
                     ChessPiece piece = board.getPieceFromBoardAt(new Location(letter, i));
-                    if (piece == null) {
-
-                    } else {
+                    if (piece != null) {
                         SVGChessPiece svgFactory = sVGElementfactory.get(piece.getClass());
 
                         if (svgFactory != null) {
@@ -153,7 +151,7 @@ public class ChessBoardSVGFactory {
     
     private void generateImgFromSvg(OutputStream ostream) throws TranscoderException, IOException {
     	JPEGTranscoder t = new JPEGTranscoder();
-        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.8));
+        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, KEY_QUALITY);
     	TranscoderInput input = new TranscoderInput(document);
     	TranscoderOutput output = new TranscoderOutput(ostream);
     	t.transcode(input, output);

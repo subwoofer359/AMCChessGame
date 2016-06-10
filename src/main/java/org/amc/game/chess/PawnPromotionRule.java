@@ -25,7 +25,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
     }
 
     /**
-     * @see ChessMoveRule#applyRule(ChessGame, Move)
+     * @see ChessMoveRule#applyRule(AbstractChessGame, Move)
      */
     @Override
     public void applyRule(AbstractChessGame chessGame, Move move) {
@@ -37,7 +37,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
     }
 
     /**
-     * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
+     * @see ChessMoveRule#isRuleApplicable(AbstractChessGame, Move)
      */
     @Override
     public boolean isRuleApplicable(AbstractChessGame game, Move move) {

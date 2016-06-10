@@ -35,11 +35,8 @@ public class KnightPiece extends SimplePiece {
      */
     @Override
     boolean canMakeMove(ChessBoard board, Move move) {
-        if(board.isEndSquareEmpty(move.getEnd())){
-            return true;
-        }else{        
-            return isEndSquareOccupiedByOpponentsPiece(board, move);
-        }
+        return board.isEndSquareEmpty(move.getEnd()) ||
+            isEndSquareOccupiedByOpponentsPiece(board, move);
     }
     
     /**

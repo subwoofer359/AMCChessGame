@@ -8,5 +8,5 @@ package org.amc.game.chess;
  *
  */
 public enum Colour {
-    WHITE, BLACK;
+    WHITE, BLACK
 }

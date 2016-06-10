@@ -45,7 +45,7 @@ public class Move {
     /**
      * The distance travelled in the X direction
      * 
-     * @return Integer can be postive or negative
+     * @return Integer can be positive or negative
      */
     public Integer getDistanceX() {
         return end.getLetter().getIndex() - start.getLetter().getIndex();
@@ -54,7 +54,7 @@ public class Move {
     /**
      * The distance travelled in the Y direction
      * 
-     * @return Integer can be postive or negative
+     * @return Integer can be positive or negative
      */
     public Integer getDistanceY() {
         return end.getNumber() - start.getNumber();
@@ -63,7 +63,7 @@ public class Move {
     /**
      * The distance travelled in the X direction
      * 
-     * @return Integer is postive
+     * @return Integer is positive
      */
     public Integer getAbsoluteDistanceX() {
         return Math.abs(getDistanceX());
@@ -72,7 +72,7 @@ public class Move {
     /**
      * The distance travelled in the Y direction
      * 
-     * @return Integer is postive
+     * @return Integer is positive
      */
     public Integer getAbsoluteDistanceY() {
         return Math.abs(getDistanceY());
@@ -90,21 +90,19 @@ public class Move {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append('[');
-        sb.append(this.start);
-        sb.append("-->");
-        sb.append(this.end);
-        sb.append(']');
+        return "[" +
+                this.start +
+                "-->" +
+                this.end +
+                ']';
 
-        return sb.toString();
     }
 
     /**
      * Returns true if the movement is along a rank or file
      * 
-     * @param move
-     * @return boolean
+     * @param move {@link Move}
+     * @return boolean {@link Boolean}
      */
     public static boolean isFileOrRankMove(Move move) {
         return move.getAbsoluteDistanceX() == 0 && move.getAbsoluteDistanceY() > 0
@@ -114,8 +112,8 @@ public class Move {
     /**
      * Returns true if the movement is along a diagonal
      * 
-     * @param move
-     * @return boolean
+     * @param move {@link Move}
+     * @return boolean boolean
      */
     public static boolean isDiagonalMove(Move move) {
         return move.getAbsoluteDistanceX().equals(move.getAbsoluteDistanceY())

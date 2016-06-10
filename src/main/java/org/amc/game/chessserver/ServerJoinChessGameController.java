@@ -151,11 +151,8 @@ public class ServerJoinChessGameController {
     }
 
     private boolean joiningCurrentGame(AbstractServerChessGame chessGame, Player player) {
-        if (ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus())) {
-            return ComparePlayers.comparePlayers(player, chessGame.getOpponent());
-        } else {
-            return false;
-        }
+        return ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus()) &&
+            ComparePlayers.comparePlayers(player, chessGame.getOpponent());
     }
 
     @Resource(name = "myServerChessGameDAO")

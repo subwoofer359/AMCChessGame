@@ -171,7 +171,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
                         ServerChessGame.class);
         query.setParameter(1, player.getUserName());
         try {
-            Map<Long, ServerChessGame> games = new HashMap<Long, ServerChessGame>();
+            Map<Long, ServerChessGame> games = new HashMap<>();
             List<ServerChessGame> results = query.getResultList();
             for (ServerChessGame game : results) {
                 games.put(game.getUid(), game);

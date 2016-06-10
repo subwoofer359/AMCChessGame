@@ -33,7 +33,7 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
     /**
      * Checks the input string to see if can be parsed by this class
      * 
-     * @param setupNotation
+     * @param setupNotation {@link String}
      * @return boolean True if the string can be parsed
      */
     public boolean isInputValid(String setupNotation) {
@@ -65,7 +65,9 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
         ChessPiece piece = getChessPiece(group.substring(0, 1));
         Location location = new Location(group.substring(1, 3));
         if(group.endsWith(MOVE_TOKEN)) {
-        	piece.moved();
+            if (piece != null) {
+                piece.moved();
+            }
         }
         
         return new ChessPieceLocation(piece, location);

@@ -5,14 +5,14 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import java.util.List;
 import java.util.Set;
 
-public class PlayerInStalement {
+public class PlayerInStalemate {
     
     private final ChessGamePlayer player;
     private final ChessGamePlayer opponent;
     private final ChessBoard board;
     private final PlayerKingInCheckCondition inCheck;
     
-    public PlayerInStalement(ChessGamePlayer player,ChessGamePlayer opponent,ChessBoard board) {
+    public PlayerInStalemate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
         inCheck = PlayerKingInCheckCondition.getInstance();
         this.player=player;
         this.opponent=opponent;
@@ -28,9 +28,7 @@ public class PlayerInStalement {
             Set<Location> possibleMoveLocations=cpl.getPiece().getPossibleMoveLocations(board, cpl.getLocation());
             for(Location moveLocation:possibleMoveLocations){
                 Move move = new Move(cpl.getLocation(),moveLocation);
-                if(willPlayerBeInCheck(move)){
-                    continue;
-                }else{
+                if(willPlayerNotBeInCheck(move)){
                     return false;
                 }
             }
@@ -38,10 +36,10 @@ public class PlayerInStalement {
         return true;
     }
     
-    private boolean willPlayerBeInCheck(Move move){
+    private boolean willPlayerNotBeInCheck(Move move){
         ChessBoard testBoard=new ChessBoard(board);
         testBoard.move(move);
-        return isPlayersKingInCheck(testBoard);
+        return !isPlayersKingInCheck(testBoard);
     }
     
     boolean isPlayersKingInCheck(ChessBoard board) {

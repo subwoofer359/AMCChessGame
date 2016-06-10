@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import javax.annotation.Resource;
 
@@ -107,11 +107,11 @@ public class SignUpController {
         
     }
     
-    void addDefaultAuthorities(User user) throws DAOException {
+    void addDefaultAuthorities(User user) {
         Authorities authorities = new Authorities();
         authorities.setAuthority(DEFAULT_AUTHORITY);
         authorities.setUser(user);
-        user.setAuthorities(Arrays.asList(authorities));
+        user.setAuthorities(Collections.singletonList(authorities));
     }
     
     @Resource(name="myUserDAO")

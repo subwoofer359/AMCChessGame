@@ -18,7 +18,7 @@ final class EnPassantRule extends PawnPieceRule {
 	}
 
 	/**
-     * @see ChessMoveRule#applyRule(ChessGame, Move)
+     * @see ChessMoveRule#applyRule(AbstractChessGame, Move)
      */
     @Override
     public void applyRule(AbstractChessGame chessGame, Move move) {
@@ -46,17 +46,16 @@ final class EnPassantRule extends PawnPieceRule {
     /**
      * Checks to see if the pawn does an en passant capture move
      * 
-     * @param board
-     * @param move
+     * @param game {@link AbstractChessGame}
+     * @param move {@link Move}
      * @return true if it's a valid en passant move
      */
     boolean isEnPassantCapture(AbstractChessGame game, Move move) {
         Move opponentsMove = game.getTheLastMove();
         ChessPiece opponentsPiece = getOpponentsChessPieceThatMovedLast(game.getChessBoard(), opponentsMove);
-        if (isEndSquareNotEmpty(game.getChessBoard(), move)) {
-            return false;
-        }
-        return isPawnChessPiece(opponentsPiece) && 
+
+        return isEndSquareEmpty(game.getChessBoard(), move) &&
+                isPawnChessPiece(opponentsPiece) &&
                         opponentsMove.getAbsoluteDistanceY() == 2
                         && isMoveToSameFile(move, opponentsMove)
                         && isMoveBehindPieceToBeCaptured(opponentsPiece, move, opponentsMove);
@@ -67,8 +66,8 @@ final class EnPassantRule extends PawnPieceRule {
         return board.getPieceFromBoardAt(opponentsMove.getEnd());
     }
     
-    private boolean isEndSquareNotEmpty(ChessBoard board,Move move){
-        return !board.isEndSquareEmpty(move.getEnd());
+    private boolean isEndSquareEmpty(ChessBoard board,Move move){
+        return board.isEndSquareEmpty(move.getEnd());
     }
    
     private boolean isMoveToSameFile(Move myMove, Move lastOpposingMove) {
@@ -84,7 +83,7 @@ final class EnPassantRule extends PawnPieceRule {
     }
 
     /**
-     * @see ChessMoveRule#isRuleApplicable(ChessGame, Move)
+     * @see ChessMoveRule#isRuleApplicable(AbstractChessGame, Move)
      */
     @Override
     public boolean isRuleApplicable(AbstractChessGame game, Move move) {

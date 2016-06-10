@@ -65,14 +65,14 @@ public class JsonChessGameView extends GameObserver {
     }
     
     private Map<String,Object> getDefaultHeaders(){
-        Map<String,Object> headers = new HashMap<String, Object>();
+        Map<String,Object> headers = new HashMap<>();
         headers.put(StompController.MESSAGE_HEADER_TYPE, MessageType.UPDATE);
         return headers;
     }
     
     public static String convertChessGameToJson(ChessGame chessGame) {
         final Gson gson = new Gson();
-        return gson.toJson(new JsonChessGame((ChessGame) chessGame));        
+        return gson.toJson(new JsonChessGame(chessGame));
     }
     
     /**
@@ -92,7 +92,7 @@ public class JsonChessGameView extends GameObserver {
         
         /**
          * Stores the coordinates of squares containing chesspieces in the Map squares 
-         * @param board
+         * @param board {@link ChessBoard}
          */
         private void convertChessBoard(ChessBoard board) {
             

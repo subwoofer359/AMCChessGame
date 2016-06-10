@@ -31,7 +31,7 @@ public class ChessBoard extends DefaultSubject {
 
         private int letterIndex;
 
-        private Coordinate(int letterIndex) {
+        Coordinate(int letterIndex) {
             this.letterIndex = letterIndex;
         }
 
@@ -129,7 +129,7 @@ public class ChessBoard extends DefaultSubject {
      * Maps the Chess file coordinate number to the index of
      * <code>ChessBoard[][] board</code>
      * 
-     * @param squareRank
+     * @param squareRank {@link Integer}
      * @return
      */
     private int mapNumberCoordinate(int squareRank) {
@@ -140,7 +140,7 @@ public class ChessBoard extends DefaultSubject {
      * Removes the ChessPiece from the Board The square it occupied is set back
      * to null
      * 
-     * @param location
+     * @param location {@link Location}
      */
     void removePieceOnBoardAt(Location location) {
         this.board[location.getLetter().getIndex()][mapNumberCoordinate(location.getNumber())] = null;
@@ -150,8 +150,8 @@ public class ChessBoard extends DefaultSubject {
      * Places ChessPiece on the board at the give Location If the square is
      * already occupied the ChessPiece already on the square is replaced.
      * 
-     * @param piece
-     * @param location
+     * @param piece {@link ChessPiece}
+     * @param location {@link Location}
      */
     public void putPieceOnBoardAt(ChessPiece piece, Location location) {
         this.board[location.getLetter().getIndex()][mapNumberCoordinate(location.getNumber())] = piece;
@@ -174,8 +174,7 @@ public class ChessBoard extends DefaultSubject {
     /**
      * Returns the Chess Piece on the ChessBoard at the give Location
      * 
-     * @param location
-     *            Location
+     * @param location {@link Location}
      * @return ChessPiece
      */
     public ChessPiece getPieceFromBoardAt(Location location) {
@@ -283,9 +282,7 @@ public class ChessBoard extends DefaultSubject {
         
         @Override
         public String toString(){
-            StringBuilder sb=new StringBuilder(piece.toString());
-            sb.append(location.toString());
-            return sb.toString();
+            return piece.toString() + location.toString();
         }
     }
     

@@ -27,7 +27,7 @@ public enum StartingSquare {
     
     
     private Location location;
-    private StartingSquare(Location location){
+    StartingSquare(Location location){
         this.location=location;
     }
     

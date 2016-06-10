@@ -117,7 +117,7 @@ public class PlayerFilter implements Filter {
             }
         } catch (DAOException de) {
             logger.error(de.getMessage());
-            throw (ServletException) new ServletException().initCause(de);
+            throw (ServletException) new ServletException(de);
         }
 
     }
@@ -128,7 +128,7 @@ public class PlayerFilter implements Filter {
      * @param session
      * @param player
      */
-    private final void addLoggedPlayerToSession(HttpSession session, Player player) {
+    private final void addLoggedPlayerToSession(final HttpSession session, Player player) {
         synchronized (session) {
             session.setAttribute(SESSIONVAR_PLAYER, player);
             logger.debug("Player added to Session:" + player);

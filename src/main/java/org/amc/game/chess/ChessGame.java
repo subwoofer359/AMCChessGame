@@ -41,7 +41,7 @@ public class ChessGame extends AbstractChessGame {
         if (isOpponentsKingInCheck(player, getChessBoard())) {
             isOpponentKingInCheckMate(player);
         } else {
-            PlayerInStalement stalemate = new PlayerInStalement(getOpposingPlayer(player), player,
+            PlayerInStalemate stalemate = new PlayerInStalemate(getOpposingPlayer(player), player,
                             getChessBoard());
             if (stalemate.isStalemate()) {
                 setGameState(GameState.STALEMATE);

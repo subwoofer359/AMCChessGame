@@ -34,7 +34,7 @@ public final class MoveListExternalizer {
     
     public static List<Move> listOfMovesFromString(String movesString) {
         
-        List<Move> allMovesList = new ArrayList<Move>();
+        List<Move> allMovesList = new ArrayList<>();
         Scanner scanner = new Scanner(movesString);
         scanner.useDelimiter(":");
         while(scanner.hasNext()) {

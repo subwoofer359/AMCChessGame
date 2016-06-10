@@ -34,11 +34,8 @@ abstract class SimplePiece implements ChessPiece {
      */
     @Override
     public boolean isValidMove(ChessBoard board, Move move) {
-        if (validMovement(move)) {
-            return canMakeMove(board, move);
-        } else {
-            return false;
-        }
+        return validMovement(move) &&
+            canMakeMove(board, move);
     }
 
     /**
@@ -115,12 +112,10 @@ abstract class SimplePiece implements ChessPiece {
      */
     @Override
     public String toString(){
-        StringBuilder sb=new StringBuilder();
-        sb.append(this.getClass().getSimpleName());
-        sb.append('(');
-        sb.append(getColour());
-        sb.append(")");
-        return sb.toString();
+        return this.getClass().getSimpleName() +
+                '(' +
+                getColour() +
+                ")";
     }
 
     /**

@@ -63,7 +63,7 @@ public class GameFinishedListener extends GameObserver {
     /**
      * Checks to see if the {@link AbstractServerChessGame} is a FINISHED state
      * and schedules it for deletion if it is.
-     * @param serverChessGame
+     * @param serverChessGame {@link org.amc.game.chess.AbstractChessGame}
      */
     public void setGameToObserver(AbstractServerChessGame serverChessGame) {
         super.setGameToObserver(serverChessGame);
@@ -101,7 +101,7 @@ public class GameFinishedListener extends GameObserver {
     private static class DeleteChessGameJob implements Runnable {
 
         private SpecialSCGDAO serverChessGameDAO;
-        private AbstractServerChessGame chessGame;
+        private final AbstractServerChessGame chessGame;
 
         public DeleteChessGameJob(SpecialSCGDAO serverChessGameDAO,
                         AbstractServerChessGame chessGame) {
@@ -123,7 +123,7 @@ public class GameFinishedListener extends GameObserver {
                 logger.debug(String.format("Game(%d) has been removed from database", chessGame.getUid()));
             } else 
             {
-                logger.debug("GameFinishedLisnter:ServerChessGame is null, ignoring");
+                logger.debug("GameFinishedListener:ServerChessGame is null, ignoring");
             }
         }
 

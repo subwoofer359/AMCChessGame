@@ -17,13 +17,13 @@ public class EntityManagerCache {
     
     
     public EntityManagerCache() {
-        entityManagerMap = new ConcurrentHashMap<Long, ManagerInfo>();
+        entityManagerMap = new ConcurrentHashMap<>();
     }
     
     public EntityManager getEntityManager(Long gameUid) {
         ManagerInfo managerInfo = entityManagerMap.get(gameUid);
         
-        EntityManager manager = null;
+        EntityManager manager;
         if(managerInfo == null) {
             manager = entityManagerFactory.createEntityManager();
             entityManagerMap.putIfAbsent(gameUid, new ManagerInfo(manager));

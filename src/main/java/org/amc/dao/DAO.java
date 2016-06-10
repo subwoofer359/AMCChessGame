@@ -1,7 +1,6 @@
 package org.amc.dao;
 
 import org.amc.DAOException;
-import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -20,7 +19,7 @@ import javax.persistence.Query;
  * 
  * @author Adrian Mclaughlin
  * @version 1
- * @param <T> WorkEntity
+ * @param <T> Entity
  */
 public class DAO<T> implements DAOInterface<T> {
 
@@ -88,8 +87,7 @@ public class DAO<T> implements DAOInterface<T> {
         try {
             Query query = getEntityManager().createQuery(
                             "Select x from " + entityClass.getSimpleName() + " x", entityClass);
-            List<T> resultList = query.getResultList();
-            return resultList;
+            return query.getResultList();
         } catch (PersistenceException pe) {
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to find entities");
@@ -110,8 +108,7 @@ public class DAO<T> implements DAOInterface<T> {
                                             + " = ?1", entityClass);
             query.setParameter(1, value);
             LOG.debug(query.toString());
-            List<T> resultList = query.getResultList();
-            return resultList;
+            return query.getResultList();
         } catch (PersistenceException pe) {
             LOG.error("DAO<" + entityClass.getSimpleName()
                             + ">:Error has occurred when trying to find entities");
@@ -132,27 +129,25 @@ public class DAO<T> implements DAOInterface<T> {
                         "Select x from " + entityClass.getSimpleName() + " x where x.id = ?1", entityClass);
         try {
             query.setParameter(1, id);
-            T mp = (T) query.getSingleResult();
-            return mp;
+            return (T) query.getSingleResult();
         } catch (NoResultException nre) {
             LOG.error("DAO<"
                             + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to retrive entity. The entity should exist in the database but it doesn't");
+                            + ">:Error has occurred when trying to retrieve entity. The entity should exist in the database but it doesn't");
             throw new DAOException(nre);
         } catch (PersistenceException pe) {
             LOG.error("DAO<" + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to retrive entity");
+                            + ">:Error has occurred when trying to retrieve entity");
             throw new DAOException(pe);
         }
 
     }
 
     /**
-     * Returns a <code>Class</code> object of class <code>Player</code>
+     * Returns a <code>Class</code> object of class <code>Entity</code>
      * which this DAO object has been initialised with
      * 
      * @return Class object which this DAO is handling
-     * @see Player
      */
     @Override
     public Class<?> getEntityClass() {

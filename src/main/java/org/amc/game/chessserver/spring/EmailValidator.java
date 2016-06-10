@@ -21,10 +21,7 @@ public class EmailValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> arg0) {
-		if(String.class.equals(arg0)) {
-			return true;
-		}
-		return false;
+		return String.class.equals(arg0);
 	}
 
 	@Override

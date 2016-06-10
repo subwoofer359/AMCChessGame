@@ -78,7 +78,7 @@ public abstract class AbstractChessGame  implements Serializable {
         this.board = ChessBoard.EMPTY_CHESSBOARD;
         this.whitePlayer = null;
         this.blackPlayer = null;
-        this.currentPlayer = this.whitePlayer;
+        this.currentPlayer = null;
         chessRules = new ArrayList<>();
         allGameMoves = new ArrayList<>();
         this.gameState = GameState.NEW;
@@ -98,7 +98,7 @@ public abstract class AbstractChessGame  implements Serializable {
         this.whitePlayer = chessGame.getWhitePlayer();
         this.blackPlayer = chessGame.getBlackPlayer();
         this.currentPlayer = chessGame.getCurrentPlayer();
-        this.chessRules = new ArrayList<ChessMoveRule>(chessGame.chessRules);
+        this.chessRules = new ArrayList<>(chessGame.chessRules);
         this.allGameMoves = copyOfChessMoves(chessGame);
         this.gameState = chessGame.getGameState();
     }
@@ -157,8 +157,8 @@ public abstract class AbstractChessGame  implements Serializable {
      * Checks to see if a game rule applies to the Player's move Only applies
      * one rule per move
      * 
-     * @param board
-     * @param move
+     * @param game {@link ChessGame}
+     * @param move {@link Move}
      * @return Boolean true if a Game rule applies to the Player's move
      */
     boolean doesAGameRuleApply(ChessGame game, Move move) {
@@ -232,7 +232,7 @@ public abstract class AbstractChessGame  implements Serializable {
     }
  
     private List<Move> copyOfChessMoves(AbstractChessGame chessGame) {
-        return new ArrayList<Move>(chessGame.allGameMoves);
+        return new ArrayList<>(chessGame.allGameMoves);
     }
     
     List<ChessMoveRule> getChessMoveRules() {

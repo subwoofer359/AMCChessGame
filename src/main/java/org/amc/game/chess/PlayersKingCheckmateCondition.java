@@ -43,11 +43,7 @@ class PlayersKingCheckmateCondition {
     
     /**
      * Checks to see if the player's king is checkmated.
-     * 
-     * @param player
-     *            Player whos king ChessPiece is checkmated
-     * @param board
-     *            ChessBoard
+     *
      * @return Boolean true if checkmate has occurred
      */
     boolean isCheckMate() {
@@ -82,7 +78,7 @@ class PlayersKingCheckmateCondition {
     }
 
     private final Set<Location> getAllTheKingsPossibleMoveLocations(ChessPieceLocation kingsLocation) {
-        return ((KingPiece) kingsLocation.getPiece()).getPossibleMoveLocations(board,
+        return kingsLocation.getPiece().getPossibleMoveLocations(board,
                         kingsLocation.getLocation());
     }
     
@@ -129,11 +125,7 @@ class PlayersKingCheckmateCondition {
     /**
      * Checks to see if the Player can capture the attacking ChessPiece Only if
      * the capture doesn't lead to the King still being checked
-     * 
-     * @param player
-     *            Player
-     * @param board
-     *            ChessBoard
+     *
      * @return Boolean
      */
     boolean canAttackingPieceNotBeCaptured() {
@@ -145,9 +137,7 @@ class PlayersKingCheckmateCondition {
             ChessPiece piece = cpl.getPiece();
             Move move = new Move(cpl.getLocation(), attackingPieceLocation);
             if (piece.isValidMove(board, move)) {
-                if (willPlayerBeInCheck(move)) {
-                    continue;
-                } else {
+                if (willPlayerNotBeInCheck(move)) {
                     return false;
                 }
             }
@@ -155,10 +145,10 @@ class PlayersKingCheckmateCondition {
         return true;
     }
 
-    private final boolean willPlayerBeInCheck(Move move){
+    private final boolean willPlayerNotBeInCheck(Move move){
         ChessBoard testBoard=new ChessBoard(board);
         testBoard.move(move);
-        return isPlayersKingInCheck(testBoard);
+        return !isPlayersKingInCheck(testBoard);
     }
     
     private final boolean isThereMoreThanOneAttacker() {
@@ -167,9 +157,7 @@ class PlayersKingCheckmateCondition {
 
     /**
      * Checks to see if the attacking ChessPiece can be blocked
-     * 
-     * @param player
-     * @param board
+     *
      * @return Boolean true if the attacking ChessPiece can be blocked.
      */
     boolean canAttackingPieceNotBeBlocked() {
@@ -186,9 +174,7 @@ class PlayersKingCheckmateCondition {
                 Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
                 ChessPiece piece = cpl.getPiece();
                 if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
-                    if (willPlayerBeInCheck(blockingMove)) {
-                        continue;
-                    } else {
+                    if (willPlayerNotBeInCheck(blockingMove)) {
                         return false;
                     }
                 }
@@ -210,7 +196,8 @@ class PlayersKingCheckmateCondition {
     /**
      * Returns a Set of Squares covered in a move Not including the start and
      * end squares
-     * 
+     * @param piece {@link ChessPiece}
+     *
      * @param move
      *            Move
      * @return Set of Locations
@@ -223,8 +210,8 @@ class PlayersKingCheckmateCondition {
             int positionY = move.getStart().getNumber();
 
             for (int i = 0; i < distance - 1; i++) {
-                positionX = positionX + 1 * (int) Math.signum(move.getDistanceX());
-                positionY = positionY + 1 * (int) Math.signum(move.getDistanceY());
+                positionX = positionX + (int) Math.signum(move.getDistanceX());
+                positionY = positionY + (int) Math.signum(move.getDistanceY());
                 squares.add(new Location(Coordinate.values()[positionX], positionY));
             }
         }
@@ -233,13 +220,7 @@ class PlayersKingCheckmateCondition {
 
     /**
      * Find all opponents pieces directly attacking the king
-     * 
-     * @param player
-     *            Player
-     * @param opponent
-     *            Player
-     * @param board
-     *            ChessBoard
+     *
      * @return List of ChessPieceLocation of attacking pieces
      */
     final List<ChessPieceLocation> getAllPiecesAttackingTheKing() {

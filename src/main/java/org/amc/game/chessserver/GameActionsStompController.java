@@ -40,7 +40,7 @@ public class GameActionsStompController extends StompController {
         
     	ChessGame chessGame = getServerChessGame(gameUUID) == null ? null : getServerChessGame(gameUUID).getChessGame();
         
-        String payLoadMessage = null;
+        String payLoadMessage;
         
         MessageType messageType;
         

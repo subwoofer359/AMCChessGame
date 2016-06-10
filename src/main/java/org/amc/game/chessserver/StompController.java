@@ -67,7 +67,7 @@ public class StompController {
     }
 
     private Map<String, Object> getHeaders(MessageType type) {
-        Map<String, Object> headers = new HashMap<String, Object>();
+        Map<String, Object> headers = new HashMap<>();
         headers.put(MESSAGE_HEADER_TYPE, type);
         return headers;
     }

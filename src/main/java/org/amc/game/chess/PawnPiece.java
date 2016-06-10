@@ -91,29 +91,30 @@ public class PawnPiece extends SimplePiece {
     }
 
     private boolean endSquareIsEmpty(ChessBoard board, Move move) {
-        return board.getPieceFromBoardAt(move.getEnd()) == null;
+        return board.isEndSquareEmpty(move.getEnd());
     }
 
     /**
-     * @param board
-     * @param move
+     * @param board {@link ChessBoard}
+     * @param move {@link Move}
      * @return true if there are no other ChessPieces between the ChessPiece and
      *         the end Square
      */
     private boolean canMoveTwoSquaresForward(ChessBoard board, Move move) {
         int positionX = move.getStart().getLetter().getIndex();
         int positionY = move.getStart().getNumber();
-        positionX = positionX + 1 * (int) Math.signum(move.getDistanceX());
-        positionY = positionY + 1 * (int) Math.signum(move.getDistanceY());
+        positionX = positionX + (int) Math.signum(move.getDistanceX());
+        positionY = positionY + (int) Math.signum(move.getDistanceY());
         return board.getPieceFromBoardAt(positionX, positionY) == null;
     }
 
     private boolean canCapture(ChessBoard board, Move move) {
-        if (board.isEndSquareEmpty(move.getEnd())) {
-            return false;
-        } else {
-            return isEndSquareOccupiedByOpponentsPiece(board, move);
-        }
+        return  isEndSquareNotEmpty(board, move) &&
+                isEndSquareOccupiedByOpponentsPiece(board, move);
+    }
+
+    private boolean isEndSquareNotEmpty(ChessBoard board, Move move) {
+        return !board.isEndSquareEmpty(move.getEnd());
     }
 
     /**
