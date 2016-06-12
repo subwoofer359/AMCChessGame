@@ -28,7 +28,7 @@ public class UnmodifibleChessBoardTest {
 	
 	@Test
 	public void testPutPieceOnBoardAt() {
-		board.putPieceOnBoardAt(new PawnPiece(Colour.BLACK),  new Location("A4"));
+		board.putPieceOnBoardAt(PawnPiece.getPawnPiece(Colour.BLACK),  new Location("A4"));
 		ChessBoardUtilities.compareBoards(board, chessBoard);
 	}
 	

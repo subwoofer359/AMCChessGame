@@ -162,7 +162,7 @@ public class ChessBoardView implements Observer {
             index = 3;
         } else if (piece.getClass().equals(RookPiece.class)) {
             index = 4;
-        } else if (piece.getClass().equals(PawnPiece.class)) {
+        } else if (piece instanceof PawnPiece) {
             index = 5;
         }
 

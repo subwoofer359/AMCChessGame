@@ -48,7 +48,7 @@ public class EnPassantTest {
 
     @Test
     public void testIsNotEnPassantCapture() {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
+        PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         BishopPiece blackBishop = new BishopPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(Coordinate.E, 5);
         Location blackPawnStartPosition = new Location(Coordinate.F, 7);
@@ -65,8 +65,8 @@ public class EnPassantTest {
 
     @Test
     public void testIsNotEnPassantCaptureMoveLessTwo() {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(Coordinate.E, 5);
         Location blackPawnStartPosition = new Location(Coordinate.F, 7);
         Location blackPawnEndPosition = new Location(Coordinate.F, 6);
@@ -82,8 +82,8 @@ public class EnPassantTest {
 
     @Test
     public void testIsNotEnPassantCaptureAfterTwoSquareMove() {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(Coordinate.E, 5);
         Location blackPawnStartPosition = new Location(Coordinate.F, 7);
         Location blackPawnEndPosition = new Location(Coordinate.F, 5);
@@ -99,8 +99,8 @@ public class EnPassantTest {
 
     @Test
     public void testIsNotEnPassantCaptureAfterTwoSeparateSquareMove() {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(Coordinate.E, 5);
         Location blackPawnStartPosition = new Location(Coordinate.F, 6);
         Location blackPawnEndPosition = new Location(Coordinate.F, 5);
@@ -116,8 +116,8 @@ public class EnPassantTest {
 
     @Test
     public void TestWhiteEnPassantCapture() throws IllegalMoveException {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(E, 5);
         Location whitePawnEndPosition = new Location(F, 6);
         Location blackPawnStartPosition = new Location(F, 7);
@@ -131,14 +131,14 @@ public class EnPassantTest {
         chessGame.allGameMoves.add(blackMove);
 
         enPassantRule.applyRule(chessGame, whiteEnPassantMove);
-        assertTrue(board.getPieceFromBoardAt(whitePawnEndPosition).equals(whitePawn));
+        assertTrue(board.getPieceFromBoardAt(whitePawnEndPosition).equals(whitePawn.moved()));
         assertNull(board.getPieceFromBoardAt(blackPawnEndPosition));
     }
 
     @Test
     public void TestBlackEnPassantCapture() throws IllegalMoveException {
-        PawnPiece whitePawn = new PawnPiece(Colour.WHITE);
-        PawnPiece blackPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(F, 2);
         Location whitePawnEndPosition = new Location(F, 4);
         Location blackPawnStartPosition = new Location(G, 4);
@@ -152,7 +152,7 @@ public class EnPassantTest {
         chessGame.allGameMoves.add(whiteMove);
 
         enPassantRule.applyRule(chessGame, blackEnPassantMove);
-        assertTrue(board.getPieceFromBoardAt(blackPawnEndPosition).equals(blackPawn));
+        assertTrue(board.getPieceFromBoardAt(blackPawnEndPosition).equals(blackPawn.moved()));
         assertNull(board.getPieceFromBoardAt(whitePawnEndPosition));
     }
 

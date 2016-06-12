@@ -2,7 +2,7 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -68,7 +68,7 @@ class ChessGamePromotePawnTest {
     public void testPromotionToPawnNotAllowed() {
         assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         Location promotionLocation = new Location("a8");
-        ChessPiece pieceToBePromotedTo = new PawnPiece(playerWhite.colour);
+        ChessPiece pieceToBePromotedTo = PawnPiece.getPawnPiece(playerWhite.colour);
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail("Promotion to king shouldn't be allowed");

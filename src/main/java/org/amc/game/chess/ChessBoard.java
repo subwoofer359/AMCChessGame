@@ -120,9 +120,7 @@ public class ChessBoard extends DefaultSubject {
     void quietMove(Move move) {
         ChessPiece piece = getPieceFromBoardAt(move.getStart());
         removePieceOnBoardAt(move.getStart());
-        putPieceOnBoardAt(piece, move.getEnd());
-        piece.moved();
-        
+        putPieceOnBoardAt(piece.moved(), move.getEnd());
     }
 
     /**

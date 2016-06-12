@@ -45,9 +45,9 @@ public class PawnIsPromotedTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { new PawnPiece(Colour.BLACK), new Move("A2-A1") },
-                { new PawnPiece(Colour.BLACK), new Move("H2-H1") },
-                { new PawnPiece(Colour.WHITE), new Move("A7-A8") } });
+                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A2-A1") },
+                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("H2-H1") },
+                { PawnPiece.getPawnPiece(Colour.WHITE), new Move("A7-A8") } });
 
     }
 

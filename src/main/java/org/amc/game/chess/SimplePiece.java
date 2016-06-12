@@ -19,6 +19,12 @@ abstract class SimplePiece implements ChessPiece {
         this.colour = colour;
     }
 
+
+    public SimplePiece(Colour colour, boolean hasMoved) {
+        this.colour = colour;
+        this.hasMoved = hasMoved;
+    }
+
     /**
      * @see ChessPiece#getColour()
      */
@@ -59,15 +65,6 @@ abstract class SimplePiece implements ChessPiece {
     abstract boolean canMakeMove(ChessBoard board, Move move);
 
     /**
-     * @see ChessPiece#moved()
-     */
-    @Override
-    public void moved() {
-        this.hasMoved = true;
-
-    }
-
-    /**
      * @see ChessPiece#hasMoved()
      */
     @Override
@@ -86,7 +83,7 @@ abstract class SimplePiece implements ChessPiece {
         ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getIndex(),
                         endSquare.getNumber());
         return !piece.getColour().equals(getColour());
-         
+
     }
     
     /**
@@ -116,6 +113,12 @@ abstract class SimplePiece implements ChessPiece {
                 '(' +
                 getColour() +
                 ")";
+    }
+
+    @Override
+    public ChessPiece moved() {
+        hasMoved = true;
+        return this;
     }
 
     /**

@@ -66,7 +66,7 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
         Location location = new Location(group.substring(1, 3));
         if(group.endsWith(MOVE_TOKEN)) {
             if (piece != null) {
-                piece.moved();
+                piece = piece.moved();
             }
         }
         
@@ -97,9 +97,9 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
         case n:
             return new KnightPiece(Colour.WHITE);
         case P:
-            return new PawnPiece(Colour.BLACK);
+            return PawnPiece.getPawnPiece(Colour.BLACK);
         case p:
-            return new PawnPiece(Colour.WHITE);
+            return PawnPiece.getPawnPiece(Colour.WHITE);
         default:
             return null;
         }

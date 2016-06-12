@@ -7,7 +7,7 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.ChessGame.GameState;
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;

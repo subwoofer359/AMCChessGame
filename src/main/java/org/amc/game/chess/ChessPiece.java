@@ -29,7 +29,7 @@ public interface ChessPiece {
     /**
      * Sets the move state of the ChessPiece
      */
-    void moved();
+    ChessPiece moved();
 
     /**
      * Checks if the ChessPiece has moved since the start of the game

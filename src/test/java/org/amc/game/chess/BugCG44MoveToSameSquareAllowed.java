@@ -70,13 +70,13 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Test
     public void testBlackPawnNoneMove() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
         assertFalse(pawn.isValidMove(board, moves.get("blackPawn")));
     }
     
     @Test
     public void testWhitePawnNoneMove() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
         assertFalse(pawn.isValidMove(board, moves.get("whitePawn")));
     }
     

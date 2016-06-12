@@ -60,7 +60,7 @@ public class ChessGameMoveKingInCheck {
 
     @Test(expected = IllegalMoveException.class)
     public void testCaptureIntoCheck() throws IllegalMoveException {
-        ChessPiece pawn = new PawnPiece(Colour.BLACK);
+        ChessPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
         board.putPieceOnBoardAt(pawn, defendingChessPieceMove.getEnd());
         ChessPiece kingPiece = board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);

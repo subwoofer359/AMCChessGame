@@ -41,7 +41,7 @@ public class PawnPieceTest {
 
     @Test
     public void testOnEmptyBoardIsValidWhiteMove() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
 
         assertTrue(pawn.isValidMove(board, new Move(testWhiteStartPosition, new Location(
@@ -53,7 +53,7 @@ public class PawnPieceTest {
 
     @Test
     public void testOnEmptyBoardIsValidBlackMove() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
 
         assertTrue(pawn.isValidMove(board, new Move(testBlackStartPosition, new Location(
@@ -65,7 +65,7 @@ public class PawnPieceTest {
 
     @Test
     public void testOnEmptyBoardIsNotValidWhiteMove() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
 
         for (Location endLocation : invalidWhiteMovesFromF2) {
@@ -76,7 +76,7 @@ public class PawnPieceTest {
 
     @Test
     public void testOnEmptyBoardIsNotValidBlackMove() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
         board.putPieceOnBoardAt(pawn, testBlackStartPosition);
 
         for (Location endLocation : invalidBlackMovesFromF7) {
@@ -87,8 +87,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnEmptyBoardIsNotValidNonIntialWhiteMove() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
-        pawn.moved();
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        pawn = (PawnPiece)pawn.moved();
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
         Location endLocation = new Location(Coordinate.F, 4);
         assertFalse(pawn.isValidMove(board, new Move(testWhiteStartPosition, endLocation)));
@@ -96,7 +96,7 @@ public class PawnPieceTest {
 
     @Test
     public void testOnEmptyBoardIsNotValidNonIntialBlackMove() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
         pawn.moved();
         board.putPieceOnBoardAt(pawn, testBlackStartPosition);
         Location endLocation = new Location(Coordinate.F, 4);
@@ -105,8 +105,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnBoardIsValidWhiteCapture() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
-        PawnPiece enemyPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location captureLocationOne = new Location(Coordinate.E, 3);
         Location captureLocationTwo = new Location(Coordinate.G, 3);
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
@@ -118,8 +118,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnBoardIsValidBlackCapture() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
-        PawnPiece enemyPawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.WHITE);
         Location captureLocationOne = new Location(Coordinate.E, 6);
         Location captureLocationTwo = new Location(Coordinate.G, 6);
         board.putPieceOnBoardAt(pawn, testBlackStartPosition);
@@ -131,8 +131,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnBoardInvalidWhiteCapture() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
-        PawnPiece enemyPawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.WHITE);
         Location captureLocationOne = new Location(Coordinate.E, 3);
         Location captureLocationTwo = new Location(Coordinate.G, 3);
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
@@ -143,8 +143,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnBoardInvalidBlackCapture() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
-        PawnPiece enemyPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         Location captureLocationOne = new Location(Coordinate.E, 6);
         Location captureLocationTwo = new Location(Coordinate.G, 6);
         board.putPieceOnBoardAt(pawn, testBlackStartPosition);
@@ -155,8 +155,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnBoardIsNotValidBlackMove() {
-        PawnPiece pawn = new PawnPiece(Colour.BLACK);
-        PawnPiece enemyPawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.WHITE);
         board.putPieceOnBoardAt(pawn, testBlackStartPosition);
         Location endLocationOne = new Location(Coordinate.F, 6);
         Location endLocationTwo = new Location(Coordinate.F, 5);
@@ -169,8 +169,8 @@ public class PawnPieceTest {
 
     @Test
     public void testOnBoardIsNotValidWhiteMove() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
-        PawnPiece enemyPawn = new PawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
         Location endLocationOne = new Location(Coordinate.F, 3);
         Location endLocationTwo = new Location(Coordinate.F, 4);
@@ -183,12 +183,12 @@ public class PawnPieceTest {
 
     @Test
     public void testCanSlide() {
-        assertTrue(new PawnPiece(Colour.BLACK).canSlide());
+        assertTrue(PawnPiece.getPawnPiece(Colour.BLACK).canSlide());
     }
 
     @Test
     public void testIsMovingForwardOneSquareOnly() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
         pawn.moved();
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
         Location endLocationOne = new Location(Coordinate.F, 3);
@@ -197,7 +197,7 @@ public class PawnPieceTest {
 
     @Test
     public void testMoveBackOneSquare() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
         pawn.moved();
         board.putPieceOnBoardAt(pawn, testWhiteStartPosition);
         Location endLocationOne = new Location(Coordinate.F, 1);
@@ -206,7 +206,7 @@ public class PawnPieceTest {
 
     @Test
     public void testMoveNoSquare() {
-        PawnPiece pawn = new PawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
         Location startLocation = new Location(Coordinate.F, 3);
         board.putPieceOnBoardAt(pawn, startLocation);
         Location endLocationOne = new Location(Coordinate.F, 3);
