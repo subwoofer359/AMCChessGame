@@ -40,22 +40,6 @@ public class BishopPiece extends ComplexPiece {
         return Move.isDiagonalMove(move);
     }
 
-    /**
-     * @see ChessPiece#canSlide()
-     */
-    @Override
-    public boolean canSlide() {
-        return true;
-    }
-
-    /**
-     * @see ChessPiece#copy()
-     */
-    @Override
-    public ChessPiece copy() {
-        return this;
-    }
-
     @Override
     public ChessPiece moved() {
         if(Colour.WHITE == getColour()) {

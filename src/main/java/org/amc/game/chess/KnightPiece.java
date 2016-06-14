@@ -57,18 +57,13 @@ public class KnightPiece extends SimplePiece {
     
     /**
      * @see ChessPiece#canSlide()
+     * 
+     * @return false ChessPiece doesn't slide but moves over pieces to
+     * it's end square
      */
     @Override
     public boolean canSlide() {
         return false;
-    }
-    
-    /**
-     * @see ChessPiece#copy()
-     */
-    @Override
-    public ChessPiece copy() {
-        return this;
     }
 
     @Override

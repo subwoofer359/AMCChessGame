@@ -155,5 +155,18 @@ abstract class SimplePiece implements ChessPiece {
     boolean isEndSquareEmpty(ChessBoard board, Move move) {
         return board.isEndSquareEmpty(move.getEnd());
     }
-    
+
+    /**
+     * Default property is for the ChessPiece to slide
+     * @return true so ChessPiece can slide
+     */
+    @Override
+    public boolean canSlide() {
+        return true;
+    }
+
+    @Override
+    public ChessPiece copy() {
+        return this;
+    }
 }

@@ -131,25 +131,6 @@ public class PawnPiece extends SimplePiece {
         return !board.isEndSquareEmpty(move.getEnd());
     }
 
-    /**
-     * @see ChessPiece#canSlide()
-     */
-    @Override
-    public boolean canSlide() {
-        return true;
-    }
-
-    /**
-     * @see ChessPiece#copy()
-     * Since PawnPiece is immutable
-     *
-     * @return ChessPiece which is a reference to this PawnPiece
-     */
-    @Override
-    public ChessPiece copy() {
-        return this;
-    }
-
     @Override
     public ChessPiece moved() {
         if(Colour.WHITE == getColour()) {

@@ -39,22 +39,6 @@ public class RookPiece extends ComplexPiece {
     boolean validMovement(Move move) {
         return Move.isFileOrRankMove(move);
     }
-    
-    /**
-     * @see ChessPiece#canSlide()
-     */
-    @Override
-    public boolean canSlide() {
-        return true;
-    }
-    
-    /**
-     * @see ChessPiece#copy()
-     */
-    @Override
-    public ChessPiece copy() {
-        return this;
-    }
 
     @Override
     public ChessPiece moved() {
