@@ -39,7 +39,7 @@ public class IsKingInCheckTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { new BishopPiece(Colour.BLACK), new Location(A, 5) },
+                { BishopPiece.getBishopPiece(Colour.BLACK), new Location(A, 5) },
                 { PawnPiece.getPawnPiece(Colour.BLACK), new Location(F, 2) },
                 { new KnightPiece(Colour.BLACK), new Location(D, 3) } });
 

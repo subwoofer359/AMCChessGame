@@ -49,7 +49,7 @@ public class EnPassantTest {
     @Test
     public void testIsNotEnPassantCapture() {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
-        BishopPiece blackBishop = new BishopPiece(Colour.BLACK);
+        BishopPiece blackBishop = BishopPiece.getBishopPiece(Colour.BLACK);
         Location whitePawnStartPosition = new Location(Coordinate.E, 5);
         Location blackPawnStartPosition = new Location(Coordinate.F, 7);
         Location blackPawnEndPosition = new Location(Coordinate.F, 5);
@@ -158,7 +158,7 @@ public class EnPassantTest {
 
     @Test
     public void notMoveEnPassantCapture() {
-        BishopPiece bishop = new BishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
         Location startSquare = new Location(A, 2);
         Location endSquare = new Location(B, 3);
         Move move = new Move(startSquare, endSquare);

@@ -22,7 +22,7 @@ public class ChessPieceCanCopy {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] { { new RookPiece(Colour.WHITE) },
-                { new BishopPiece(Colour.BLACK) }, { new QueenPiece(Colour.WHITE) },
+                { BishopPiece.getBishopPiece(Colour.BLACK) }, { new QueenPiece(Colour.WHITE) },
                 { KingPiece.getKingPiece(Colour.BLACK) }, { new KnightPiece(Colour.WHITE) },
                 { PawnPiece.getPawnPiece(Colour.BLACK) } });
 

@@ -10,8 +10,26 @@ package org.amc.game.chess;
  *
  */
 public class BishopPiece extends ComplexPiece {
-    public BishopPiece(Colour colour) {
+
+    private static final BishopPiece BISHOP_WHITE = new BishopPiece(Colour.WHITE);
+    private static final BishopPiece BISHOP_BLACK = new BishopPiece(Colour.BLACK);
+    private static final BishopPiece BISHOP_WHITE_MOVED = new BishopPiece(Colour.WHITE, true);
+    private static final BishopPiece BISHOP_BLACK_MOVED = new BishopPiece(Colour.BLACK, true);
+
+    private BishopPiece(Colour colour) {
         super(colour);
+    }
+
+    private BishopPiece(Colour colour, boolean hasMoved) {
+        super(colour, hasMoved);
+    }
+
+    public static BishopPiece getBishopPiece(Colour colour) {
+        if (colour == Colour.WHITE) {
+            return BISHOP_WHITE;
+        } else {
+            return BISHOP_BLACK;
+        }
     }
 
     /**
@@ -35,12 +53,15 @@ public class BishopPiece extends ComplexPiece {
      */
     @Override
     public ChessPiece copy() {
-        BishopPiece piece=new BishopPiece(this.getColour());
-        if(this.hasMoved()){
-            piece.moved();
-        }
-        return piece;
+        return this;
     }
 
-    
+    @Override
+    public ChessPiece moved() {
+        if(Colour.WHITE == getColour()) {
+            return BISHOP_WHITE_MOVED;
+        } else {
+            return BISHOP_BLACK_MOVED;
+        }
+    }
 }

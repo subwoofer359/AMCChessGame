@@ -82,13 +82,13 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Test
     public void testBlackBishopNoneMove() {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         assertFalse(bishop.isValidMove(board, moves.get("blackBishop")));
     }
     
     @Test
     public void testWhiteBishopNoneMove() {
-        BishopPiece bishop = new BishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
         assertFalse(bishop.isValidMove(board, moves.get("whiteBishop")));
     }
     

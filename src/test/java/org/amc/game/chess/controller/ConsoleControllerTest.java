@@ -44,7 +44,7 @@ public class ConsoleControllerTest {
         startLocation = new Location(Coordinate.A, 1);
         endLocation = new Location(Coordinate.B, 2);
         
-        piece = new BishopPiece(Colour.BLACK);
+        piece = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(piece, startLocation);
     }
 
@@ -56,7 +56,7 @@ public class ConsoleControllerTest {
         controller.setConsole(userInput);
 
         controller.takeTurn();
-        assertEquals(piece, board.getPieceFromBoardAt(endLocation));
+        assertEquals(piece.moved(), board.getPieceFromBoardAt(endLocation));
         assertNull(board.getPieceFromBoardAt(startLocation));
     }
 

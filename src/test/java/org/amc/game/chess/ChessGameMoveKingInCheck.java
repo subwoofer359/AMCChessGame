@@ -33,7 +33,7 @@ public class ChessGameMoveKingInCheck {
     public void setUp() throws Exception {
         board = new ChessBoard();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-        attackingPiece = new BishopPiece(Colour.BLACK);
+        attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());

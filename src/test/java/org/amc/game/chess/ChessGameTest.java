@@ -50,17 +50,17 @@ public class ChessGameTest {
 
     @Test(expected = IllegalMoveException.class)
     public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
-        BishopPiece bishop = new BishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
         chessGameFixture.putPieceOnBoardAt(bishop, startLocation);
         chessGameFixture.move(chessGameFixture.getBlackPlayer(), new Move(startLocation, new Location(B, 7)));
     }
 
     @Test
     public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
-        BishopPiece bishop = new BishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
         chessGameFixture.putPieceOnBoardAt(bishop, startLocation);
         chessGameFixture.move(chessGameFixture.getWhitePlayer(), new Move(startLocation, endLocation));
-        assertEquals(bishop, chessGameFixture.getPieceFromBoardAt(endLocation));
+        assertEquals(bishop.moved(), chessGameFixture.getPieceFromBoardAt(endLocation));
         assertNull(chessGameFixture.getPieceFromBoardAt(startLocation));
     }
 
@@ -93,7 +93,7 @@ public class ChessGameTest {
     
     @Test
     public void testMovesAreSaved() throws IllegalMoveException {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         chessGameFixture.putPieceOnBoardAt(bishop, startLocation);
         Move move = new Move(startLocation, endLocation);
         chessGameFixture.changePlayer();

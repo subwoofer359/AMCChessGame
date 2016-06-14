@@ -98,7 +98,7 @@ public class CastlingTest {
 
     @Test
     public void testNotLeftRook() {
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE),
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE),
                         whiteLeftRookStartPosition);
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingLeftLocation)));
@@ -106,7 +106,7 @@ public class CastlingTest {
 
     @Test
     public void testNotRightRook() {
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE),
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE),
                         whiteRightRookStartPosition);
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingRightLocation)));
@@ -114,10 +114,10 @@ public class CastlingTest {
 
     @Test
     public void testSquareBetweenKingAndRightRookNotEmpty() {
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(F, 1));
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location(F, 1));
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingRightLocation)));
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), castlingKingRightLocation);
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), castlingKingRightLocation);
         chessGameFixture.removePieceOnBoardAt(new Location(F, 1));
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingRightLocation)));
@@ -125,15 +125,15 @@ public class CastlingTest {
 
     @Test
     public void testSquareBetweenKingAndLeftRookNotEmpty() {
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(B, 1));
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location(B, 1));
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingLeftLocation)));
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), castlingKingLeftLocation);
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), castlingKingLeftLocation);
         chessGameFixture.removePieceOnBoardAt(new Location(B, 1));
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingLeftLocation)));
         chessGameFixture.removePieceOnBoardAt(castlingKingLeftLocation);
-        chessGameFixture.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location(D, 1));
+        chessGameFixture.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location(D, 1));
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingLeftLocation)));
     }

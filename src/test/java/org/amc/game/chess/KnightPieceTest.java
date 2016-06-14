@@ -61,7 +61,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardIsValidCapture() {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
-            board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), validLocationsFromD4[i]);
+            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), validLocationsFromD4[i]);
         }
         KnightPiece knight = new KnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight, testStartPosition);
@@ -75,7 +75,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardInvalidCapture() {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
-            board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), validLocationsFromD4[i]);
+            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), validLocationsFromD4[i]);
         }
         KnightPiece knight = new KnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight, testStartPosition);

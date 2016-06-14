@@ -29,9 +29,9 @@ public class IsKingNotInCheckTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { new BishopPiece(Colour.BLACK), new Location(A, 2) },
+                { BishopPiece.getBishopPiece(Colour.BLACK), new Location(A, 2) },
                 { PawnPiece.getPawnPiece(Colour.BLACK), new Location(E, 2) },
-                { new BishopPiece(Colour.WHITE), new Location(A, 2) } });
+                { BishopPiece.getBishopPiece(Colour.WHITE), new Location(A, 2) } });
 
     }
 

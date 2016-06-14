@@ -28,7 +28,7 @@ public class BishopPieceTest extends ChessPieceTest {
     @Override
     @Test
     public void testOnEmptyBoardIsValidMove() {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, this.testStartPosition);
 
         for (Location endPosition : ValidMovements.getListOfDiagonalLocationsFromD5()) {
@@ -47,7 +47,7 @@ public class BishopPieceTest extends ChessPieceTest {
     @Override
     @Test
     public void testOnEmptyBoardIsNotValidMove() throws Exception {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
 
         board.putPieceOnBoardAt(bishop, new Location("F8"));
         boolean isValid = bishop.isValidMove(this.board, new Move("D4-G7"));
@@ -67,13 +67,13 @@ public class BishopPieceTest extends ChessPieceTest {
     @Override
     @Test
     public void testOnBoardIsValidCapture() throws ParseException {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, this.testStartPosition);
 
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location("A8"));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location("G8"));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location("A2"));
-        board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), new Location("H1"));
+        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("A8"));
+        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("G8"));
+        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("A2"));
+        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("H1"));
 
         for (Location endPosition : ValidMovements.getListOfDiagonalLocationsFromD5()) {
             System.out.println(endPosition);
@@ -90,11 +90,11 @@ public class BishopPieceTest extends ChessPieceTest {
     @Override
     @Test
     public void testOnBoardInvalidCapture() {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, this.testStartPosition);
 
         for (Location endPosition : ValidMovements.getListOfDiagonalLocationsFromD5()) {
-            board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), endPosition);
+            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
             assertFalse(bishop.isValidMove(board, new Move(testStartPosition, endPosition)));
         }
     }
@@ -107,8 +107,8 @@ public class BishopPieceTest extends ChessPieceTest {
     @Override
     @Test
     public void testOnBoardIsNotValidMove() throws ParseException {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
-        BishopPiece bishopWhite = new BishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
+        BishopPiece bishopWhite = BishopPiece.getBishopPiece(Colour.WHITE);
         board.putPieceOnBoardAt(bishop, new Location("F8"));
         board.putPieceOnBoardAt(bishopWhite, new Location("D6"));
 
@@ -119,7 +119,7 @@ public class BishopPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testCanSlide() {
-        BishopPiece bishop = new BishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         assertTrue(bishop.canSlide());
     }
 }

@@ -35,7 +35,7 @@ public class ChessGameMoveKingOutOfCheck {
         ChessGameFactory factory = new StandardChessGameFactory();
         chessGame = factory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
-        attackingPiece = new BishopPiece(Colour.BLACK);
+        attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
@@ -55,7 +55,7 @@ public class ChessGameMoveKingOutOfCheck {
     public void kingMovesOutOfCheckTest() throws IllegalMoveException {
         ChessPiece kingPiece = board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
-        assertEquals(kingPiece, board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));
+        assertEquals(kingPiece.moved(), board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));
         assertNull(board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
     }
 }

@@ -65,7 +65,7 @@ public class RookPieceTest extends ChessPieceTest {
         board.putPieceOnBoardAt(rook, testStartPosition);
 
         for (Location endPosition : validCaptureLocations) {
-            board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), endPosition);
+            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), endPosition);
             assertTrue(rook.isValidMove(board, new Move(testStartPosition, endPosition)));
         }
 
@@ -84,7 +84,7 @@ public class RookPieceTest extends ChessPieceTest {
         board.putPieceOnBoardAt(rook, testStartPosition);
 
         for (Location endPosition : validCaptureLocations) {
-            board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), endPosition);
+            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
             assertFalse(rook.isValidMove(board, new Move(testStartPosition, endPosition)));
         }
 
@@ -106,7 +106,7 @@ public class RookPieceTest extends ChessPieceTest {
         blockingPiecesPosition.add(new Location("B5"));
 
         for (Location endPosition : blockingPiecesPosition) {
-            board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), endPosition);
+            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
         }
 
         RookPiece rook = new RookPiece(Colour.BLACK);

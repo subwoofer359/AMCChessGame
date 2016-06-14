@@ -14,6 +14,10 @@ public abstract class ComplexPiece extends SimplePiece {
         super(colour);
     }
 
+    public ComplexPiece(Colour colour, boolean hasMoved) {
+        super(colour, hasMoved);
+    }
+
     /**
      * @see SimplePiece#canMakeMove(ChessBoard, Move)
      */
