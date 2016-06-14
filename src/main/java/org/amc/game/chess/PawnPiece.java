@@ -1,8 +1,5 @@
 package org.amc.game.chess;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Represents a Pawn in a game of Chess
  * <p>
@@ -15,21 +12,15 @@ import java.util.Set;
  * @author Adrian Mclaughlin
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  */
-public class PawnPiece implements ChessPiece {
+public class PawnPiece extends SimplePiece {
 
     private static final PawnPiece PAWN_BLACK = new PawnPiece(Colour.BLACK);
     private static final PawnPiece PAWN_WHITE = new PawnPiece(Colour.WHITE);
     private static final PawnPiece PAWN_BLACK_MOVED = new PawnPiece(Colour.BLACK, true);
     private static final PawnPiece PAWN_WHITE_MOVED = new  PawnPiece(Colour.WHITE, true);
 
-
-    private final Colour colour;
-    private final boolean hasMoved;
-
-
     private PawnPiece(Colour colour, boolean hasMoved) {
-        this.colour = colour;
-        this.hasMoved = hasMoved;
+        super(colour, hasMoved);
     }
 
     private PawnPiece(Colour colour) {
@@ -47,6 +38,7 @@ public class PawnPiece implements ChessPiece {
     /**
      * @see SimplePiece#validMovement(Move)
      */
+    @Override
     boolean validMovement(Move move) {
         if (move.getAbsoluteDistanceX() == 0) {
             if (pieceHasNotMoved()) {
@@ -100,21 +92,21 @@ public class PawnPiece implements ChessPiece {
      *
      * @see SimplePiece#canMakeMove(ChessBoard, Move)
      */
+    @Override
     boolean canMakeMove(ChessBoard board, Move move) {
         if (Move.isFileOrRankMove(move)) {
             if (move.getAbsoluteDistanceY() == 2) {
-                return endSquareIsEmpty(board, move) && canMoveTwoSquaresForward(board, move);
+                return isEndSquareEmpty(board, move)
+                        && canMoveTwoSquaresForward(board, move);
             } else {
-                return endSquareIsEmpty(board, move);
+                return isEndSquareEmpty(board, move);
             }
         } else {
             return canCapture(board, move);
         }
     }
 
-    private boolean endSquareIsEmpty(ChessBoard board, Move move) {
-        return board.isEndSquareEmpty(move.getEnd());
-    }
+
 
     /**
      * @param board {@link ChessBoard}
@@ -149,14 +141,13 @@ public class PawnPiece implements ChessPiece {
 
     /**
      * @see ChessPiece#copy()
+     * Since PawnPiece is immutable
+     *
+     * @return ChessPiece which is a reference to this PawnPiece
      */
     @Override
     public ChessPiece copy() {
-        PawnPiece piece = getPawnPiece(this.getColour());
-        if (this.hasMoved()) {
-            return piece.moved();
-        }
-        return piece;
+        return this;
     }
 
     @Override
@@ -167,71 +158,4 @@ public class PawnPiece implements ChessPiece {
             return PAWN_BLACK_MOVED;
         }
     }
-
-    @Override
-    public boolean isValidMove(ChessBoard board, Move move) {
-        return validMovement(move) &&
-                canMakeMove(board, move);
-    }
-
-    @Override
-    public Colour getColour() {
-        return colour;
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    /**
-     * Checks to see if the opposing Player's ChessPiece is in the end Square
-     *
-     * @param board
-     * @param move
-     * @return true if there is an opposing Player's ChessPiece in the end Square
-     */
-    boolean isEndSquareOccupiedByOpponentsPiece(ChessBoard board, Move move) {
-        Location endSquare = move.getEnd();
-        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getIndex(),
-                endSquare.getNumber());
-        return !piece.getColour().equals(getColour());
-
-    }
-
-    @Override
-    public Set<Location> getPossibleMoveLocations(ChessBoard board, Location location) {
-        Set<Location> locations = new HashSet<>();
-        for (ChessBoard.Coordinate coord : ChessBoard.Coordinate.values()) {
-            for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
-                Location moveLocation = new Location(coord, i);
-                Move move = new Move(location, moveLocation);
-                if (isValidMove(board, move) && !moveLocation.equals(location)) {
-                    locations.add(moveLocation);
-                }
-            }
-        }
-        return locations;
-    }
-
-    /**
-     * @see Object#equals(Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PawnPiece other = (PawnPiece) obj;
-        if (colour != other.colour)
-            return false;
-        if (hasMoved != other.hasMoved)
-            return false;
-        return true;
-    }
-
-
 }
