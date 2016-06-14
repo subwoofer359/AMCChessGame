@@ -25,14 +25,28 @@ public class EntityManagerCache {
         
         EntityManager manager;
         if(managerInfo == null) {
-            manager = entityManagerFactory.createEntityManager();
-            entityManagerMap.putIfAbsent(gameUid, new ManagerInfo(manager));
+            manager = createEntityManager(gameUid, managerInfo);
         } else {
-            manager = entityManagerMap.get(gameUid).getEntityManager();
-            if (!manager.isOpen()) {
-                manager = entityManagerFactory.createEntityManager();
-                entityManagerMap.replace(gameUid, new ManagerInfo(manager));
-            }
+            manager = getEntityManagerCreateNewIfClosed(gameUid);
+        }
+        return manager;
+    }
+
+    private EntityManager createEntityManager(long gameUid, ManagerInfo managerInfo) {
+        EntityManager manager = entityManagerFactory.createEntityManager();
+        ManagerInfo returnInfo = entityManagerMap.putIfAbsent(gameUid, new ManagerInfo(manager));
+        if(returnInfo != managerInfo) {
+            manager.close();
+            manager = returnInfo.getEntityManager();
+        }
+        return manager;
+    }
+
+    private EntityManager getEntityManagerCreateNewIfClosed(Long gameUid) {
+        EntityManager manager = entityManagerMap.get(gameUid).getEntityManager();
+        if (!manager.isOpen()) {
+            manager = entityManagerFactory.createEntityManager();
+            entityManagerMap.replace(gameUid, new ManagerInfo(manager));
         }
         return manager;
     }
@@ -67,7 +81,7 @@ public class EntityManagerCache {
         this.entityManagerFactory = emFactory;
     }
     
-    private static class ManagerInfo {
+    static class ManagerInfo {
         EntityManager entityManager;
         private Calendar lastUsedDate;
         

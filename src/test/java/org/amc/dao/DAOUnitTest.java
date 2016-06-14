@@ -61,11 +61,7 @@ public class DAOUnitTest {
             };
         };
     }
-
-    /**
-     * The factory in EntityManagerThreadLocal has to be restored to it's concrete value 
-     * so not to interfere with other tests
-     */
+    
     @After
     public void tearDown() throws Exception {
         reset(transaction);

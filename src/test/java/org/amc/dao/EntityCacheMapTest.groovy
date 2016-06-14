@@ -1,4 +1,6 @@
-package org.amc.dao;
+package org.amc.dao
+
+import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -23,7 +25,10 @@ class EntityCacheMapTest {
     
     @Mock
     EntityManager newEm;
-    
+
+    @Mock
+    ConcurrentMap<Long, EntityManagerCache.ManagerInfo> entityManagerMap;
+
     static final Long GAME_UID = 1234L;
     
     @Before
@@ -112,4 +117,19 @@ class EntityCacheMapTest {
         assert emc.isEmpty() == false;
     }
 
+
+    @Test
+    void getEntityManagerWhenValueAlreadyInMap() {
+        emc.entityManagerMap = entityManagerMap;
+
+        EntityManagerCache.ManagerInfo info = new EntityManagerCache.ManagerInfo(em);
+
+        when(factory.createEntityManager()).thenReturn(newEm);
+        when(entityManagerMap.putIfAbsent(eq(GAME_UID), any())).thenReturn(info);
+
+        EntityManager entityManager = this.emc.getEntityManager(GAME_UID);
+
+        assert entityManager == em;
+
+    }
 }
