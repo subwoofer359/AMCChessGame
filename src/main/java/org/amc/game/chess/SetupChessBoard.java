@@ -13,8 +13,8 @@ public final class SetupChessBoard {
         board.putPieceOnBoardAt(QueenPiece.getQueenPiece(Colour.WHITE), WHITE_QUEEN.getLocation());
         board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.WHITE), WHITE_KNIGHT_LEFT.getLocation());
         board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.WHITE), WHITE_KNIGHT_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_LEFT.getLocation());
-        board.putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_RIGHT.getLocation());
+        board.putPieceOnBoardAt(RookPiece.getRookPiece(Colour.WHITE), WHITE_ROOK_LEFT.getLocation());
+        board.putPieceOnBoardAt(RookPiece.getRookPiece(Colour.WHITE), WHITE_ROOK_RIGHT.getLocation());
         for (Coordinate coord : Coordinate.values()) {
             board.putPieceOnBoardAt(PawnPiece.getPawnPiece(Colour.WHITE), new Location(coord, 2));
         }
@@ -24,8 +24,8 @@ public final class SetupChessBoard {
         board.putPieceOnBoardAt(QueenPiece.getQueenPiece(Colour.BLACK), BLACK_QUEEN.getLocation());
         board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.BLACK), BLACK_KNIGHT_LEFT.getLocation());
         board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.BLACK), BLACK_KNIGHT_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_LEFT.getLocation());
-        board.putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_RIGHT.getLocation());
+        board.putPieceOnBoardAt(RookPiece.getRookPiece(Colour.BLACK), BLACK_ROOK_LEFT.getLocation());
+        board.putPieceOnBoardAt(RookPiece.getRookPiece(Colour.BLACK), BLACK_ROOK_RIGHT.getLocation());
         for (Coordinate coord : Coordinate.values()) {
             board.putPieceOnBoardAt(PawnPiece.getPawnPiece(Colour.BLACK), new Location(coord, 7));
         }

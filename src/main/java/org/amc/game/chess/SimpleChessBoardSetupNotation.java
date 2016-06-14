@@ -89,9 +89,9 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
         case b:
             return BishopPiece.getBishopPiece(Colour.WHITE);
         case R:
-            return new RookPiece(Colour.BLACK);
+            return RookPiece.getRookPiece(Colour.BLACK);
         case r:
-            return new RookPiece(Colour.WHITE);
+            return RookPiece.getRookPiece(Colour.WHITE);
         case N:
             return KnightPiece.getKnightPiece(Colour.BLACK);
         case n:

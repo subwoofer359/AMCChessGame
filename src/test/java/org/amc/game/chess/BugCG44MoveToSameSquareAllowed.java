@@ -118,13 +118,13 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Test
     public void testBlackRookNoneMove() {
-        RookPiece rook = new RookPiece(Colour.BLACK);
+        RookPiece rook = RookPiece.getRookPiece(Colour.BLACK);
         assertFalse(rook.isValidMove(board, moves.get("blackRook")));
     }
     
     @Test
     public void testWhiteRookNoneMove() {
-        RookPiece rook = new RookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         assertFalse(rook.isValidMove(board, moves.get("whiteRook")));
     }
 

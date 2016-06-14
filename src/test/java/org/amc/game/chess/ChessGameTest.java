@@ -66,7 +66,7 @@ public class ChessGameTest {
 
     @Test
     public void doesGameRuleApply() {
-        RookPiece rook = new RookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         Location rookStartPosition = new Location(H, 1);
         Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(G, 1));
         chessGameFixture.putPieceOnBoardAt(rook, rookStartPosition);
@@ -75,7 +75,7 @@ public class ChessGameTest {
 
     @Test
     public void doesNotGameRuleApply() {
-        RookPiece rook = new RookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         Location rookStartPosition = new Location(H, 1);
         Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
         chessGameFixture.putPieceOnBoardAt(rook, rookStartPosition);
@@ -84,7 +84,7 @@ public class ChessGameTest {
 
     @Test
     public void gameRuleApplied() throws IllegalMoveException {
-        RookPiece rook = new RookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         Location rookStartPosition = new Location(H, 1);
         Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
         chessGameFixture.putPieceOnBoardAt(rook, rookStartPosition);

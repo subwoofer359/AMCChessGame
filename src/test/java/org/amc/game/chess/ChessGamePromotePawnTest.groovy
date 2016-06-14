@@ -43,7 +43,7 @@ class ChessGamePromotePawnTest {
     public void test() {
         assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         Location promotionLocation = new Location("a8");
-        ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
+        ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerWhite.colour);
         pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
         assertIsARook(promotionLocation);
         assert chessGame.getGameState() == GameState.RUNNING;
@@ -81,7 +81,7 @@ class ChessGamePromotePawnTest {
     @Test
     public void testPromotionPawnNotInEndRank() {
         Location promotionLocation = new Location("b7");
-        ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
+        ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerWhite.colour);
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
@@ -95,7 +95,7 @@ class ChessGamePromotePawnTest {
     @Test
     public void testPromotionOfNotPawn() {
         Location promotionLocation = new Location("g8");
-        ChessPiece pieceToBePromotedTo = new RookPiece(playerWhite.colour);
+        ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerWhite.colour);
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
@@ -109,7 +109,7 @@ class ChessGamePromotePawnTest {
     @Test
     public void testPromotionOfPawnWithADifferentColour() {
         Location promotionLocation = new Location("a8");
-        ChessPiece pieceToBePromotedTo = new RookPiece(playerBlack.colour);
+        ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerBlack.colour);
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
@@ -123,7 +123,7 @@ class ChessGamePromotePawnTest {
     @Test
     public void testPromotionOfAnEmptySquare() {
         Location promotionLocation = new Location("a3");
-        ChessPiece pieceToBePromotedTo = new RookPiece(playerBlack.colour);
+        ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerBlack.colour);
         assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == null;
         
         try {

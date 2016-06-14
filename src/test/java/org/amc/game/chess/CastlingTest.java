@@ -33,8 +33,8 @@ public class CastlingTest {
         gameRule = CastlingRule.getInstance();
         whiteKing = KingPiece.getKingPiece(Colour.WHITE);
         blackKing = KingPiece.getKingPiece(Colour.BLACK);
-        whiteLeftRook = new RookPiece(Colour.WHITE);
-        whiteRightRook = new RookPiece(Colour.WHITE);
+        whiteLeftRook = RookPiece.getRookPiece(Colour.WHITE);
+        whiteRightRook = RookPiece.getRookPiece(Colour.WHITE);
         whiteKingStartPosition = WHITE_KING.getLocation();
         whiteLeftRookStartPosition = WHITE_ROOK_LEFT.getLocation();
         whiteRightRookStartPosition = WHITE_ROOK_RIGHT.getLocation();
@@ -143,7 +143,7 @@ public class CastlingTest {
         Move whiteKingCastleMove = new Move(whiteKingStartPosition, castlingKingRightLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
         ChessPiece piece = chessGameFixture.getPieceFromBoardAt(new Location(F, 1));
-        assertEquals(piece, whiteRightRook);
+        assertEquals(piece, whiteRightRook.moved());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class CastlingTest {
         Move whiteKingCastleMove = new Move(whiteKingStartPosition, castlingKingLeftLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
         ChessPiece piece = chessGameFixture.getPieceFromBoardAt(new Location(D, 1));
-        assertEquals(piece, whiteLeftRook);
+        assertEquals(piece, whiteLeftRook.moved());
     }
 
     @Test

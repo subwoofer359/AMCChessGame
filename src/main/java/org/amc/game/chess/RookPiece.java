@@ -10,8 +10,26 @@ package org.amc.game.chess;
  */
 public class RookPiece extends ComplexPiece {
 
-    public RookPiece(Colour colour) {
+    private static final RookPiece ROOK_WHITE = new RookPiece(Colour.WHITE);
+    private static final RookPiece ROOK_BLACK  = new RookPiece(Colour.BLACK);
+    private static final RookPiece ROOK_WHITE_MOVED  = new RookPiece(Colour.WHITE, true);
+    private static final RookPiece ROOK_BLACK_MOVED  = new RookPiece(Colour.BLACK, true);
+
+
+    public static RookPiece getRookPiece(Colour colour) {
+        if(Colour.WHITE == colour) {
+            return ROOK_WHITE;
+        } else {
+            return ROOK_BLACK;
+        }
+    }
+
+    private RookPiece(Colour colour) {
         super(colour);
+    }
+
+    private RookPiece(Colour colour, boolean hasMoved) {
+        super(colour, hasMoved);
     }
 
     /**
@@ -35,10 +53,15 @@ public class RookPiece extends ComplexPiece {
      */
     @Override
     public ChessPiece copy() {
-        RookPiece piece=new RookPiece(this.getColour());
-        if(this.hasMoved()){
-            piece.moved();
+        return this;
+    }
+
+    @Override
+    public ChessPiece moved() {
+        if(Colour.WHITE == getColour()) {
+            return ROOK_WHITE_MOVED;
+        } else {
+            return ROOK_BLACK_MOVED;
         }
-        return piece;
     }
 }
