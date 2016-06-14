@@ -77,9 +77,9 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
 
         switch (ChessPieceNotation.valueOf(chessPieceStr)) {
         case K:
-            return new KingPiece(Colour.BLACK);
+            return KingPiece.getKingPiece(Colour.BLACK);
         case k:
-            return new KingPiece(Colour.WHITE);
+            return KingPiece.getKingPiece(Colour.WHITE);
         case Q:
             return new QueenPiece(Colour.BLACK);
         case q:

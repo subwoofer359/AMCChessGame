@@ -151,7 +151,9 @@ abstract class SimplePiece implements ChessPiece {
             return false;
         return true;
     }
-    
-    
+
+    boolean isEndSquareEmpty(ChessBoard board, Move move) {
+        return board.isEndSquareEmpty(move.getEnd());
+    }
     
 }

@@ -31,8 +31,8 @@ public class CastlingTest {
         chessGame = chessGameFixture.getChessGame();
 
         gameRule = CastlingRule.getInstance();
-        whiteKing = new KingPiece(Colour.WHITE);
-        blackKing = new KingPiece(Colour.BLACK);
+        whiteKing = KingPiece.getKingPiece(Colour.WHITE);
+        blackKing = KingPiece.getKingPiece(Colour.BLACK);
         whiteLeftRook = new RookPiece(Colour.WHITE);
         whiteRightRook = new RookPiece(Colour.WHITE);
         whiteKingStartPosition = WHITE_KING.getLocation();
@@ -63,21 +63,21 @@ public class CastlingTest {
 
     @Test
     public void testKingMovedCastlingNotAllowed() {
-        whiteKing.moved();
+        chessGameFixture.putPieceOnBoardAt(whiteKing.moved(), whiteKingStartPosition);
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testRightRookMovedCastlingNotAllowed() {
-        whiteRightRook.moved();
+        chessGameFixture.putPieceOnBoardAt(whiteKing.moved(), whiteKingStartPosition);
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testLeftRookMovedCastlingNotAllowed() {
-        whiteLeftRook.moved();
+        chessGameFixture.putPieceOnBoardAt(whiteKing.moved(), whiteKingStartPosition);
         assertFalse(gameRule.isRuleApplicable(chessGame, new Move(whiteKingStartPosition,
                         castlingKingLeftLocation)));
     }
@@ -155,18 +155,18 @@ public class CastlingTest {
     }
 
     @Test
-    public void testKingMovesLefttoCastlePosition() throws IllegalMoveException {
+    public void testKingMovesRighttoCastlePosition() throws IllegalMoveException {
         Move whiteKingCastleMove = new Move(whiteKingStartPosition, castlingKingRightLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
         ChessPiece piece = chessGameFixture.getPieceFromBoardAt(castlingKingRightLocation);
-        assertEquals(piece, whiteKing);
+        assertEquals(piece, whiteKing.moved());
     }
 
     @Test
-    public void testKingMovesRighttoCastlePosition() throws IllegalMoveException {
+    public void testKingMovesLefttoCastlePosition() throws IllegalMoveException {
         Move whiteKingCastleMove = new Move(whiteKingStartPosition, castlingKingLeftLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
         ChessPiece piece = chessGameFixture.getPieceFromBoardAt(castlingKingLeftLocation);
-        assertEquals(piece, whiteKing);
+        assertEquals(piece, whiteKing.moved());
     }
 }

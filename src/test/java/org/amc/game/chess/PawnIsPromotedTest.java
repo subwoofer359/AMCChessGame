@@ -33,9 +33,9 @@ public class PawnIsPromotedTest {
         chessGame = new StandardChessGameFactory().getChessGame(new ChessBoard(), 
                         whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         this.promotion = PawnPromotionRule.getInstance();
         

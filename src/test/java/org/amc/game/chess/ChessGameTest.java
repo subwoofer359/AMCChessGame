@@ -22,9 +22,9 @@ public class ChessGameTest {
     @Before
     public void setUp() throws Exception {
         chessGameFixture = new ChessGameFixture();
-        chessGameFixture.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
+        chessGameFixture.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        chessGameFixture.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+        chessGameFixture.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         startLocation = new Location(A, 8);
         endLocation = new Location(B, 7);

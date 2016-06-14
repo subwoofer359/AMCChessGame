@@ -44,8 +44,8 @@ public class IsKingNotInCheckTest {
     @Test
     public void testKingIsNotChecked() {
         ChessBoard board = new ChessBoard();
-        ChessPiece whiteKing = new KingPiece(Colour.WHITE);
-        ChessPiece blackKing = new KingPiece(Colour.BLACK);
+        ChessPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
+        ChessPiece blackKing = KingPiece.getKingPiece(Colour.BLACK);
         board.putPieceOnBoardAt(whiteKing, StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(blackKing, StartingSquare.BLACK_KING.getLocation());
         board.putPieceOnBoardAt(attackingChessPiece, attackingChessPieceLocation);

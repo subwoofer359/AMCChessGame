@@ -54,7 +54,7 @@ class ChessGamePromotePawnTest {
     public void testPromotionToKingNotAllowed() {
         assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         Location promotionLocation = new Location("a8");
-        ChessPiece pieceToBePromotedTo = new KingPiece(playerWhite.colour);
+        ChessPiece pieceToBePromotedTo = KingPiece.getKingPiece(playerWhite.colour);
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail("Promotion to king shouldn't be allowed");

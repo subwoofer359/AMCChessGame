@@ -94,13 +94,13 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Test
     public void testBlackKingNoneMove() {
-        KingPiece king = new KingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
         assertFalse(king.isValidMove(board, moves.get("blackKing")));
     }
     
     @Test
     public void testWhiteKingNoneMove() {
-        KingPiece king = new KingPiece(Colour.WHITE);
+        KingPiece king = KingPiece.getKingPiece(Colour.WHITE);
         assertFalse(king.isValidMove(board, moves.get("whiteKing")));
     }
     

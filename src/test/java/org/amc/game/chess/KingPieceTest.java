@@ -26,7 +26,7 @@ public class KingPieceTest {
 
     @Test
     public void testIsValidMoveOnEmptyBoard() {
-        KingPiece king = new KingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
         board.putPieceOnBoardAt(king, new Location(F, 7));
         assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(F, 8))));
         assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(F, 6))));
@@ -41,7 +41,7 @@ public class KingPieceTest {
 
     @Test
     public void testIsNotValidMoveOnEmptyBoard() {
-        KingPiece king = new KingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
         board.putPieceOnBoardAt(king, new Location(F, 7));
         assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(A, 8))));
         assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(B, 6))));
@@ -60,9 +60,9 @@ public class KingPieceTest {
 
     @Test
     public void testIsValidMoveOnBoard() {
-        KingPiece king = new KingPiece(Colour.BLACK);
-        KingPiece kingWhite = new KingPiece(Colour.WHITE);
-        KingPiece anotherBlackKing = new KingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
+        KingPiece kingWhite = KingPiece.getKingPiece(Colour.WHITE);
+        KingPiece anotherBlackKing = KingPiece.getKingPiece(Colour.BLACK);
         board.putPieceOnBoardAt(king, new Location(F, 7));
         board.putPieceOnBoardAt(kingWhite, new Location(E, 7));
         board.putPieceOnBoardAt(anotherBlackKing, new Location(G, 7));
@@ -79,7 +79,7 @@ public class KingPieceTest {
 
     @Test
     public void testGetPossibleMoveLocations() {
-        KingPiece whiteKing = new KingPiece(Colour.WHITE);
+        KingPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
         board.putPieceOnBoardAt(whiteKing, StartingSquare.WHITE_KING.getLocation());
         Set<Location> expectedMoveLocations = new HashSet<>();
         expectedMoveLocations.add(new Location(D, 1));
@@ -96,6 +96,6 @@ public class KingPieceTest {
 
     @Test
     public void testCanSlisde() {
-        assertTrue(new KingPiece(Colour.BLACK).canSlide());
+        assertTrue(KingPiece.getKingPiece(Colour.BLACK).canSlide());
     }
 }

@@ -39,11 +39,11 @@ public class ChessGameCastlingKingInCheck {
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         attackingPiece = new BishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(attackingPiece, new Location(E, 3));
-        kingPiece = new KingPiece(Colour.WHITE);
+        kingPiece = KingPiece.getKingPiece(Colour.WHITE);
         rookPiece = new RookPiece(Colour.WHITE);
         board.putPieceOnBoardAt(kingPiece, StartingSquare.WHITE_KING.getLocation());
         board.putPieceOnBoardAt(rookPiece, StartingSquare.WHITE_ROOK_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
     }
 

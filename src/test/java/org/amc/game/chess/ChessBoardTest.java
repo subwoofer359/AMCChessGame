@@ -72,7 +72,7 @@ public class ChessBoardTest {
                 ChessPiece clonedPiece = clone.getPieceFromBoardAt(location);
                 if (piece instanceof ChessPiece) {
                     //assertFalse(piece == clonedPiece);
-                    assertTrue(piece.equals(clonedPiece));
+                    assertTrue("The two pieces should be the same", piece.equals(clonedPiece));
                 } else {
                     assertNull(piece);
                     assertNull(clonedPiece);
@@ -85,8 +85,10 @@ public class ChessBoardTest {
     @Test
     public void CloneConstuctorPieceMovedCopyTest() {
         board.initialise();
-        board.getPieceFromBoardAt(StartingSquare.BLACK_KING.getLocation()).moved();
-        board.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()).moved();
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK).moved(),
+                StartingSquare.BLACK_KING.getLocation());
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE).moved(),
+                StartingSquare.WHITE_KING.getLocation());
         ChessBoard clone = new ChessBoard(board);
         assertTrue(clone.getPieceFromBoardAt(StartingSquare.BLACK_KING.getLocation()).hasMoved());
         assertTrue(clone.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()).hasMoved());

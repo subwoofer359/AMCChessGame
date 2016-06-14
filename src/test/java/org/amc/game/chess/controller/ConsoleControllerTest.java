@@ -37,9 +37,9 @@ public class ConsoleControllerTest {
         player2 = new RealChessGamePlayer(new HumanPlayer("Test2"), Colour.WHITE);
         game = new StandardChessGameFactory().getChessGame(new ChessBoard(), player1, player2);
         board = game.getChessBoard();
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         startLocation = new Location(Coordinate.A, 1);
         endLocation = new Location(Coordinate.B, 2);

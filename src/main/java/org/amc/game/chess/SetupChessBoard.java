@@ -9,7 +9,7 @@ public final class SetupChessBoard {
     public static void setUpChessBoardToDefault(ChessBoard board) {
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_LEFT.getLocation());
         board.putPieceOnBoardAt(new BishopPiece(Colour.WHITE), WHITE_BISHOP_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE), WHITE_KING.getLocation());
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE), WHITE_KING.getLocation());
         board.putPieceOnBoardAt(new QueenPiece(Colour.WHITE), WHITE_QUEEN.getLocation());
         board.putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_LEFT.getLocation());
         board.putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_RIGHT.getLocation());
@@ -20,7 +20,7 @@ public final class SetupChessBoard {
         }
         board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_LEFT.getLocation());
         board.putPieceOnBoardAt(new BishopPiece(Colour.BLACK), BLACK_BISHOP_RIGHT.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK), BLACK_KING.getLocation());
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK), BLACK_KING.getLocation());
         board.putPieceOnBoardAt(new QueenPiece(Colour.BLACK), BLACK_QUEEN.getLocation());
         board.putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_LEFT.getLocation());
         board.putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_RIGHT.getLocation());

@@ -35,9 +35,9 @@ public class ChessGameMoveKingInCheck {
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         attackingPiece = new BishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
-        board.putPieceOnBoardAt(new KingPiece(Colour.WHITE),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(new KingPiece(Colour.BLACK),
+        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
     }
 

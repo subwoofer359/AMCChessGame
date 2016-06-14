@@ -23,7 +23,7 @@ public class ChessPieceCanCopy {
 
         return Arrays.asList(new Object[][] { { new RookPiece(Colour.WHITE) },
                 { new BishopPiece(Colour.BLACK) }, { new QueenPiece(Colour.WHITE) },
-                { new KingPiece(Colour.BLACK) }, { new KnightPiece(Colour.WHITE) },
+                { KingPiece.getKingPiece(Colour.BLACK) }, { new KnightPiece(Colour.WHITE) },
                 { PawnPiece.getPawnPiece(Colour.BLACK) } });
 
     }

@@ -11,8 +11,25 @@ package org.amc.game.chess;
  */
 public class KingPiece extends SimplePiece {
 
-    public KingPiece(Colour colour) {
+    private static final KingPiece KING_WHITE = new KingPiece(Colour.WHITE);
+    private static final KingPiece KING_BLACK = new KingPiece(Colour.BLACK);
+    private static final KingPiece KING_WHITE_MOVED = new KingPiece(Colour.WHITE, true);
+    private static final KingPiece KING_BLACK_MOVED = new KingPiece(Colour.BLACK, true);
+
+    private KingPiece(Colour colour) {
         super(colour);
+    }
+
+    private KingPiece(Colour colour, boolean hasMoved) {
+        super(colour, hasMoved);
+    }
+
+    public static KingPiece getKingPiece(Colour colour) {
+        if(Colour.WHITE == colour) {
+            return KING_WHITE;
+        } else {
+            return KING_BLACK;
+        }
     }
 
     /**
@@ -50,10 +67,15 @@ public class KingPiece extends SimplePiece {
      */
     @Override
     public ChessPiece copy() {
-        KingPiece piece=new KingPiece(this.getColour());
-        if(this.hasMoved()){
-            piece.moved();
+        return this;
+    }
+
+    @Override
+    public ChessPiece moved() {
+        if(Colour.WHITE == getColour()) {
+            return KING_WHITE_MOVED;
+        } else {
+            return KING_BLACK_MOVED;
         }
-        return piece;
     }
 }
