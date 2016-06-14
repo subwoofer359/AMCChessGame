@@ -13,14 +13,16 @@ import java.util.Set;
  */
 abstract class SimplePiece implements ChessPiece {
     private final Colour colour;
-    private boolean hasMoved = false;
+    private final boolean hasMoved;
 
-    public SimplePiece(Colour colour) {
+    SimplePiece(Colour colour) {
+
         this.colour = colour;
+        this.hasMoved = false;
     }
 
 
-    public SimplePiece(Colour colour, boolean hasMoved) {
+    SimplePiece(Colour colour, boolean hasMoved) {
         this.colour = colour;
         this.hasMoved = hasMoved;
     }
@@ -47,7 +49,7 @@ abstract class SimplePiece implements ChessPiece {
     /**
      * Checks to see if the move is a valid move for the chess piece
      * 
-     * @param move
+     * @param move {@link Move}
      * @return boolean true if the move is allowed
      */
     abstract boolean validMovement(Move move);
@@ -57,8 +59,8 @@ abstract class SimplePiece implements ChessPiece {
      * in the way of the move and if there is a ChessPiece in the end Square of
      * the move
      * 
-     * @param board
-     * @param move
+     * @param board {@link ChessBoard}
+     * @param move {@link Move}
      *            Move can be a move or a capture
      * @return true if the move can be made
      */
@@ -74,8 +76,8 @@ abstract class SimplePiece implements ChessPiece {
     
     /**
      * Checks to see if the opposing Player's ChessPiece is in the end Square
-     * @param board
-     * @param move
+     * @param board {@link ChessBoard}
+     * @param move {@link Move}
      * @return true if there is an opposing Player's ChessPiece in the end Square
      */
     boolean isEndSquareOccupiedByOpponentsPiece(ChessBoard board, Move move) {
@@ -115,12 +117,6 @@ abstract class SimplePiece implements ChessPiece {
                 ")";
     }
 
-    @Override
-    public ChessPiece moved() {
-        hasMoved = true;
-        return this;
-    }
-
     /**
      * @see Object#hashCode()
      */
@@ -152,14 +148,6 @@ abstract class SimplePiece implements ChessPiece {
         return true;
     }
 
-    boolean isEndSquareEmpty(ChessBoard board, Move move) {
-        return board.isEndSquareEmpty(move.getEnd());
-    }
-
-    /**
-     * Default property is for the ChessPiece to slide
-     * @return true so ChessPiece can slide
-     */
     @Override
     public boolean canSlide() {
         return true;
@@ -168,5 +156,16 @@ abstract class SimplePiece implements ChessPiece {
     @Override
     public ChessPiece copy() {
         return this;
+
     }
+
+    boolean isEndSquareEmpty(ChessBoard board, Move move) {
+        return board.isEndSquareEmpty(move.getEnd());
+    }
+
+    /**
+     * Default property is for the ChessPiece to slide
+     * @return true so ChessPiece can slide
+     */
+
 }

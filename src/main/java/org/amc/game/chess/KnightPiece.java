@@ -15,7 +15,7 @@ package org.amc.game.chess;
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  *
  */
-public class KnightPiece extends SimplePiece {
+public final class KnightPiece extends SimplePiece {
 
     private static final KnightPiece KNIGHT_WHITE = new KnightPiece(Colour.WHITE);
     private static final KnightPiece KNIGHT_BLACK = new KnightPiece(Colour.BLACK);
@@ -57,7 +57,7 @@ public class KnightPiece extends SimplePiece {
     
     /**
      * @see ChessPiece#canSlide()
-     * 
+     *
      * @return false ChessPiece doesn't slide but moves over pieces to
      * it's end square
      */

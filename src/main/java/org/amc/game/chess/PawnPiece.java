@@ -12,7 +12,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  */
-public class PawnPiece extends SimplePiece {
+public final class PawnPiece extends SimplePiece {
 
     private static final PawnPiece PAWN_BLACK = new PawnPiece(Colour.BLACK);
     private static final PawnPiece PAWN_WHITE = new PawnPiece(Colour.WHITE);

@@ -8,7 +8,7 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  */
-public class RookPiece extends ComplexPiece {
+public final class RookPiece extends ComplexPiece {
 
     private static final RookPiece ROOK_WHITE = new RookPiece(Colour.WHITE);
     private static final RookPiece ROOK_BLACK  = new RookPiece(Colour.BLACK);

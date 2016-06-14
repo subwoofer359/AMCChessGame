@@ -9,7 +9,7 @@ package org.amc.game.chess;
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  * 
  */
-public class KingPiece extends SimplePiece {
+public final class KingPiece extends SimplePiece {
 
     private static final KingPiece KING_WHITE = new KingPiece(Colour.WHITE);
     private static final KingPiece KING_BLACK = new KingPiece(Colour.BLACK);

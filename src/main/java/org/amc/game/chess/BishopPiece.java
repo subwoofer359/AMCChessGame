@@ -9,7 +9,7 @@ package org.amc.game.chess;
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  *
  */
-public class BishopPiece extends ComplexPiece {
+public final class BishopPiece extends ComplexPiece {
 
     private static final BishopPiece BISHOP_WHITE = new BishopPiece(Colour.WHITE);
     private static final BishopPiece BISHOP_BLACK = new BishopPiece(Colour.BLACK);

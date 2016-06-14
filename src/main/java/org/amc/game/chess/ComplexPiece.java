@@ -8,13 +8,13 @@ package org.amc.game.chess;
  * @author Adrian Mclaughlin
  *
  */
-public abstract class ComplexPiece extends SimplePiece {
+abstract class ComplexPiece extends SimplePiece {
 
-    public ComplexPiece(Colour colour) {
+    ComplexPiece(Colour colour) {
         super(colour);
     }
 
-    public ComplexPiece(Colour colour, boolean hasMoved) {
+    ComplexPiece(Colour colour, boolean hasMoved) {
         super(colour, hasMoved);
     }
 

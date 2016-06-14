@@ -8,7 +8,7 @@ package org.amc.game.chess;
  * @see <a href="http://en.wikipedia.org/wiki/Chess">Chess</a>
  *
  */
-public class QueenPiece extends ComplexPiece {
+public final class QueenPiece extends ComplexPiece {
 
     private static final QueenPiece QUEEN_WHITE = new QueenPiece(Colour.WHITE);
     private static final QueenPiece QUEEN_BLACK = new QueenPiece(Colour.BLACK);
