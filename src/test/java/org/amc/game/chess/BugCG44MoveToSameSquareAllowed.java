@@ -58,13 +58,13 @@ public class BugCG44MoveToSameSquareAllowed {
 
     @Test
     public void testBlackQueenNoneMove() {
-        QueenPiece queen = new QueenPiece(Colour.BLACK);
+        QueenPiece queen = QueenPiece.getQueenPiece(Colour.BLACK);
         assertFalse(queen.isValidMove(board, moves.get("blackQueen")));
     }
     
     @Test
     public void testWhiteQueenNoneMove() {
-        QueenPiece queen = new QueenPiece(Colour.WHITE);
+        QueenPiece queen = QueenPiece.getQueenPiece(Colour.WHITE);
         assertFalse(queen.isValidMove(board, moves.get("whiteQueen")));
     }
     
@@ -106,13 +106,13 @@ public class BugCG44MoveToSameSquareAllowed {
     
     @Test
     public void testBlackKnightNoneMove() {
-        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
         assertFalse(knight.isValidMove(board, moves.get("blackKnight")));
     }
     
     @Test
     public void testWhiteKnightNoneMove() {
-        KnightPiece knight = new KnightPiece(Colour.WHITE);
+        KnightPiece knight = KnightPiece.getKnightPiece(Colour.WHITE);
         assertFalse(knight.isValidMove(board, moves.get("whiteKnight")));
     }
     

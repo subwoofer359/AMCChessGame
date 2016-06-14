@@ -41,7 +41,7 @@ public class IsKingInCheckTest {
         return Arrays.asList(new Object[][] {
                 { BishopPiece.getBishopPiece(Colour.BLACK), new Location(A, 5) },
                 { PawnPiece.getPawnPiece(Colour.BLACK), new Location(F, 2) },
-                { new KnightPiece(Colour.BLACK), new Location(D, 3) } });
+                { KnightPiece.getKnightPiece(Colour.BLACK), new Location(D, 3) } });
 
     }
 

@@ -10,9 +10,25 @@ package org.amc.game.chess;
  */
 public class QueenPiece extends ComplexPiece {
 
-    public QueenPiece(Colour colour) {
+    private static final QueenPiece QUEEN_WHITE = new QueenPiece(Colour.WHITE);
+    private static final QueenPiece QUEEN_BLACK = new QueenPiece(Colour.BLACK);
+    private static final QueenPiece QUEEN_WHITE_MOVED = new QueenPiece(Colour.WHITE, true);
+    private static final QueenPiece QUEEN_BLACK_MOVED = new QueenPiece(Colour.BLACK, true);
+
+    public static QueenPiece getQueenPiece(Colour colour) {
+        if(Colour.WHITE == colour) {
+            return QUEEN_WHITE;
+        } else {
+            return QUEEN_BLACK;
+        }
+    }
+
+    private QueenPiece(Colour colour) {
         super(colour);
-        // TODO Auto-generated constructor stub
+    }
+
+    private QueenPiece(Colour colour, boolean hasMoved) {
+        super(colour, hasMoved);
     }
 
     /**
@@ -36,10 +52,15 @@ public class QueenPiece extends ComplexPiece {
      */
     @Override
     public ChessPiece copy() {
-        QueenPiece piece = new QueenPiece(this.getColour());
-        if (this.hasMoved()) {
-            piece.moved();
+        return this;
+    }
+
+    @Override
+    public ChessPiece moved() {
+        if(Colour.WHITE == getColour()) {
+            return QUEEN_WHITE_MOVED;
+        } else {
+            return QUEEN_BLACK_MOVED;
         }
-        return piece;
     }
 }

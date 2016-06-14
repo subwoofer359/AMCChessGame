@@ -10,9 +10,9 @@ public final class SetupChessBoard {
         board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), WHITE_BISHOP_LEFT.getLocation());
         board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), WHITE_BISHOP_RIGHT.getLocation());
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE), WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(new QueenPiece(Colour.WHITE), WHITE_QUEEN.getLocation());
-        board.putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_LEFT.getLocation());
-        board.putPieceOnBoardAt(new KnightPiece(Colour.WHITE), WHITE_KNIGHT_RIGHT.getLocation());
+        board.putPieceOnBoardAt(QueenPiece.getQueenPiece(Colour.WHITE), WHITE_QUEEN.getLocation());
+        board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.WHITE), WHITE_KNIGHT_LEFT.getLocation());
+        board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.WHITE), WHITE_KNIGHT_RIGHT.getLocation());
         board.putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_LEFT.getLocation());
         board.putPieceOnBoardAt(new RookPiece(Colour.WHITE), WHITE_ROOK_RIGHT.getLocation());
         for (Coordinate coord : Coordinate.values()) {
@@ -21,9 +21,9 @@ public final class SetupChessBoard {
         board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), BLACK_BISHOP_LEFT.getLocation());
         board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), BLACK_BISHOP_RIGHT.getLocation());
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK), BLACK_KING.getLocation());
-        board.putPieceOnBoardAt(new QueenPiece(Colour.BLACK), BLACK_QUEEN.getLocation());
-        board.putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_LEFT.getLocation());
-        board.putPieceOnBoardAt(new KnightPiece(Colour.BLACK), BLACK_KNIGHT_RIGHT.getLocation());
+        board.putPieceOnBoardAt(QueenPiece.getQueenPiece(Colour.BLACK), BLACK_QUEEN.getLocation());
+        board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.BLACK), BLACK_KNIGHT_LEFT.getLocation());
+        board.putPieceOnBoardAt(KnightPiece.getKnightPiece(Colour.BLACK), BLACK_KNIGHT_RIGHT.getLocation());
         board.putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_LEFT.getLocation());
         board.putPieceOnBoardAt(new RookPiece(Colour.BLACK), BLACK_ROOK_RIGHT.getLocation());
         for (Coordinate coord : Coordinate.values()) {

@@ -37,7 +37,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testOnEmptyBoardIsValidMove() {
-        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
@@ -48,7 +48,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testOnEmptyBoardIsNotValidMove() {
-        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight, testStartPosition);
 
         for (Location endPosition : notValidLocationsFromD4) {
@@ -63,7 +63,7 @@ public class KnightPieceTest extends ChessPieceTest {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
             board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), validLocationsFromD4[i]);
         }
-        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
@@ -77,7 +77,7 @@ public class KnightPieceTest extends ChessPieceTest {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
             board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), validLocationsFromD4[i]);
         }
-        KnightPiece knight = new KnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
         board.putPieceOnBoardAt(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
@@ -95,6 +95,6 @@ public class KnightPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testCanSlide() {
-        assertFalse(new KnightPiece(Colour.BLACK).canSlide());
+        assertFalse(KnightPiece.getKnightPiece(Colour.BLACK).canSlide());
     }
 }

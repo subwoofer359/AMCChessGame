@@ -22,8 +22,8 @@ public class ChessPieceCanCopy {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] { { new RookPiece(Colour.WHITE) },
-                { BishopPiece.getBishopPiece(Colour.BLACK) }, { new QueenPiece(Colour.WHITE) },
-                { KingPiece.getKingPiece(Colour.BLACK) }, { new KnightPiece(Colour.WHITE) },
+                { BishopPiece.getBishopPiece(Colour.BLACK) }, { QueenPiece.getQueenPiece(Colour.WHITE) },
+                { KingPiece.getKingPiece(Colour.BLACK) }, { KnightPiece.getKnightPiece(Colour.WHITE) },
                 { PawnPiece.getPawnPiece(Colour.BLACK) } });
 
     }

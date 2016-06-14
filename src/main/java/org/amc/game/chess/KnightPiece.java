@@ -17,10 +17,26 @@ package org.amc.game.chess;
  */
 public class KnightPiece extends SimplePiece {
 
-    public KnightPiece(Colour colour) {
+    private static final KnightPiece KNIGHT_WHITE = new KnightPiece(Colour.WHITE);
+    private static final KnightPiece KNIGHT_BLACK = new KnightPiece(Colour.BLACK);
+    private static final KnightPiece KNIGHT_WHITE_MOVED = new KnightPiece(Colour.WHITE, true);
+    private static final KnightPiece KNIGHT_BLACK_MOVED = new KnightPiece(Colour.BLACK, true);
+
+    public static KnightPiece getKnightPiece(Colour colour) {
+        if(Colour.WHITE == colour) {
+            return KNIGHT_WHITE;
+        } else {
+            return KNIGHT_BLACK;
+        }
+    }
+
+    private KnightPiece(Colour colour) {
         super(colour);
     }
 
+    private KnightPiece(Colour colour, boolean hasMoved) {
+        super(colour, hasMoved);
+    }
     /**
      * @see SimplePiece#isValidMove(ChessBoard, Move)
      */
@@ -52,10 +68,15 @@ public class KnightPiece extends SimplePiece {
      */
     @Override
     public ChessPiece copy() {
-        KnightPiece piece=new KnightPiece(this.getColour());
-        if(this.hasMoved()){
-            piece.moved();
+        return this;
+    }
+
+    @Override
+    public ChessPiece moved() {
+        if(Colour.WHITE == getColour()) {
+            return KNIGHT_WHITE_MOVED;
+        } else {
+            return KNIGHT_BLACK_MOVED;
         }
-        return piece;
     }
 }
