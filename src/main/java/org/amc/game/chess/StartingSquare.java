@@ -8,27 +8,27 @@ import static org.amc.game.chess.ChessBoard.Coordinate.*;
  *
  */
 public enum StartingSquare {
-    WHITE_KING(new Location(E,1)),
-    WHITE_QUEEN(new Location(D,1)),
-    WHITE_BISHOP_LEFT(new Location(C,1)),
-    WHITE_BISHOP_RIGHT(new Location(F,1)),
-    WHITE_KNIGHT_LEFT(new Location(B,1)),
-    WHITE_KNIGHT_RIGHT(new Location(G,1)),
-    WHITE_ROOK_LEFT(new Location(A,1)),
-    WHITE_ROOK_RIGHT(new Location(H,1)),
-    BLACK_KING(new Location(E,8)),
-    BLACK_QUEEN(new Location(D,8)),
-    BLACK_BISHOP_LEFT(new Location(C,8)),
-    BLACK_BISHOP_RIGHT(new Location(F,8)),
-    BLACK_KNIGHT_LEFT(new Location(B,8)),
-    BLACK_KNIGHT_RIGHT(new Location(G,8)),
-    BLACK_ROOK_LEFT(new Location(A,8)),
-    BLACK_ROOK_RIGHT(new Location(H,8));
+    WHITE_KING("E1"),
+    WHITE_QUEEN("D1"),
+    WHITE_BISHOP_LEFT("C1"),
+    WHITE_BISHOP_RIGHT("F1"),
+    WHITE_KNIGHT_LEFT("B1"),
+    WHITE_KNIGHT_RIGHT("G1"),
+    WHITE_ROOK_LEFT("A1"),
+    WHITE_ROOK_RIGHT("H1"),
+    BLACK_KING("E8"),
+    BLACK_QUEEN("D8"),
+    BLACK_BISHOP_LEFT("C8"),
+    BLACK_BISHOP_RIGHT("F8"),
+    BLACK_KNIGHT_LEFT("B8"),
+    BLACK_KNIGHT_RIGHT("G8"),
+    BLACK_ROOK_LEFT("A8"),
+    BLACK_ROOK_RIGHT("H8");
     
     
     private Location location;
-    StartingSquare(Location location){
-        this.location=location;
+    StartingSquare(String locationStr){
+        this.location = new Location(locationStr);
     }
     
     /**
