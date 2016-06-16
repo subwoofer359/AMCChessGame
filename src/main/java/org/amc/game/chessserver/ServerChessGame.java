@@ -27,7 +27,10 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name="serverChessGameByUid", query="SELECT x FROM ServerChessGame x where x.uid = ?1"),
     @NamedQuery(name="getChessGamesByPlayer", query="SELECT x FROM ServerChessGame x WHERE x.chessGame.whitePlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1) "
-                    + "OR x.chessGame.blackPlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1)")
+                    + "OR x.chessGame.blackPlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1)"),
+        @NamedQuery(name="getChessGameInfo", query="SELECT NEW org.amc.dao.ChessGameInfo(x.uid, x.currentStatus, x.player.player.userName, x.chessGame.blackPlayer.player.userName) " +
+                "FROM ServerChessGame x WHERE x.chessGame is NOT NULL AND (x.chessGame.whitePlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1) " +
+                "OR x.chessGame.blackPlayer.player.id = (SELECT p.id FROM HumanPlayer p where p.userName =?1))")
 })
 
     
@@ -63,7 +66,7 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
      * 
      * Use a ChessGame Instance to create ServerChessGame
      * 
-     * @param uid
+     * @param uid long the unique identifier for this game
      * @param chessGame Already initialise chess game
      */
     public ServerChessGame(long uid, ChessGame chessGame) {

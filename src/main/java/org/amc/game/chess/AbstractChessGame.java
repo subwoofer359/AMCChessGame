@@ -75,7 +75,7 @@ public abstract class AbstractChessGame  implements Serializable {
     }
     
     protected AbstractChessGame() {
-        this.board = ChessBoard.EMPTY_CHESSBOARD;
+        this.board = EmptyChessBoard.EMPTY_CHESSBOARD;
         this.whitePlayer = null;
         this.blackPlayer = null;
         this.currentPlayer = null;
@@ -177,7 +177,7 @@ public abstract class AbstractChessGame  implements Serializable {
      */
     public Move getTheLastMove() {
         if (allGameMoves.isEmpty()) {
-            return Move.EMPTY_MOVE;
+            return EmptyMove.EMPTY_MOVE;
         } else {
             return allGameMoves.get(allGameMoves.size() - 1);
         }

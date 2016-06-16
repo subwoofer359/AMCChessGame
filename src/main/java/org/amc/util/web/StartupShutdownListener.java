@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
-import java.lang.ref.ReferenceQueue;
 import java.lang.reflect.Field;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -72,7 +71,7 @@ public final class StartupShutdownListener implements ServletContextListener {
 
     }
 
-    
+
     /**
      * When the application is stopped JDBC drivers ared deregistered to help
      * prevent a memory leak

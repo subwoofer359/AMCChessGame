@@ -25,7 +25,7 @@ public class EntityManagerCache {
         
         EntityManager manager;
         if(managerInfo == null) {
-            manager = createEntityManager(gameUid, managerInfo);
+            manager = createEntityManager(gameUid, null);
         } else {
             manager = getEntityManagerCreateNewIfClosed(gameUid);
         }

@@ -37,6 +37,15 @@ public interface SpecialSCGDAO {
     Map<Long, ServerChessGame> getGamesForPlayer(Player player) throws DAOException;
 
     /**
+     * Retrieves a map of ServerChessGames as {@link ChessGameInfo}
+     *
+     * @param player {@link Player}
+     * @return Map of {@link ChessGameInfo}
+     * @throws DAOException if there is a problem with the database transaction
+     */
+    Map<Long, ChessGameInfo> getGameInfoForPlayer(Player player) throws DAOException;
+
+    /**
      * Retrieve specific EntityManager
      * If the EntityManager is closed a new EntityManager
      * will be created

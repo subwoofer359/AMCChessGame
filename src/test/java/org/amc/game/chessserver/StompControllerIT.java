@@ -12,10 +12,7 @@ import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
 import org.amc.dao.EntityManagerCache;
 import org.amc.dao.SCGDAOInterface;
-import org.amc.game.chess.ChessBoardUtilities;
-import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.Move;
-import org.amc.game.chess.Player;
+import org.amc.game.chess.*;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.junit.After;
@@ -214,7 +211,7 @@ public class StompControllerIT {
     }
 
     private void assertEmptyMove(AbstractServerChessGame scg) {
-        assertEquals(Move.EMPTY_MOVE, scg.getChessGame().getTheLastMove());
+        assertEquals(EmptyMove.EMPTY_MOVE, scg.getChessGame().getTheLastMove());
     }
 
     @Test

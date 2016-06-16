@@ -19,13 +19,12 @@ public class SpringHostInfo {
     }
     
     public String getHostUrl() {
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append(HTTP);
-        builder.append(hostname);
-        builder.append(':');
-        builder.append(String.valueOf(port));
-        builder.append(servletContext.getContextPath());
-        return builder.toString();
+        String builder = HTTP +
+                hostname +
+                ':' +
+                String.valueOf(port) +
+                servletContext.getContextPath();
+
+        return builder;
     }
 }

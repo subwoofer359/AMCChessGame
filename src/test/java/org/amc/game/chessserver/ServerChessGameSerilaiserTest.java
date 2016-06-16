@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
+import org.amc.dao.ChessGameInfo;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -19,14 +20,15 @@ public class ServerChessGameSerilaiserTest {
 	private GsonBuilder builder;
 	private ServerChessGameFactory scgFactory;
 	private final long gameUID = 2345L;
-	Player whitePlayer;
-	Player blackPlayer;
-	
+	private Player whitePlayer;
+	private Player blackPlayer;
+	private ChessGameInfo chessGameInfo;
+
 	@Before
 	public void setUp() throws Exception {
 		builder = new GsonBuilder();
-		builder.registerTypeHierarchyAdapter(ServerChessGame.class, 
-				new GameTableController.ServerChessGameSerialiser());
+		builder.registerTypeHierarchyAdapter(ChessGameInfo.class,
+				new GameTableController.ChessGameInfoSerialiser());
 		builder.setPrettyPrinting();
 		builder.serializeNulls();
 		
@@ -39,6 +41,9 @@ public class ServerChessGameSerilaiserTest {
 		
 		blackPlayer = new HumanPlayer("Robert");
 		blackPlayer.setUserName("username_bobby");
+
+		chessGameInfo = new ChessGameInfo(gameUID, ServerGameStatus.IN_PROGRESS,
+				whitePlayer.getUserName(), blackPlayer.getUserName());
 	}
 
 	@After
@@ -47,67 +52,42 @@ public class ServerChessGameSerilaiserTest {
 
 	@Test
 	public void test() {
-		ServerChessGame scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, gameUID, whitePlayer);
-		scgGame.addOpponent(blackPlayer);
 		Gson gson = builder.create();
-		String output = gson.toJson(scgGame);
-		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+		String output = gson.toJson(chessGameInfo);
+		ChessGameInfo info = gson.fromJson(output, ChessGameInfo.class);
 		assertEquals(gameUID, info.getUid());
 		assertEquals(whitePlayer.getUserName(), info.getPlayer());
 		assertEquals(blackPlayer.getUserName(), info.getOpponent());
-		assertEquals(scgGame.getCurrentStatus(), info.getCurrentStatus());
+		assertEquals(ServerGameStatus.IN_PROGRESS, info.getCurrentStatus());
 	}
 	
 	@Test
 	public void testNull() {
-		ServerChessGame scgGame = null;
+		chessGameInfo = null;
 		Gson gson = builder.create();
-		String output = gson.toJson(scgGame);
-		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+		String output = gson.toJson(chessGameInfo);
+		ChessGameInfo info = gson.fromJson(output, ChessGameInfo.class);
 		assertNull(info);
 	}
 	
 	@Test
 	public void nullPlayerTest() {
-	    ServerChessGame scgGame = new TwoViewServerChessGame();
+	    chessGameInfo = new ChessGameInfo(gameUID, ServerGameStatus.IN_PROGRESS, null, blackPlayer.getUserName());
         Gson gson = builder.create();
-        String output = gson.toJson(scgGame);
-        ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+        String output = gson.toJson(chessGameInfo);
+        ChessGameInfo info = gson.fromJson(output, ChessGameInfo.class);
         assertNotNull(info);
         assertNull(info.getPlayer());
 	}
 	
 	@Test
 	public void testNullOpponent() {
-		ServerChessGame scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, gameUID, whitePlayer);
+		chessGameInfo = new ChessGameInfo(gameUID, ServerGameStatus.IN_PROGRESS, whitePlayer.getUserName(), null);
 		Gson gson = builder.create();
-		String output = gson.toJson(scgGame);
-		ServerChessGameInfo info = gson.fromJson(output, ServerChessGameInfo.class);
+		String output = gson.toJson(chessGameInfo);
+		ChessGameInfo info = gson.fromJson(output, ChessGameInfo.class);
 		assertEquals(gameUID, info.getUid());
 		assertNull(info.getOpponent());
-		assertEquals(scgGame.getCurrentStatus(), info.getCurrentStatus());
+		assertEquals(ServerGameStatus.IN_PROGRESS, info.getCurrentStatus());
 	}
-	
-	static class ServerChessGameInfo {
-		private long uid;
-		private ServerGameStatus currentStatus;
-		private String player;
-		private String opponent;
-		
-		public long getUid() {
-			return uid;
-		}
-		public ServerGameStatus getCurrentStatus() {
-			return currentStatus;
-		}
-
-		public String getPlayer() {
-			return player;
-		}
-
-		public String getOpponent() {
-			return opponent;
-		}
-	}
-
 }

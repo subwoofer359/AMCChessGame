@@ -13,9 +13,7 @@ import java.util.List;
  *
  */
 public class ChessBoard extends DefaultSubject {
-	
-	public static final ChessBoard EMPTY_CHESSBOARD = new EmptyChessBoard();
-	
+
 	private static final int WHITE_PROMOTION_RANK = 8;
 	
 	private static final int BLACK_PROMOTION_RANK = 1;
@@ -282,20 +280,5 @@ public class ChessBoard extends DefaultSubject {
         public String toString(){
             return piece.toString() + location.toString();
         }
-    }
-    
-    private final static class EmptyChessBoard extends ChessBoard {
-
-		@Override
-		public void initialise() {
-		}
-
-		@Override
-		public void move(Move move) {
-		}
-
-		@Override
-		public void putPieceOnBoardAt(ChessPiece piece, Location location) {
-		}    	
     }
 }

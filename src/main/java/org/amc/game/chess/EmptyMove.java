@@ -3,6 +3,7 @@ package org.amc.game.chess;
 import org.amc.game.chess.ChessBoard.Coordinate;
 
 public class EmptyMove extends Move {
+    public static final EmptyMove EMPTY_MOVE = new EmptyMove();
 
     public EmptyMove() {
         super(null, null);

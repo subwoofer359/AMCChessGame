@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.amc.dao.ChessGameInfo;
 import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
-import org.amc.game.chessserver.ServerChessGameSerilaiserTest.ServerChessGameInfo;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,8 @@ public class GameTableControllerTest {
 
 	private GameTableController gtController;
 	private AbstractServerChessGame scgGame;
-	private ChessGameFixture cgFixture;
+    private ChessGameInfo scgGameInfo;
+    private ChessGameFixture cgFixture;
 	private SCGDAOInterface serverChessGameDAO;
 	
 	private static final long GAME_UID = 1234L;
@@ -39,35 +40,39 @@ public class GameTableControllerTest {
 		scgFactory.setObserverFactoryChain(chain);
 		cgFixture = new ChessGameFixture();
 		scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, GAME_UID, cgFixture.getWhitePlayer());
+        scgGameInfo = new ChessGameInfo(scgGame.getUid(), scgGame.getCurrentStatus(),
+                scgGame.getPlayer().getUserName(), null);
 		gtController.setServerChessGameDAO(serverChessGameDAO);
 	}
 	
 	@Test
 	public void getGamesTest() throws Exception {
-	    Map<Long, AbstractServerChessGame> games = new HashMap<Long, AbstractServerChessGame>();
-	    games.put(GAME_UID, scgGame);
-	    when(serverChessGameDAO.getGamesForPlayer(any(Player.class)))
+	    Map<Long, ChessGameInfo> games = new HashMap<>();
+	    games.put(GAME_UID, scgGameInfo);
+
+		when(serverChessGameDAO.getGameInfoForPlayer(any(Player.class)))
 	    .thenReturn((Map)games);
 	    
 		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();
 		Gson gson = new Gson();
-		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
+		Type mapType = new TypeToken<Map<Long, ChessGameInfo>>() {
 		}.getType();
-		Map<Long, ServerChessGameInfo> serverCGInfoMap = gson.fromJson(result, mapType);
+		Map<Long, ChessGameInfo> serverCGInfoMap = gson.fromJson(result, mapType);
 
-		ServerChessGameInfo serverCGInfo = serverCGInfoMap.get(GAME_UID);
+		ChessGameInfo serverCGInfo = serverCGInfoMap.get(GAME_UID);
 		assertEquals(GAME_UID, serverCGInfo.getUid());
 		assertEquals(scgGame.getPlayer().getUserName(),	serverCGInfo.getPlayer());
 		assertEquals(scgGame.getCurrentStatus(), serverCGInfo.getCurrentStatus());
 		assertNull(serverCGInfo.getOpponent());
 	}
 
+    @Test
 	public void getNoGames() throws Exception {
 		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();
 		Gson gson = new Gson();
-		Type mapType = new TypeToken<Map<Long, ServerChessGameInfo>>() {
+		Type mapType = new TypeToken<Map<Long, ChessGameInfo>>() {
 		}.getType();
 		Map<?,?> aMap = gson.fromJson(result, mapType);
 		assertTrue(aMap.isEmpty());

@@ -2,6 +2,7 @@ package org.amc.game.chessserver.messaging.svg;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
+import org.amc.game.chess.EmptyMove;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.w3c.dom.Document;
@@ -57,7 +58,7 @@ public class SVGBlankChessBoard {
         }
     }
     public void markMove(Element layer, Move move){
-    	if(Move.EMPTY_MOVE.equals(move)){
+    	if(EmptyMove.EMPTY_MOVE.equals(move)){
     		return;
     	}
     	NodeList nodeList = layer.getChildNodes();

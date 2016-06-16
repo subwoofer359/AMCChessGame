@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class UnmodifibleChessBoardTest {
 	
-	private ChessBoard board = ChessBoard.EMPTY_CHESSBOARD; 
+	private ChessBoard board = EmptyChessBoard.EMPTY_CHESSBOARD;
 	private ChessBoard chessBoard;
 	
 	@Before

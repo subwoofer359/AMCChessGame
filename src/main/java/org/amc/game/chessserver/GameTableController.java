@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import org.amc.dao.ChessGameInfo;
 import org.amc.dao.SCGDAOInterface;
 import org.amc.game.chess.Player;
 import org.apache.log4j.Logger;
@@ -33,8 +34,8 @@ public class GameTableController {
     private static final Gson GSON;
     static {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeHierarchyAdapter(AbstractServerChessGame.class, 
-                        new GameTableController.ServerChessGameSerialiser());
+        builder.registerTypeHierarchyAdapter(ChessGameInfo.class,
+                        new ChessGameInfoSerialiser());
                 builder.serializeNulls();
         GSON = builder.create();
     }
@@ -49,7 +50,7 @@ public class GameTableController {
         return new Callable<String>() {
             @Override
             public String call() throws Exception {
-            	return GSON.toJson(dao.getGamesForPlayer(player));
+            	return GSON.toJson(dao.getGameInfoForPlayer(player));
             }
             
         };
@@ -61,25 +62,29 @@ public class GameTableController {
         this.dao = scgDAO;
     }
     
-    static class ServerChessGameSerialiser implements JsonSerializer<AbstractServerChessGame> {
+    static class ChessGameInfoSerialiser implements JsonSerializer<ChessGameInfo> {
+        final String UID = "uid";
+        final String CURRENT_STATUS = "currentStatus";
+        final String PLAYER = "player";
+        final String OPPONENT = "opponent";
 
 		@Override
-		public JsonElement serialize(AbstractServerChessGame serverChessGame, Type arg1, JsonSerializationContext arg2) {
+		public JsonElement serialize(ChessGameInfo chessGameInfo, Type arg1, JsonSerializationContext arg2) {
 			JsonObject jsObj = new JsonObject();
 			
-			jsObj.addProperty("uid", serverChessGame.getUid());
-			jsObj.addProperty("currentStatus", serverChessGame.getCurrentStatus().toString());
+			jsObj.addProperty(UID, chessGameInfo.getUid());
+			jsObj.addProperty(CURRENT_STATUS, chessGameInfo.getCurrentStatus().toString());
 			
-			if(serverChessGame.getPlayer() == null) {
-				jsObj.add("player", new JsonNull());
+			if(chessGameInfo.getPlayer() == null) {
+				jsObj.add(PLAYER, new JsonNull());
 			} else {
-				jsObj.addProperty("player", serverChessGame.getPlayer().getUserName());
+				jsObj.addProperty(PLAYER, chessGameInfo.getPlayer());
 			}
 			
-			if(serverChessGame.getOpponent() == null) {
-				jsObj.add("opponent", new JsonNull());
+			if(chessGameInfo.getOpponent() == null) {
+				jsObj.add(OPPONENT, new JsonNull());
 			} else {
-				jsObj.addProperty("opponent", serverChessGame.getOpponent().getUserName());
+				jsObj.addProperty(OPPONENT, chessGameInfo.getOpponent());
 			}
 			return jsObj;
 		}

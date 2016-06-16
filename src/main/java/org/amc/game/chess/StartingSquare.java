@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
-
 /**
  * Contains the starting square location of the main Chess Pieces
  * @author Adrian Mclaughlin

@@ -17,6 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.Colour;
+import org.amc.game.chess.EmptyMove;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chessserver.messaging.svg.SVGBishopPiece;
@@ -160,7 +161,7 @@ public class SVGChessPieceIT {
     
     @Test(timeout=10000)
     public void testMarkEmptyMoveBlankChessBoard() throws Exception {
-    	Move move = Move.EMPTY_MOVE;
+    	Move move = EmptyMove.EMPTY_MOVE;
     	
     	SVGBlankChessBoard board = new SVGBlankChessBoard(document, svgNS);
     	board.createBlankChessBoard(layer);

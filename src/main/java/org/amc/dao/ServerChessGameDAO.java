@@ -12,6 +12,7 @@ import org.apache.openjpa.persistence.OpenJPAEntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -174,6 +175,34 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
             Map<Long, ServerChessGame> games = new HashMap<>();
             List<ServerChessGame> results = query.getResultList();
             for (ServerChessGame game : results) {
+                games.put(game.getUid(), game);
+            }
+            return games;
+        } catch (PersistenceException pe) {
+            logger.error(pe);
+            throw new DAOException(pe);
+        }
+    }
+
+    /**
+     * Returns Games for display purposes only.
+     * Certain fields aren't initialised
+     * If a fully initialised is required use {@link #getServerChessGame(long)}
+     *
+     * @param player
+     * @return Map Of partially initialised ServerChessGames
+     * @throws DAOException
+     *             if database operation raises an exception
+     */
+    public Map<Long, ChessGameInfo> getGameInfoForPlayer(Player player) throws DAOException {
+        EntityManager em = getEntityManager();
+        TypedQuery<ChessGameInfo> query = em.createNamedQuery("getChessGameInfo",
+                ChessGameInfo.class);
+        query.setParameter(1, player.getUserName());
+        try {
+            Map<Long, ChessGameInfo> games = new WeakHashMap<>();
+            List<ChessGameInfo> results = query.getResultList();
+            for (ChessGameInfo game : results) {
                 games.put(game.getUid(), game);
             }
             return games;
