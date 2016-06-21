@@ -86,7 +86,7 @@ public class EntityManagerCacheCleaner {
                     
                 }
                 logger.info("========================================");
-                logger.info(" Removed Game:" + gameUid);
+                logger.info(" Closed EntityManager for:" + gameUid);
                 logger.info("========================================");
             }
             
