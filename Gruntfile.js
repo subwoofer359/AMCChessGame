@@ -21,6 +21,7 @@ module.exports = function (grunt) {
                    src: ['src/main/webapp/jsfull/*.js'],
                    instrumentedFiles: 'test/coverage/instrument',
                    htmlReport: 'report/coverage',
+                   coberturaReport: 'report/',
                    linesThresholdPct: 84
                 }
             }
