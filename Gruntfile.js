@@ -3,11 +3,27 @@ module.exports = function (grunt) {
     "use strict";
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+	env: {
+		coverage: {
+			APP_DIR_FOR_CODE_COVERAGE: 'test/coverage/instrument/app/'
+		}
+	},
         jshint: {
             all: ['Gruntfile.js', 'src/main/webapp/jsfull/**/*.js', 'test/**/*.js', '!src/main/webapp/jsfull/**/bootstrap.min.js']
         },
         qunit: {
-            all: ['src/main/webapp/WEB-INF/Tests/Qunit.html']
+                all: ['src/main/webapp/WEB-INF/Tests/Qunit.html'],
+                options: {
+                '--web-security': 'no',
+                console: true,
+                coverage: {
+                   disposeCollector: true,
+                   src: ['src/main/webapp/jsfull/*.js'],
+                   instrumentedFiles: 'test/coverage/instrument',
+                   htmlReport: 'report/coverage',
+                   linesThresholdPct: 84
+                }
+            }
         },
         githooks: {
             all: {
@@ -49,11 +65,11 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-githooks');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-qunit-istanbul');
     
     grunt.registerTask('default', ['jshint', 'uglify', 'qunit', 'cssmin']);
     grunt.registerTask('QUnit', ['qunit']);
