@@ -364,8 +364,8 @@
 
 				<executions>
 					<execution>
-						<id>enhancer</id>
-						<phase>process-classes</phase>
+						<id>enhancer</id>	
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>enhance</goal>
 						</goals>
