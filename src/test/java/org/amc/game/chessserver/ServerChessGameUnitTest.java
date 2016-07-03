@@ -30,9 +30,7 @@ public class ServerChessGameUnitTest {
     private ServerChessGame scgGame;
     private Player player;
     private Player opponent;
-    private ChessGameFactory chessGameFactory;
     private static final long GAME_UID = 2L;
-    private ServerChessGameFactory factory;
     private GameType gameType;
 
     public ServerChessGameUnitTest(GameType gameType) {
@@ -51,12 +49,12 @@ public class ServerChessGameUnitTest {
         player = new HumanPlayer("Ted");
 
         ObserverFactoryChain observerFactoryChain = mock(ObserverFactoryChain.class);
-        factory = new ServerChessGameFactory();
+        ServerChessGameFactory factory = new ServerChessGameFactory();
         factory.setObserverFactoryChain(observerFactoryChain);
 
         scgGame = factory.getServerChessGame(gameType, GAME_UID, player);
 
-        chessGameFactory = new ChessGameFactory() {
+        ChessGameFactory chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
                             ChessGamePlayer playerBlack) {
