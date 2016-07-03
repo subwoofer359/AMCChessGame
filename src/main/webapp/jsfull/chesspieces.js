@@ -38,7 +38,7 @@ var chesspieces_module = (function () {
                     rank : coordinate[2]
                 };
         }
-        throw "Not valid ChessBoard coordinate";
+        throw 'Not valid ChessBoard coordinate';
     }
 
     function ChessPieces(playerColour) {
@@ -75,9 +75,9 @@ var chesspieces_module = (function () {
         getClasses : function (pieceColour) {
             if ((this.playerColour === "WHITE" && pieceColour === this.colour.white) ||
                     (this.playerColour === "BLACK" && pieceColour === this.colour.black)) {
-                return "chesspiece draggable";
+                return 'chesspiece draggable';
             }
-            return "chesspiece";
+            return 'chesspiece';
         },
         /**
         * SVG pawn
