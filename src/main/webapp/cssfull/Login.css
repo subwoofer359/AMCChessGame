@@ -71,7 +71,7 @@ body {
     font-size: 2em;
     margin-top: -38px;
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
     padding: 15px 0 15px 0;
     z-index: 1000;
@@ -106,7 +106,7 @@ body {
     color: white;
     border-style: none;
     border-radius: 20px;
-    box-shadow: 0px 0px 2px 2px #407199 inset;
+    box-shadow: 0 0 2px 2px #407199 inset;
     text-indent: 30px;
 }
 
@@ -151,13 +151,13 @@ body {
     
 	#login-box {
         box-shadow: none;
-        margin-top: 0px;
+        margin-top: 0;
         padding: 0 5px 0 5px;
 	}
 	
 	#signup-box {
         box-shadow: none;
-		margin-top: 0px;
+		margin-top: 0;
         padding: 0 5px 0 5px;
 	}
     
@@ -176,7 +176,7 @@ body {
      */
     .messageLabel {
         position: absolute;
-        bottom: 0px;
+        bottom: 0;
         width: 50%;
         left: 25%;
         right: 25%;
@@ -187,10 +187,10 @@ body {
     
 @media (max-height:639px) {
 	#login-box {
-		margin-top: 0px;
+		margin-top: 0;
 	}
 	
 	#signup-box {
-		margin-top: 0px;
+		margin-top: 0;
 	}
 }
