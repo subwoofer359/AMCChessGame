@@ -25,7 +25,6 @@ public class ValidUserNameTest {
 
 	private String userName;
 	private Errors errors;
-	private DAOInterface<User> userDAO;
 	private UserNameValidator userNameValidator;
 	
 	public ValidUserNameTest(String userName) {
@@ -33,25 +32,21 @@ public class ValidUserNameTest {
 	}
 	
 	@SuppressWarnings("unchecked")
-    @Before
+        @Before
 	public void setUp() throws Exception {
-		this.userDAO = mock(DAO.class);
+		DAOInterface<User> userDAO = mock(DAO.class);
 		this.userNameValidator = new UserNameValidator(userDAO);
 		Map<String, Object> errorMap = new HashMap<String, Object>();
 		errors = new MapBindingResult(errorMap, "userName");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 	
 	@Parameters
-    public static Collection<?> addedUserNames() {
-        return Arrays.asList(new Object[][] { 
+        public static Collection<?> addedUserNames() {
+                return Arrays.asList(new Object[][] { 
         		{ "adrian" }, { "a29394" }, { "adrianmclaughin" }, { "adrian_mclaughlin" }, 
         		{ "testingafullusernameoflengthofover50paddingpadding" }
-        });
-    }
+                });
+        }
 
 	@Test
 	public void test() {
