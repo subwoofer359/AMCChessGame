@@ -161,7 +161,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         } else if (ComparePlayers.comparePlayers(getOpponent(), player)) {
             return this.chessGame.getBlackPlayer();
         } else {
-        	throw new RuntimeException("Player not part of the game");
+        	throw new IllegalArgumentException("Player not part of the game");
         }
     }
 
