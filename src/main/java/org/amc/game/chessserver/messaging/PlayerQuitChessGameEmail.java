@@ -34,7 +34,7 @@ public class PlayerQuitChessGameEmail extends EmailTemplate {
 		addContextVariable("name", getServerChessGame().getPlayer().getName());
 		addContextVariable("player", getPlayer().getName());
 		String gameUid = String.valueOf(getServerChessGame().getUid());
-		String gameUidFragment = gameUid.length() > GAMEUID_LENGTH
+		String gameUidFragment = gameUid.length() >= GAMEUID_LENGTH
 				? gameUid.substring(gameUid.length() - GAMEUID_LENGTH, gameUid.length()) : NO_VALID_UID_MESSAGE;
 		addContextVariable("GAME_UUID", gameUidFragment);
 		addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
