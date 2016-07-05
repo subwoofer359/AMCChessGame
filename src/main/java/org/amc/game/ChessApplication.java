@@ -64,6 +64,7 @@ public class ChessApplication {
             break;
         default:
             System.out.println("Game has ended abnormally!!");
+            break;
         }
     }
 
