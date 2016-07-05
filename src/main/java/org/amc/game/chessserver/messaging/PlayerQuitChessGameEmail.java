@@ -8,40 +8,41 @@ import org.amc.game.chessserver.AbstractServerChessGame;
 public class PlayerQuitChessGameEmail extends EmailTemplate {
 
 	static final String EMAIL_TEMPLATE = "quitGameEmail.html";
-	
+
 	private static final int GAMEUID_LENGTH = 5;
-	
+
 	static final String DEFAULT_EMAIL_SUBJECT = "Game update from AMCChessGame";
-	
+
 	static final String NO_VALID_UID_MESSAGE = "No Game Uid";
-	
+
 	public PlayerQuitChessGameEmail() {
 		super();
 		setEmailTemplateName(EMAIL_TEMPLATE);
 		setEmailSubject(DEFAULT_EMAIL_SUBJECT);
-		
+
 	}
-	
-	public PlayerQuitChessGameEmail(Player player, AbstractServerChessGame serverChessGame){
+
+	public PlayerQuitChessGameEmail(Player player, AbstractServerChessGame serverChessGame) {
 		this();
-	    setPlayer(player);
-	    setServerChessGame(serverChessGame);
-	    
-    }
+		setPlayer(player);
+		setServerChessGame(serverChessGame);
+
+	}
 
 	@Override
-    public void addContextVariables() {
-	    addContextVariable("name", getServerChessGame().getPlayer().getName());
-	    addContextVariable("player", getPlayer().getName());
-	    String gameUid = String.valueOf(getServerChessGame().getUid());
-        String gameUidFragment = gameUid.length() > GAMEUID_LENGTH ? gameUid.substring(gameUid.length() - GAMEUID_LENGTH, gameUid.length()) : NO_VALID_UID_MESSAGE;
-        addContextVariable("GAME_UUID", gameUidFragment);
-        addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
+	public void addContextVariables() {
+		addContextVariable("name", getServerChessGame().getPlayer().getName());
+		addContextVariable("player", getPlayer().getName());
+		String gameUid = String.valueOf(getServerChessGame().getUid());
+		String gameUidFragment = gameUid.length() > GAMEUID_LENGTH
+				? gameUid.substring(gameUid.length() - GAMEUID_LENGTH, gameUid.length()) : NO_VALID_UID_MESSAGE;
+		addContextVariable("GAME_UUID", gameUidFragment);
+		addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
 	}
 
-    @Override
-    public void addImages() {
-        addEmbeddedImage(BACKGROUND_IMAGE_RESOURCE, new File(backgroundImagePath));
-    }
-	
+	@Override
+	public void addImages() {
+		addEmbeddedImage(BACKGROUND_IMAGE_RESOURCE, new File(backgroundImagePath));
+	}
+
 }
