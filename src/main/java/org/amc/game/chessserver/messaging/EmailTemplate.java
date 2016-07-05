@@ -131,6 +131,14 @@ public abstract class EmailTemplate {
         this.contextVariables.put(name, value);
     }
     
+    public Object getContextVariable(String name) {
+    	return this.contextVariables.get(name);
+    }
+    
+    public String getEmailTemplateName() {
+    	return emailTemplateName;
+    }
+    
     public void setEmailTemplateName(String emailTemplateName) {
         this.emailTemplateName = emailTemplateName;
     }
