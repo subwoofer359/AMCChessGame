@@ -159,8 +159,9 @@ public class StompControllerIT {
         }
     }
 
-    private void verifyMove(AbstractServerChessGame scg, String moveString) throws DAOException {
-        scg = serverChessGameDAO.getServerChessGame(scg.getUid());
+    private void verifyMove(AbstractServerChessGame abstractServerChessGame, String moveString) throws DAOException {
+    	AbstractServerChessGame scg = serverChessGameDAO.
+    			getServerChessGame(abstractServerChessGame.getUid());
         Move actualMove = scg.getChessGame().getTheLastMove();
         Move expectedMove = new Move(moveString);
         assertEquals(expectedMove.getStart(), actualMove.getStart());
