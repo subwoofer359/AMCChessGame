@@ -165,7 +165,7 @@ public class MoveUpdateEmailTest {
         
         moveAndInitialiseTemplate(player, receivingPlayer, queenMove);
         
-        checkEmailOutput(patternStr);;
+        checkEmailOutput(patternStr);
         
     }
     
