@@ -72,14 +72,12 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
                 deleteImages(message);
             } catch (MailException | MessagingException e) {
                 log.error(e);
-                e.printStackTrace();
                 return SENT_FAILED;
             } catch (Exception e) {
             	if(e instanceof RuntimeException) {
             		throw e;
             	}
                 log.error(e);
-                e.printStackTrace();
                 return SENT_FAILED;
             }
             return SENT_SUCCESS;
