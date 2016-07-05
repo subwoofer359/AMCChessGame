@@ -39,7 +39,7 @@ public class EntityManagerCacheCleaner {
     
     private void scheduleCleaner(EntityManagerCache enCache) {
         if(scheduler == null) {
-            throw new RuntimeException("Scheduler is null");
+            throw new NullPointerException("Scheduler is null");
         } else {
             scheduler.schedule(new EmCacheCleanerThread(enCache, minutesToLive),
                             new PeriodicTrigger(period, periodUnit));
