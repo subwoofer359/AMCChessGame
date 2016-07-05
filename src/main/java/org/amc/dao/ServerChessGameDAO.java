@@ -129,16 +129,18 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
 
     private AbstractServerChessGame saveGame(EntityManager entityManager,
                     AbstractServerChessGame serverChessGame) {
+    	
+    	AbstractServerChessGame scg = serverChessGame;
         entityManager.getTransaction().begin();
 
         if (isNotInThePersistenceContext(entityManager, serverChessGame)) {
-            serverChessGame = entityManager.merge(serverChessGame);
+            scg = entityManager.merge(serverChessGame);
         }
 
-        markChessBoardFieldDirty(entityManager, serverChessGame);
+        markChessBoardFieldDirty(entityManager, scg);
         entityManager.flush();
         entityManager.getTransaction().commit();
-        return serverChessGame;
+        return scg;
     }
 
     private boolean isNotInThePersistenceContext(EntityManager em,
