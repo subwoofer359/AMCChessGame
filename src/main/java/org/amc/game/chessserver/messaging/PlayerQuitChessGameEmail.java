@@ -4,11 +4,9 @@ import java.io.File;
 
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
-import org.apache.log4j.Logger;
 
 public class PlayerQuitChessGameEmail extends EmailTemplate {
-	
-	private static final Logger logger = Logger.getLogger(PlayerQuitChessGameEmail.class);
+
 	static final String EMAIL_TEMPLATE = "quitGameEmail.html";
 	
 	private static final int GAMEUID_LENGTH = 5;
