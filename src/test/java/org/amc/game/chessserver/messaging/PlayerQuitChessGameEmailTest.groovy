@@ -32,7 +32,7 @@ class PlayerQuitChessGameEmailTest {
 		PlayerQuitChessGameEmail email = new PlayerQuitChessGameEmail();
 		
 		assert email.emailTemplateName == PlayerQuitChessGameEmail.EMAIL_TEMPLATE;
-		assert email.emailSubject == PlayerQuitChessGameEmail.DEFAULT_EMAIL_SUBJECT;
+		assert email.emailSubject == PlayerChessGameEmail.DEFAULT_EMAIL_SUBJECT;
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ class PlayerQuitChessGameEmailTest {
 		PlayerQuitChessGameEmail email = new PlayerQuitChessGameEmail(player, scg);
 		
 		assert email.emailTemplateName == PlayerQuitChessGameEmail.EMAIL_TEMPLATE;
-		assert email.emailSubject == PlayerQuitChessGameEmail.DEFAULT_EMAIL_SUBJECT;
+		assert email.emailSubject == PlayerChessGameEmail.DEFAULT_EMAIL_SUBJECT;
 		assert email.player == player;
 		assert email.serverChessGame == scg;
 	}
