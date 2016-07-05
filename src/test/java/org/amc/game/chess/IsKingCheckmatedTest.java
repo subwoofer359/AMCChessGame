@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
-public class IsKingCheckmated {
+public class IsKingCheckmatedTest {
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
     private ChessBoard board;
