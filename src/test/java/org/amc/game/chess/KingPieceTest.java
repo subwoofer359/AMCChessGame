@@ -3,8 +3,6 @@ package org.amc.game.chess;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,41 +18,45 @@ public class KingPieceTest {
         board = new ChessBoard();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testIsValidMoveOnEmptyBoard() {
         KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(king, new Location(F, 7));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(F, 8))));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(F, 6))));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(G, 7))));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(E, 7))));
+        addChessPieceToBoard(king, "F7");
+        assertTrue(king.isValidMove(board, createMove("F7", "F8")));
+        assertTrue(king.isValidMove(board, createMove("F7", "F6")));
+        assertTrue(king.isValidMove(board, createMove("F7", "G7")));
+        assertTrue(king.isValidMove(board, createMove("F7", "E7")));
 
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(E, 8))));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(G, 8))));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(G, 6))));
-        assertTrue(king.isValidMove(board, new Move(new Location(F, 7), new Location(E, 8))));
+        assertTrue(king.isValidMove(board, createMove("F7", "E8")));
+        assertTrue(king.isValidMove(board, createMove("F7", "G8")));
+        assertTrue(king.isValidMove(board, createMove("F7", "G6")));
+        assertTrue(king.isValidMove(board, createMove("F7", "E8")));
+    }
+    
+    private Move createMove(String start, String end) {
+        return new Move(start + Move.MOVE_SEPARATOR + end);
+    }
+    
+    private void addChessPieceToBoard(ChessPiece piece, String location) {
+        board.putPieceOnBoardAt(piece, new Location(location));
     }
 
     @Test
     public void testIsNotValidMoveOnEmptyBoard() {
         KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(king, new Location(F, 7));
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(A, 8))));
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(B, 6))));
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(G, 3))));
+        addChessPieceToBoard(king, "F7");
+        assertFalse(king.isValidMove(board, createMove("F7", "A8")));
+        assertFalse(king.isValidMove(board, createMove("F7", "B6")));
+        assertFalse(king.isValidMove(board, createMove("F7", "G3")));
         assertFalse(king.isValidMove(board,
-                        new Move(new Location(F, 7), StartingSquare.WHITE_KING.getLocation())));
+                        createMove("F7", StartingSquare.WHITE_KING.getLocation().asString())));
 
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(D, 2))));
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(C, 3))));
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(G, 3))));
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(D, 8))));
+        assertFalse(king.isValidMove(board, createMove("F7", "D2")));
+        assertFalse(king.isValidMove(board, createMove("F7", "C3")));
+        assertFalse(king.isValidMove(board, createMove("F7", "G3")));
+        assertFalse(king.isValidMove(board, createMove("F7", "D8")));
 
-        assertFalse(king.isValidMove(board, new Move(new Location(F, 7), new Location(F, 7))));
+        assertFalse(king.isValidMove(board, createMove("F7", "F7")));
 
     }
 
@@ -63,15 +65,15 @@ public class KingPieceTest {
         KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
         KingPiece kingWhite = KingPiece.getKingPiece(Colour.WHITE);
         KingPiece anotherBlackKing = KingPiece.getKingPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(king, new Location(F, 7));
-        board.putPieceOnBoardAt(kingWhite, new Location(E, 7));
-        board.putPieceOnBoardAt(anotherBlackKing, new Location(G, 7));
+        addChessPieceToBoard(king, "F7");
+        addChessPieceToBoard(kingWhite, "E7");
+        addChessPieceToBoard(anotherBlackKing, "G7");
 
         // Move to square occupied by the white king should be valid
-        boolean isValid = king.isValidMove(board, new Move(new Location(F, 7), new Location(E, 7)));
+        boolean isValid = king.isValidMove(board, createMove("F7", "E7"));
         // Move to square occupied by the another king should not be valid
         boolean notValid = king
-                        .isValidMove(board, new Move(new Location(F, 7), new Location(G, 7)));
+                        .isValidMove(board, createMove("F7", "G7"));
 
         assertTrue(isValid);
         assertFalse(notValid);
@@ -80,13 +82,13 @@ public class KingPieceTest {
     @Test
     public void testGetPossibleMoveLocations() {
         KingPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(whiteKing, StartingSquare.WHITE_KING.getLocation());
+        addChessPieceToBoard(whiteKing, StartingSquare.WHITE_KING.getLocation().asString());
         Set<Location> expectedMoveLocations = new HashSet<>();
-        expectedMoveLocations.add(new Location(D, 1));
-        expectedMoveLocations.add(new Location(D, 2));
-        expectedMoveLocations.add(new Location(E, 2));
-        expectedMoveLocations.add(new Location(F, 1));
-        expectedMoveLocations.add(new Location(F, 2));
+        expectedMoveLocations.add(new Location("D1"));
+        expectedMoveLocations.add(new Location("D2"));
+        expectedMoveLocations.add(new Location("E2"));
+        expectedMoveLocations.add(new Location("F1"));
+        expectedMoveLocations.add(new Location("F2"));
 
         Set<Location> possibleMoveLocations = whiteKing.getPossibleMoveLocations(board,
                         StartingSquare.WHITE_KING.getLocation());
