@@ -121,7 +121,7 @@ public class EnPassantTest {
     }
 
     @Test
-    public void TestWhiteEnPassantCapture() throws IllegalMoveException {
+    public void testWhiteEnPassantCapture() throws IllegalMoveException {
         final String whitePawnStartPosition = "E5";
         final String whitePawnEndPosition = "F6";
         final String blackPawnStartPosition = "F7";
@@ -143,7 +143,7 @@ public class EnPassantTest {
     }
 
     @Test
-    public void TestBlackEnPassantCapture() throws IllegalMoveException {
+    public void testBlackEnPassantCapture() throws IllegalMoveException {
         PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
         final String whitePawnStartPosition = "F2";
         final String whitePawnEndPosition = "F4";
