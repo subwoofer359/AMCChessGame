@@ -71,8 +71,6 @@ public class StompControllerIT {
     @Autowired
     private AbstractSubscribableChannel brokerChannel;
 
-    private TestChannelInterceptor clientOutboundChannelInterceptor;
-
     private TestChannelInterceptor brokerChannelInterceptor;
 
     private final long gameUUID = 1234L;
@@ -84,34 +82,24 @@ public class StompControllerIT {
 
     private DatabaseFixture fixture = new DatabaseFixture();
 
-    private DAOInterface<Player> playerDAO;
-
-    private Player stephen;
-
-    private Player nobby;
-
-    private JsonChessGameView view;
-
-    private SimpMessagingTemplate template;
-
     private SCGDAOInterface serverChessGameDAO;
 
     @Before
-    public void setup() throws Exception {
+    public void setUp() throws Exception {
         fixture.setUp();
 
-        playerDAO = new DAO<Player>(HumanPlayer.class);
+        DAOInterface<Player> playerDAO = new DAO<Player>(HumanPlayer.class);
         playerDAO.setEntityManager(fixture.getEntityManager());
-        stephen = playerDAO.findEntities("userName", "stephen").get(0);
-        nobby = playerDAO.findEntities("userName", "nobby").get(0);
+        Player stephen = playerDAO.findEntities("userName", "stephen").get(0);
+        Player nobby = playerDAO.findEntities("userName", "nobby").get(0);
 
         this.brokerChannelInterceptor = new TestChannelInterceptor();
         this.brokerChannelInterceptor.setIncludedDestinations("/user/**");
         this.brokerChannel.addInterceptor(this.brokerChannelInterceptor);
 
-        this.clientOutboundChannelInterceptor = new TestChannelInterceptor();
-        this.clientOutboundChannelInterceptor.setIncludedDestinations(MESSAGE_DESTINATION);
-        this.clientOutboundChannel.addInterceptor(this.clientOutboundChannelInterceptor);
+        TestChannelInterceptor clientOutboundChannelInterceptor = new TestChannelInterceptor();
+        clientOutboundChannelInterceptor.setIncludedDestinations(MESSAGE_DESTINATION);
+        clientOutboundChannel.addInterceptor(clientOutboundChannelInterceptor);
 
         serverChessGameDAO = (SCGDAOInterface) wac.getBean("myServerChessGameDAO");
         clearDAO();
@@ -131,8 +119,8 @@ public class StompControllerIT {
 
         serverChessGameDAO.saveServerChessGame(oneViewChessGame);
 
-        template = mock(SimpMessagingTemplate.class);
-        view = new JsonChessGameView(template);
+        SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
+        JsonChessGameView view = new JsonChessGameView(template);
         view.setGameToObserver(oneViewChessGame);
     }
 
@@ -148,7 +136,7 @@ public class StompControllerIT {
     }
 
     @Test
-    public void TwoViewChessGameMove() throws Exception {
+    public void twoViewChessGameMove() throws Exception {
         subscribe();
 
         for (int i = 0; i < moves.length; i++) {
@@ -188,7 +176,7 @@ public class StompControllerIT {
     }
 
     @Test
-    public void OneViewChessGameMove() throws Exception {
+    public void oneViewChessGameMove() throws Exception {
         subscribe();
         for (int i = 0; i < moves.length; i++) {
             AbstractServerChessGame oneViewChessGame = serverChessGameDAO
@@ -202,7 +190,7 @@ public class StompControllerIT {
     }
 
     @Test
-    public void OneViewInvalidMove() throws Exception {
+    public void oneViewInvalidMove() throws Exception {
         subscribe();
         AbstractServerChessGame oneViewChessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         oneViewMove(oneViewChessGame.getChessGame().getCurrentPlayer(), oneViewChessGameUUID,
@@ -216,7 +204,7 @@ public class StompControllerIT {
     }
 
     @Test
-    public void TwoViewInvalidMove() throws Exception {
+    public void twoViewInvalidMove() throws Exception {
         subscribe();
         AbstractServerChessGame scg = serverChessGameDAO.getServerChessGame(gameUUID);
         twoViewMove(scg.getChessGame().getCurrentPlayer(), gameUUID, "A2-A5");
@@ -316,12 +304,14 @@ public class StompControllerIT {
         AbstractServerChessGame savedGame = null;
 
         int check = 0;
+        int noOfTimesToCheck = 5;
+        
         do {
             if (savedGame == null) {
                 savedGame = dao.getServerChessGame(gameUUID);
                 check++;
             }
-        } while (check < 5 && savedGame == null);
+        } while (check < noOfTimesToCheck && savedGame == null);
         assertNotNull(savedGame);
     }
 
