@@ -1,9 +1,7 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,14 +48,14 @@ public class EnPassantTest {
     public void testIsNotEnPassantCapture() {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         BishopPiece blackBishop = BishopPiece.getBishopPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(Coordinate.E, 5);
-        Location blackPawnStartPosition = new Location(Coordinate.F, 7);
-        Location blackPawnEndPosition = new Location(Coordinate.F, 5);
+        Location whitePawnStartPosition = new Location("E5");
+        Location blackPawnStartPosition = new Location("F7");
+        Location blackPawnEndPosition = new Location("F5");
         board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
         board.putPieceOnBoardAt(blackBishop, blackPawnEndPosition);
 
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
-        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.F, 6));
+        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location("F6"));
 
         chessGame.allGameMoves.add(blackMove);
         assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
@@ -67,14 +65,14 @@ public class EnPassantTest {
     public void testIsNotEnPassantCaptureMoveLessTwo() {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(Coordinate.E, 5);
-        Location blackPawnStartPosition = new Location(Coordinate.F, 7);
-        Location blackPawnEndPosition = new Location(Coordinate.F, 6);
+        Location whitePawnStartPosition = new Location("E5");
+        Location blackPawnStartPosition = new Location("F7");
+        Location blackPawnEndPosition = new Location("F6");
         board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
         board.putPieceOnBoardAt(blackPawn, blackPawnEndPosition);
 
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
-        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.F, 6));
+        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location("F6"));
 
         chessGame.allGameMoves.add(blackMove);
         assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
@@ -84,14 +82,14 @@ public class EnPassantTest {
     public void testIsNotEnPassantCaptureAfterTwoSquareMove() {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(Coordinate.E, 5);
-        Location blackPawnStartPosition = new Location(Coordinate.F, 7);
-        Location blackPawnEndPosition = new Location(Coordinate.F, 5);
+        Location whitePawnStartPosition = new Location("E5");
+        Location blackPawnStartPosition = new Location("F7");
+        Location blackPawnEndPosition = new Location("F5");
         board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
         board.putPieceOnBoardAt(blackPawn, blackPawnEndPosition);
 
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
-        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.D, 6));
+        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location("D6"));
 
         chessGame.allGameMoves.add(blackMove);
         assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
@@ -101,14 +99,14 @@ public class EnPassantTest {
     public void testIsNotEnPassantCaptureAfterTwoSeparateSquareMove() {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(Coordinate.E, 5);
-        Location blackPawnStartPosition = new Location(Coordinate.F, 6);
-        Location blackPawnEndPosition = new Location(Coordinate.F, 5);
+        Location whitePawnStartPosition = new Location("E5");
+        Location blackPawnStartPosition = new Location("F6");
+        Location blackPawnEndPosition = new Location("F5");
         board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
         board.putPieceOnBoardAt(blackPawn, blackPawnEndPosition);
 
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
-        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(Coordinate.D, 6));
+        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location("D6"));
 
         chessGame.allGameMoves.add(blackMove);
         assertFalse(enPassantRule.isEnPassantCapture(chessGame, whiteEnPassantMove));
@@ -118,15 +116,15 @@ public class EnPassantTest {
     public void TestWhiteEnPassantCapture() throws IllegalMoveException {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(E, 5);
-        Location whitePawnEndPosition = new Location(F, 6);
-        Location blackPawnStartPosition = new Location(F, 7);
-        Location blackPawnEndPosition = new Location(F, 5);
+        Location whitePawnStartPosition = new Location("E5");
+        Location whitePawnEndPosition = new Location("F6");
+        Location blackPawnStartPosition = new Location("F7");
+        Location blackPawnEndPosition = new Location("F5");
         board.putPieceOnBoardAt(whitePawn, whitePawnStartPosition);
         board.putPieceOnBoardAt(blackPawn, blackPawnEndPosition);
 
         Move blackMove = new Move(blackPawnStartPosition, blackPawnEndPosition);
-        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location(F, 6));
+        Move whiteEnPassantMove = new Move(whitePawnStartPosition, new Location("F6"));
 
         chessGame.allGameMoves.add(blackMove);
 
@@ -139,10 +137,10 @@ public class EnPassantTest {
     public void TestBlackEnPassantCapture() throws IllegalMoveException {
         PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
         PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        Location whitePawnStartPosition = new Location(F, 2);
-        Location whitePawnEndPosition = new Location(F, 4);
-        Location blackPawnStartPosition = new Location(G, 4);
-        Location blackPawnEndPosition = new Location(F, 3);
+        Location whitePawnStartPosition = new Location("F2");
+        Location whitePawnEndPosition = new Location("F4");
+        Location blackPawnStartPosition = new Location("G4");
+        Location blackPawnEndPosition = new Location("F3");
         board.putPieceOnBoardAt(blackPawn, blackPawnStartPosition);
         board.putPieceOnBoardAt(whitePawn, whitePawnEndPosition);
 
@@ -159,11 +157,11 @@ public class EnPassantTest {
     @Test
     public void notMoveEnPassantCapture() {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
-        Location startSquare = new Location(A, 2);
-        Location endSquare = new Location(B, 3);
-        Move move = new Move(startSquare, endSquare);
+        final String startSquare = "A2";
+        final String endSquare = "B3";
+        Move move = new Move(startSquare + Move.LOCATION_SEPARATOR + endSquare);
 
-        board.putPieceOnBoardAt(bishop, startSquare);
+        board.putPieceOnBoardAt(bishop, new Location(startSquare));
 
         assertFalse(enPassantRule.isEnPassantCapture(chessGame, move));
 
@@ -178,13 +176,13 @@ public class EnPassantTest {
         ChessBoard board = game.getChessBoard();
         ChessBoardView view = new ChessBoardView(board);
         try {
-            game.move(whitePlayer, new Move(new Location(D, 2), new Location(D, 4)));
-            game.move(blackPlayer, new Move(new Location(E, 4), new Location(D, 3)));
+            game.move(whitePlayer, new Move("D2-D4"));
+            game.move(blackPlayer, new Move("E4-D3"));
         } catch (IllegalMoveException e) {
             view.displayTheBoard();
         }
-        assertTrue(board.getPieceFromBoardAt(new Location(E, 4)) instanceof PawnPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(D, 4)) instanceof PawnPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("E4")) instanceof PawnPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("D4")) instanceof PawnPiece);
     }
 
 }
