@@ -1,6 +1,7 @@
 package org.amc.dao;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
@@ -39,7 +40,7 @@ public class EntityManagerCacheCleaner {
     
     private void scheduleCleaner(EntityManagerCache enCache) {
         if(scheduler == null) {
-            throw new NullPointerException("Scheduler is null");
+            throw new BeanInitializationException("Scheduler is null");
         } else {
             scheduler.schedule(new EmCacheCleanerThread(enCache, minutesToLive),
                             new PeriodicTrigger(period, periodUnit));
