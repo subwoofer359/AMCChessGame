@@ -20,9 +20,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class AbstractServerChessGameTest {
 	private ChessGameFactory factory;
@@ -46,10 +44,6 @@ public class AbstractServerChessGameTest {
 				return null;
 			}
 		};
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test
