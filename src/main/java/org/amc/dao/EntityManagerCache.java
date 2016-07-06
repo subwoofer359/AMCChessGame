@@ -35,7 +35,7 @@ public class EntityManagerCache {
     private EntityManager createEntityManager(long gameUid, ManagerInfo managerInfo) {
         EntityManager manager = entityManagerFactory.createEntityManager();
         ManagerInfo returnInfo = entityManagerMap.putIfAbsent(gameUid, new ManagerInfo(manager));
-        if(returnInfo != managerInfo) {
+        if(returnInfo.equals(managerInfo)) {
             manager.close();
             manager = returnInfo.getEntityManager();
         }
