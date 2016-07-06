@@ -49,10 +49,6 @@ public class BugCG42ChessGameDidntEndWhenCheckmateWasAchieved {
         chessGame.setChessBoard(board);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void test() throws IllegalMoveException {
         Move move = new Move("C6-B6");
