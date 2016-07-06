@@ -1,7 +1,6 @@
 package org.amc.game.chess;
 
 import static org.junit.Assert.*;
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.junit.*;
@@ -14,6 +13,13 @@ public class ChessBoardTest {
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
     private ChessBoard board;
+    
+    private static final int WHITE_START_ROW = 1;
+    private static final int WHITE_END_ROW = 2;
+    private static final int BLACK_START_ROW = 7;
+    private static final int BLACK_END_ROW = 8;
+    private static final int EMPTY_START_ROW = 3;
+    private static final int EMPTY_END_ROW = 6;
   
     private ChessBoardFactory factory;
 
@@ -28,28 +34,38 @@ public class ChessBoardTest {
     @Test
     public void testInitialse() {
         board.initialise();
-        for (int i = 7; i <= 8; i++) {
-            for (Coordinate coord : Coordinate.values()) {
-                ChessPiece piece = board.getPieceFromBoardAt(coord.getIndex(), i);
-                assertTrue(piece instanceof ChessPiece);
-                assertEquals(piece.getColour(), Colour.BLACK);
-            }
-        }
-        for (int i = 3; i <= 6; i++) {
-            for (Coordinate coord : Coordinate.values()) {
-                assertNull(board.getPieceFromBoardAt(coord.getIndex(), i));
-            }
-        }
-        for (int i = 1; i <= 2; i++) {
-            for (Coordinate coord : Coordinate.values()) {
-                ChessPiece piece = board.getPieceFromBoardAt(coord.getIndex(), i);
-                assertTrue(piece instanceof ChessPiece);
-                assertEquals(piece.getColour(), Colour.WHITE);
-            }
-        }
-
+        checkRows(BLACK_START_ROW, BLACK_END_ROW, Colour.BLACK);
+        
+        checkRowsForNull(EMPTY_START_ROW, EMPTY_END_ROW);
+        
+        checkRows(WHITE_START_ROW, WHITE_END_ROW, Colour.WHITE);
     }
-
+    
+    private void checkRow(int row, Colour colour) {
+    	for (Coordinate coord : Coordinate.values()) {
+            ChessPiece piece = board.getPieceFromBoardAt(coord.getIndex(), row);
+            assertTrue(piece instanceof ChessPiece);
+            assertEquals(piece.getColour(), colour);
+        }
+    }
+    
+    private void checkRows(int start, int end, Colour colour) {
+    	for(int i = start; i <= end; i++) {
+    		checkRow(i, colour);
+    	}
+    }
+    
+    private void checkRowForNull(int row) {
+    	for (Coordinate coord : Coordinate.values()) {
+            assertNull(board.getPieceFromBoardAt(coord.getIndex(), row));
+        }
+    }
+    
+    private void checkRowsForNull(int start, int end) {
+    	for (int i = start; i <= end; i++) {
+            checkRowForNull(i);
+        }
+    }
     /**
      * Tests the copying constructor of ChessBoard and copy method of ChessPiece
      */
@@ -105,8 +121,8 @@ public class ChessBoardTest {
         Location blackKingLocation = board.getPlayersKingLocation(blackPlayer);
         Location whiteKingLocation = board.getPlayersKingLocation(whitePlayer);
 
-        assertTrue(new Location(E, 1).equals(blackKingLocation));
-        assertTrue(new Location(A, 1).equals(whiteKingLocation));
+        assertTrue(new Location("E1").equals(blackKingLocation));
+        assertTrue(new Location("A1").equals(whiteKingLocation));
     }
 
     @Test(expected = RuntimeException.class)
