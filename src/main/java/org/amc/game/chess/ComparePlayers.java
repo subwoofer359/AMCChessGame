@@ -33,7 +33,7 @@ public final class ComparePlayers {
         }
 
         private ComparePlayers() {
-            throw new RuntimeException("Can't be instantiated");
+            throw new AssertionError("Can't be instantiated");
         }
 
 }
