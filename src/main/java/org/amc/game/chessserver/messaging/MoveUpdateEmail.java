@@ -43,7 +43,6 @@ public class MoveUpdateEmail extends EmailTemplate {
             
         } catch (IOException e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
         }
     }
     

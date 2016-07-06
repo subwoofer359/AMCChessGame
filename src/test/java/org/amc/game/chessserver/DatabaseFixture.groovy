@@ -146,7 +146,6 @@ class DatabaseFixture {
              userDAO.addEntity(user);  
         } catch (DAOException e) {
             logger.error("user: ${user.name} not added to datbase");
-            e.printStackTrace();
         }
         
     }
