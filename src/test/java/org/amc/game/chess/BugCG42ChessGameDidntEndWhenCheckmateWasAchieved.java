@@ -12,10 +12,7 @@ import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessBoardView;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Bug Jira CG-42: Chess game didn't end when checkmate was achieved
