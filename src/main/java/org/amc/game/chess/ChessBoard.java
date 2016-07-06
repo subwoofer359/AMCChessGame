@@ -256,7 +256,7 @@ public class ChessBoard extends DefaultSubject {
                 }
             }
         }
-        throw new RuntimeException("Player's king not found this should not happened");
+        throw new IllegalStateException("Player's king not found this should not happened");
     }
 
     public static class ChessPieceLocation {
