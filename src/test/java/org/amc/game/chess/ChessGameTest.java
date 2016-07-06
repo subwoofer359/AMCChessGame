@@ -4,103 +4,103 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import static org.junit.Assert.*;
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 import org.amc.game.chess.AbstractChessGame.GameState;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.*;
 import java.util.List;
 
 public class ChessGameTest {
 
     private ChessGameFixture chessGameFixture;
-    private Location endLocation;
-    private Location startLocation;
+    private ChessBoardUtilities cbUtils;
+    private String endLocation;
+    private String startLocation;
+    private ChessGamePlayer whitePlayer;
+    private ChessGamePlayer blackPlayer;
 
     @Before
     public void setUp() throws Exception {
         chessGameFixture = new ChessGameFixture();
+        whitePlayer = chessGameFixture.getWhitePlayer();
+        blackPlayer = chessGameFixture.getBlackPlayer();
         chessGameFixture.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
         chessGameFixture.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
-        startLocation = new Location(A, 8);
-        endLocation = new Location(B, 7);
-    }
-
-    @After
-    public void tearDown() throws Exception {
+        startLocation = "A8";
+        endLocation = "B7";
+        
+        cbUtils = new ChessBoardUtilities(chessGameFixture.getBoard());
     }
 
     @Test
-    public void testChangePlayer() {
-        assertEquals(chessGameFixture.getWhitePlayer(), chessGameFixture.getCurrentPlayer());
+    public void testChangePlayer() {    	
+        assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
         chessGameFixture.changePlayer();
-        assertEquals(chessGameFixture.getBlackPlayer(), chessGameFixture.getCurrentPlayer());
+        assertEquals(blackPlayer, chessGameFixture.getCurrentPlayer());
         chessGameFixture.changePlayer();
-        assertEquals(chessGameFixture.getWhitePlayer(), chessGameFixture.getCurrentPlayer());
+        assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
     }
 
     @Test(expected = IllegalMoveException.class)
     public void testMoveWithAnEmptySquare() throws IllegalMoveException {
-        chessGameFixture.move(chessGameFixture.getWhitePlayer(), new Move(startLocation, endLocation));
+        chessGameFixture.move(whitePlayer, cbUtils.createMove(startLocation, endLocation));
     }
 
     @Test(expected = IllegalMoveException.class)
     public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
-        chessGameFixture.putPieceOnBoardAt(bishop, startLocation);
-        chessGameFixture.move(chessGameFixture.getBlackPlayer(), new Move(startLocation, new Location(B, 7)));
+        cbUtils.addChessPieceToBoard(bishop, startLocation);
+        chessGameFixture.move(blackPlayer, cbUtils.createMove(startLocation, "B7"));
     }
 
     @Test
     public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
-        chessGameFixture.putPieceOnBoardAt(bishop, startLocation);
-        chessGameFixture.move(chessGameFixture.getWhitePlayer(), new Move(startLocation, endLocation));
-        assertEquals(bishop.moved(), chessGameFixture.getPieceFromBoardAt(endLocation));
-        assertNull(chessGameFixture.getPieceFromBoardAt(startLocation));
+        cbUtils.addChessPieceToBoard(bishop, startLocation);
+        chessGameFixture.move(whitePlayer, cbUtils.createMove(startLocation, endLocation));
+        assertEquals(bishop.moved(), cbUtils.getPieceOnBoard(endLocation));
+        assertNull(cbUtils.getPieceOnBoard(startLocation));
     }
 
     @Test
     public void doesGameRuleApply() {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
-        Location rookStartPosition = new Location(H, 1);
-        Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(G, 1));
-        chessGameFixture.putPieceOnBoardAt(rook, rookStartPosition);
+        final String rookStartPosition = "H1";
+        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "G1");
+        cbUtils.addChessPieceToBoard(rook, rookStartPosition);
         assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
 
     @Test
     public void doesNotGameRuleApply() {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
-        Location rookStartPosition = new Location(H, 1);
-        Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
-        chessGameFixture.putPieceOnBoardAt(rook, rookStartPosition);
+        final String rookStartPosition = "H1";
+        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "F1");
+        cbUtils.addChessPieceToBoard(rook, rookStartPosition);
         assertFalse(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
 
     @Test
     public void gameRuleApplied() throws IllegalMoveException {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
-        Location rookStartPosition = new Location(H, 1);
-        Move move = new Move(StartingSquare.WHITE_KING.getLocation(), new Location(F, 1));
-        chessGameFixture.putPieceOnBoardAt(rook, rookStartPosition);
-        chessGameFixture.move(chessGameFixture.getWhitePlayer(), move);
+        String rookStartPosition = "H1";
+        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "F1");
+        cbUtils.addChessPieceToBoard(rook, rookStartPosition);
+        chessGameFixture.move(whitePlayer, move);
     }
     
     @Test
     public void testMovesAreSaved() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
-        chessGameFixture.putPieceOnBoardAt(bishop, startLocation);
-        Move move = new Move(startLocation, endLocation);
+        cbUtils.addChessPieceToBoard(bishop, startLocation);
         chessGameFixture.changePlayer();
-        chessGameFixture.move(chessGameFixture.getBlackPlayer(), move);
+        chessGameFixture.move(blackPlayer, cbUtils.createMove(startLocation, endLocation));
+        
         Move lastMove = chessGameFixture.getTheLastMove();
-        assertEquals(lastMove.getStart(), startLocation);
-        assertEquals(lastMove.getEnd(), endLocation);
+        
+        assertEquals(lastMove.getStart().asString(), startLocation);
+        assertEquals(lastMove.getEnd().asString(), endLocation);
     }
 
     @Test
@@ -158,8 +158,8 @@ public class ChessGameTest {
      */
     @Test(expected = IllegalMoveException.class)
     public void notPlayersTurn() throws IllegalMoveException {
-        Move move = new Move(StartingSquare.BLACK_KING.getLocation(), new Location(E, 7));
-        chessGameFixture.move(chessGameFixture.getBlackPlayer(), move);
-        assertEquals(chessGameFixture.getWhitePlayer(), chessGameFixture.getCurrentPlayer());
+        Move move = new Move(StartingSquare.BLACK_KING.getLocation(), new Location("E7"));
+        chessGameFixture.move(blackPlayer, move);
+        assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
     }
 }
