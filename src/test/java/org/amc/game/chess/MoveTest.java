@@ -3,22 +3,12 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class MoveTest {
-    private static final Location start = new Location(Coordinate.A, 1);
-    private static final Location end = new Location(Coordinate.D, 2);
+    private static final Location start = new Location("A1");
+    private static final Location end = new Location("D2");
     private static final Move move = new Move(start, end);
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @Test
     public void testToString() {
@@ -63,17 +53,17 @@ public class MoveTest {
 
     @Test
     public void testIsFileMove() {
-        assertTrue(Move.isFileOrRankMove(new Move(start, new Location(Coordinate.H, 1))));
+        assertTrue(Move.isFileOrRankMove(new Move(start, new Location("H1"))));
     }
 
     @Test
     public void testIsRankMove() {
-        assertTrue(Move.isFileOrRankMove(new Move(start, new Location(Coordinate.A, 8))));
+        assertTrue(Move.isFileOrRankMove(new Move(start, new Location("A8"))));
     }
 
     @Test
     public void testNoMoveIsNotFileOrRankMove() {
-        assertFalse(Move.isFileOrRankMove(new Move(start, new Location(Coordinate.A, 1))));
+        assertFalse(Move.isFileOrRankMove(new Move(start, new Location("A1"))));
     }
 
     @Test
@@ -83,7 +73,7 @@ public class MoveTest {
 
     @Test
     public void testIsDiagonalMove() {
-        assertTrue(Move.isDiagonalMove(new Move(start, new Location(Coordinate.C, 3))));
+        assertTrue(Move.isDiagonalMove(new Move(start, new Location("C3"))));
     }
 
     
