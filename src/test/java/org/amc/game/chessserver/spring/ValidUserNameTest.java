@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

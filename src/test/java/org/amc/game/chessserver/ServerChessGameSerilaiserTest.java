@@ -7,7 +7,6 @@ import org.amc.dao.ChessGameInfo;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
 import org.junit.After;
 import org.junit.Before;
