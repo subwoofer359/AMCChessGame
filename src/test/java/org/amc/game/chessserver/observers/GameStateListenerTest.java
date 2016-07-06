@@ -8,10 +8,7 @@ import java.text.ParseException;
 
 import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
-import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessBoardFactory;
-import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
@@ -21,7 +18,6 @@ import org.amc.game.chess.Location;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
-import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
