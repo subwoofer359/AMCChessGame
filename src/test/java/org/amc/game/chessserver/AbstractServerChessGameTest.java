@@ -67,7 +67,8 @@ public class AbstractServerChessGameTest {
 	
 	@Test
 	public void equalsNull() {
-		assertFalse(ascgGame.equals(null));
+		AbstractServerChessGame scg = null;
+		assertFalse(ascgGame.equals(scg));
 	}
 	
 	@Test
