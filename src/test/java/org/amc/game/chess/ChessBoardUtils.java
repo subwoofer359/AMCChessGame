@@ -1,3 +1,4 @@
+package org.amc.game.chess;
 /**
  * Contains simple chessboard manipulating methods
  * @author Adrian McLaughlin
