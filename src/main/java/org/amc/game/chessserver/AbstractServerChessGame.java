@@ -286,8 +286,6 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         AbstractServerChessGame other = (AbstractServerChessGame) obj;
         if (id != other.id)
             return false;
-        if (uid != other.uid)
-            return false;
-        return true;
+        return uid != other.uid;
     }
 }

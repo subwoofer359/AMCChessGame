@@ -243,7 +243,7 @@ public class ChessBoard extends DefaultSubject {
      * @param player
      *            Player
      * @return Location
-     * @throws RuntimeException
+     * @throws IllegalStateException
      *             if no King is found
      */
     Location getPlayersKingLocation(ChessGamePlayer player) {

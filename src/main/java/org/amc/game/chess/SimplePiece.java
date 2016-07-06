@@ -143,9 +143,7 @@ abstract class SimplePiece implements ChessPiece {
         SimplePiece other = (SimplePiece) obj;
         if (colour != other.colour)
             return false;
-        if (hasMoved != other.hasMoved)
-            return false;
-        return true;
+        return hasMoved == other.hasMoved;
     }
 
     @Override

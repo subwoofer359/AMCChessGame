@@ -17,6 +17,6 @@ public final class ServerConstants {
     
     
     private ServerConstants() {
-        throw new RuntimeException("Can't be instantiated");
+        throw new AssertionError("Can't be instantiated");
     }
 }

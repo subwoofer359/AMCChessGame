@@ -64,7 +64,6 @@ public class SignUpController {
         } catch(DAOException dao){
             mav.getModel().put(MESSAGE_MODEL_ATTR, ERROR_MSG);
             logger.error("Error on accessing database:" + dao.getMessage());
-            dao.printStackTrace();
         }
         return mav;
     }
