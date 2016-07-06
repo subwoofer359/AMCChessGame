@@ -35,10 +35,6 @@ public class PawnPieceTest {
         board = new ChessBoard();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testOnEmptyBoardIsValidWhiteMove() {
         PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
