@@ -82,12 +82,12 @@ public class ChessGameTest {
     }
 
     @Test
-    public void gameRuleApplied() throws IllegalMoveException {
+    public void gameRuleAppliedTest() throws IllegalMoveException {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         String rookStartPosition = "H1";
-        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "F1");
+        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "G1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
-        chessGameFixture.move(whitePlayer, move);
+        assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
     
     @Test
