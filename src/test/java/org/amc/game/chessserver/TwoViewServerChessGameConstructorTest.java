@@ -7,9 +7,7 @@ import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ComparePlayers;
 
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class TwoViewServerChessGameConstructorTest {
 
