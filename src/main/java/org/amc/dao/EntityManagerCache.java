@@ -35,11 +35,15 @@ public class EntityManagerCache {
     private EntityManager createEntityManager(long gameUid, ManagerInfo managerInfo) {
         EntityManager manager = entityManagerFactory.createEntityManager();
         ManagerInfo returnInfo = entityManagerMap.putIfAbsent(gameUid, new ManagerInfo(manager));
-        if(returnInfo.equals(managerInfo)) {
+        if(isNotTheSameManagerInfo(returnInfo, managerInfo)) {
             manager.close();
             manager = returnInfo.getEntityManager();
         }
         return manager;
+    }
+    
+    private boolean isNotTheSameManagerInfo(ManagerInfo a, ManagerInfo b) {
+    	return a != null && !a.equals(b);
     }
 
     private EntityManager getEntityManagerCreateNewIfClosed(Long gameUid) {
