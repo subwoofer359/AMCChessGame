@@ -103,7 +103,7 @@ public class AbstractServerChessGameTest {
     }
     
     @Test
-    public void Constructor() {
+    public void constructor() {
         ServerChessGame scgGame = new ServerChessGame() {
             
             private static final long serialVersionUID = 1L;
@@ -124,7 +124,7 @@ public class AbstractServerChessGameTest {
     }
     
     @Test
-    public void ConstructorChessGame() {
+    public void constructorChessGame() {
         ChessGameFixture fixture = new ChessGameFixture();
         AbstractServerChessGame scgGame = new TestServerChessGame(GAME_UID, fixture.getChessGame());
         
