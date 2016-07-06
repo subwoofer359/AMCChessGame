@@ -15,17 +15,8 @@ public class TwoViewServerChessGameConstructorTest {
 
     private static final long UID = 120l;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
-    public void ConstructorTest() {
+    public void constructorTest() {
         ServerChessGame scgGame = new TwoViewServerChessGame();
         assertEquals(0L, scgGame.getUid());
         assertNull(scgGame.getChessGame());
@@ -37,7 +28,7 @@ public class TwoViewServerChessGameConstructorTest {
     }
 
     @Test
-    public void ConstructorChessGameTest() {
+    public void constructorChessGameTest() {
         ChessGameFixture fixture = new ChessGameFixture();
         ServerChessGame scgGame = new TwoViewServerChessGame(UID, fixture.getChessGame());
 
