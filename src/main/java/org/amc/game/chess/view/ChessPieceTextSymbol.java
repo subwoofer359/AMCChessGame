@@ -12,7 +12,7 @@ import org.amc.game.chess.RookPiece;
 public final class ChessPieceTextSymbol {
 
     private ChessPieceTextSymbol() {
-        throw new RuntimeException(ChessPieceTextSymbol.class.getSimpleName()+
+        throw new AssertionError(ChessPieceTextSymbol.class.getSimpleName()+
                         " Can't be instantiated");
     }
 
