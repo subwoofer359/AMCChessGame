@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 import static org.amc.game.chess.ChessBoard.Coordinate.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.text.ParseException;
 import java.util.List;
@@ -26,13 +24,7 @@ public class ChessBoardTest {
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         board = new ChessBoard();
     }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
-   
-
+    
     @Test
     public void testInitialse() {
         board.initialise();
