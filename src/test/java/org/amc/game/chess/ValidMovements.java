@@ -64,7 +64,7 @@ public class ValidMovements {
     }
 
     private ValidMovements() {
-        throw new RuntimeException();
+        throw new AssertionError("Can't instantiated");
     }
 
     public static List<Location> getListOfDiagonalLocationsFromD5() {
