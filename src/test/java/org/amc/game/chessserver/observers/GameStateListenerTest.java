@@ -33,14 +33,11 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 public class GameStateListenerTest {
 
     private GameStateListener listener;
-    private ChessGamePlayer whitePlayer;
-    private ChessGamePlayer blackPlayer;
     private ServerChessGame serverGame;
     
     private static final long GAME_UID = 1234l;
     private ArgumentCaptor<String> destinationArgument;
     private ArgumentCaptor<Object> messageArgument;
-    private ChessGameFactory chessGameFactory;
     
     @Mock
     private ServerChessGameDAO serverChessGameDAO;
@@ -59,9 +56,9 @@ public class GameStateListenerTest {
     }
 
     private void setUpServerChessGame() {
-    	whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-    	chessGameFactory = new ChessGameFactory() {
+    	ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+    	ChessGameFactory chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
                             ChessGamePlayer playerBlack) {
@@ -80,10 +77,6 @@ public class GameStateListenerTest {
         listener.setSimpMessagingTemplate(template);
         listener.setServerChessGameDAO(serverChessGameDAO);
     }
-    
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @SuppressWarnings("unchecked")
     @Test
@@ -94,7 +87,7 @@ public class GameStateListenerTest {
         assertEquals(String.format(GameStateListener.MESSAGE_DESTINATION + "/%d",serverGame.getUid()), 
                         destinationArgument.getValue());
         
-        assertEquals(ChessGame.GameState.RUNNING.toString(), messageArgument.getValue());
+        assertEquals(RUNNING.toString(), messageArgument.getValue());
     }
     
     @SuppressWarnings("unchecked")
@@ -111,7 +104,7 @@ public class GameStateListenerTest {
         listener.update(serverGame, null);
         verify(template, never()).convertAndSend(anyString(),anyObject(),anyMap());
         
-        listener.update(null, ChessGame.GameState.RUNNING);
+        listener.update(null, RUNNING);
         verify(template, never()).convertAndSend(anyString(),anyObject(),anyMap());
         verify(serverChessGameDAO, never()).saveServerChessGame(eq(serverGame));
     }
