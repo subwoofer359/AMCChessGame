@@ -35,20 +35,20 @@ public class SimpleChessBoardSetupNotationTest {
     @Test
     public void test() throws Exception {
         ChessBoard board = chessBoardFactory.getChessBoard(setupNotation);
-        assertTrue(board.getPieceFromBoardAt(new Location(D, 6)) instanceof KingPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(E, 6)) instanceof QueenPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(B, 8)) instanceof BishopPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(E, 8)) instanceof BishopPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(G, 8)) instanceof KnightPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(A, 6)) instanceof KnightPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(A, 4)) instanceof RookPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(H, 5)) instanceof PawnPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(A, 3)) instanceof KingPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(E, 1)) instanceof QueenPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(H, 3)) instanceof BishopPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(C, 3)) instanceof KnightPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(B, 5)) instanceof RookPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location(F, 4)) instanceof PawnPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("D6")) instanceof KingPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("E6")) instanceof QueenPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("B8")) instanceof BishopPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("E8")) instanceof BishopPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("G8")) instanceof KnightPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("A6")) instanceof KnightPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("A4")) instanceof RookPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("H5")) instanceof PawnPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("A3")) instanceof KingPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("E1")) instanceof QueenPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("H3")) instanceof BishopPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("C3")) instanceof KnightPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("B5")) instanceof RookPiece);
+        assertTrue(board.getPieceFromBoardAt(new Location("F4")) instanceof PawnPiece);
     }
 
     @Test(expected = ParseException.class)
