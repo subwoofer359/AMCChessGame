@@ -32,6 +32,6 @@ public final class SetupChessBoard {
     }
 
     private SetupChessBoard() {
-        throw new RuntimeException("Can't be instantiated");
+        throw new AssertionError("Can't be instantiated");
     }
 }
