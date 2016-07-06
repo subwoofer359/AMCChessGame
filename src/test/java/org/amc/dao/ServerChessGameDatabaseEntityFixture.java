@@ -94,8 +94,6 @@ public class ServerChessGameDatabaseEntityFixture {
         return blackPlayer;
     }
     
-    
-
     public ChessGame getChessGame() {
         return scgGame.getChessGame();
     }
@@ -107,6 +105,8 @@ public class ServerChessGameDatabaseEntityFixture {
     public long getUID() {
         return UID;
     }
-    
-    
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}    
 }

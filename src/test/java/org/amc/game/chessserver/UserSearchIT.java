@@ -41,9 +41,6 @@ public class UserSearchIT {
     @Autowired
     private WebApplicationContext wac;
 
-    @Autowired
-    private SimpMessagingTemplate template;
-
     private MockMvc mockMvc;
 
     @Before

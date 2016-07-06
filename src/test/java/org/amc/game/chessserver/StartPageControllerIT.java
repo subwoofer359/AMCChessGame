@@ -39,9 +39,6 @@ public class StartPageControllerIT {
     @Autowired
     private WebApplicationContext wac;
 
-    @Autowired
-    private SimpMessagingTemplate template;
-
     private MockMvc mockMvc;
 
     @Before

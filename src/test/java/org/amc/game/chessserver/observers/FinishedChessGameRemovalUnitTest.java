@@ -2,7 +2,6 @@ package org.amc.game.chessserver.observers;
 
 import static org.mockito.Mockito.*;
 
-import org.amc.DAOException;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameSubject;
 import org.amc.game.chess.HumanPlayer;
@@ -11,7 +10,6 @@ import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
-import org.apache.openjpa.jdbc.kernel.exps.Abs;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

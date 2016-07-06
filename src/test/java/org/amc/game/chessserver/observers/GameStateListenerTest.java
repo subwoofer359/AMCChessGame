@@ -22,7 +22,6 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameStateListener;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

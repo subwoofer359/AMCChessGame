@@ -1,6 +1,5 @@
 package org.amc.game.chessserver;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;

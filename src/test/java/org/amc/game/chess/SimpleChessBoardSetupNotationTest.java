@@ -1,6 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 import static org.amc.game.chess.SimpleChessBoardSetupNotation.MOVE_TOKEN;
 
