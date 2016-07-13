@@ -9,7 +9,6 @@ import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.GameFinishedListener;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -25,13 +24,24 @@ import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalThreadTest {
 
-    private int NUMBER_OF_GAMES = 100;
+    private static final int NUMBER_OF_GAMES = 100;
+    
+    // Time to wait for ExecutorService to shutdown
+    private static final int THREADSERVICE_TO_SHUTDOWN = 60;
+   
+    private static final int RANDOM_LONG_RANGE = 2000;
+    
     private ThreadPoolTaskScheduler scheduler;
+    
     // Countdown Latch used to synchonise removal threads
     private CountDownLatch latch = new CountDownLatch(NUMBER_OF_GAMES);
+    
     private ExecutorService threadService;
+    
     private AbstractServerChessGame[] chessGames = new AbstractServerChessGame[NUMBER_OF_GAMES];
+    
     private long[] uids = new long[NUMBER_OF_GAMES];
+    
     private Player player = new HumanPlayer("Adrian McLaughlin");
     
     @Mock
@@ -55,13 +65,6 @@ public class FinishedChessGameRemovalThreadTest {
             listener.setTaskScheduler(scheduler);
             listener.setDelayTime(1);
         }
-        
-        
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
     }
     
     @Test
@@ -76,10 +79,10 @@ public class FinishedChessGameRemovalThreadTest {
     
     private void waitForThreadServicesShutdown() throws Exception {
         threadService.shutdown();
-        threadService.awaitTermination(60, TimeUnit.SECONDS);
+        threadService.awaitTermination(THREADSERVICE_TO_SHUTDOWN, TimeUnit.SECONDS);
         
         scheduler.getScheduledThreadPoolExecutor().shutdown();
-        scheduler.getScheduledThreadPoolExecutor().awaitTermination(60, TimeUnit.SECONDS);
+        scheduler.getScheduledThreadPoolExecutor().awaitTermination(THREADSERVICE_TO_SHUTDOWN, TimeUnit.SECONDS);
     }
     
     /**
@@ -100,7 +103,7 @@ public class FinishedChessGameRemovalThreadTest {
         }
         @Override
         public String call() throws Exception {
-            Thread.sleep(ThreadLocalRandom.current().nextLong(2000));
+            Thread.sleep(ThreadLocalRandom.current().nextLong(RANDOM_LONG_RANGE));
             chessGame.setCurrentStatus(ServerGameStatus.FINISHED);
             latch.countDown();
             latch.await();
