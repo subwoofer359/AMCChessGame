@@ -11,7 +11,7 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 
-public class MockServerChessGame extends AbstractServerChessGame {
+class MockServerChessGame extends AbstractServerChessGame {
 	private static final long serialVersionUID = 1L;
 
 	public MockServerChessGame(long gameUid, Player player) {
