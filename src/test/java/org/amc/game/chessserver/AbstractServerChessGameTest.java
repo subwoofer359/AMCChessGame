@@ -120,7 +120,7 @@ public class AbstractServerChessGameTest {
     @Test
     public void getPlayerOpponentNotAddedTest() {
     	ascgGame =  new MockServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
-        assertEquals(null, ascgGame.getPlayer(cgFixture.getBlackPlayer()));
+        assertNull("Player shouldn't have been added", ascgGame.getPlayer(cgFixture.getBlackPlayer()));
     }
     
     @Test
