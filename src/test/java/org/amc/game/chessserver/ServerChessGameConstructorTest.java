@@ -9,29 +9,25 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
-import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ServerChessGameConstructorTest {
-    private Player player;
     private ChessGameFactory chessGameFactory;
     private ChessGameFixture fixture;
     private ChessGame mockChessGame;
     
     private static final long UID = 120l;
+    private static final long INVALID_UID = 233l;
 
     @Before
     public void setUp() throws Exception {
-        player = new HumanPlayer("Ted");
         chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
@@ -45,21 +41,8 @@ public class ServerChessGameConstructorTest {
         mockChessGame = mock(ChessGame.class);
         
     }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void testInitialState() {
-        ServerChessGame game = getServerChessGame(UID, player);
-        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), player));
-        assertNull(game.getChessGame());
-        assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, game.getCurrentStatus());
-        assertEquals(Colour.WHITE, game.getPlayer().getColour());
-    }
         
-    private ServerChessGame getServerChessGame(long UID, Player player) {
+    private ServerChessGame createServerChessGame(long UID, Player player) {
         ServerChessGame game = new ServerChessGame(UID, player) {
 
             private static final long serialVersionUID = 1L;
@@ -74,7 +57,7 @@ public class ServerChessGameConstructorTest {
         return game;
     }
     
-    private ServerChessGame getServerChessGame(long UID, ChessGame chessGame) {
+    private ServerChessGame createServerChessGame(long UID, ChessGame chessGame) {
         ServerChessGame game = new ServerChessGame(UID, chessGame) {
 
             private static final long serialVersionUID = 1L;
@@ -92,17 +75,17 @@ public class ServerChessGameConstructorTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNullPlayerPassedToConstructor() {
     	Player p = null;
-    	getServerChessGame(233L, p);
+    	createServerChessGame(INVALID_UID, p);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testNullChessGamePassedToConstructor() {
     	ChessGame c = null;
-    	getServerChessGame(233L, c);
+    	createServerChessGame(INVALID_UID, c);
     }
     
     @Test
-    public void Constructor() {
+    public void constructorTest() {
         ServerChessGame scgGame = new ServerChessGame() {
             
             private static final long serialVersionUID = 1L;
@@ -123,9 +106,9 @@ public class ServerChessGameConstructorTest {
     }
     
     @Test
-    public void ConstructorChessGame() {
+    public void constructorChessGameTest() {
         ChessGameFixture fixture = new ChessGameFixture();
-        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
         
         assertEquals(UID, scgGame.getUid());
         assertNotNull(scgGame.getChessGame());
@@ -143,7 +126,7 @@ public class ServerChessGameConstructorTest {
     @Test
     public void testMove() throws IllegalMoveException {
         
-        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
         scgGame.setChessGame(mockChessGame);
         when(mockChessGame.getGameState()).thenReturn(GameState.RUNNING);
         
@@ -157,7 +140,7 @@ public class ServerChessGameConstructorTest {
     @Test
     public void checkStatusInCheckTest() throws IllegalMoveException {
         
-        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
         scgGame.setChessGame(mockChessGame);
         when(mockChessGame.getGameState()).thenReturn(GameState.BLACK_IN_CHECK);
         
@@ -171,7 +154,7 @@ public class ServerChessGameConstructorTest {
     @Test
     public void checkStatusStalemateTest() throws IllegalMoveException {
         
-        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
         scgGame.setChessGame(mockChessGame);
         when(mockChessGame.getGameState()).thenReturn(GameState.STALEMATE);
         
@@ -186,7 +169,7 @@ public class ServerChessGameConstructorTest {
     
     @Test
     public void testMoveOnNullChessBoard() throws IllegalMoveException {
-        ServerChessGame scgGame = getServerChessGame(UID, fixture.getChessGame());
+        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
         scgGame.setChessGame(null);
         
         Move move = new Move("A2-A3");
@@ -196,5 +179,4 @@ public class ServerChessGameConstructorTest {
         verify(mockChessGame, times(0)).changePlayer();
         verify(mockChessGame, times(0)).getGameState();
     }
-
 }

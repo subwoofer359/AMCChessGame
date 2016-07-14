@@ -9,17 +9,39 @@ import javax.annotation.Resource;
 
 public class ServerChessGameFactory {
 	
-    private ObserverFactoryChain observerFactoryChain;
-    
-    private static final String LOCAL_OBSERVERS = "JsonChessGameView|"
-                    + "GameFinishedListener|OneViewGameStateListener";
-    private static final String NETWORK_OBSERVERS = 
-                    "JsonChessGameView|GameFinishedListener|GameStateListener|OfflineChessGameMessager";
-    
 	public enum GameType {
 		LOCAL_GAME,
 		NETWORK_GAME
 	}
+    
+	/**
+	 * Encapsulates the information on which observers to add to which
+	 * type of ChessGame
+	 * @author adrian
+	 *
+	 */
+	enum ObserversConfig {
+		LOCAL_OBSERVERS("JsonChessGameView|GameFinishedListener|OneViewGameStateListener"),
+		NETWORK_OBSERVERS("JsonChessGameView|"
+				+ "GameFinishedListener|GameStateListener|OfflineChessGameMessager");
+		
+		private String config;
+		
+		ObserversConfig(String config) {
+			this.config = config;
+		}
+		
+		public String getConfig() {
+			return config;
+		}
+		
+		public int getNumberOfObservers() {
+			return config.split("\\|").length;
+		}
+	}
+	
+	private ObserverFactoryChain observerFactoryChain;
+	
 	public ServerChessGame getServerChessGame(GameType gameType, long uid, Player player) {
 	    ServerChessGame serverChessGame;
 	    String observerStr;
@@ -27,12 +49,12 @@ public class ServerChessGameFactory {
 		switch(gameType) {
 		case LOCAL_GAME:
 			serverChessGame = new OneViewServerChessGame(uid, player);
-			observerStr = LOCAL_OBSERVERS;
+			observerStr = ObserversConfig.LOCAL_OBSERVERS.getConfig();
 			break;
 		case NETWORK_GAME:
 		default:
 		    serverChessGame = new TwoViewServerChessGame(uid, player);
-		    observerStr = NETWORK_OBSERVERS;
+		    observerStr = ObserversConfig.NETWORK_OBSERVERS.getConfig();
 		    break;
 		}
 		

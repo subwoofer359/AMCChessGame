@@ -2,23 +2,15 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Field;
-
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardUtilities;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.ChessPiece;
-import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.IllegalMoveException;
-import org.amc.game.chess.Location;
-import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.*;
 
@@ -26,13 +18,13 @@ public class AbstractServerChessGameTest {
 	private ChessGameFactory factory;
 	private AbstractServerChessGame ascgGame;
 	private static final long GAME_UID = 2L;
-	private static final long OTHER_GAME_UID = 22L;
+	private static final int NO_OBSERVERS = 0;
 	private ChessGameFixture cgFixture;
 
 	@Before
 	public void setUp() throws Exception {
 		cgFixture = new ChessGameFixture();
-		ascgGame = new TestServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
+		ascgGame = new MockServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
 		
 		ascgGame.addOpponent(cgFixture.getBlackPlayer());
 		
@@ -47,54 +39,18 @@ public class AbstractServerChessGameTest {
 	}
 
 	@Test
-	public void test() {
+	public void toStringTest() {
 		String toStringStr = ascgGame.toString();
 		String expectedStr = "ServerChessGame[" + cgFixture.getWhitePlayer() + " vs " + 
 				cgFixture.getBlackPlayer() + "]";
 		assertEquals(expectedStr, toStringStr);
 	}
 	
-	@Test
-	public void equalsItself() {
-		assertTrue(ascgGame.equals(ascgGame));
-	}
 	
-	@Test
-	public void equalsNull() {
-		AbstractServerChessGame scg = null;
-		assertFalse(ascgGame.equals(scg));
-	}
-	
-	@Test
-	public void equalsNotSameClass() {
-		assertFalse(ascgGame.equals(new SignUpController()));
-	}
-
-	@Test
-	public void equalAbstractServerChessGame() {
-		AbstractServerChessGame otherAscgGame = new TestServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
-		assertTrue(ascgGame.equals(otherAscgGame));
-	}
-	
-	@Test
-	public void equalsAbstractServerChessGameDifferentUid() {
-		AbstractServerChessGame otherAscgGame = new TestServerChessGame(OTHER_GAME_UID, cgFixture.getWhitePlayer());
-		assertFalse(ascgGame.equals(otherAscgGame));
-	}
-	
-	@Test
-	public void equalsAbstractServerChessGameDifferentId() throws Exception {
-		AbstractServerChessGame otherAscgGame = new TestServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
-		Field idField = AbstractServerChessGame.class.getDeclaredField("id");
-		idField.setAccessible(true);
-		idField.setInt(otherAscgGame, 1);
-		
-		assertFalse(ascgGame.equals(otherAscgGame));
-	}
 	
     @Test
     public void testDestroy() {
-        AbstractServerChessGame game = new TestServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
+        AbstractServerChessGame game = new MockServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
         game.destroy();
         
         assertNull(game.getOpponent());
@@ -103,7 +59,7 @@ public class AbstractServerChessGameTest {
     }
     
     @Test
-    public void constructor() {
+    public void emptyConstructorTest() {
         ServerChessGame scgGame = new ServerChessGame() {
             
             private static final long serialVersionUID = 1L;
@@ -119,37 +75,51 @@ public class AbstractServerChessGameTest {
         assertNull(scgGame.getPlayer());
         assertNull(scgGame.getOpponent());
         assertEquals(ServerGameStatus.NEW, scgGame.getCurrentStatus());
-        assertEquals(0, scgGame.getNoOfObservers());
+        assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
         assertNull(scgGame.getChessGameFactory());
     }
     
     @Test
-    public void constructorChessGame() {
+    public void constructorChessGameTest() {
         ChessGameFixture fixture = new ChessGameFixture();
-        AbstractServerChessGame scgGame = new TestServerChessGame(GAME_UID, fixture.getChessGame());
+        AbstractServerChessGame scgGame = new MockServerChessGame(GAME_UID, fixture.getChessGame());
         
         assertEquals(GAME_UID, scgGame.getUid());
-        assertNotNull(scgGame.getChessGame());
+        assertNotNull("ChessGame should not be null", scgGame.getChessGame());
         assertFalse(scgGame.getChessGame() == fixture.getChessGame());
         assertTrue(ComparePlayers.comparePlayers(fixture.getWhitePlayer(), scgGame.getPlayer()));
         assertTrue(ComparePlayers.comparePlayers(fixture.getBlackPlayer(), scgGame.getOpponent()));
         assertEquals(ServerGameStatus.IN_PROGRESS, scgGame.getCurrentStatus());
-        assertEquals(0, scgGame.getNoOfObservers());
-        assertNull(scgGame.getChessGameFactory());
+        assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
+        assertNull("Should be no ChessGameFactory", scgGame.getChessGameFactory());
         
         ChessBoardUtilities.compareBoards(fixture.getChessGame().getChessBoard(), 
                         scgGame.getChessGame().getChessBoard());
     }
     
+    @Test
+    public void constructorPlayerTest() {
+        ChessGameFixture fixture = new ChessGameFixture();
+        AbstractServerChessGame scgGame = new MockServerChessGame(GAME_UID, fixture.getWhitePlayer());
+        
+        assertEquals(GAME_UID, scgGame.getUid());
+        assertNull("ChessGame should be null", scgGame.getChessGame());
+        assertTrue(ComparePlayers.comparePlayers(fixture.getWhitePlayer(), scgGame.getPlayer()));
+        assertNull("Opponent should be null", scgGame.getOpponent());
+        assertEquals(ServerGameStatus.AWAITING_PLAYER, scgGame.getCurrentStatus());
+        assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
+        assertNull("Should be no ChessGameFactory", scgGame.getChessGameFactory());
+    }
+    
     @Test(expected=RuntimeException.class)
-    public void getPlayerUnknownPlayer() {
+    public void getPlayerUnknownPlayerTest() {
         Player unknownPlayer = new HumanPlayer("Evil Ralph");
         ascgGame.getPlayer(unknownPlayer);
     }
 
     @Test
     public void getPlayerOpponentNotAddedTest() {
-    	ascgGame =  new TestServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
+    	ascgGame =  new MockServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
         assertEquals(null, ascgGame.getPlayer(cgFixture.getBlackPlayer()));
     }
     
@@ -165,62 +135,11 @@ public class AbstractServerChessGameTest {
     public void getPlayerNullPlayer() {
         ascgGame.getPlayer(null);
     }
-
-    @Test 
-    public void hashCodeSameTest() {
-		AbstractServerChessGame otherAscgGame = new TestServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
-    	
-    	int hashCode = ascgGame.hashCode();
-    	int otherHashCode = otherAscgGame.hashCode();
-    	assertEquals(hashCode, otherHashCode);
-    }
-    
-    @Test 
-    public void hashCodeTest() {
-		AbstractServerChessGame otherAscgGame = new TestServerChessGame(OTHER_GAME_UID, cgFixture.getWhitePlayer());
-    	
-    	int hashCode = ascgGame.hashCode();
-    	int otherHashCode = otherAscgGame.hashCode();
-    	assertNotEquals(hashCode, otherHashCode);
-    }
     
     @Test
-    public void setServerChessGameFactory() {
+    public void setServerChessGameFactoryTest() {
     	ascgGame.setChessGameFactory(factory);
     	assertEquals(factory, ascgGame.chessGameFactory);
     }
-	
-	private static class TestServerChessGame extends AbstractServerChessGame {
-		private static final long serialVersionUID = 1L;
 
-		public TestServerChessGame(long gameUid, Player player) {
-			super(gameUid, player);
-		}
-		
-		public TestServerChessGame(long gameUid, ChessGame chessGame) {
-			super(gameUid, chessGame);
-		}
-		
-		@Override
-		public void move(ChessGamePlayer player, Move move)
-				throws IllegalMoveException {
-			//Do nothing
-		}
-		
-		@Override
-        public void promotePawnTo(ChessPiece piece, Location location) throws IllegalMoveException {
-            // Do nothing
-            
-        }
-		
-		@Override
-		public void addOpponent(Player opponent) {
-			if(getChessGame() == null) {
-				ChessBoard board = new ChessBoard();
-				setChessGame(new ChessGame(board, getPlayer(), new RealChessGamePlayer(opponent, Colour.BLACK)));
-			} else {
-				System.out.println("Opponent already set");
-			}
-		}
-	}
 }
