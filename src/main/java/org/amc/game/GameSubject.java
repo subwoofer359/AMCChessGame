@@ -7,6 +7,7 @@ import org.apache.openjpa.persistence.Factory;
 import org.apache.openjpa.persistence.PersistentCollection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +27,6 @@ public class GameSubject implements Subject  {
     @Factory("GameSubject.loadObservers")
     @Column(length=1000)
     private List<Observer> observers;
-    
     
     public GameSubject() {
         observers = new ArrayList<Observer>();
@@ -77,5 +77,13 @@ public class GameSubject implements Subject  {
     
     public static List<Observer> loadObservers(String observers) {
         return new ArrayList<Observer>();
+    }
+    
+    /**
+     * 
+     * @return an unmodifiable list of Observers
+     */
+    List<Observer> getObserverList() {
+    	return Collections.unmodifiableList(this.observers);
     }
 }
