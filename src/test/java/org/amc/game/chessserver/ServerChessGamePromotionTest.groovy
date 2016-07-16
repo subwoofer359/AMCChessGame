@@ -17,7 +17,6 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.StandardChessGameFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,11 +43,7 @@ class ServerChessGamePromotionTest {
         chessGame = sFactory.getChessGame(board, playerWhite, playerBlack);
         scGame = new TwoViewServerChessGame(GAME_UID, chessGame);
     }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
+	
     @Test
     public void test() {
         Move move = new Move("a7:a8");
@@ -56,7 +51,7 @@ class ServerChessGamePromotionTest {
         spyScGame.move(playerWhite, move);
         assert scGame.getChessGame().getGameState() == GameState.PAWN_PROMOTION;
         verify(spyScGame, times(1)).notifyObservers(GameState.PAWN_PROMOTION);
-        assert ComparePlayers.comparePlayers(playerWhite, scGame.getChessGame().getCurrentPlayer()) == true;
+        assert ComparePlayers.comparePlayers(playerWhite, scGame.getChessGame().getCurrentPlayer());
     }
     
     @Test(expected = IllegalMoveException.class)

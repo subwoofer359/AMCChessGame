@@ -28,12 +28,12 @@ class EmailValidatorTest {
 
     @Test
     public void testSupports() {
-        assertTrue(validator.supports(String.class));
+        assertTrue('Should support String class', validator.supports(String.class));
     }
     
     @Test
     public void testDoesNotSupports() {
-        assert validator.supports(Object.class) == false;
+        assertFalse('Shouldn\'t support Object class',validator.supports(Object.class));
     }
     
     @Test

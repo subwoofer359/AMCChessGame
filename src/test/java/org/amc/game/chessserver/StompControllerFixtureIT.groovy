@@ -6,15 +6,9 @@ import static org.mockito.Mockito.mock;
 
 import org.amc.dao.DAOInterface;
 import org.amc.dao.DAO;
-import org.amc.dao.EntityManagerCache;
 import org.amc.dao.SCGDAOInterface;
-import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.SimpleChessBoardSetupNotation;
-import org.amc.game.chess.StandardChessGameFactory;
-import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +19,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.context.WebApplicationContext;
-
-import groovy.transform.PackageScope;
 
 import java.security.Principal;
 

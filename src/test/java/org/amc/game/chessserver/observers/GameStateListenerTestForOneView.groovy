@@ -19,14 +19,11 @@ import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chessserver.OneViewServerChessGame;
 import org.amc.game.chessserver.ServerChessGame;
-import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-
-import edu.umd.cs.findbugs.detect.AnyMethodReturnValueStreamFactory;
 
 import java.text.ParseException;
 

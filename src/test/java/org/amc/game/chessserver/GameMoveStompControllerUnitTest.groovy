@@ -1,31 +1,13 @@
 package org.amc.game.chessserver;
 
-
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 
-import org.amc.dao.ServerChessGameDAO;
-import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessGame;
-import org.amc.game.chess.ChessGameFactory;
-import org.amc.game.chess.ChessGamePlayer;
-import org.amc.game.chess.Colour;
-import org.amc.game.chess.HumanPlayer;
-import org.amc.game.chess.RealChessGamePlayer;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import groovy.transform.CompileStatic;
-
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 class GameMoveStompControllerUnitTest extends StompControllerFixture {
 
