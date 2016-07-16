@@ -20,7 +20,6 @@ public class ChessGameCastlingKingInCheckTest {
 	private ChessGamePlayer currentPlayer;
 	private ChessPiece attackingPiece;
 	private Move defendingChessPieceMove;
-	private ChessBoard board;
 	private ChessGame chessGame;
 	private ChessPiece kingPiece;
 	private ChessPiece rookPiece;
@@ -33,7 +32,7 @@ public class ChessGameCastlingKingInCheckTest {
 
 	@Before
 	public void setUp() throws Exception {
-		board = new ChessBoard();
+		ChessBoard board = new ChessBoard();
 		new ChessBoardView(board);
 		cbUtils = new ChessBoardUtilities(board);
 
