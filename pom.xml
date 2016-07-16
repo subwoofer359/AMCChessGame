@@ -383,7 +383,7 @@
 				<executions>
 					<execution>
 						<id>enhancer</id>	
-						<phase>prepare-package</phase>
+						<phase>process-classes</phase>
 						<goals>
 							<goal>enhance</goal>
 						</goals>
@@ -437,7 +437,7 @@
 						<goals>
 							<goal>grunt</goal>
 						</goals>
-						<phase>test</phase>
+						<phase>package</phase>
 						<configuration>
 							<arguments>qunit</arguments>
 						</configuration>
