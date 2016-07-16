@@ -1,8 +1,6 @@
 package org.amc.game.chess;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
+import static org.amc.game.chess.StartingSquare.*;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.AbstractChessGame.GameState;
@@ -13,24 +11,25 @@ public class ChessGameTest {
 
     private ChessGameFixture chessGameFixture;
     private ChessBoardUtilities cbUtils;
-    private String endLocation;
-    private String startLocation;
+    private static final String END_LOCATION = "B7";
+    private static final String START_LOCATION = "A8";
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
 
     @Before
     public void setUp() throws Exception {
         chessGameFixture = new ChessGameFixture();
+
         whitePlayer = chessGameFixture.getWhitePlayer();
         blackPlayer = chessGameFixture.getBlackPlayer();
-        chessGameFixture.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
-                        StartingSquare.WHITE_KING.getLocation());
-        chessGameFixture.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
-                        StartingSquare.BLACK_KING.getLocation());
-        startLocation = "A8";
-        endLocation = "B7";
         
         cbUtils = new ChessBoardUtilities(chessGameFixture.getBoard());
+        
+        cbUtils.addChessPieceToBoard(KingPiece.getKingPiece(Colour.WHITE),
+                        WHITE_KING.getLocationStr());
+        cbUtils.addChessPieceToBoard(KingPiece.getKingPiece(Colour.BLACK),
+                        BLACK_KING.getLocationStr());
+        
     }
 
     @Test
@@ -44,30 +43,30 @@ public class ChessGameTest {
 
     @Test(expected = IllegalMoveException.class)
     public void testMoveWithAnEmptySquare() throws IllegalMoveException {
-        chessGameFixture.move(whitePlayer, cbUtils.createMove(startLocation, endLocation));
+        chessGameFixture.move(whitePlayer, cbUtils.createMove(START_LOCATION, END_LOCATION));
     }
 
     @Test(expected = IllegalMoveException.class)
     public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
-        cbUtils.addChessPieceToBoard(bishop, startLocation);
-        chessGameFixture.move(blackPlayer, cbUtils.createMove(startLocation, "B7"));
+        cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
+        chessGameFixture.move(blackPlayer, cbUtils.createMove(START_LOCATION, "B7"));
     }
 
     @Test
     public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
-        cbUtils.addChessPieceToBoard(bishop, startLocation);
-        chessGameFixture.move(whitePlayer, cbUtils.createMove(startLocation, endLocation));
-        assertEquals(bishop.moved(), cbUtils.getPieceOnBoard(endLocation));
-        assertNull(cbUtils.getPieceOnBoard(startLocation));
+        cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
+        chessGameFixture.move(whitePlayer, cbUtils.createMove(START_LOCATION, END_LOCATION));
+        assertEquals(bishop.moved(), cbUtils.getPieceOnBoard(END_LOCATION));
+        assertNull(cbUtils.getPieceOnBoard(START_LOCATION));
     }
 
     @Test
     public void doesGameRuleApply() {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         final String rookStartPosition = "H1";
-        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "G1");
+        Move move = cbUtils.createMove(WHITE_KING.getLocationStr(), "G1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
         assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
@@ -76,7 +75,7 @@ public class ChessGameTest {
     public void doesNotGameRuleApply() {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         final String rookStartPosition = "H1";
-        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "F1");
+        Move move = cbUtils.createMove(WHITE_KING.getLocationStr(), "F1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
         assertFalse(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
@@ -85,7 +84,7 @@ public class ChessGameTest {
     public void gameRuleAppliedTest() throws IllegalMoveException {
         RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
         String rookStartPosition = "H1";
-        Move move = cbUtils.createMove(StartingSquare.WHITE_KING.getLocation().asString(), "G1");
+        Move move = cbUtils.createMove(WHITE_KING.getLocationStr(), "G1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
         assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
@@ -93,14 +92,14 @@ public class ChessGameTest {
     @Test
     public void testMovesAreSaved() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
-        cbUtils.addChessPieceToBoard(bishop, startLocation);
+        cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
         chessGameFixture.changePlayer();
-        chessGameFixture.move(blackPlayer, cbUtils.createMove(startLocation, endLocation));
+        chessGameFixture.move(blackPlayer, cbUtils.createMove(START_LOCATION, END_LOCATION));
         
         Move lastMove = chessGameFixture.getTheLastMove();
         
-        assertEquals(lastMove.getStart().asString(), startLocation);
-        assertEquals(lastMove.getEnd().asString(), endLocation);
+		assertEquals(lastMove.getStart().asString(), START_LOCATION);
+        assertEquals(lastMove.getEnd().asString(), END_LOCATION);
     }
 
     @Test
@@ -149,8 +148,6 @@ public class ChessGameTest {
         assertTrue(rules.contains(EnPassantRule.getInstance()));
     }
 
-    
-    
     /**
      * JIRA CG-33 Player can make a move out of turn
      * 
@@ -158,7 +155,7 @@ public class ChessGameTest {
      */
     @Test(expected = IllegalMoveException.class)
     public void notPlayersTurn() throws IllegalMoveException {
-        Move move = new Move(StartingSquare.BLACK_KING.getLocation(), new Location("E7"));
+        Move move = cbUtils.createMove(BLACK_KING.getLocationStr(), "E7");
         chessGameFixture.move(blackPlayer, move);
         assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
     }
