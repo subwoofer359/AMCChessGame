@@ -38,7 +38,7 @@ public class SaveGameStompControllerUnitTest {
     
     private ChessGamePlayer unknownPlayer = new RealChessGamePlayer(new HumanPlayer("Villian"), Colour.BLACK);
 
-    private long gameUUID = 1234L;
+    private static final long gameUUID = 1234L;
 
     private ServerChessGame scg;
 

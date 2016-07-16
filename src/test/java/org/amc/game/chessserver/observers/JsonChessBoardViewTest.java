@@ -9,7 +9,6 @@ import com.google.gson.JsonParseException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.amc.game.chess.ChessBoard.Coordinate.E;
 
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
@@ -108,7 +107,7 @@ public class JsonChessBoardViewTest {
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws IllegalMoveException {
-        serverGame.move(whitePlayer, new Move(new Location(E, 2), new Location(E, 3)));
+        serverGame.move(whitePlayer, new Move("E2-E3"));
         
         verify(template).convertAndSend(destinationArgument.capture(), messageArgument.capture(), headersArgument.capture());
 

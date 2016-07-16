@@ -58,6 +58,8 @@ public class StompControllerIT {
     private static final String SAVE_MESSAGE_DESTINATION = "/app/save/";
 
     private static final String ONEVIEW_MESSAGE_DESTINATION = "/app/oneViewMove/";
+    
+    private static final int ASYNC_TIMEOUT = 5;
 
     @Autowired
     private WebApplicationContext wac;
@@ -165,7 +167,7 @@ public class StompControllerIT {
     }
 
     private void testMessageSent(MessageType type) throws Exception {
-        Message<?> message = this.brokerChannelInterceptor.awaitMessage(5);
+        Message<?> message = this.brokerChannelInterceptor.awaitMessage(ASYNC_TIMEOUT);
         assertNotNull(message);
 
         @SuppressWarnings("unchecked")
@@ -304,7 +306,7 @@ public class StompControllerIT {
         AbstractServerChessGame savedGame = null;
 
         int check = 0;
-        int noOfTimesToCheck = 5;
+        final int noOfTimesToCheck = 5;
         
         do {
             if (savedGame == null) {

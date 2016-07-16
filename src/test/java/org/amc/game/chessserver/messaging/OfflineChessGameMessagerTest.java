@@ -14,7 +14,6 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
-import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
@@ -49,7 +48,7 @@ public class OfflineChessGameMessagerTest {
     private Player player;
     private Player opponentPlayer;
     private User opponentUser;
-    private final long GAME_UID = 3332L;
+    private static final long GAME_UID = 3332L;
     private List<Object> userSessionList;
     private List<User> userList;
     
@@ -114,9 +113,7 @@ public class OfflineChessGameMessagerTest {
         
         serverChessGame.attachObserver(offlineGMessager);
 
-        move = new Move(new Location(ChessBoard.Coordinate.A, 2), new Location(
-                        ChessBoard.Coordinate.A, 3));
-
+        move = new Move("A2-A3");
     }
 
     @After

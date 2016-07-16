@@ -35,7 +35,7 @@ public class GameActionsStompControllerTest {
 
     private ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
 
-    private long gameUUID = 1234L;
+    private static final long gameUUID = 1234L;
 
     private AbstractServerChessGame scg;
     

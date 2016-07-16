@@ -38,6 +38,8 @@ import javax.servlet.http.HttpSession;
 @WebAppConfiguration
 @ContextConfiguration(locations={"/SpringTestConfig.xml", "/UserLogging.xml", "/GameServerSecurity.xml", "/GameServerWebSockets.xml"})
 public class OnlinePlayerListControllerIT {
+	
+	private static final int ASYNC_TIMEOUT = 5000;
 
     @Autowired
     private WebApplicationContext wac;
@@ -74,7 +76,7 @@ public class OnlinePlayerListControllerIT {
                         .andDo(print()).andExpect(status().isOk())
                         .andExpect(request().asyncStarted()).andReturn();
 
-        String userListString = String.valueOf(result.getAsyncResult(5000));
+        String userListString = String.valueOf(result.getAsyncResult(ASYNC_TIMEOUT));
         assertNotNull(userListString);
         assertTrue("Should return User's name", userListString.contains("nobby"));
         

@@ -9,6 +9,8 @@ import org.junit.Test;
 
 public class ChessGameGetOpposingPlayerTest {
 
+	private static final long GAME_UID = 2030L;
+	
     private ChessGameFixture chessGameFixture;
     private ServerChessGame scg;
 
@@ -16,7 +18,7 @@ public class ChessGameGetOpposingPlayerTest {
     public void setUp() throws Exception {
         chessGameFixture = new ChessGameFixture();
 
-        scg = new TwoViewServerChessGame(2030L, chessGameFixture.getWhitePlayer());
+        scg = new TwoViewServerChessGame(GAME_UID, chessGameFixture.getWhitePlayer());
         scg.setChessGameFactory(new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,

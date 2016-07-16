@@ -159,7 +159,7 @@ public class MoveUpdateEmailTest {
     
     private void testBlackKingStatus(Player receivingPlayer, String patternStr, String boardSetup) throws Exception {
         ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard(boardSetup);
-        Move queenMove = new Move(new Location(B, 1), new Location(B, 6));
+        Move queenMove = new Move(new Location("B1"), new Location("B6"));
         
         scg.getChessGame().setChessBoard(board);
         
@@ -171,7 +171,7 @@ public class MoveUpdateEmailTest {
     
     private void testWhiteKingStatus(Player receivingPlayer, String patternStr, String boardSetup) throws Exception {
         ChessBoard board = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation()).getChessBoard(boardSetup);
-        Move queenMove = new Move(new Location(B, 8), new Location(B, 2));
+        Move queenMove = new Move(new Location("B8"), new Location("B2"));
         
         scg.getChessGame().setChessBoard(board);
         scg.getChessGame().changePlayer();

@@ -27,7 +27,7 @@ public class ChessGameTextView implements Observer {
      */
     public String displayTheBoard(ChessBoard board) {
         StringBuilder sb = new StringBuilder();
-        int row = 8;
+        int row = ChessBoard.BOARD_WIDTH;
         sb.append(printBoardHeader());
         while (row > 0) {
             for (Coordinate coord : ChessBoard.Coordinate.values()) {

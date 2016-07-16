@@ -25,7 +25,7 @@ public class ServerJoinControllerJoinGameTest {
     private ServerJoinChessGameController controller;
     private Player whitePlayer;
     private Player blackPlayer;
-    private long gameUUID = 1234L;
+    private static final long gameUUID = 1234L;
     private AbstractServerChessGame chessGame;
     
     @Mock

@@ -1,9 +1,7 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.*;
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,17 +29,13 @@ public class IsKingInCheckTest {
         blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Parameters
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { BishopPiece.getBishopPiece(Colour.BLACK), new Location(A, 5) },
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Location(F, 2) },
-                { KnightPiece.getKnightPiece(Colour.BLACK), new Location(D, 3) } });
+                { BishopPiece.getBishopPiece(Colour.BLACK), new Location("A5") },
+                { PawnPiece.getPawnPiece(Colour.BLACK), new Location("F2") },
+                { KnightPiece.getKnightPiece(Colour.BLACK), new Location("D3") } });
 
     }
 

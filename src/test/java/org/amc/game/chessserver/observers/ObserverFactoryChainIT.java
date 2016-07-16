@@ -28,6 +28,8 @@ public class ObserverFactoryChainIT {
     
     private ServerChessGame serverChessGame;
     
+    private static final int NO_OF_OBSERVERS = 3;
+    
     @Before
     public void setUp() throws Exception {
         observerStr = JsonChessGameView.class.getSimpleName() + GameFinishedListener.class.getSimpleName() 
@@ -36,14 +38,10 @@ public class ObserverFactoryChainIT {
         
         serverChessGame = mock(ServerChessGame.class);
     }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    
     @Test
     public void test() {
         chain.addObserver(observerStr, serverChessGame);
-        verify(serverChessGame, times(3)).attachObserver(any(GameObserver.class));
+        verify(serverChessGame, times(NO_OF_OBSERVERS)).attachObserver(any(GameObserver.class));
     }
 }

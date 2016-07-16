@@ -20,12 +20,13 @@ import java.util.concurrent.TimeUnit;
 
 public class FinishedChessGameRemovalUnitTest {
 
-
-    AbstractServerChessGame serverChessGame;
-    long uid = 1234L;
-    Player player = new HumanPlayer("Adrian McLaughlin");
-    GameFinishedListener listener;
-    ThreadPoolTaskScheduler scheduler;
+    private AbstractServerChessGame serverChessGame;
+    private static final long uid = 1234L;
+    private Player player = new HumanPlayer("Adrian McLaughlin");
+    private GameFinishedListener listener;
+    private ThreadPoolTaskScheduler scheduler;
+    
+    private static final int SHUTDOWN_TIMEOUT = 60;
 
     @Mock
     private ServerChessGameDAO serverChessGameDAO;
@@ -62,7 +63,7 @@ public class FinishedChessGameRemovalUnitTest {
 
     private void waitForThreadPoolShutdown() throws Exception {
         scheduler.getScheduledThreadPoolExecutor().shutdown();
-        scheduler.getScheduledThreadPoolExecutor().awaitTermination(60, TimeUnit.SECONDS);
+        scheduler.getScheduledThreadPoolExecutor().awaitTermination(SHUTDOWN_TIMEOUT, TimeUnit.SECONDS);
     }
 
     @Test

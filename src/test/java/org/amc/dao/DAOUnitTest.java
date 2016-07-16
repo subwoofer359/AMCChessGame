@@ -24,7 +24,13 @@ import javax.persistence.QueryTimeoutException;
 import javax.persistence.TypedQuery;
 
 public class DAOUnitTest {
+	
+	private static final int ENTITY_ID = 4;
+	
+	private static final String COLUMN = "name";
     
+	private static final String VALUE = "Ted";
+	
     private DAO<TestEntity> dao;
     
     @Mock
@@ -42,8 +48,7 @@ public class DAOUnitTest {
     private TypedQuery<TestEntity> query;
     
     private ArgumentCaptor<String> queryString;
-    private static final String COLUMN = "name";
-    private static final String VALUE = "Ted";
+    
     
     @Before
     public void setUp() throws Exception {
@@ -216,16 +221,15 @@ public class DAOUnitTest {
     @Test
     public void getEntityTest() throws DAOException {
         String queryStr = "Select x from TestEntity x where x.id = ?1";
-        final int ID = 4;
         ArgumentCaptor<String> valueArgument = ArgumentCaptor.forClass(String.class);
         when(query.getSingleResult()).thenReturn(new TestEntity());
         
-        TestEntity result = dao.getEntity(ID);
+        TestEntity result = dao.getEntity(ENTITY_ID);
         
         assertNotNull(result);
         assertEquals(queryStr, queryString.getValue());
         verify(query, times(1)).setParameter(eq(1), valueArgument.capture());
-        assertEquals(ID , valueArgument.getValue());
+        assertEquals(ENTITY_ID, valueArgument.getValue());
         verify(query, times(1)).getSingleResult();
         
     }
@@ -234,7 +238,7 @@ public class DAOUnitTest {
     public void getEntityThrowsDAOException() throws DAOException {
         when(query.getSingleResult()).thenThrow(new PersistenceException());
         
-        dao.getEntity(4);
+        dao.getEntity(ENTITY_ID);
     }
     
     @Test
@@ -242,7 +246,7 @@ public class DAOUnitTest {
         when(query.getSingleResult()).thenThrow(new QueryTimeoutException());
         TestEntity result = null;
         try {
-            result = dao.getEntity(4);
+            result = dao.getEntity(ENTITY_ID);
         } catch(DAOException pe) {
             System.out.println(pe.getMessage());
         } finally {
@@ -255,7 +259,7 @@ public class DAOUnitTest {
         when(query.getSingleResult()).thenThrow(new NoResultException());
         TestEntity result = null;
         try {
-            result = dao.getEntity(4);
+            result = dao.getEntity(ENTITY_ID);
         } catch(DAOException pe) {
             System.out.println(pe.getMessage());
         } finally {

@@ -51,9 +51,9 @@ public class SVGBlankChessBoard {
                 whiteToggle = !whiteToggle;
                 
                 layer.appendChild(rectangle);
-                x = x + 62.5f;
+                x = x + SQUARE_SIZE;
             }
-            y = y + 62.5f;
+            y = y + SQUARE_SIZE;
             whiteToggle = !whiteToggle; // alternate black white pattern
         }
     }

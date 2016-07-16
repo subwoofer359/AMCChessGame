@@ -35,7 +35,9 @@ import java.util.List;
     "/GameServerWebSockets.xml", "/EmailServiceContext.xml" })
 
 public class UserSearchIT {
-    private DatabaseFixture signUpfixture = new DatabaseFixture();
+    private static final int ASYNC_TIMEOUT = 5000;
+	
+	private DatabaseFixture signUpfixture = new DatabaseFixture();
     
     @Autowired
     private WebApplicationContext wac;
@@ -66,7 +68,7 @@ public class UserSearchIT {
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn();
-        String jsonString = (String) result2.getAsyncResult(500000);
+        String jsonString = (String) result2.getAsyncResult(ASYNC_TIMEOUT);
         
         Gson gson = new Gson();
         Type userType = new TypeToken<List<UserDetails>>(){}.getType();

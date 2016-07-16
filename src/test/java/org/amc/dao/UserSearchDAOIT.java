@@ -13,7 +13,7 @@ public class UserSearchDAOIT {
     
     private DatabaseFixture signUpfixture = new DatabaseFixture();
     private UserSearchDAO dao;
-    private static int NO_OF_USERS = 3;
+    private static final int NO_OF_USERS = 3;
     
     @Before
     public void setUp() throws Exception {
