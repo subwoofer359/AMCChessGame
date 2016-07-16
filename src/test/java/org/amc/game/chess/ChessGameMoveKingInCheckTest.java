@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class ChessGameMoveKingInCheck {
+public class ChessGameMoveKingInCheckTest {
     private static ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"),
                     Colour.WHITE);
     private static ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"),
@@ -24,7 +24,7 @@ public class ChessGameMoveKingInCheck {
     private ChessBoard board;
     private ChessGame chessGame;
 
-    public ChessGameMoveKingInCheck(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
+    public ChessGameMoveKingInCheckTest(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
         this.currentPlayer = currentPlayer;
         this.defendingChessPieceMove = defendingChessPieceMove;
     }

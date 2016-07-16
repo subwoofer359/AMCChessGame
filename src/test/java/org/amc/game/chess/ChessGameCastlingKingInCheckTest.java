@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class ChessGameCastlingKingInCheck {
+public class ChessGameCastlingKingInCheckTest {
 	private static ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
 	private static ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
 	private ChessGamePlayer currentPlayer;
@@ -26,7 +26,7 @@ public class ChessGameCastlingKingInCheck {
 	private ChessPiece rookPiece;
 	private ChessBoardUtilities cbUtils;
 
-	public ChessGameCastlingKingInCheck(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
+	public ChessGameCastlingKingInCheckTest(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
 		this.currentPlayer = currentPlayer;
 		this.defendingChessPieceMove = defendingChessPieceMove;
 	}

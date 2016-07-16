@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class ChessPieceCanCopy {
+public class ChessPieceCanCopyTest {
     private ChessPiece piece;
 
-    public ChessPieceCanCopy(ChessPiece piece) {
+    public ChessPieceCanCopyTest(ChessPiece piece) {
         this.piece = piece;
     }
 
