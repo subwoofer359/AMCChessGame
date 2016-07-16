@@ -28,6 +28,10 @@ public class ChessBoardUtilities {
     public ChessPiece getPieceOnBoard(String location) {
         return board.getPieceFromBoardAt(new Location(location));
     }
+    
+    public void removePiece(String location) {
+    	board.removePieceOnBoardAt(new Location(location));
+    }
 
     public static void compareBoards(ChessBoard firstBoard, ChessBoard secondBoard) {
         for(Coordinate coord : Coordinate.values()) {
