@@ -113,9 +113,7 @@ public final class Location implements Comparable<Location> {
         Location other = (Location) obj;
         if (letter != other.letter)
             return false;
-        if (number != other.number)
-            return false;
-        return true;
+        return number == other.number;
     }
 
 }

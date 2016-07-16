@@ -7,8 +7,6 @@ import static org.amc.game.chessserver.StompController.MESSAGE_HEADER_TYPE;
 import org.junit.Before;
 import org.junit.Test;
 
-import groovy.transform.CompileStatic;
-
 class GameMoveStompControllerUnitTest extends StompControllerFixture {
 
     private GameMoveStompController controller;

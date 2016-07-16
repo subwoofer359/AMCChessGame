@@ -4,7 +4,6 @@ import static org.mockito.Mockito.*;
 
 import org.amc.game.GameObserver;
 import org.amc.game.chessserver.ServerChessGame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

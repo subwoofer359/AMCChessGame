@@ -1,6 +1,5 @@
 package org.amc.game.chessserver.messaging;
 
-import static org.amc.game.chess.ChessBoard.Coordinate.B;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
