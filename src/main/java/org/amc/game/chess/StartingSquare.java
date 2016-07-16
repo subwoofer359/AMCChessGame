@@ -23,9 +23,9 @@ public enum StartingSquare {
     BLACK_ROOK_LEFT("A8"),
     BLACK_ROOK_RIGHT("H8");
     
-    
     private Location location;
-    StartingSquare(String locationStr){
+    
+    StartingSquare(String locationStr) {
         this.location = new Location(locationStr);
     }
     
@@ -33,7 +33,14 @@ public enum StartingSquare {
      * Returns a Location object representing the starting square of the ChessPiece
      * @return Location
      */
-    public Location getLocation(){
+    public Location getLocation() {
         return location;
+    }
+    
+    /**
+     * @return {@link Location} as a {@link String}
+     */
+    public String getLocationStr() {
+    	return location.asString();
     }
 }
