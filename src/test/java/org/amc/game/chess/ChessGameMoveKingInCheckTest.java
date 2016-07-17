@@ -19,7 +19,6 @@ public class ChessGameMoveKingInCheckTest {
     private static ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"),
                     Colour.BLACK);
     private ChessGamePlayer currentPlayer;
-    private ChessPiece attackingPiece;
     private Move defendingChessPieceMove;
     private ChessBoard board;
     private ChessGame chessGame;
@@ -33,7 +32,7 @@ public class ChessGameMoveKingInCheckTest {
     public void setUp() throws Exception {
         board = new ChessBoard();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-        attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
+        ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());

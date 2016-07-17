@@ -20,11 +20,9 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 public class PlayerJoinedChessGameEmailTest {
 
     private PlayerJoinedChessGameEmail template;
-    private SpringTemplateEngine templateEngine;
     private Player player;
     private ServerChessGame scg;
     private final long GAME_UID = 20202l;
-    private FileTemplateResolver emailTemplateResolver;
     
     @Before
     public void setUp() throws Exception {
@@ -40,12 +38,12 @@ public class PlayerJoinedChessGameEmailTest {
         scg.addOpponent(new HumanPlayer("Player 2"));
         template = new PlayerJoinedChessGameEmail(player, scg);
         
-        emailTemplateResolver = new FileTemplateResolver();
+        FileTemplateResolver emailTemplateResolver = new FileTemplateResolver();
         emailTemplateResolver.setPrefix("src/main/resources/mail/");
         emailTemplateResolver.setTemplateMode("HTML5");
         emailTemplateResolver.setCharacterEncoding("UTF-8");
         
-        templateEngine = new SpringTemplateEngine();
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.addTemplateResolver(emailTemplateResolver);
         
         emailTemplateResolver.initialize();

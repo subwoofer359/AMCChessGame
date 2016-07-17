@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ObserverFactoryChainImplTest { 
     private ServerChessGame chessGame;
-    private List<ObserverFactoryChain> chains;
     private ObserverFactoryChain chain;
     private String observerStr;
     private ObserverFactory[] factories = {
@@ -45,7 +44,7 @@ public class ObserverFactoryChainImplTest {
         chessGame = mock(ServerChessGame.class);
         
         final SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
-        chains = new ArrayList<>();
+        List<ObserverFactoryChain> chains = new ArrayList<>();
        
         for(ObserverFactory factory : factories) {
             if(factory instanceof MessagingGameObserverFactory) {

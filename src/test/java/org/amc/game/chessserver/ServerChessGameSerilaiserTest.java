@@ -17,7 +17,6 @@ import com.google.gson.GsonBuilder;
 
 public class ServerChessGameSerilaiserTest {
 	private GsonBuilder builder;
-	private ServerChessGameFactory scgFactory;
 	private final long gameUID = 2345L;
 	private Player whitePlayer;
 	private Player blackPlayer;
@@ -31,7 +30,7 @@ public class ServerChessGameSerilaiserTest {
 		builder.setPrettyPrinting();
 		builder.serializeNulls();
 		
-		scgFactory = new ServerChessGameFactory();
+		ServerChessGameFactory scgFactory = new ServerChessGameFactory();
 		ObserverFactoryChain chain = mock(ObserverFactoryChain.class);
 		scgFactory.setObserverFactoryChain(chain);
 		

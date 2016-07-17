@@ -22,7 +22,6 @@ public class StartPageControllerChessAppPageTest {
     private MockHttpSession session;
     private StartPageController controller;
     private ChessGamePlayer whitePlayer;
-    private ServerChessGameFactory scgFactory;
     
     @Mock
     private SCGDAOInterface sCGDAO;
@@ -30,7 +29,7 @@ public class StartPageControllerChessAppPageTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        scgFactory = new ServerChessGameFactory();
+        ServerChessGameFactory scgFactory = new ServerChessGameFactory();
         session = new MockHttpSession();
         controller = new StartPageController(); 
         controller.setServerChessGameDAO(sCGDAO);

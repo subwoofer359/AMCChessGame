@@ -53,12 +53,9 @@ public class ChessBoardSVGFactory {
 
     private static final float KEY_QUALITY = .8f;
 
-    private SVGBlankChessBoard blankChessBoardFactory;
-
     private Map<Class<? extends ChessPiece>, SVGChessPiece> sVGElementfactory;
 
     private Document document;
-    private Element svgRoot;
     private Element layer;
     private String svgNS;
 
@@ -75,13 +72,13 @@ public class ChessBoardSVGFactory {
     private void createSVGDocument() {
         DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
         document = impl.createDocument(svgNS, "svg", null);
-        svgRoot = document.getDocumentElement();
+        Element svgRoot = document.getDocumentElement();
         svgRoot.setAttributeNS(null, "width", "500");
         svgRoot.setAttributeNS(null, "height", "500");
         layer = document.createElementNS(svgNS, SVG_NODE_G);
         svgRoot.appendChild(layer);
 
-        blankChessBoardFactory = new SVGBlankChessBoard(document, svgNS);
+        SVGBlankChessBoard blankChessBoardFactory = new SVGBlankChessBoard(document, svgNS);
         setUpSVGChessPieceFactory();
         blankChessBoardFactory.createBlankChessBoard(layer);
         blankChessBoardFactory.markMove(layer, serverChessGame.getChessGame().getTheLastMove());

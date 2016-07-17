@@ -18,7 +18,6 @@ import java.util.List;
 
 public class OnlinePlayerListMessagerTest {
 
-    private SessionRegistry registry;
     private List<Object> listOfUsers;
     private User userOne = new User();
     private User userTwo = new User();
@@ -39,7 +38,7 @@ public class OnlinePlayerListMessagerTest {
         listOfUsers.add(userOne);
         listOfUsers.add(userTwo);
         
-        registry = mock(SessionRegistry.class);
+        SessionRegistry registry = mock(SessionRegistry.class);
         template = mock(SimpMessagingTemplate.class);
         
         messager = new OnlinePlayerListMessager();

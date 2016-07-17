@@ -25,7 +25,6 @@ public class StartPageControllerCreateGameTest {
     private Model model;
     private ChessGamePlayer whitePlayer;
     private StartPageController controller;
-    private ServerChessGameFactory scgFactory;
     private static final String OPPONENT = "Kate Bush";
     private ArgumentCaptor<AbstractServerChessGame> gameCaptor = ArgumentCaptor
                     .forClass(AbstractServerChessGame.class);
@@ -35,7 +34,7 @@ public class StartPageControllerCreateGameTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        scgFactory = new ServerChessGameFactory();
+        ServerChessGameFactory scgFactory = new ServerChessGameFactory();
         model = new ExtendedModelMap();
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
         controller = new StartPageController();

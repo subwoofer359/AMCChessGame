@@ -23,7 +23,6 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 public class NewGameRequestControllerTest {
 	private NewGameRequestController controller;
-	private WebApplicationContext wac;
 	private StartPageController spController;
 	private ServerJoinChessGameController sjController;
 	private DAOInterface<User> userDAO;
@@ -37,7 +36,7 @@ public class NewGameRequestControllerTest {
 	@SuppressWarnings("unchecked")
     @Before
 	public void setUp() throws Exception {
-		wac = mock(GenericWebApplicationContext.class);
+		WebApplicationContext wac = mock(GenericWebApplicationContext.class);
 		spController = mock(StartPageController.class);
 		sjController = mock(ServerJoinChessGameController.class);
 		

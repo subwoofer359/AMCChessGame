@@ -88,8 +88,6 @@ public class GmailEmailMessagingIT {
 
     private ChessGamePlayer blackPlayer;
 
-    private long gameUUID;
-
     @Autowired
     private WebApplicationContext wac;
 
@@ -151,11 +149,11 @@ public class GmailEmailMessagingIT {
                         .attributeExists(ServerConstants.GAME_UUID))
                         .andReturn();
         
-        this.gameUUID = (long) result.getModelAndView().getModelMap()
+        long gameUUID = (long) result.getModelAndView().getModelMap()
                         .get(ServerConstants.GAME_UUID);
         
         result = this.mockMvc.perform(
-                        post(JOIN_GAME).param(GAME_UUID, String.valueOf(this.gameUUID))
+                        post(JOIN_GAME).param(GAME_UUID, String.valueOf(gameUUID))
                         .sessionAttr(ServerConstants.PLAYER, blackPlayer))
                         .andExpect(status()
                         .isOk())

@@ -54,7 +54,6 @@ public class JsonChessBoardViewTest {
     private ChessGame chessGame;
     private static ChessBoardFactory chBoardFactory;
     private ChessGamePlayer whitePlayer;
-    private ChessGamePlayer blackPlayer;
     private SimpMessagingTemplate template;
     private GsonBuilder gson;
     
@@ -73,7 +72,7 @@ public class JsonChessBoardViewTest {
     @Before
     public void setUp() throws Exception {
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         ChessBoard board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
         chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
 

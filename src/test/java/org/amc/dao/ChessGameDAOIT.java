@@ -3,6 +3,7 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 
 import org.amc.DAOException;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardUtilities;
 import org.amc.game.chess.ChessGame;
@@ -24,7 +25,6 @@ public class ChessGameDAOIT {
 
     private Player laura;
     private Player nobby;
-    private ChessGame game;
     private int id;
     private static final String[] MOVES = {"A2-A3", "A7-A6", "B1-C3"};
  
@@ -35,7 +35,7 @@ public class ChessGameDAOIT {
                         new ServerChessGameDatabaseEntityFixture(signUpfixture.getNewEntityManager());
         laura = serverChessGamesfixture.getBlackPlayer();
         nobby = serverChessGamesfixture.getWhitePlayer();
-        game = serverChessGamesfixture.getChessGame();
+        AbstractChessGame game = serverChessGamesfixture.getChessGame();
         chessGameDAO = new ChessGameDAO();
         chessGameDAO.setEntityManager(signUpfixture.getNewEntityManager());
         

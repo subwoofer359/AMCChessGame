@@ -11,7 +11,6 @@ import org.junit.Test;
 
 public class CastlingTest {
     private KingPiece whiteKing;
-    private KingPiece blackKing;
     private RookPiece whiteLeftRook;
     private RookPiece whiteRightRook;
     private String whiteKingStartPosition;
@@ -33,7 +32,7 @@ public class CastlingTest {
 
         gameRule = CastlingRule.getInstance();
         whiteKing = KingPiece.getKingPiece(Colour.WHITE);
-        blackKing = KingPiece.getKingPiece(Colour.BLACK);
+        ChessPiece blackKing = KingPiece.getKingPiece(Colour.BLACK);
         whiteLeftRook = RookPiece.getRookPiece(Colour.WHITE);
         whiteRightRook = RookPiece.getRookPiece(Colour.WHITE);
         whiteKingStartPosition = WHITE_KING.getLocation().asString();

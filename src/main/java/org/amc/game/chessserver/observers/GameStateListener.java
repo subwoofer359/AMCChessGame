@@ -48,11 +48,6 @@ public class GameStateListener extends GameObserver {
     
     private SCGDAOInterface serverChessGameDAO;
 
-    
-    
-    public GameStateListener() {
-    }
-
     /**
      * Called by Model(ObservableChessGame) on change
      * 

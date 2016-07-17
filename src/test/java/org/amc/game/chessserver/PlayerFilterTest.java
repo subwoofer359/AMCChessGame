@@ -32,15 +32,11 @@ public final class PlayerFilterTest {
     private final static String SESSIONVAR_PLAYER = "PLAYER";
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletContext context;
     private MockFilterConfig fConfig;
     private MockFilterChain chain;
     private MockHttpSession session;
     private Player player;
     private DAO<Player> playerDAO;
-    private Principal playerPrincipal;
-    
-    private ApplicationContext applicationContext;
 
     /**
      * After doFilter call, Session variables PLAYER and REMOTE_ADDRESS should be
@@ -55,7 +51,7 @@ public final class PlayerFilterTest {
     public void setUp() throws Exception {
     	request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        context = new MockServletContext();
+        MockServletContext context = new MockServletContext();
         fConfig = new MockFilterConfig(context);
         chain = new MockFilterChain();
         session = new MockHttpSession();
@@ -63,13 +59,13 @@ public final class PlayerFilterTest {
         playerDAO = mock(DAO.class);
 
         // Spring Context
-        applicationContext = mock(ApplicationContext.class);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
         when(applicationContext.getBean(PlayerFilter.PLAYERDAO, DAO.class)).thenReturn(playerDAO);
 
         // Store Spring Context in ServletContext
         context.setAttribute(PlayerFilter.SPRING_WEBAPPCONTEXT, applicationContext);
 
-        playerPrincipal = mock(Principal.class);
+        Principal playerPrincipal = mock(Principal.class);
         when(playerPrincipal.getName()).thenReturn(PLAYERNAME);
         
         // Create User to be retrieved from mock database query

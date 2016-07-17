@@ -26,8 +26,7 @@ import javax.mail.internet.MimeMessage.RecipientType;
 
 
 public class EmailMessageServiceTest {
-
-    private JavaMailSender mailSender;
+	
     private static ThreadPoolTaskExecutor executor;
     private EmailTemplate emailTemplate;
     private EmailMessageService service;
@@ -51,7 +50,7 @@ public class EmailMessageServiceTest {
     
     @Before
     public void setUp() throws Exception {
-        mailSender = mock(JavaMailSender.class);
+    	JavaMailSender mailSender = mock(JavaMailSender.class);
         emailTemplate = mock(EmailTemplate.class);
         mailMessage = mock(MimeMessage.class);
         service = new EmailMessageService();

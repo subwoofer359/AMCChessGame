@@ -22,8 +22,6 @@ public class UserSearchTest {
 
     private UserSearchController controller;
     private String searchTerm = "adrian";
-    private UserDetails user;
-    private UserSearchDAO userDAO;
     private static final String FULLNAME = "adrian mclaughlin";
     private static final String USERNAME = "adrian";
     private static final String USER_SEARCH_PAGE = "UserSearchPage";
@@ -32,9 +30,9 @@ public class UserSearchTest {
     @Before
     public void setUp() throws Exception {
         controller = new UserSearchController();
-        userDAO = mock(UserSearchDAO.class);
+        UserSearchDAO userDAO = mock(UserSearchDAO.class);
         controller.setUserDAO(userDAO);
-        user = new UserDetails(USERNAME, FULLNAME);
+        UserDetails user = new UserDetails(USERNAME, FULLNAME);
         
         when(userDAO.findUsers(eq(searchTerm))).thenReturn(Arrays.asList(user));
     }

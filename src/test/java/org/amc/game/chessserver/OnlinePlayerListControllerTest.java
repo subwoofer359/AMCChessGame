@@ -19,7 +19,6 @@ import java.util.concurrent.Callable;
 public class OnlinePlayerListControllerTest {
 
     private OnlinePlayerListController controller;
-    private SessionRegistry registry;
     private List<Object> listOfUsers;
     private User userOne = new User();
     private User userTwo = new User();
@@ -38,7 +37,7 @@ public class OnlinePlayerListControllerTest {
         userTwo.setUserName("Sarah");
         listOfUsers.add(userOne);
         listOfUsers.add(userTwo);
-        registry = mock(SessionRegistry.class);
+        SessionRegistry registry = mock(SessionRegistry.class);
         when(registry.getAllPrincipals()).thenReturn(listOfUsers);
         controller = new OnlinePlayerListController();
         controller.setSessionRegistry(registry);

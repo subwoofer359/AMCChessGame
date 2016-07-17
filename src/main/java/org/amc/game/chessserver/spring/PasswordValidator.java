@@ -35,11 +35,14 @@ public class PasswordValidator implements Validator {
 	}
 	
 	private void checkPasswordValidFormat(String password, Errors errors) {
-		Matcher matcher = passwordPattern.matcher(password);
-		if(matcher.matches()) {
 		
-		} else {
+		if(isNotValidPassword(password)) {
 			errors.rejectValue(PASSWORD_FIELD, INVALID_PASSWORD_ERROR);
 		}
+	}
+	
+	private boolean isNotValidPassword(String password) {
+		Matcher matcher = passwordPattern.matcher(password);
+		return !matcher.matches();
 	}
 }

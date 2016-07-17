@@ -40,9 +40,7 @@ public class ChessBoardUtilities {
                 ChessPiece pieceOne = firstBoard.getPieceFromBoardAt(location);
                 ChessPiece pieceTwo = secondBoard.getPieceFromBoardAt(location);
                 if(pieceOne == null) {
-                    if(pieceTwo == null) {
-                        
-                    } else {
+                    if(pieceTwo != null) {
                         fail("First board is missing a Chess Piece");
                     }
                 } else {

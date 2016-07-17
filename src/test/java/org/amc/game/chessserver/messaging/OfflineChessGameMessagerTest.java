@@ -34,13 +34,10 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 public class OfflineChessGameMessagerTest {
-
-    private OfflineChessGameMessager offlineGMessager;
+	
     private EmailMessageService emailService;
-    private EmailTemplateFactory templateFactory;
     private SessionRegistry registry;
     private DAOInterface<User> userDAO;
-    private JavaMailSender mailSender;
 
     private ArgumentCaptor<User> userCaptor;
     private ArgumentCaptor<EmailTemplate> emailTemplateCaptor;
@@ -70,12 +67,12 @@ public class OfflineChessGameMessagerTest {
         opponentUser.setEmailAddress("Chris@adrianmclaughlin.ie");
         opponentUser.setUserName(opponentPlayer.getUserName());
 
-        offlineGMessager = new OfflineChessGameMessager();
+        OfflineChessGameMessager offlineGMessager = new OfflineChessGameMessager();
         
         emailService = mock(EmailMessageService.class);
         registry = mock(SessionRegistry.class);
         userDAO = mock(DAO.class);
-        mailSender = mock(JavaMailSender.class);
+        JavaMailSender mailSender = mock(JavaMailSender.class);
 
         //To capture values passed to mock objects
         userCaptor = ArgumentCaptor.forClass(User.class);
@@ -83,7 +80,7 @@ public class OfflineChessGameMessagerTest {
 
         emailService.setMailSender(mailSender);
         
-        templateFactory = mock(EmailTemplateFactory.class);
+        EmailTemplateFactory templateFactory = mock(EmailTemplateFactory.class);
         when(templateFactory.getEmailTemplate(ChessGame.class)).thenReturn(new MoveUpdateEmail());
         when(templateFactory.getEmailTemplate(Player.class)).thenReturn(new PlayerJoinedChessGameEmail());
 

@@ -37,7 +37,7 @@ public class ValdatorIsUserNameFreeTest {
     public void testIsUserNameFree() throws DAOException {
         String freeUserName = USER_NAME;
         when(userDAO.findEntities("userName", freeUserName)).thenReturn(new ArrayList<User>());
-        assertTrue(this.userNameValidator.isUserNameFree(freeUserName, errors));
+        assertFalse(this.userNameValidator.isUserNameNotFree(freeUserName, errors));
         verify(userDAO).findEntities("userName", freeUserName);
     }
 	
@@ -47,7 +47,7 @@ public class ValdatorIsUserNameFreeTest {
         List<User> users = new ArrayList<>();
         users.add(new User());
         when(userDAO.findEntities("userName", takenUserName)).thenReturn(users);
-        assertFalse(userNameValidator.isUserNameFree(takenUserName, errors));
+        assertTrue(userNameValidator.isUserNameNotFree(takenUserName, errors));
         verify(userDAO).findEntities("userName", takenUserName);
     }
 }

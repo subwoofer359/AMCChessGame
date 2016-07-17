@@ -66,14 +66,14 @@ public class ServerJoinChessGameController {
 
     private void enterChessGame(ModelAndView mav, AbstractServerChessGame chessGame, Player player,
                     long gameUUID) {
-        if (canPlayerEnterGame(chessGame, player)) {
+        if (canPlayerEnterGame(chessGame)) {
             setupModelForChessGameScreen(mav, chessGame.getPlayer(player), gameUUID);
         } else {
             setModelErrorMessage(chessGame, player, mav);
         }
     }
 
-    private boolean canPlayerEnterGame(AbstractServerChessGame chessGame, Player player) {
+    private boolean canPlayerEnterGame(AbstractServerChessGame chessGame) {
         return inProgressState(chessGame);
     }
 

@@ -25,7 +25,6 @@ public class GameTableControllerTest {
 	private GameTableController gtController;
 	private AbstractServerChessGame scgGame;
     private ChessGameInfo scgGameInfo;
-    private ChessGameFixture cgFixture;
 	private SCGDAOInterface serverChessGameDAO;
 	
 	private static final long GAME_UID = 1234L;
@@ -38,7 +37,7 @@ public class GameTableControllerTest {
 		ServerChessGameFactory scgFactory = new ServerChessGameFactory();
 		ObserverFactoryChain chain = mock(ObserverFactoryChain.class);
 		scgFactory.setObserverFactoryChain(chain);
-		cgFixture = new ChessGameFixture();
+		ChessGameFixture cgFixture = new ChessGameFixture();
 		scgGame = scgFactory.getServerChessGame(GameType.LOCAL_GAME, GAME_UID, cgFixture.getWhitePlayer());
         scgGameInfo = new ChessGameInfo(scgGame.getUid(), scgGame.getCurrentStatus(),
                 scgGame.getPlayer().getUserName(), null);

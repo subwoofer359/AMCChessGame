@@ -10,10 +10,8 @@ import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Subject;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -21,9 +19,7 @@ import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
 public class OfflineChessGameMessager extends GameObserver {
-
-    @Autowired
-    private WebApplicationContext springContext;
+	
     private SessionRegistry registry;
     private GameMessageService<EmailTemplate> messageService;
     private static final Logger logger = Logger.getLogger(OfflineChessGameMessager.class);

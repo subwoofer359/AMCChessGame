@@ -38,9 +38,6 @@ public class GameFinishedListener extends GameObserver {
 
     private static final Logger logger = Logger.getLogger(GameFinishedListener.class);
 
-    public GameFinishedListener() {
-    }
-
     public void setServerChessGameDAO(SpecialSCGDAO serverChessGameDAO) {
         this.serverChessGameDAO = serverChessGameDAO;
     }

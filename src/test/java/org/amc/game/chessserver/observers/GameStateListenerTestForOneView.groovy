@@ -30,14 +30,9 @@ import java.text.ParseException;
 class GameStateListenerTestForOneView {
     
     GameStateListener listener;
-    private ChessGamePlayer whitePlayer;
-    private ChessGamePlayer blackPlayer;
     private ServerChessGame serverGame;
     
     private static final long GAME_UID = 1234l;
-    private ArgumentCaptor<String> destinationArgument;
-    private ArgumentCaptor<Object> messageArgument;
-    private ChessGameFactory chessGameFactory;
     
     @Mock
     private SCGDAOInterface serverChessGameDAO;
@@ -48,17 +43,15 @@ class GameStateListenerTestForOneView {
      @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        destinationArgument = ArgumentCaptor.forClass(String.class);
-        messageArgument = ArgumentCaptor.forClass(Object.class);
         setUpServerChessGame();
         
         setUpListener();
     }
     
     private void setUpServerChessGame() {
-        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        chessGameFactory = new ChessGameFactory() {
+        ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        ChessGameFactory chessGameFactory = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
                             ChessGamePlayer playerBlack) {
@@ -76,10 +69,6 @@ class GameStateListenerTestForOneView {
         listener.setGameToObserver(serverGame);
         listener.setSimpMessagingTemplate(template);
         listener.setServerChessGameDAO(serverChessGameDAO);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test
@@ -106,7 +95,6 @@ class GameStateListenerTestForOneView {
         serverGame.getChessGame().changePlayer();
         
         listener.update(serverGame, PAWN_PROMOTION);
-        Player player = serverGame.getChessGame().getCurrentPlayer();
         def destination = GameStateListener.MESSAGE_DESTINATION + "/" + serverGame.uid;
         verify(template, times(1)).convertAndSend(eq(destination), eq("PAWN_PROMOTION (A,1)"), anyMap());
     }

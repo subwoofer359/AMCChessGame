@@ -15,8 +15,6 @@ import java.util.Collection;
 public class PawnIsNotPromotedTest {
 
     private ChessGame chessGame;
-    private ChessGamePlayer whitePlayer;
-    private ChessGamePlayer blackPlayer;
     private ChessBoard board;
     private ChessPiece piece;
     private ChessMoveRule promotion;
@@ -29,8 +27,8 @@ public class PawnIsNotPromotedTest {
 
     @Before
     public void setUp() throws Exception {
-        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+        ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board = new ChessBoard();
         this.promotion = PawnPromotionRule.getInstance();
         this.chessGame = new ChessGame(board, whitePlayer, blackPlayer);

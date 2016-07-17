@@ -35,7 +35,6 @@ public class MoveUpdateEmailTest {
     private Player opponent;
     private ServerChessGame scg;
     private final long GAME_UID = 20202l;
-    private FileTemplateResolver emailTemplateResolver;
     
     @Before
     public void setUp() throws Exception {
@@ -51,7 +50,7 @@ public class MoveUpdateEmailTest {
         });
         scg.addOpponent(opponent);
         
-        emailTemplateResolver = new FileTemplateResolver();
+        FileTemplateResolver emailTemplateResolver = new FileTemplateResolver();
         emailTemplateResolver.setPrefix("src/main/resources/mail/");
         emailTemplateResolver.setTemplateMode("HTML5");
         emailTemplateResolver.setCharacterEncoding("UTF-8");

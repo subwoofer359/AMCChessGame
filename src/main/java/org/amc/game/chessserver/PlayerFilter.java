@@ -70,7 +70,7 @@ public class PlayerFilter implements Filter {
                             && httpRequest.getSession().getAttribute(SESSIONVAR_PLAYER) == null) {
                 String playerName = httpRequest.getUserPrincipal().getName();
                 // Get the User object from the database
-                Player player = getPlayer(httpRequest.getSession(), playerName);
+                Player player = getPlayer(playerName);
                 addLoggedPlayerToSession(httpRequest.getSession(), player);
             }
         }
@@ -95,7 +95,7 @@ public class PlayerFilter implements Filter {
      */
 
     @SuppressWarnings("unchecked")
-    private final Player getPlayer(HttpSession session, String playerName) throws ServletException {
+    private final Player getPlayer(String playerName) throws ServletException {
         // Spring Context containing the PlayerDAO object
         ApplicationContext context2;
 

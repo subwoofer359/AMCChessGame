@@ -34,7 +34,6 @@ public abstract class ChessGamePlayer implements Player, Serializable {
     @Version
     private int version;
     
-    
     /*
      * (Hack) Shadow variable not used
      * It's for JPQL queries

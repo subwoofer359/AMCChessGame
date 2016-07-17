@@ -32,17 +32,23 @@ public class FullNameValidator implements Validator {
         if(arg0 == null) {
             errors.rejectValue(fieldName, INVALID_FULLNAME_ERROR);
         } else {
-            String fullName = (String) arg0;
-        
-            rejectIfEmptyOrWhitespace(errors, fullName, NO_FULLNAME_ERROR);
-        
-            Matcher matcher = fullNameAddrPattern.matcher(fullName);
-            if(matcher.matches()) {
-                
-            } else {
-                errors.rejectValue(fieldName, INVALID_FULLNAME_ERROR);
-            }
+        	validateFullName(arg0, errors);
         }
+    }
+    
+    private void validateFullName(Object arg0, Errors errors) {
+    	String fullName = (String) arg0;
+        
+        rejectIfEmptyOrWhitespace(errors, fullName, NO_FULLNAME_ERROR);
+
+        if(isInValidFullName(fullName)) {
+        	errors.rejectValue(fieldName, INVALID_FULLNAME_ERROR);
+        }
+    }
+    
+    private boolean isInValidFullName(String fullName) {
+    	Matcher matcher = fullNameAddrPattern.matcher(fullName);
+    	return !matcher.matches();
     }
     
     private void rejectIfEmptyOrWhitespace(Errors errors, String userName, String message) {

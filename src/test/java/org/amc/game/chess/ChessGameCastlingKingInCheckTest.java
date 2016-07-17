@@ -18,7 +18,6 @@ public class ChessGameCastlingKingInCheckTest {
 	private static ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Teddy"), Colour.WHITE);
 	private static ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Robin"), Colour.BLACK);
 	private ChessGamePlayer currentPlayer;
-	private ChessPiece attackingPiece;
 	private Move defendingChessPieceMove;
 	private ChessGame chessGame;
 	private ChessPiece kingPiece;
@@ -37,7 +36,7 @@ public class ChessGameCastlingKingInCheckTest {
 		cbUtils = new ChessBoardUtilities(board);
 
 		chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-		attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
+		ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
 		cbUtils.addChessPieceToBoard(attackingPiece, "E3");
 		kingPiece = KingPiece.getKingPiece(Colour.WHITE);
 		rookPiece = RookPiece.getRookPiece(Colour.WHITE);

@@ -47,7 +47,6 @@ public class SVGChessPieceIT {
 			+ "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n";
 	private DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
 	private Document document;
-	private Element svgRoot;
 	private Element layer;
 	private String svgNS;
 
@@ -66,7 +65,7 @@ public class SVGChessPieceIT {
 		svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
 
 		document = impl.createDocument(svgNS, "svg", null);
-		svgRoot = document.getDocumentElement();
+		Element svgRoot = document.getDocumentElement();
 		svgRoot.setAttributeNS(null, "width", "500");
 		svgRoot.setAttributeNS(null, "height", "500");
 		svgRoot.setAttribute("version", "1.1");

@@ -24,8 +24,6 @@ import java.text.ParseException;
 
 public class ConsoleControllerTest {
     private ChessBoard board;
-    private ChessGamePlayer player1;
-    private ChessGamePlayer player2;
     private Location startLocation;
     private Location endLocation;
     private ChessGame game;
@@ -33,8 +31,8 @@ public class ConsoleControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        player1 = new RealChessGamePlayer(new HumanPlayer("Test1"), Colour.BLACK);
-        player2 = new RealChessGamePlayer(new HumanPlayer("Test2"), Colour.WHITE);
+        ChessGamePlayer player1 = new RealChessGamePlayer(new HumanPlayer("Test1"), Colour.BLACK);
+        ChessGamePlayer player2 = new RealChessGamePlayer(new HumanPlayer("Test2"), Colour.WHITE);
         game = new StandardChessGameFactory().getChessGame(new ChessBoard(), player1, player2);
         board = game.getChessBoard();
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),

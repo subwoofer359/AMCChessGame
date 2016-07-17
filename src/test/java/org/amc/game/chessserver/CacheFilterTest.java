@@ -15,7 +15,6 @@ public class CacheFilterTest {
 	
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletContext context;
     private MockFilterConfig fConfig;
     private MockFilterChain chain;
     private static final String CACHE_HEADER = "Cache-Control";
@@ -25,7 +24,7 @@ public class CacheFilterTest {
 	public void setUp() throws Exception {
     	request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        context = new MockServletContext();
+        MockServletContext context = new MockServletContext();
         fConfig = new MockFilterConfig(context);
         chain = new MockFilterChain();
 	}

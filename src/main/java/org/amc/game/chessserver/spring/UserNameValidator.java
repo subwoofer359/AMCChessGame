@@ -56,20 +56,18 @@ public class UserNameValidator implements Validator {
 	
     private void checkUserNameFree(String userName, Errors errors) {
 
-        if (isUserNameFree(userName, errors)) {
-
-        } else {
+        if (isUserNameNotFree(userName, errors)) {
             errors.rejectValue(USERNAME_FIELD, USERNAME_TAKEN_ERROR );
         }
     }
 	
-    boolean isUserNameFree(String userName, Errors errors) {
+    boolean isUserNameNotFree(String userName, Errors errors) {
         try {
-            return userDAO.findEntities("userName", userName).isEmpty();
+            return !userDAO.findEntities("userName", userName).isEmpty();
         } catch (DAOException de) {
             errors.rejectValue(USERNAME_FIELD, DATABASE_ERROR);
             logger.error(de);
-            return true;
+            return false;
         }
     }
 

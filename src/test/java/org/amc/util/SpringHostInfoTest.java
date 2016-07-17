@@ -12,7 +12,6 @@ import javax.servlet.ServletContext;
 
 public class SpringHostInfoTest {
 
-    private SpringHostInfo springHostInfo;
     private static final int PORT = 2345;
     private static final String HOSTNAME = "23.2.3.2";
     private static final String CONTEXTPATH = "/app/chessgame";
@@ -29,7 +28,7 @@ public class SpringHostInfoTest {
     public void getHostUrlTest() {
         when(servletContext.getContextPath()).thenReturn(CONTEXTPATH);
         
-        springHostInfo = new SpringHostInfo(servletContext, HOSTNAME, PORT);
+        SpringHostInfo springHostInfo = new SpringHostInfo(servletContext, HOSTNAME, PORT);
         String expectedString = SpringHostInfo.HTTP + HOSTNAME + ":" + PORT + CONTEXTPATH;
         System.out.println(springHostInfo.getHostUrl());
         assertEquals(expectedString, springHostInfo.getHostUrl());

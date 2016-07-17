@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.text.ParseException;
 
 public class GameStateTest {
-    private ChessBoard board;
     private ChessGame chessGame;
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
@@ -19,7 +18,7 @@ public class GameStateTest {
 
     @Before
     public void setUp() throws Exception {
-        board = new ChessBoard();
+        ChessBoard board = new ChessBoard();
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());

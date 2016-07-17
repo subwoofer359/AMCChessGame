@@ -31,8 +31,6 @@ public class StompControllerFixtureIT {
     
     public static final String SESSION_ATTRIBUTE = "PLAYER";
 
-    
-
     @Autowired
     WebApplicationContext wac;
 
@@ -123,7 +121,6 @@ public class StompControllerFixtureIT {
                 Map<String, List<String>> nativeHeaders = message.getHeaders()
                 .get("nativeHeaders", Map.class);
 
-        String body = new String(message.getPayload());
         assertEquals(type, MessageType.valueOf(nativeHeaders.get(MESSAGE_HEADER_TYPE).get(0)));
         return new String(message.getPayload());
     }
