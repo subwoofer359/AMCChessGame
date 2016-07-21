@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                 console: true,
                 coverage: {
                     disposeCollector: true,
-                    src: ['src/main/webapp/jsfull/*.js'],
+                    src: ['src/main/webapp/jsfull/*.js', '!src/main/webapp/jsfull/sinon*.js'],
                     instrumentedFiles: 'test/coverage/instrument',
                     htmlReport: 'report/coverage',
                     coberturaReport: 'report/',

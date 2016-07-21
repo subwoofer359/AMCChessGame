@@ -12,6 +12,7 @@
 
 <script src="${pageContext.request.contextPath}/js/sidebar.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
+<script src="${pageContext.request.contextPath}/jsfull/userSearch.js"></script>
 <style>
     @import url(../../css/General.css);
     @import url(../../css/selectTableRow.css);
@@ -75,83 +76,8 @@
 </style>
 <script>
 $(document).ready(function () {
-    
-    function requestGame(userName) {
-        "use strict";
-        var formData = "userToPlay=" + userName;
-        console.log("request game with " + userName);
-        $.post('./requestGame', formData, function (data) {
-            var $button = $(".play-button");
-            if(data === true) {
-                $button.removeClass("btn-primary");
-                $button.addClass("btn-success");
-                $button.html("request sent");
-            } else {
-                $button = $(".play-button");
-                $button.removeClass("btn-primary");
-                $button.addClass("btn-danger");
-                $button.html("request failed");
-            }
-            $button.attr("disabled", true);
-            $button.parents("tr").unbind("click");
-        });
-    }
-    
-    function addTableRowListener() {
-        "use strict";
-        $("#search-results tbody tr").click(function () {
-            $(".play-button").remove();
-            var td = $(this).find(".buttonHolder"),
-                userName = $(this).find(".userName").text();
-            td.append('<button class="play-button btn btn-primary">Request Game</button>');
-            
-            $(".play-button").click(function (event) {
-                event.preventDefault();
-                requestGame(userName);
-            });
-        });
-    }
-    
-    function searchForUserName() {
-        "use strict";
-        var inputUserName = $('#userName'),
-            userName = inputUserName.val(),
-            formData = "searchTerm=" + userName;
-        
-        console.log("formData=" + formData);
-
-        $.post('./searchForUsers', formData, function (data) {
-           
-            var users = $.parseJSON(data),
-                i,
-                userLength,
-                $tbody = $("#search-box tbody"),
-                tableResult = "";
-            if (Array.isArray(users)) {
-                if(users.length === 0) {
-              		$tbody.html("<tr><td><h2>Search returned no results</h2></td></tr>");
-                } else {
-            		for (i = 0, userLength = users.length; i < userLength; i += 1) {
-                    	tableResult += "<tr><td class='userName'>" + users[i].userName + "</td><td class=\"buttonHolder\"><span class=\"block\">" + users[i].fullName + "</span></td></tr>";
-            		}
-            		$tbody.html(tableResult);
-                    addTableRowListener();
-                }
-            }
-        });
-    }
-    
-    $("#search-btn").click(function(event){
-        searchForUserName();
-    });
-    
-    $("#userName").keypress( function( event ) {
-        if ( event.which == 13 ) {
-            event.preventDefault();
-            searchForUserName();
-        }
-    });
-    
+	var userSearchInstance = userSearch();
+	userSearchInstance.init();
 });
 </script>
 </head>
