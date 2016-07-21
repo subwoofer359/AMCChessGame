@@ -6,7 +6,6 @@ var userSearch = function () {
     "use strict";
     function requestGame(userName) {
         var formData = "userToPlay=" + userName;
-        console.log("request game with " + userName);
         $.post('./requestGame', formData, function (data) {
             var $button = $(".play-button");
             if (data === true) {
@@ -42,8 +41,6 @@ var userSearch = function () {
         var inputUserName = $('#userName'),
             userName = inputUserName.val(),
             formData = "searchTerm=" + userName;
-
-        console.log("formData=" + formData);
 
         $.post('./searchForUsers', formData, function (data) {
             var users = $.parseJSON(data),
