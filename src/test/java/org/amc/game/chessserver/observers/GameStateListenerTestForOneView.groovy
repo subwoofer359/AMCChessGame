@@ -80,7 +80,6 @@ class GameStateListenerTestForOneView {
         serverGame.getChessGame().setChessBoard(board);
         
         listener.update(serverGame, PAWN_PROMOTION);
-        Player player = serverGame.getChessGame().getCurrentPlayer();
         def destination = GameStateListener.MESSAGE_DESTINATION + "/" +serverGame.uid;
         verify(template, times(1)).convertAndSend(eq(destination), eq("PAWN_PROMOTION (A,8)"), anyMap());
     }
