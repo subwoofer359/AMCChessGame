@@ -70,7 +70,7 @@ public class ChessBoardTest {
      * Tests the copying constructor of ChessBoard and copy method of ChessPiece
      */
     @Test
-    public void CloneConstructorTest() {
+    public void cloneConstructorTest() {
         board.initialise();
         ChessBoard clone = new ChessBoard(board);
         for (Coordinate coord : ChessBoard.Coordinate.values()) {
@@ -90,7 +90,7 @@ public class ChessBoardTest {
     }
 
     @Test
-    public void CloneConstuctorPieceMovedCopyTest() {
+    public void cloneConstuctorPieceMovedCopyTest() {
         board.initialise();
         board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK).moved(),
                 StartingSquare.BLACK_KING.getLocation());
