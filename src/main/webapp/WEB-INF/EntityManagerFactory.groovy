@@ -36,7 +36,7 @@ beans {
         aop.'scoped-proxy'();
     };
 
-    entityManagerCacheCleaner(EntityManagerCacheCleaner, ref('myEntityManagerCache'), 1 ,4) { bean ->
+    entityManagerCacheCleaner(EntityManagerCacheCleaner, ref('myEntityManagerCache'), 10 ,30) { bean ->
         bean.initMethod = 'init';
         scheduler = ref('myScheduler');
     }

@@ -19,7 +19,7 @@ public class EntityManagerCacheCleaner {
     
     private EntityManagerCache enCache;
     private long period = 10; //10 Seconds
-    private TimeUnit periodUnit = TimeUnit.SECONDS;
+    private TimeUnit periodUnit = TimeUnit.MINUTES;
     private int minutesToLive = 10;
     static int livePeriod = Calendar.MINUTE;
     
