@@ -118,7 +118,7 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
     }
     
     boolean isGameAwaitingPlayer() {
-        return ServerGameStatus.AWAITING_PLAYER.equals(getCurrentStatus());
+        return ServerGameStatus.AWAITING_PLAYER == getCurrentStatus();
     }
     
     /**
