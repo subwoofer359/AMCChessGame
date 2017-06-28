@@ -49,7 +49,7 @@ public class ChessBoardView implements Observer {
      */
     public void displayTheBoard() {
         StringBuilder sb = new StringBuilder();
-        int row = 8;
+        int row = ChessBoard.BOARD_WIDTH;
         sb.append(printBoardHeader());
         while (row > 0) {
             for(Coordinate coord:ChessBoard.Coordinate.values()){
