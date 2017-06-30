@@ -40,7 +40,7 @@ public class NewGameRequestController {
                 List<User> userList = userDAO.findEntities("userName", userToPlay);
                 if(userList.size() == 1) {
                     User user = userList.get(0);
-                    if(ComparePlayers.comparePlayers(user.getPlayer(), player)) {
+                    if(ComparePlayers.isSamePlayer(user.getPlayer(), player)) {
                     	logger.error("Can't request new game with one self");
                     	return false;
                     }

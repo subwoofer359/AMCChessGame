@@ -154,11 +154,11 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      */
     public ChessGamePlayer getPlayer(Player player) {
         checkForNull(Player.class, player);
-        if(ComparePlayers.comparePlayers(this.player, player)) {
+        if(ComparePlayers.isSamePlayer(this.player, player)) {
             return this.player;
         } else if(this.chessGame == null) {
             return null;
-        } else if (ComparePlayers.comparePlayers(getOpponent(), player)) {
+        } else if (ComparePlayers.isSamePlayer(getOpponent(), player)) {
             return this.chessGame.getBlackPlayer();
         } else {
         	throw new IllegalArgumentException("Player not part of the game");
@@ -253,7 +253,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * Remove Observers from receiving updates
      * Sets Status to FINISHED after Observers removed to stop
      * Observers being updated on State change
-     * Tidys up references
+     * Tidies up references
      */
     public void destroy() {
         removeAllObservers();

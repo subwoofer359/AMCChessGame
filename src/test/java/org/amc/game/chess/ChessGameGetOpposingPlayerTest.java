@@ -38,7 +38,7 @@ public class ChessGameGetOpposingPlayerTest {
 
     @Test
     public void testServerChessGame() {
-        assertTrue(ComparePlayers.comparePlayers(chessGameFixture.getBlackPlayer(), scg
+        assertTrue(ComparePlayers.isSamePlayer(chessGameFixture.getBlackPlayer(), scg
                         .getChessGame().getOpposingPlayer(chessGameFixture.getWhitePlayer())));
     }
 

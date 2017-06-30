@@ -117,7 +117,7 @@ public abstract class AbstractChessGame  implements Serializable {
      * @return Player
      */
     public ChessGamePlayer getOpposingPlayer(ChessGamePlayer player) {
-        return ComparePlayers.comparePlayers(player, whitePlayer)? blackPlayer : whitePlayer;
+        return ComparePlayers.isSamePlayer(player, whitePlayer)? blackPlayer : whitePlayer;
     }
 
     /**

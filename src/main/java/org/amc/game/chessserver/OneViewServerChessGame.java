@@ -31,7 +31,7 @@ public class OneViewServerChessGame extends ServerChessGame {
 	@Override
 	public void addOpponent(Player opponent) {
 	    checkForNull(Player.class, opponent);
-	    if(ComparePlayers.comparePlayers(opponent, getPlayer())) {
+	    if(ComparePlayers.isSamePlayer(opponent, getPlayer())) {
 	        logger.error("Player can't join their own game");
 	    } else if(isGameAwaitingPlayer()) {
 	        ChessBoard board = new ChessBoard();

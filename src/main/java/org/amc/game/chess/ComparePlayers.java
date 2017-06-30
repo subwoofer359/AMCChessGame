@@ -16,7 +16,7 @@ public final class ComparePlayers {
          * @param playerTwo Player two
          * @return true if fields uid and name are the same.
          */
-        public static boolean comparePlayers(Player playerOne, Player playerTwo) {
+        public static boolean isSamePlayer(Player playerOne, Player playerTwo) {
             return isSameUid(playerOne, playerTwo) && isSameName(playerOne, playerTwo);
         }
         

@@ -61,7 +61,7 @@ public class ServerJoinChessGameController {
     }
     
     private boolean isPlayerJoiningOwnGame(AbstractServerChessGame chessGame, Player player) {
-        return ComparePlayers.comparePlayers(player, chessGame.getPlayer());
+        return ComparePlayers.isSamePlayer(player, chessGame.getPlayer());
     }
 
     private void enterChessGame(ModelAndView mav, AbstractServerChessGame chessGame, Player player,
@@ -152,7 +152,7 @@ public class ServerJoinChessGameController {
 
     private boolean joiningCurrentGame(AbstractServerChessGame chessGame, Player player) {
         return ServerGameStatus.IN_PROGRESS.equals(chessGame.getCurrentStatus()) &&
-            ComparePlayers.comparePlayers(player, chessGame.getOpponent());
+            ComparePlayers.isSamePlayer(player, chessGame.getOpponent());
     }
 
     @Resource(name = "myServerChessGameDAO")

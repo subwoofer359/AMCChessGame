@@ -59,7 +59,7 @@ public class OneViewServerChessGameConstructorTest {
         ovscGame.setChessGameFactory(chessGameFactory);
 
         assertNull(ovscGame.getChessGame());
-        assertTrue(ComparePlayers.comparePlayers(player, ovscGame.getPlayer()));
+        assertTrue(ComparePlayers.isSamePlayer(player, ovscGame.getPlayer()));
         assertNull(ovscGame.getOpponent());
         assertEquals(ServerGameStatus.AWAITING_PLAYER, ovscGame.getCurrentStatus());
         assertNotNull(ovscGame.getChessGameFactory());

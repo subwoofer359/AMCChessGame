@@ -91,7 +91,7 @@ public class ServerChessGameDAOIT {
         
         assertEquals(scgGame.getCurrentStatus(), retrievedGame.getCurrentStatus());
         assertEquals(scgGame.getChessGame(), retrievedGame.getChessGame());
-        assertTrue(ComparePlayers.comparePlayers(scgGame.getPlayer(),retrievedGame.getPlayer()));
+        assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(),retrievedGame.getPlayer()));
         assertEquals(scgGame.getNoOfObservers(), retrievedGame.getNoOfObservers());
         assertEquals(scgGame.getOpponent(), retrievedGame.getOpponent());
     }

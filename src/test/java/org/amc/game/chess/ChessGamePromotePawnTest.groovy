@@ -149,10 +149,10 @@ class ChessGamePromotePawnTest {
     }
     
     private void assertCurrentPlayerHasChanged() {
-        assert ComparePlayers.comparePlayers(chessGame.currentPlayer, playerBlack) == true;
+        assert ComparePlayers.isSamePlayer(chessGame.currentPlayer, playerBlack) == true;
     }
     
     private void assertCurrentPlayerHasNotChanged() {
-        assert ComparePlayers.comparePlayers(chessGame.currentPlayer, playerWhite) == true;
+        assert ComparePlayers.isSamePlayer(chessGame.currentPlayer, playerWhite) == true;
     }
 }

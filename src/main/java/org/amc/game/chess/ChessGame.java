@@ -50,7 +50,7 @@ public class ChessGame extends AbstractChessGame {
     }
 
     private void isPlayersTurn(Player player) throws IllegalMoveException {
-        if (!ComparePlayers.comparePlayers(getCurrentPlayer(), player)) {
+        if (!ComparePlayers.isSamePlayer(getCurrentPlayer(), player)) {
             throw new IllegalMoveException("Not Player's turn");
         }
     }

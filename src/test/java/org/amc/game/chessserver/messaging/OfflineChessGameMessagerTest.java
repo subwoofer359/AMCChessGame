@@ -127,7 +127,7 @@ public class OfflineChessGameMessagerTest {
         verify(emailService).send(userCaptor.capture(), emailTemplateCaptor.capture());
         assertEquals(userCaptor.getValue().getUserName(), opponentUser.getUserName());
         assertEquals(emailTemplateCaptor.getValue().getServerChessGame(), serverChessGame);
-        assertTrue(ComparePlayers.comparePlayers(opponentPlayer, emailTemplateCaptor.getValue()
+        assertTrue(ComparePlayers.isSamePlayer(opponentPlayer, emailTemplateCaptor.getValue()
                         .getPlayer()));
     }
 

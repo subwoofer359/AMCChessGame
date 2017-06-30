@@ -54,9 +54,9 @@ public class ChessGameDAOIT {
         
     
         
-        assertTrue(ComparePlayers.comparePlayers(game.getCurrentPlayer(), laura));
-        assertTrue(ComparePlayers.comparePlayers(game.getBlackPlayer(), laura));
-        assertTrue(ComparePlayers.comparePlayers(game.getWhitePlayer(), nobby));
+        assertTrue(ComparePlayers.isSamePlayer(game.getCurrentPlayer(), laura));
+        assertTrue(ComparePlayers.isSamePlayer(game.getBlackPlayer(), laura));
+        assertTrue(ComparePlayers.isSamePlayer(game.getWhitePlayer(), nobby));
         
     }
     

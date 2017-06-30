@@ -33,8 +33,8 @@ public class TwoViewServerChessGameConstructorTest {
         assertEquals(UID, scgGame.getUid());
         assertNotNull(scgGame.getChessGame());
         assertFalse(scgGame.getChessGame() == fixture.getChessGame());
-        assertTrue(ComparePlayers.comparePlayers(fixture.getWhitePlayer(), scgGame.getPlayer()));
-        assertTrue(ComparePlayers.comparePlayers(fixture.getBlackPlayer(), scgGame.getOpponent()));
+        assertTrue(ComparePlayers.isSamePlayer(fixture.getWhitePlayer(), scgGame.getPlayer()));
+        assertTrue(ComparePlayers.isSamePlayer(fixture.getBlackPlayer(), scgGame.getOpponent()));
         assertEquals(ServerGameStatus.IN_PROGRESS, scgGame.getCurrentStatus());
         assertEquals(0, scgGame.getNoOfObservers());
         assertNull(scgGame.getChessGameFactory());

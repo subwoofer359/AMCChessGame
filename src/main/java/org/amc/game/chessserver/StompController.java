@@ -111,7 +111,7 @@ public class StompController {
     }
     
     boolean isValidPlayer(Player player, AbstractServerChessGame serverChessGame) {
-        return (ComparePlayers.comparePlayers(player, serverChessGame.getPlayer()) || 
-                        ComparePlayers.comparePlayers(player, serverChessGame.getOpponent()));
+        return (ComparePlayers.isSamePlayer(player, serverChessGame.getPlayer()) || 
+                        ComparePlayers.isSamePlayer(player, serverChessGame.getOpponent()));
     }
 }

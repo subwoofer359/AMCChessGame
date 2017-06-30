@@ -66,7 +66,7 @@ public class StartPageControllerCreateGameTest {
     private void assertPlayerIsAddedToChessGame() throws DAOException {
         verify(sCGDAO, times(1)).saveServerChessGame(gameCaptor.capture());
         AbstractServerChessGame game = gameCaptor.getValue();
-        assertTrue(ComparePlayers.comparePlayers(game.getPlayer(), whitePlayer));
+        assertTrue(ComparePlayers.isSamePlayer(game.getPlayer(), whitePlayer));
     }
 
     @Test

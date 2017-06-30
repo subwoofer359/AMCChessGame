@@ -51,7 +51,7 @@ class ServerChessGamePromotionTest {
         spyScGame.move(playerWhite, move);
         assert scGame.getChessGame().getGameState() == GameState.PAWN_PROMOTION;
         verify(spyScGame, times(1)).notifyObservers(GameState.PAWN_PROMOTION);
-        assert ComparePlayers.comparePlayers(playerWhite, scGame.getChessGame().getCurrentPlayer());
+        assert ComparePlayers.isSamePlayer(playerWhite, scGame.getChessGame().getCurrentPlayer());
     }
     
     @Test(expected = IllegalMoveException.class)

@@ -61,8 +61,8 @@ public class ServerJoinControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
-        assertTrue(ComparePlayers.comparePlayers(chessGame.getPlayer(), whitePlayer));
-        assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getPlayer(), whitePlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
     }
 
@@ -83,7 +83,7 @@ public class ServerJoinControllerJoinGameTest {
         AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(blackPlayer);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
-        assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         ModelAndViewAssert.assertViewName(mav, "chessGamePortal");
         assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
@@ -96,7 +96,7 @@ public class ServerJoinControllerJoinGameTest {
         chessGame.addOpponent(new HumanPlayer("Test"));
         assertNotEquals(AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER,
                         chessGame.getCurrentStatus());
-        assertFalse(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
+        assertFalse(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         assertModelAndViewAttributesOnFail(mav,
                         ServerJoinChessGameController.ERROR_PLAYER_NOT_OPPONENT);
@@ -109,7 +109,7 @@ public class ServerJoinControllerJoinGameTest {
         chessGame.addOpponent(new HumanPlayer("Test"));
         chessGame.setCurrentStatus(ServerGameStatus.FINISHED);
         assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, chessGame.getCurrentStatus());
-        assertFalse(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
+        assertFalse(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         assertModelAndViewAttributesOnFail(mav, ServerJoinChessGameController.ERROR_GAMEOVER);
     }
@@ -120,7 +120,7 @@ public class ServerJoinControllerJoinGameTest {
         chessGame.addOpponent(blackPlayer);
         chessGame.setCurrentStatus(ServerGameStatus.FINISHED);
         assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, chessGame.getCurrentStatus());
-        assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         assertModelAndViewAttributesOnFail(mav, ServerJoinChessGameController.ERROR_GAMEOVER);
     }
@@ -130,8 +130,8 @@ public class ServerJoinControllerJoinGameTest {
         AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         chessGame.addOpponent(blackPlayer);
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
-        assertTrue(ComparePlayers.comparePlayers(chessGame.getOpponent(), blackPlayer));
-        assertTrue(ComparePlayers.comparePlayers(chessGame.getPlayer(), whitePlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getPlayer(), whitePlayer));
         ModelAndView mav = controller.joinGame(whitePlayer, gameUUID);
         assertModelAndViewAttributesOnSuccess(mav, whitePlayer);
 
@@ -143,7 +143,7 @@ public class ServerJoinControllerJoinGameTest {
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAME);
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.CHESSPLAYER);
         Player actualPlayer = ModelAndViewAssert.assertAndReturnModelAttributeOfType(mav, ServerConstants.CHESSPLAYER, Player.class);
-        assertTrue(ComparePlayers.comparePlayers(player, actualPlayer));
+        assertTrue(ComparePlayers.isSamePlayer(player, actualPlayer));
     }
 
     private void assertModelAndViewAttributesOnFail(ModelAndView mav, String errorMessage) {

@@ -59,7 +59,7 @@ public class PlayerJoinedChessGameEmailTest {
     @Test
     public void test() throws Exception {
         assertEquals(template.getEmailSubject(), PlayerJoinedChessGameEmail.DEFAULT_EMAIL_SUBJECT);
-        assertTrue(ComparePlayers.comparePlayers(template.getPlayer(),player));
+        assertTrue(ComparePlayers.isSamePlayer(template.getPlayer(),player));
         assertEquals(template.getServerChessGame(), scg);
         template.getEmailHtml();  
         

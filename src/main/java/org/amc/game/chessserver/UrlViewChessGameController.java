@@ -62,8 +62,8 @@ public class UrlViewChessGameController {
     }
     
     private boolean isPlayerPartOfThisGame(Player player, AbstractServerChessGame scgGame) {
-        return ComparePlayers.comparePlayers(player, scgGame.getPlayer()) ||
-                        ComparePlayers.comparePlayers(player, scgGame.getOpponent());
+        return ComparePlayers.isSamePlayer(player, scgGame.getPlayer()) ||
+                        ComparePlayers.isSamePlayer(player, scgGame.getOpponent());
     }
     
     private boolean isInProgressState(AbstractServerChessGame scgGame) {

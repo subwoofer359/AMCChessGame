@@ -47,7 +47,7 @@ public class PromotionStompController extends StompController {
     
     private String checkPlayerCanPromotePawn(Player player, AbstractServerChessGame scGame, String promotionMessage) {
     	String message;
-    	if(player != null && ComparePlayers.comparePlayers(player, scGame.getChessGame().getCurrentPlayer())){
+    	if(player != null && ComparePlayers.isSamePlayer(player, scGame.getChessGame().getCurrentPlayer())){
         	message = tryToPromotionPawn(scGame, promotionMessage);
         } else {
         	message = PROMOTION_ERROR_MSG;

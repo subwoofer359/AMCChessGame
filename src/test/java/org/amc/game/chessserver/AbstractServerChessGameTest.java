@@ -87,8 +87,8 @@ public class AbstractServerChessGameTest {
         assertEquals(GAME_UID, scgGame.getUid());
         assertNotNull("ChessGame should not be null", scgGame.getChessGame());
         assertFalse(scgGame.getChessGame() == fixture.getChessGame());
-        assertTrue(ComparePlayers.comparePlayers(fixture.getWhitePlayer(), scgGame.getPlayer()));
-        assertTrue(ComparePlayers.comparePlayers(fixture.getBlackPlayer(), scgGame.getOpponent()));
+        assertTrue(ComparePlayers.isSamePlayer(fixture.getWhitePlayer(), scgGame.getPlayer()));
+        assertTrue(ComparePlayers.isSamePlayer(fixture.getBlackPlayer(), scgGame.getOpponent()));
         assertEquals(ServerGameStatus.IN_PROGRESS, scgGame.getCurrentStatus());
         assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
         assertNull("Should be no ChessGameFactory", scgGame.getChessGameFactory());
@@ -104,7 +104,7 @@ public class AbstractServerChessGameTest {
         
         assertEquals(GAME_UID, scgGame.getUid());
         assertNull("ChessGame should be null", scgGame.getChessGame());
-        assertTrue(ComparePlayers.comparePlayers(fixture.getWhitePlayer(), scgGame.getPlayer()));
+        assertTrue(ComparePlayers.isSamePlayer(fixture.getWhitePlayer(), scgGame.getPlayer()));
         assertNull("Opponent should be null", scgGame.getOpponent());
         assertEquals(ServerGameStatus.AWAITING_PLAYER, scgGame.getCurrentStatus());
         assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
@@ -125,9 +125,9 @@ public class AbstractServerChessGameTest {
     
     @Test
     public void getPlayerTest() {
-        assertTrue(ComparePlayers.comparePlayers(cgFixture.getBlackPlayer(), 
+        assertTrue(ComparePlayers.isSamePlayer(cgFixture.getBlackPlayer(), 
         		ascgGame.getPlayer(cgFixture.getBlackPlayer())));
-        assertTrue(ComparePlayers.comparePlayers(cgFixture.getWhitePlayer(), 
+        assertTrue(ComparePlayers.isSamePlayer(cgFixture.getWhitePlayer(), 
         		ascgGame.getPlayer(cgFixture.getWhitePlayer())));
     }
 

@@ -35,15 +35,15 @@ public class PlayerEqualityTest {
 
     @Test
     public void test() {
-        assertTrue(ComparePlayers.comparePlayers(playerA, playerB));
-        assertTrue(ComparePlayers.comparePlayers(playerA, playerC));
-        assertTrue(ComparePlayers.comparePlayers(playerB, playerC));
-        assertFalse(ComparePlayers.comparePlayers(playerA, playerD));
-        assertFalse(ComparePlayers.comparePlayers(playerA, playerE));
-        assertFalse(ComparePlayers.comparePlayers(playerB, playerD));
-        assertFalse(ComparePlayers.comparePlayers(playerB, playerE));
-        assertFalse(ComparePlayers.comparePlayers(playerA, playerF));
-        assertFalse(ComparePlayers.comparePlayers(playerA, playerG));
+        assertTrue(ComparePlayers.isSamePlayer(playerA, playerB));
+        assertTrue(ComparePlayers.isSamePlayer(playerA, playerC));
+        assertTrue(ComparePlayers.isSamePlayer(playerB, playerC));
+        assertFalse(ComparePlayers.isSamePlayer(playerA, playerD));
+        assertFalse(ComparePlayers.isSamePlayer(playerA, playerE));
+        assertFalse(ComparePlayers.isSamePlayer(playerB, playerD));
+        assertFalse(ComparePlayers.isSamePlayer(playerB, playerE));
+        assertFalse(ComparePlayers.isSamePlayer(playerA, playerF));
+        assertFalse(ComparePlayers.isSamePlayer(playerA, playerG));
     }
 
 }

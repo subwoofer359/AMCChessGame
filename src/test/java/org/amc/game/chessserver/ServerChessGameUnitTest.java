@@ -67,7 +67,7 @@ public class ServerChessGameUnitTest {
     @Test
     public void testAddOpponent() {
         scgGame.addOpponent(opponent);
-        assertTrue(ComparePlayers.comparePlayers(scgGame.getPlayer(), player));
+        assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
         assertNotNull(scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, scgGame.getCurrentStatus());
         assertEquals(Colour.BLACK, scgGame.getOpponent().getColour());
@@ -81,7 +81,7 @@ public class ServerChessGameUnitTest {
     @Test
     public void testAddPlayerAsOpponent() {
         scgGame.addOpponent(player);
-        assertTrue(ComparePlayers.comparePlayers(scgGame.getPlayer(), player));
+        assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
         assertNull(scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, scgGame.getCurrentStatus());
     }
@@ -90,7 +90,7 @@ public class ServerChessGameUnitTest {
     public void testAddOpponentToFinishedGame() {
         scgGame.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         scgGame.addOpponent(opponent);
-        assertTrue(ComparePlayers.comparePlayers(scgGame.getPlayer(), player));
+        assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
         assertNull(scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scgGame.getCurrentStatus());
     }
@@ -99,7 +99,7 @@ public class ServerChessGameUnitTest {
     public void testAddOpponentToInProgressGame() {
         scgGame.setCurrentStatus(ServerChessGame.ServerGameStatus.IN_PROGRESS);
         scgGame.addOpponent(opponent);
-        assertTrue(ComparePlayers.comparePlayers(scgGame.getPlayer(), player));
+        assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
         assertNull(scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, scgGame.getCurrentStatus());
     }
@@ -119,8 +119,8 @@ public class ServerChessGameUnitTest {
     @Test
     public void getPlayerTest() {
         scgGame.addOpponent(opponent);
-        assertTrue(ComparePlayers.comparePlayers(opponent, scgGame.getPlayer(opponent)));
-        assertTrue(ComparePlayers.comparePlayers(player, scgGame.getPlayer(player)));
+        assertTrue(ComparePlayers.isSamePlayer(opponent, scgGame.getPlayer(opponent)));
+        assertTrue(ComparePlayers.isSamePlayer(player, scgGame.getPlayer(player)));
     }
 
     @Test(expected = IllegalArgumentException.class)
