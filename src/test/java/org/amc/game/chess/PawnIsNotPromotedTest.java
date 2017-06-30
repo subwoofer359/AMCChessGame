@@ -29,9 +29,10 @@ public class PawnIsNotPromotedTest {
     public void setUp() throws Exception {
         ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
         ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        board = new ChessBoard();
+        
         this.promotion = PawnPromotionRule.getInstance();
-        this.chessGame = new ChessGame(board, whitePlayer, blackPlayer);
+        this.chessGame = new ChessGame(new ChessBoard(), whitePlayer, blackPlayer);
+        this.board = this.chessGame.getChessBoard();
     }
 
     @Parameters
@@ -40,14 +41,16 @@ public class PawnIsNotPromotedTest {
         return Arrays.asList(new Object[][] {
                 { PawnPiece.getPawnPiece(Colour.WHITE), new Move("A2-A1") },
                 { PawnPiece.getPawnPiece(Colour.WHITE), new Move("H2-H1") },
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A7-A8") } });
+                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A7-A8") },
+                //invalid move for a pawn
+                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A7-A1") }});
 
     }
 
     @Test
     public void test() {
         board.putPieceOnBoardAt(piece, move.getStart());
-        assertFalse(promotion.isRuleApplicable(chessGame, move));
+        assertFalse("Move should not lead to promotion", promotion.isRuleApplicable(chessGame, move));
         promotion.applyRule(chessGame, move);
         assertEquals(piece, board.getPieceFromBoardAt(move.getStart()));
     }

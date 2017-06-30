@@ -38,11 +38,14 @@ public final class PawnPromotionRule extends PawnPieceRule {
 
     /**
      * @see ChessMoveRule#isRuleApplicable(AbstractChessGame, Move)
+     * todo check for piece as nulls
      */
     @Override
     public boolean isRuleApplicable(AbstractChessGame game, Move move) {
         ChessPiece piece = game.getChessBoard().getPieceFromBoardAt(move.getStart());
-        return isRuleApplicable(move.getEnd(), piece);
+        return isRuleApplicable(move.getEnd(), piece) && 
+        		piece.isValidMove(game.getChessBoard(), move);  
+        		
     }
     
     private boolean isRuleApplicable(Location location, ChessPiece pieceToBePromoted) {
