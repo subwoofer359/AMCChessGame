@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import org.apache.openjpa.persistence.Externalizer;
 import org.apache.openjpa.persistence.Factory;
 import org.apache.openjpa.persistence.Persistent;
@@ -220,15 +221,15 @@ public abstract class AbstractChessGame  implements Serializable {
     }
     
     public ChessGamePlayer getCurrentPlayer() {
-        return currentPlayer;
+        return currentPlayer == null ? NO_PLAYER : currentPlayer;
     }
 
     public ChessGamePlayer getWhitePlayer() {
-        return whitePlayer;
+        return whitePlayer == null ? NO_PLAYER : whitePlayer;
     }
 
     public ChessGamePlayer getBlackPlayer() {
-        return blackPlayer;
+        return blackPlayer == null ? NO_PLAYER : blackPlayer;
     }
  
     private List<Move> copyOfChessMoves(AbstractChessGame chessGame) {

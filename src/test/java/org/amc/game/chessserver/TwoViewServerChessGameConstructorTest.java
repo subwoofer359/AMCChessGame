@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoardUtilities;
@@ -18,8 +19,8 @@ public class TwoViewServerChessGameConstructorTest {
         ServerChessGame scgGame = new TwoViewServerChessGame();
         assertEquals(0L, scgGame.getUid());
         assertNull(scgGame.getChessGame());
-        assertNull(scgGame.getPlayer());
-        assertNull(scgGame.getOpponent());
+        assertEquals(NO_PLAYER, scgGame.getPlayer());
+        assertEquals(NO_PLAYER, scgGame.getOpponent());
         assertEquals(ServerGameStatus.NEW, scgGame.getCurrentStatus());
         assertEquals(0, scgGame.getNoOfObservers());
         assertNull(scgGame.getChessGameFactory());

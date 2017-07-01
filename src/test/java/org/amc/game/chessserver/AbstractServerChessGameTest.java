@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
@@ -53,7 +54,7 @@ public class AbstractServerChessGameTest {
         AbstractServerChessGame game = new MockServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
         game.destroy();
         
-        assertNull(game.getOpponent());
+        assertEquals(NO_PLAYER, game.getOpponent());
         assertNull(game.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, game.getCurrentStatus());
     }
@@ -72,8 +73,8 @@ public class AbstractServerChessGameTest {
         
         assertEquals(0L, scgGame.getUid());
         assertNull(scgGame.getChessGame());
-        assertNull(scgGame.getPlayer());
-        assertNull(scgGame.getOpponent());
+        assertEquals(NO_PLAYER, scgGame.getPlayer());
+        assertEquals(NO_PLAYER, scgGame.getOpponent());
         assertEquals(ServerGameStatus.NEW, scgGame.getCurrentStatus());
         assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
         assertNull(scgGame.getChessGameFactory());
@@ -105,7 +106,7 @@ public class AbstractServerChessGameTest {
         assertEquals(GAME_UID, scgGame.getUid());
         assertNull("ChessGame should be null", scgGame.getChessGame());
         assertTrue(ComparePlayers.isSamePlayer(fixture.getWhitePlayer(), scgGame.getPlayer()));
-        assertNull("Opponent should be null", scgGame.getOpponent());
+        assertEquals("Opponent should be null", NO_PLAYER, scgGame.getOpponent());
         assertEquals(ServerGameStatus.AWAITING_PLAYER, scgGame.getCurrentStatus());
         assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
         assertNull("Should be no ChessGameFactory", scgGame.getChessGameFactory());
@@ -120,7 +121,7 @@ public class AbstractServerChessGameTest {
     @Test
     public void getPlayerOpponentNotAddedTest() {
     	ascgGame =  new MockServerChessGame(GAME_UID, cgFixture.getWhitePlayer());
-        assertNull("Player shouldn't have been added", ascgGame.getPlayer(cgFixture.getBlackPlayer()));
+    	assertEquals("Player shouldn't have been added", NO_PLAYER, ascgGame.getPlayer(cgFixture.getBlackPlayer()));
     }
     
     @Test

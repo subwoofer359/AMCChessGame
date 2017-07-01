@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -71,7 +72,7 @@ public class ServerJoinControllerJoinGameTest {
         ModelAndView mav = controller.joinGame(whitePlayer, gameUUID);
         AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
         assertEquals(AbstractServerChessGame.ServerGameStatus.AWAITING_PLAYER, chessGame.getCurrentStatus());
-        assertNull(chessGame.getOpponent());
+        assertEquals(NO_PLAYER, chessGame.getOpponent());
         assertModelAndViewAttributesOnFail(mav,
                         ServerJoinChessGameController.ERROR_GAME_HAS_NO_OPPONENT);
     }

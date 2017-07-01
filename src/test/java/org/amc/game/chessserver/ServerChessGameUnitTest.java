@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import static org.junit.Assert.assertTrue;
 
 import static org.junit.Assert.*;
@@ -106,7 +107,7 @@ public class ServerChessGameUnitTest {
 
     @Test
     public void getPlayerOpponentNotAddedTest() {
-        assertEquals(null, scgGame.getPlayer(opponent));
+        assertEquals(NO_PLAYER, scgGame.getPlayer(opponent));
     }
 
     @Test(expected=RuntimeException.class)

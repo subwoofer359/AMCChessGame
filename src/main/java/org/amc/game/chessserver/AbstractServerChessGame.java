@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import org.amc.game.GameSubject;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -143,7 +144,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @return Player
      */
     public ChessGamePlayer getPlayer() {
-        return player;
+        return player == null ? NO_PLAYER : player;
     }
 
     /**
@@ -157,7 +158,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         if(ComparePlayers.isSamePlayer(this.player, player)) {
             return this.player;
         } else if(this.chessGame == null) {
-            return null;
+            return NO_PLAYER;
         } else if (ComparePlayers.isSamePlayer(getOpponent(), player)) {
             return this.chessGame.getBlackPlayer();
         } else {
@@ -204,7 +205,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      */
     public ChessGamePlayer getOpponent() {
         if(this.chessGame == null) {
-            return null;
+            return NO_PLAYER;
         }
         return this.chessGame.getBlackPlayer();
     }
