@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 
 import java.text.ParseException;
@@ -65,7 +67,7 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
         ChessPiece piece = getChessPiece(group.substring(0, 1));
         Location location = new Location(group.substring(1, 3));
         if(group.endsWith(MOVE_TOKEN)) {
-            if (piece != null) {
+            if (piece != NO_CHESSPIECE) {
                 piece = piece.moved();
             }
         }

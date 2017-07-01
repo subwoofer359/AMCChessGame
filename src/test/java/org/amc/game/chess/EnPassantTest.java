@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.view.ChessBoardView;
@@ -126,7 +127,7 @@ public class EnPassantTest {
         enPassantRule.applyRule(chessGame, whiteEnPassantMove);
         assertTrue(cbUtils.getPieceOnBoard(whitePawnEndPosition)
                         .equals(whitePawn.moved()));
-        assertNull(cbUtils.getPieceOnBoard(blackPawnEndPosition));
+        assertEquals(NO_CHESSPIECE, cbUtils.getPieceOnBoard(blackPawnEndPosition));
     }
 
     @Test
@@ -146,7 +147,7 @@ public class EnPassantTest {
 
         enPassantRule.applyRule(chessGame, blackEnPassantMove);
         assertTrue(cbUtils.getPieceOnBoard(blackPawnEndPosition).equals(blackPawn.moved()));
-        assertNull(cbUtils.getPieceOnBoard(whitePawnEndPosition));
+        assertEquals(NO_CHESSPIECE, cbUtils.getPieceOnBoard(whitePawnEndPosition));
     }
 
     @Test

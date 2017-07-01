@@ -1,5 +1,7 @@
 package org.amc.game.chess.view;
 
+
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import org.amc.game.ChessApplication;
 import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessBoard;
@@ -11,6 +13,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RealChessGamePlayer;
@@ -75,7 +78,7 @@ public class ChessBoardView implements Observer {
         StringBuilder sb = new StringBuilder();
         sb.append('|');
         ChessPiece piece = chessBoard.getPieceFromBoardAt(new Location(coordinate,row));//getPieceFromBoardAt(col, row);
-        if (piece == null) {
+        if (piece == NO_CHESSPIECE) {
             sb.append("   ");
         } else {
             sb.append(' ');

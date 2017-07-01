@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.amc.game.chess.ChessBoard.Coordinate.D;
 import static org.amc.game.chess.ChessBoard.Coordinate.H;
 import static org.junit.Assert.*;
@@ -55,6 +56,7 @@ public class ChessGameMoveKingOutOfCheckTest {
         ChessPiece kingPiece = board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
         assertEquals(kingPiece.moved(), board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));
-        assertNull(board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
+        assertEquals(NO_CHESSPIECE, 
+        		board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
     }
 }

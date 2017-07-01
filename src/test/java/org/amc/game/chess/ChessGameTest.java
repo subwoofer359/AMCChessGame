@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.amc.game.chess.StartingSquare.*;
 import static org.junit.Assert.*;
 
@@ -59,7 +60,7 @@ public class ChessGameTest {
         cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
         chessGameFixture.move(whitePlayer, cbUtils.createMove(START_LOCATION, END_LOCATION));
         assertEquals(bishop.moved(), cbUtils.getPieceOnBoard(END_LOCATION));
-        assertNull(cbUtils.getPieceOnBoard(START_LOCATION));
+        assertEquals(NO_CHESSPIECE, cbUtils.getPieceOnBoard(START_LOCATION));
     }
 
     @Test

@@ -1,8 +1,11 @@
 package org.amc.game.chess.view;
 
+
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.AbstractServerChessGame;
 
@@ -55,7 +58,7 @@ public class ChessGameTextView implements Observer {
         sb.append('|');
         ChessPiece piece = chessBoard.getPieceFromBoardAt(new Location(coordinate, row));// getPieceFromBoardAt(col,
                                                                                          // row);
-        if (piece == null) {
+        if (piece == NO_CHESSPIECE) {
             sb.append("   ");
         } else {
             sb.append(' ');

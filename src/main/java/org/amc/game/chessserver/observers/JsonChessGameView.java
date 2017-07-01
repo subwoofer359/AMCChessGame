@@ -1,5 +1,7 @@
 package org.amc.game.chessserver.observers;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import com.google.gson.Gson;
 
 import org.amc.game.GameObserver;
@@ -10,6 +12,7 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -99,7 +102,7 @@ public class JsonChessGameView extends GameObserver {
             for (int rank = 1; rank <= ChessBoard.BOARD_WIDTH; rank++) {
                 for (Coordinate file : Coordinate.values()) {
                     ChessPiece piece = board.getPieceFromBoardAt(new Location(file, rank));
-                    if (piece != null) {
+                    if (piece != NO_CHESSPIECE) {
                         squares.put(file.toString() + rank, String.valueOf(ChessPieceTextSymbol
                                         .getChessPieceTextSymbol(piece)));
                     }

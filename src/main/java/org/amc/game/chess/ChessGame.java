@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -63,7 +65,7 @@ public class ChessGame extends AbstractChessGame {
 
     private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
                     throws IllegalMoveException {
-        if (piece == null) {
+        if (piece == NO_CHESSPIECE) {
             throw new IllegalMoveException("No piece at " + move.getStart());
         }
     }

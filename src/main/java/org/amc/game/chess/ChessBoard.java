@@ -2,6 +2,8 @@ package org.amc.game.chess;
 
 import org.amc.util.DefaultSubject;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,15 @@ public class ChessBoard extends DefaultSubject {
      */
     public enum Coordinate implements Comparable<Coordinate> {
         A(0), B(1), C(2), D(3), E(4), F(5), G(6), H(7);
+    	
+    static Coordinate getCoordinate(int index) {
+    		for(Coordinate c : Coordinate.values()) {
+    			if (c.getIndex() == index) {
+    				return c;
+    			}
+    		}
+    		return Coordinate.A;
+    	}
 
         private int letterIndex;
 
@@ -82,7 +93,7 @@ public class ChessBoard extends DefaultSubject {
     }
     
     private void storeCopyOfChessPiece(ChessPiece piece,Coordinate file,int rank){
-        if(piece != null){
+        if(piece != NO_CHESSPIECE){
             this.putPieceOnBoardAt(piece.copy(), new Location(file,rank));
         }
     }
@@ -164,7 +175,9 @@ public class ChessBoard extends DefaultSubject {
      *         empty
      */
     ChessPiece getPieceFromBoardAt(int letterCoordinate, int numberCoordinate) {
-        return board[letterCoordinate][mapNumberCoordinate(numberCoordinate)];
+    	ChessPiece piece = board[letterCoordinate][mapNumberCoordinate(numberCoordinate)];
+        return piece == null ? NO_CHESSPIECE : piece;
+        		
     }
 
     /**
@@ -203,7 +216,12 @@ public class ChessBoard extends DefaultSubject {
      * @return Boolean true if it's empty
      */
     boolean isEndSquareEmpty(Location location) {
-        return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber()) == null;
+        return getPieceFromBoardAt(location.getLetter().getIndex(), 
+        		location.getNumber()) == NO_CHESSPIECE;
+    }
+    
+    boolean isEndSquareEmpty(int x, int y) {
+        return isEndSquareEmpty(new Location(Coordinate.getCoordinate(x), y));
     }
 
     /**
@@ -232,7 +250,7 @@ public class ChessBoard extends DefaultSubject {
     }
 
     private boolean isPlayersChessPiece(ChessGamePlayer player, ChessPiece piece) {
-        return piece != null && piece.getColour().equals(player.getColour());
+        return piece.getColour() == player.getColour();
     }
     
  
@@ -250,8 +268,8 @@ public class ChessBoard extends DefaultSubject {
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
                 ChessPiece piece = getPieceFromBoardAt(letterIndex.getIndex(), i);
-                if (piece != null && piece instanceof KingPiece
-                                && piece.getColour().equals(player.getColour())) {
+                if (piece instanceof KingPiece
+                                && piece.getColour() == player.getColour()) {
                     return new Location(letterIndex, i);
                 }
             }

@@ -1,5 +1,6 @@
 package org.amc.game.chess.controller;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.BishopPiece;
@@ -12,6 +13,7 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chess.StartingSquare;
@@ -55,7 +57,7 @@ public class ConsoleControllerTest {
 
         controller.takeTurn();
         assertEquals(piece.moved(), board.getPieceFromBoardAt(endLocation));
-        assertNull(board.getPieceFromBoardAt(startLocation));
+        assertEquals(NO_CHESSPIECE, board.getPieceFromBoardAt(startLocation));
     }
 
     @Test(expected = IllegalMoveException.class)

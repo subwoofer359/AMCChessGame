@@ -1,5 +1,7 @@
 package org.amc.dao;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import static org.amc.game.chess.ChessBoardSetupNotation.ChessPieceNotation.*;
 import static org.amc.game.chess.SimpleChessBoardSetupNotation.MOVE_TOKEN;
 
@@ -14,6 +16,7 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
@@ -39,7 +42,7 @@ public final class ChessBoardExternalizer {
             for(int i = 0; i < ChessBoard.BOARD_WIDTH; i++) {
                 Location location = new Location(coord, ChessBoard.BOARD_WIDTH - i);
                 ChessPiece piece = board.getPieceFromBoardAt(location);
-                if(piece != null) {
+                if(piece != NO_CHESSPIECE) {
                     sb.append(getChessPieceSymbol(piece));
                     sb.append(location.asString().toLowerCase());
                     if(piece.hasMoved()) {

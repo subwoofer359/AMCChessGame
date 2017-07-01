@@ -1,5 +1,7 @@
 package org.amc.game.chessserver.messaging;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.BishopPiece;
@@ -8,6 +10,7 @@ import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
@@ -109,7 +112,7 @@ public class ChessBoardSVGFactory {
             for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
                 for (Coordinate letter : ChessBoard.Coordinate.values()) {
                     ChessPiece piece = board.getPieceFromBoardAt(new Location(letter, i));
-                    if (piece != null) {
+                    if (piece != NO_CHESSPIECE) {
                         SVGChessPiece svgFactory = sVGElementfactory.get(piece.getClass());
 
                         if (svgFactory != null) {

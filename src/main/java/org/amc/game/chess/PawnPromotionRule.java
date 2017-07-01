@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 /**
  * Encapsulate the Pawn Promotion rule
  * Automatically promotions the pawn to a queen.
@@ -80,11 +82,12 @@ public final class PawnPromotionRule extends PawnPieceRule {
     }
     
     private boolean isNotAPawn(ChessPiece piece) {
-        return piece == null || !(PawnPiece.class.equals(piece.getClass()));
+        return !(PawnPiece.class.equals(piece.getClass()));
     }
     
     private boolean isKingOrPawn(ChessPiece piece) {
-        return piece == null || piece.getClass().equals(KingPiece.class) || piece.getClass().equals(PawnPiece.class);
+        return KingPiece.class.equals(piece.getClass()) || 
+        		PawnPiece.class.equals(piece.getClass());
            
     }
     

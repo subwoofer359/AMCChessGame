@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 /**
  * Represents a Pawn in a game of Chess
  * <p>
@@ -115,11 +117,11 @@ public final class PawnPiece extends SimplePiece {
      * the end Square
      */
     private boolean canMoveTwoSquaresForward(ChessBoard board, Move move) {
-        int positionX = move.getStart().getLetter().getIndex();
-        int positionY = move.getStart().getNumber();
-        positionX = positionX + (int) Math.signum(move.getDistanceX());
-        positionY = positionY + (int) Math.signum(move.getDistanceY());
-        return board.getPieceFromBoardAt(positionX, positionY) == null;
+        int x = move.getStart().getLetter().getIndex();
+        int y = move.getStart().getNumber();
+        x = x + (int) Math.signum(move.getDistanceX());
+        y = y + (int) Math.signum(move.getDistanceY());
+        return board.isEndSquareEmpty(x, y);
     }
 
     private boolean canCapture(ChessBoard board, Move move) {

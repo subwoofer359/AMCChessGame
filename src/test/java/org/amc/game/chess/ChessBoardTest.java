@@ -1,5 +1,6 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard.Coordinate;
@@ -36,7 +37,7 @@ public class ChessBoardTest {
         board.initialise();
         checkRows(BLACK_START_ROW, BLACK_END_ROW, Colour.BLACK);
         
-        checkRowsForNull(EMPTY_START_ROW, EMPTY_END_ROW);
+        checkRowsForNoChessPiece(EMPTY_START_ROW, EMPTY_END_ROW);
         
         checkRows(WHITE_START_ROW, WHITE_END_ROW, Colour.WHITE);
     }
@@ -55,15 +56,16 @@ public class ChessBoardTest {
     	}
     }
     
-    private void checkRowForNull(int row) {
+    private void checkRowForNoChessPiece(int row) {
     	for (Coordinate coord : Coordinate.values()) {
-            assertNull(board.getPieceFromBoardAt(coord.getIndex(), row));
+            assertEquals(board.getPieceFromBoardAt(coord.getIndex(), row),
+            		NO_CHESSPIECE);
         }
     }
     
-    private void checkRowsForNull(int start, int end) {
+    private void checkRowsForNoChessPiece(int start, int end) {
     	for (int i = start; i <= end; i++) {
-            checkRowForNull(i);
+            checkRowForNoChessPiece(i);
         }
     }
     /**
@@ -111,7 +113,8 @@ public class ChessBoardTest {
         ChessBoard board = factory.getChessBoard("Ke1:ke2:Bf1:nf3:na1:ra2");
         List<?> blackPieceList = board.getListOfPlayersPiecesOnTheBoard(blackPlayer);
         List<?> whitePieceList = board.getListOfPlayersPiecesOnTheBoard(whitePlayer);
-        assertTrue(blackPieceList.size() == 2 && whitePieceList.size() == 4);
+        assertTrue("Incorrect list of Players pieces on the board", 
+        		blackPieceList.size() == 2 && whitePieceList.size() == 4);
     }
 
     @Test

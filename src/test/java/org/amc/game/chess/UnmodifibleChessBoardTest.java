@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -35,6 +37,7 @@ public class UnmodifibleChessBoardTest {
 	@Test
 	public void testInitialise() {
 		board.initialise();
-		assertNull(board.getPieceFromBoardAt(new Location("A1")));
+		assertEquals(NO_CHESSPIECE, 
+				board.getPieceFromBoardAt(new Location("A1")));
 	}
 }

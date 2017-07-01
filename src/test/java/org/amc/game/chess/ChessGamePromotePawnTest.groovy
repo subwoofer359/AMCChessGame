@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.AbstractChessGame.GameState;
@@ -124,13 +126,13 @@ class ChessGamePromotePawnTest {
     public void testPromotionOfAnEmptySquare() {
         Location promotionLocation = new Location("a3");
         ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerBlack.colour);
-        assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == null;
+        assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == NO_CHESSPIECE;
         
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
         } catch(IllegalMoveException ime) {
-            assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == null;
+            assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == NO_CHESSPIECE;
             assertCurrentPlayerHasNotChanged();
             assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         }
