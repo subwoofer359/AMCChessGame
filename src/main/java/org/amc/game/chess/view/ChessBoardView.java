@@ -13,7 +13,6 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
-import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RealChessGamePlayer;

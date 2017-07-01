@@ -66,10 +66,8 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
     private ChessPieceLocation parseGroup(String group) throws ParseException {
         ChessPiece piece = getChessPiece(group.substring(0, 1));
         Location location = new Location(group.substring(1, 3));
-        if(group.endsWith(MOVE_TOKEN)) {
-            if (piece != NO_CHESSPIECE) {
-                piece = piece.moved();
-            }
+        if(group.endsWith(MOVE_TOKEN) && piece != NO_CHESSPIECE) {
+                piece = piece.moved(); 
         }
         
         return new ChessPieceLocation(piece, location);

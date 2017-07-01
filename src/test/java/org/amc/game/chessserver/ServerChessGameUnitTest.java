@@ -1,8 +1,7 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 import static org.amc.game.chess.NoPlayer.NO_PLAYER;
-import static org.junit.Assert.assertTrue;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -83,7 +82,7 @@ public class ServerChessGameUnitTest {
     public void testAddPlayerAsOpponent() {
         scgGame.addOpponent(player);
         assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
-        assertNull(scgGame.getChessGame());
+        assertEquals(NO_CHESSGAME, scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.AWAITING_PLAYER, scgGame.getCurrentStatus());
     }
 
@@ -92,7 +91,7 @@ public class ServerChessGameUnitTest {
         scgGame.setCurrentStatus(ServerChessGame.ServerGameStatus.FINISHED);
         scgGame.addOpponent(opponent);
         assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
-        assertNull(scgGame.getChessGame());
+        assertEquals(NO_CHESSGAME, scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.FINISHED, scgGame.getCurrentStatus());
     }
 
@@ -101,7 +100,7 @@ public class ServerChessGameUnitTest {
         scgGame.setCurrentStatus(ServerChessGame.ServerGameStatus.IN_PROGRESS);
         scgGame.addOpponent(opponent);
         assertTrue(ComparePlayers.isSamePlayer(scgGame.getPlayer(), player));
-        assertNull(scgGame.getChessGame());
+        assertEquals(NO_CHESSGAME, scgGame.getChessGame());
         assertEquals(ServerChessGame.ServerGameStatus.IN_PROGRESS, scgGame.getCurrentStatus());
     }
 

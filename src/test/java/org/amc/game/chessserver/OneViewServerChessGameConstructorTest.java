@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -45,7 +46,7 @@ public class OneViewServerChessGameConstructorTest {
     @Test
     public void constructorTest() {
         ovscGame = new OneViewServerChessGame();
-        assertNull(ovscGame.getChessGame());
+        assertEquals(NO_CHESSGAME, ovscGame.getChessGame());
         assertEquals(NO_PLAYER, ovscGame.getPlayer());
         assertEquals(NO_PLAYER, ovscGame.getOpponent());
         assertEquals(ServerGameStatus.NEW, ovscGame.getCurrentStatus());
@@ -59,7 +60,7 @@ public class OneViewServerChessGameConstructorTest {
         ovscGame = new OneViewServerChessGame(GAME_UID, player);
         ovscGame.setChessGameFactory(chessGameFactory);
 
-        assertNull(ovscGame.getChessGame());
+        assertEquals(NO_CHESSGAME, ovscGame.getChessGame());
         assertTrue(ComparePlayers.isSamePlayer(player, ovscGame.getPlayer()));
         assertEquals(NO_PLAYER, ovscGame.getOpponent());
         assertEquals(ServerGameStatus.AWAITING_PLAYER, ovscGame.getCurrentStatus());

@@ -1,9 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
-
-import org.amc.game.chess.ChessBoard.Coordinate;
-
 /**
  * Represents a piece which can't lift off the board to complete it's move and
  * also travels more than one square

@@ -5,7 +5,6 @@ import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
-import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.AbstractServerChessGame;
 

@@ -1,5 +1,7 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
+
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
@@ -35,7 +37,7 @@ class MockServerChessGame extends AbstractServerChessGame {
 
 	@Override
 	public void addOpponent(Player opponent) {
-		if (getChessGame() == null) {
+		if (getChessGame() == NO_CHESSGAME) {
 			ChessBoard board = new ChessBoard();
 			setChessGame(new ChessGame(board, getPlayer(), new RealChessGamePlayer(opponent, Colour.BLACK)));
 		} else {

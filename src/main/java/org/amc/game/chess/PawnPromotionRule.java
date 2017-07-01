@@ -1,7 +1,6 @@
 package org.amc.game.chess;
 
 
-import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 /**
  * Encapsulate the Pawn Promotion rule
  * Automatically promotions the pawn to a queen.
@@ -52,7 +51,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
     
     private boolean isRuleApplicable(Location location, ChessPiece pieceToBePromoted) {
         if (isPawnChessPiece(pieceToBePromoted)) {
-            if (Colour.BLACK.equals(pieceToBePromoted.getColour())) {
+            if (Colour.BLACK == pieceToBePromoted.getColour()) {
                 return location.getNumber() == BLACK_PROMOTION_RANK;
             } else {
                 return location.getNumber() == WHITE_PROMOTION_RANK;

@@ -1,5 +1,6 @@
 package org.amc.game.chessserver;
 
+import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import org.amc.game.GameSubject;
 import org.amc.game.chess.ChessGame;
@@ -11,6 +12,7 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
+import org.amc.game.chess.NoChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 
@@ -157,10 +159,10 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         checkForNull(Player.class, player);
         if(ComparePlayers.isSamePlayer(this.player, player)) {
             return this.player;
-        } else if(this.chessGame == null) {
-            return NO_PLAYER;
         } else if (ComparePlayers.isSamePlayer(getOpponent(), player)) {
-            return this.chessGame.getBlackPlayer();
+            return getChessGame().getBlackPlayer();
+        } else if (getChessGame() == NO_CHESSGAME) {
+        	return NO_PLAYER;	
         } else {
         	throw new IllegalArgumentException("Player not part of the game");
         }
@@ -193,7 +195,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @return the ChessGame object
      */
     public ChessGame getChessGame() {
-        return chessGame;
+        return chessGame == null ? NoChessGame.NO_CHESSGAME : chessGame;
     }
 
     public int getVersion() {
@@ -204,10 +206,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @return Player opposing player
      */
     public ChessGamePlayer getOpponent() {
-        if(this.chessGame == null) {
-            return NO_PLAYER;
-        }
-        return this.chessGame.getBlackPlayer();
+        return getChessGame().getBlackPlayer();
     }
 
     /**

@@ -29,7 +29,9 @@ public class ChessBoard extends DefaultSubject {
     public enum Coordinate implements Comparable<Coordinate> {
         A(0), B(1), C(2), D(3), E(4), F(5), G(6), H(7);
     	
-    static Coordinate getCoordinate(int index) {
+    	private int letterIndex;
+    	
+    	static Coordinate getCoordinate(int index) {
     		for(Coordinate c : Coordinate.values()) {
     			if (c.getIndex() == index) {
     				return c;
@@ -37,8 +39,6 @@ public class ChessBoard extends DefaultSubject {
     		}
     		return Coordinate.A;
     	}
-
-        private int letterIndex;
 
         Coordinate(int letterIndex) {
             this.letterIndex = letterIndex;

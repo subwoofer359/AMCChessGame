@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-
-import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 /**
  * Represents a Pawn in a game of Chess
  * <p>

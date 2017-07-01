@@ -16,7 +16,6 @@ import org.amc.game.chess.Colour;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.Location;
-import org.amc.game.chess.NoChessPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
