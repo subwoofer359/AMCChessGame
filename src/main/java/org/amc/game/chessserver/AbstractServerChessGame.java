@@ -12,7 +12,6 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.NoChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 
@@ -195,7 +194,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @return the ChessGame object
      */
     public ChessGame getChessGame() {
-        return chessGame == null ? NoChessGame.NO_CHESSGAME : chessGame;
+        return chessGame == null ? NO_CHESSGAME : chessGame;
     }
 
     public int getVersion() {
