@@ -6,7 +6,6 @@ import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.NoChessGame;
 import org.amc.game.chess.PawnPromotionRule;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.AbstractChessGame.GameState;
