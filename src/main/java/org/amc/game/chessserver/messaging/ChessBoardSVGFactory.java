@@ -110,7 +110,7 @@ public class ChessBoardSVGFactory {
             ChessBoard board = chessGame.getChessBoard();
             for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
                 for (Coordinate letter : ChessBoard.Coordinate.values()) {
-                    ChessPiece piece = board.getPieceFromBoardAt(new Location(letter, i));
+                    ChessPiece piece = board.get(new Location(letter, i));
                     if (piece != NO_CHESSPIECE) {
                         SVGChessPiece svgFactory = sVGElementfactory.get(piece.getClass());
 

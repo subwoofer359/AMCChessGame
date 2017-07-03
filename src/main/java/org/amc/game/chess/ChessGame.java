@@ -36,7 +36,7 @@ public class ChessGame extends AbstractChessGame {
     public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
         isPlayersTurn(player);
         isNeedToDoAPromotion();
-        ChessPiece piece = getChessBoard().getPieceFromBoardAt(move.getStart());
+        ChessPiece piece = getChessBoard().get(move.getStart());
         checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, getChessBoard(), piece, move);

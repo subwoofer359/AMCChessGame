@@ -46,9 +46,9 @@ public class IsKingNotInCheckTest {
         ChessBoard board = new ChessBoard();
         ChessPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
         ChessPiece blackKing = KingPiece.getKingPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(whiteKing, StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(blackKing, StartingSquare.BLACK_KING.getLocation());
-        board.putPieceOnBoardAt(attackingChessPiece, attackingChessPieceLocation);
+        board.put(whiteKing, StartingSquare.WHITE_KING.getLocation());
+        board.put(blackKing, StartingSquare.BLACK_KING.getLocation());
+        board.put(attackingChessPiece, attackingChessPieceLocation);
         ChessGame chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         assertFalse(chessGame.isPlayersKingInCheck(whitePlayer, board));
     }

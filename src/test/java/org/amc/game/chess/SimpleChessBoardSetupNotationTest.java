@@ -34,20 +34,20 @@ public class SimpleChessBoardSetupNotationTest {
     @Test
     public void test() throws Exception {
         ChessBoard board = chessBoardFactory.getChessBoard(setupNotation);
-        assertTrue(board.getPieceFromBoardAt(new Location("D6")) instanceof KingPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("E6")) instanceof QueenPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("B8")) instanceof BishopPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("E8")) instanceof BishopPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("G8")) instanceof KnightPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("A6")) instanceof KnightPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("A4")) instanceof RookPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("H5")) instanceof PawnPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("A3")) instanceof KingPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("E1")) instanceof QueenPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("H3")) instanceof BishopPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("C3")) instanceof KnightPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("B5")) instanceof RookPiece);
-        assertTrue(board.getPieceFromBoardAt(new Location("F4")) instanceof PawnPiece);
+        assertTrue(board.get(new Location("D6")) instanceof KingPiece);
+        assertTrue(board.get(new Location("E6")) instanceof QueenPiece);
+        assertTrue(board.get(new Location("B8")) instanceof BishopPiece);
+        assertTrue(board.get(new Location("E8")) instanceof BishopPiece);
+        assertTrue(board.get(new Location("G8")) instanceof KnightPiece);
+        assertTrue(board.get(new Location("A6")) instanceof KnightPiece);
+        assertTrue(board.get(new Location("A4")) instanceof RookPiece);
+        assertTrue(board.get(new Location("H5")) instanceof PawnPiece);
+        assertTrue(board.get(new Location("A3")) instanceof KingPiece);
+        assertTrue(board.get(new Location("E1")) instanceof QueenPiece);
+        assertTrue(board.get(new Location("H3")) instanceof BishopPiece);
+        assertTrue(board.get(new Location("C3")) instanceof KnightPiece);
+        assertTrue(board.get(new Location("B5")) instanceof RookPiece);
+        assertTrue(board.get(new Location("F4")) instanceof PawnPiece);
     }
 
     @Test(expected = ParseException.class)
@@ -70,8 +70,8 @@ public class SimpleChessBoardSetupNotationTest {
     public void testMovedNotation() throws Exception {
     	final String boardStr = setupNotation + ":pa4" + MOVE_TOKEN;
         ChessBoard board = chessBoardFactory.getChessBoard(boardStr);
-        assertTrue("Pawn should have field moved set to true", board.getPieceFromBoardAt(new Location("a4")).hasMoved());
-        assertFalse("Pawn should have field moved set to false", board.getPieceFromBoardAt(new Location("f4")).hasMoved());
+        assertTrue("Pawn should have field moved set to true", board.get(new Location("a4")).hasMoved());
+        assertFalse("Pawn should have field moved set to false", board.get(new Location("f4")).hasMoved());
     }
 
 }

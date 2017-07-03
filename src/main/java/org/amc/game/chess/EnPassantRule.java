@@ -24,7 +24,7 @@ final class EnPassantRule extends PawnPieceRule {
     public void applyRule(AbstractChessGame chessGame, Move move) {
         if(isEnPassantCapture(chessGame,move)){
             Location endSquare=move.getEnd();
-            ChessPiece piece=chessGame.getChessBoard().getPieceFromBoardAt(move.getStart());
+            ChessPiece piece=chessGame.getChessBoard().get(move.getStart());
             chessGame.getChessBoard().move(move);
             removeCapturedPawnFromTheChessBoard(chessGame.getChessBoard(), piece, endSquare);
                 
@@ -40,7 +40,7 @@ final class EnPassantRule extends PawnPieceRule {
         else{
             capturedPawnLocation=new Location(endSquare.getLetter(),endSquare.getNumber()+1);
         }
-        board.removePieceOnBoardAt(capturedPawnLocation);
+        board.remove(capturedPawnLocation);
     }
     
     /**
@@ -63,7 +63,7 @@ final class EnPassantRule extends PawnPieceRule {
     }
     
     private ChessPiece getOpponentsChessPieceThatMovedLast(ChessBoard board,Move opponentsMove){
-        return board.getPieceFromBoardAt(opponentsMove.getEnd());
+        return board.get(opponentsMove.getEnd());
     }
     
     private boolean isEndSquareEmpty(ChessBoard board,Move move){

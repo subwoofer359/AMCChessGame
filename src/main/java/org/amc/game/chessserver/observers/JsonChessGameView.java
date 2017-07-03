@@ -100,7 +100,7 @@ public class JsonChessGameView extends GameObserver {
             
             for (int rank = 1; rank <= ChessBoard.BOARD_WIDTH; rank++) {
                 for (Coordinate file : Coordinate.values()) {
-                    ChessPiece piece = board.getPieceFromBoardAt(new Location(file, rank));
+                    ChessPiece piece = board.get(new Location(file, rank));
                     if (piece != NO_CHESSPIECE) {
                         squares.put(file.toString() + rank, String.valueOf(ChessPieceTextSymbol
                                         .getChessPieceTextSymbol(piece)));

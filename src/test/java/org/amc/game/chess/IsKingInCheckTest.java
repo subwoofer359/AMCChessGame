@@ -43,8 +43,8 @@ public class IsKingInCheckTest {
     public void testKingIsChecked() {
         ChessBoard board = new ChessBoard();
         ChessPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(whiteKing, StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(attackingChessPiece, attackingChessPieceLocation);
+        board.put(whiteKing, StartingSquare.WHITE_KING.getLocation());
+        board.put(attackingChessPiece, attackingChessPieceLocation);
         ChessGame chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         assertTrue(chessGame.isPlayersKingInCheck(whitePlayer, board));
     }

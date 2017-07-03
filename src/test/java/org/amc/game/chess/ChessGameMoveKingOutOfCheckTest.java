@@ -36,10 +36,10 @@ public class ChessGameMoveKingOutOfCheckTest {
         chessGame = factory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
         ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(attackingPiece, new Location(H, 4));
+        board.put(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
     }
 
@@ -53,10 +53,10 @@ public class ChessGameMoveKingOutOfCheckTest {
 
     @Test
     public void kingMovesOutOfCheckTest() throws IllegalMoveException {
-        ChessPiece kingPiece = board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
+        ChessPiece kingPiece = board.get(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
-        assertEquals(kingPiece.moved(), board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));
+        assertEquals(kingPiece.moved(), board.get(defendingChessPieceMove.getEnd()));
         assertEquals(NO_CHESSPIECE, 
-        		board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
+        		board.get(defendingChessPieceMove.getStart()));
     }
 }

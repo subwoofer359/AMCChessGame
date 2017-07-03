@@ -33,9 +33,9 @@ public class PawnIsPromotedTest {
         chessGame = new StandardChessGameFactory().getChessGame(new ChessBoard(), 
                         whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         this.promotion = PawnPromotionRule.getInstance();
         
@@ -53,10 +53,10 @@ public class PawnIsPromotedTest {
 
     @Test
     public void test() {
-        board.putPieceOnBoardAt(piece, move.getStart());
+        board.put(piece, move.getStart());
         assertTrue(promotion.isRuleApplicable(chessGame,  move));
         promotion.applyRule(chessGame, move);
-        ChessPiece piece = board.getPieceFromBoardAt(move.getEnd());
+        ChessPiece piece = board.get(move.getEnd());
         assertNotNull(piece);
         assertEquals(chessGame.getGameState(), GameState.PAWN_PROMOTION);
     }
@@ -68,7 +68,7 @@ public class PawnIsPromotedTest {
         ChessGame chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
         new ChessBoardView(board);
-        board.putPieceOnBoardAt(piece, move.getStart());
+        board.put(piece, move.getStart());
         if (piece.getColour().equals(Colour.BLACK)) {
             chessGame.changePlayer();
         }

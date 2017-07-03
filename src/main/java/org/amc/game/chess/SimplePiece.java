@@ -48,7 +48,7 @@ abstract class SimplePiece implements ChessPiece {
     }
     
     private boolean isChessPieceAtStart(ChessBoard board, Move move) {
-    	return board.getPieceFromBoardAt(move.getStart()) == this;
+    	return board.get(move.getStart()) == this;
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class SimplePiece implements ChessPiece {
      */
     boolean isEndSquareOccupiedByOpponentsPiece(ChessBoard board, Move move) {
         Location endSquare = move.getEnd();
-        ChessPiece piece = board.getPieceFromBoardAt(endSquare.getLetter().getIndex(),
+        ChessPiece piece = board.get(endSquare.getLetter().getIndex(),
                         endSquare.getNumber());
         return !piece.getColour().equals(getColour());
 

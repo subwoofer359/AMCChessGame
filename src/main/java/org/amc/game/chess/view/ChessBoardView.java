@@ -76,7 +76,7 @@ public class ChessBoardView implements Observer {
     private StringBuilder printSquare(Coordinate coordinate, int row) {
         StringBuilder sb = new StringBuilder();
         sb.append('|');
-        ChessPiece piece = chessBoard.getPieceFromBoardAt(new Location(coordinate,row));//getPieceFromBoardAt(col, row);
+        ChessPiece piece = chessBoard.get(new Location(coordinate,row));//getPieceFromBoardAt(col, row);
         if (piece == NO_CHESSPIECE) {
             sb.append("   ");
         } else {

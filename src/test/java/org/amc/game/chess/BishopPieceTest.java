@@ -21,7 +21,7 @@ public class BishopPieceTest extends ChessPieceTest {
     @Test
     public void testOnEmptyBoardIsValidMove() {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(bishop, this.testStartPosition);
+        board.put(bishop, this.testStartPosition);
 
         ValidMovements.getListOfDiagonalLocationsFromD5().forEach(endPosition -> {
             assertTrue(bishop.isValidMove(board, new Move(testStartPosition, endPosition)));
@@ -34,7 +34,7 @@ public class BishopPieceTest extends ChessPieceTest {
     public void testOnEmptyBoardIsNotValidMove() throws Exception {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
 
-        board.putPieceOnBoardAt(bishop, new Location("F8"));
+        board.put(bishop, new Location("F8"));
         String[] invalidMoves = {
         		"D4-G7",
         		"D4-D6",
@@ -55,7 +55,7 @@ public class BishopPieceTest extends ChessPieceTest {
     @Test
     public void testOnBoardIsValidCapture() throws ParseException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(bishop, this.testStartPosition);
+        board.put(bishop, this.testStartPosition);
 
         String[] bishopLocations = {
         		"A8",
@@ -81,10 +81,10 @@ public class BishopPieceTest extends ChessPieceTest {
     @Test
     public void testOnBoardInvalidCapture() {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(bishop, this.testStartPosition);
+        board.put(bishop, this.testStartPosition);
 
         ValidMovements.getListOfDiagonalLocationsFromD5().forEach(endPosition -> {
-            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
+            board.put(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
             assertFalse(bishop.isValidMove(board, new Move(testStartPosition, endPosition)));
         });
     }
@@ -95,8 +95,8 @@ public class BishopPieceTest extends ChessPieceTest {
     public void testOnBoardIsNotValidMove() throws ParseException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         BishopPiece bishopWhite = BishopPiece.getBishopPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(bishop, new Location("F8"));
-        board.putPieceOnBoardAt(bishopWhite, new Location("D6"));
+        board.put(bishop, new Location("F8"));
+        board.put(bishopWhite, new Location("D6"));
 
         boolean isValid = bishop.isValidMove(this.board, new Move("F8-C5"));
         assertFalse(isValid);

@@ -37,6 +37,6 @@ public abstract class ChessPieceTest {
     }
     
     void placeOnBoard(ChessPiece piece , String location) {
-    	board.putPieceOnBoardAt(piece, new Location(location));
+    	board.put(piece, new Location(location));
     }
 }

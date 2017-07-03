@@ -44,7 +44,7 @@ public class ChessBoardTest {
     
     private void checkRow(int row, Colour colour) {
     	for (Coordinate coord : Coordinate.values()) {
-            ChessPiece piece = board.getPieceFromBoardAt(coord.getIndex(), row);
+            ChessPiece piece = board.get(coord.getIndex(), row);
             assertTrue(piece instanceof ChessPiece);
             assertEquals(piece.getColour(), colour);
         }
@@ -58,7 +58,7 @@ public class ChessBoardTest {
     
     private void checkRowForNoChessPiece(int row) {
     	for (Coordinate coord : Coordinate.values()) {
-            assertEquals(board.getPieceFromBoardAt(coord.getIndex(), row),
+            assertEquals(board.get(coord.getIndex(), row),
             		NO_CHESSPIECE);
         }
     }
@@ -78,8 +78,8 @@ public class ChessBoardTest {
         for (Coordinate coord : ChessBoard.Coordinate.values()) {
             for (int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
                 Location location = new Location(coord, i);
-                ChessPiece piece = board.getPieceFromBoardAt(location);
-                ChessPiece clonedPiece = clone.getPieceFromBoardAt(location);
+                ChessPiece piece = board.get(location);
+                ChessPiece clonedPiece = clone.get(location);
                 if (piece instanceof ChessPiece) {
                     assertTrue("The two pieces should be the same", piece.equals(clonedPiece));
                 } else {
@@ -94,16 +94,16 @@ public class ChessBoardTest {
     @Test
     public void cloneConstuctorPieceMovedCopyTest() {
         board.initialise();
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK).moved(),
+        board.put(KingPiece.getKingPiece(Colour.BLACK).moved(),
                 StartingSquare.BLACK_KING.getLocation());
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE).moved(),
+        board.put(KingPiece.getKingPiece(Colour.WHITE).moved(),
                 StartingSquare.WHITE_KING.getLocation());
         ChessBoard clone = new ChessBoard(board);
-        assertTrue(clone.getPieceFromBoardAt(StartingSquare.BLACK_KING.getLocation()).hasMoved());
-        assertTrue(clone.getPieceFromBoardAt(StartingSquare.WHITE_KING.getLocation()).hasMoved());
-        assertFalse(clone.getPieceFromBoardAt(StartingSquare.BLACK_KNIGHT_LEFT.getLocation())
+        assertTrue(clone.get(StartingSquare.BLACK_KING.getLocation()).hasMoved());
+        assertTrue(clone.get(StartingSquare.WHITE_KING.getLocation()).hasMoved());
+        assertFalse(clone.get(StartingSquare.BLACK_KNIGHT_LEFT.getLocation())
                         .hasMoved());
-        assertFalse(clone.getPieceFromBoardAt(StartingSquare.WHITE_ROOK_LEFT.getLocation())
+        assertFalse(clone.get(StartingSquare.WHITE_ROOK_LEFT.getLocation())
                         .hasMoved());
 
     }

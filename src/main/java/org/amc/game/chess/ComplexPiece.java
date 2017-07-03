@@ -32,7 +32,7 @@ abstract class ComplexPiece extends SimplePiece {
             if (i < distance - 1 && !board.isEndSquareEmpty(x, y)) {
                 return false;
             } else if (i == distance - 1 && !board.isEndSquareEmpty(x, y)) {
-                ChessPiece piece = board.getPieceFromBoardAt(x, y);
+                ChessPiece piece = board.get(x, y);
                 if (piece.getColour().equals(getColour())) {
                     return false;
                 }

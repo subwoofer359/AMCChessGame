@@ -129,7 +129,7 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
         game = serverChessGameDAO.getServerChessGame(gameUUID);
         
 
-        ChessPiece chessPiece =  game.getChessGame().getChessBoard().getPieceFromBoardAt(new Location("a8"));
+        ChessPiece chessPiece =  game.getChessGame().getChessBoard().get(new Location("a8"));
         assert chessPiece != null;
         assert chessPiece.colour == Colour.WHITE;
         assert chessPiece.getClass() == QueenPiece.class;
@@ -150,7 +150,7 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
         game = serverChessGameDAO.getServerChessGame(ONEVIEW_GAMEUUID);
         
 
-        ChessPiece chessPiece =  game.getChessGame().getChessBoard().getPieceFromBoardAt(new Location("a1"));
+        ChessPiece chessPiece =  game.getChessGame().getChessBoard().get(new Location("a1"));
         assert chessPiece != null;
         assert chessPiece.colour == Colour.BLACK;
         assert chessPiece.getClass() == QueenPiece.class;
@@ -176,7 +176,7 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
         game = serverChessGameDAO.getServerChessGame(gameUUID);
         assert game.getChessGame().gameState == GameState.PAWN_PROMOTION;
 
-        ChessPiece chessPiece =  game.getChessGame().getChessBoard().getPieceFromBoardAt(new Location("e1"));
+        ChessPiece chessPiece =  game.getChessGame().getChessBoard().get(new Location("e1"));
         assert chessPiece != null;
         assert chessPiece.colour == Colour.WHITE;
         assert chessPiece.getClass() == KingPiece.class;

@@ -38,7 +38,7 @@ class PlayersKingCheckmateCondition {
 
     private final ChessPieceLocation findThePlayersKing() {
         Location kingLocation = board.getPlayersKingLocation(player);
-        return new ChessPieceLocation(board.getPieceFromBoardAt(kingLocation), kingLocation);
+        return new ChessPieceLocation(board.get(kingLocation), kingLocation);
     }
     
     /**
@@ -83,7 +83,7 @@ class PlayersKingCheckmateCondition {
     }
     
     private final void removeKingFromTheBoard(ChessPieceLocation kingsLocation){
-        board.removePieceOnBoardAt(kingsLocation.getLocation());
+        board.remove(kingsLocation.getLocation());
     }
     
     /**
@@ -102,24 +102,24 @@ class PlayersKingCheckmateCondition {
                 Move move = new Move(enemyPiece.getLocation(), location);
                 ChessPiece piece = enemyPiece.getPiece();
 
-                ChessPiece occupyPiece = board.getPieceFromBoardAt(location);
-                board.removePieceOnBoardAt(location);
+                ChessPiece occupyPiece = board.get(location);
+                board.remove(location);
 
                 if (piece.isValidMove(board, move) || piece instanceof PawnPiece
                                 && ((PawnPiece) piece).validMovement(move)) {
                     squaresUnderAttack.add(location);
-                    board.putPieceOnBoardAt(occupyPiece, location);
+                    board.put(occupyPiece, location);
                     break;
                 }
 
-                board.putPieceOnBoardAt(occupyPiece, location);
+                board.put(occupyPiece, location);
             }
         }
         return squaresUnderAttack;
     }
     
     private final void replaceKingOnTheBoard(ChessPieceLocation kingsLocation){
-        board.putPieceOnBoardAt(kingsLocation.getPiece(), kingsLocation.getLocation());
+        board.put(kingsLocation.getPiece(), kingsLocation.getLocation());
     }
     
     /**
@@ -165,7 +165,7 @@ class PlayersKingCheckmateCondition {
             return true;
         }
         Location attackingPieceLocation = attackingPieces.get(0).getLocation();
-        ChessPiece attacker = board.getPieceFromBoardAt(attackingPieceLocation);
+        ChessPiece attacker = board.get(attackingPieceLocation);
 
         Move move = new Move(attackingPieceLocation, playersKingLocation.getLocation());
         Set<Location> blockingSquares = getAllSquaresInAMove(attacker, move);

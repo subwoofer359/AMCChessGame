@@ -86,7 +86,7 @@ public class ChessBoard extends DefaultSubject {
     
     private void copyFile(ChessBoard board, Coordinate file){
         for(int i=1;i<=BOARD_WIDTH;i++){
-            ChessPiece piece=board.getPieceFromBoardAt(file.letterIndex, i);
+            ChessPiece piece=board.get(file.letterIndex, i);
             storeCopyOfChessPiece(piece, file, i);
         }
         
@@ -94,7 +94,7 @@ public class ChessBoard extends DefaultSubject {
     
     private void storeCopyOfChessPiece(ChessPiece piece,Coordinate file,int rank){
         if(piece != NO_CHESSPIECE){
-            this.putPieceOnBoardAt(piece.copy(), new Location(file,rank));
+            this.put(piece.copy(), new Location(file,rank));
         }
     }
     
@@ -127,9 +127,9 @@ public class ChessBoard extends DefaultSubject {
      */
 
     void quietMove(Move move) {
-        ChessPiece piece = getPieceFromBoardAt(move.getStart());
-        removePieceOnBoardAt(move.getStart());
-        putPieceOnBoardAt(piece.moved(), move.getEnd());
+        ChessPiece piece = get(move.getStart());
+        remove(move.getStart());
+        put(piece.moved(), move.getEnd());
     }
 
     /**
@@ -149,7 +149,7 @@ public class ChessBoard extends DefaultSubject {
      * 
      * @param location {@link Location}
      */
-    void removePieceOnBoardAt(Location location) {
+    void remove(Location location) {
         this.board[location.getLetter().getIndex()][mapNumberCoordinate(location.getNumber())] = null;
     }
 
@@ -160,7 +160,7 @@ public class ChessBoard extends DefaultSubject {
      * @param piece {@link ChessPiece}
      * @param location {@link Location}
      */
-    public void putPieceOnBoardAt(ChessPiece piece, Location location) {
+    public void put(ChessPiece piece, Location location) {
         this.board[location.getLetter().getIndex()][mapNumberCoordinate(location.getNumber())] = piece;
     }
 
@@ -174,7 +174,7 @@ public class ChessBoard extends DefaultSubject {
      * @return ChessPiece from square on the board or null if the square is
      *         empty
      */
-    ChessPiece getPieceFromBoardAt(int letterCoordinate, int numberCoordinate) {
+    ChessPiece get(int letterCoordinate, int numberCoordinate) {
     	ChessPiece piece = board[letterCoordinate][mapNumberCoordinate(numberCoordinate)];
         return piece == null ? NO_CHESSPIECE : piece;
         		
@@ -186,8 +186,8 @@ public class ChessBoard extends DefaultSubject {
      * @param location {@link Location}
      * @return ChessPiece
      */
-    public ChessPiece getPieceFromBoardAt(Location location) {
-        return getPieceFromBoardAt(location.getLetter().getIndex(), location.getNumber());
+    public ChessPiece get(Location location) {
+        return get(location.getLetter().getIndex(), location.getNumber());
     }
     
     public ChessPieceLocation getPawnToBePromoted(Colour colour) {
@@ -199,7 +199,7 @@ public class ChessBoard extends DefaultSubject {
             rank = BLACK_PROMOTION_RANK;
         }
         for (Coordinate c : Coordinate.values()) {
-            ChessPiece p = getPieceFromBoardAt(c.getIndex(), rank);
+            ChessPiece p = get(c.getIndex(), rank);
             if (p instanceof PawnPiece && p.getColour() == colour) {
                 cpl = new ChessPieceLocation(p, new Location(c, rank));
                 break;
@@ -216,7 +216,7 @@ public class ChessBoard extends DefaultSubject {
      * @return Boolean true if it's empty
      */
     boolean isEndSquareEmpty(Location location) {
-        return getPieceFromBoardAt(location.getLetter().getIndex(), 
+        return get(location.getLetter().getIndex(), 
         		location.getNumber()) == NO_CHESSPIECE;
     }
     
@@ -242,7 +242,7 @@ public class ChessBoard extends DefaultSubject {
     private void searchFileForChessPieces(ChessGamePlayer player, Coordinate file,
                     List<ChessPieceLocation> listOfPieces) {
         for (int i = 1; i <= BOARD_WIDTH; i++) {
-            ChessPiece piece = getPieceFromBoardAt(file.getIndex(), i);
+            ChessPiece piece = get(file.getIndex(), i);
             if (isPlayersChessPiece(player, piece)) {
                 listOfPieces.add(new ChessPieceLocation(piece, new Location(file, i)));
             }
@@ -267,7 +267,7 @@ public class ChessBoard extends DefaultSubject {
     Location getPlayersKingLocation(ChessGamePlayer player) {
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
-                ChessPiece piece = getPieceFromBoardAt(letterIndex.getIndex(), i);
+                ChessPiece piece = get(letterIndex.getIndex(), i);
                 if (piece instanceof KingPiece
                                 && piece.getColour() == player.getColour()) {
                     return new Location(letterIndex, i);

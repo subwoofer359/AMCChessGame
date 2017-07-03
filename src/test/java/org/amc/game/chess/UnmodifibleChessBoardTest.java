@@ -30,7 +30,7 @@ public class UnmodifibleChessBoardTest {
 	
 	@Test
 	public void testPutPieceOnBoardAt() {
-		board.putPieceOnBoardAt(PawnPiece.getPawnPiece(Colour.BLACK),  new Location("A4"));
+		board.put(PawnPiece.getPawnPiece(Colour.BLACK),  new Location("A4"));
 		ChessBoardUtilities.compareBoards(board, chessBoard);
 	}
 	
@@ -38,6 +38,6 @@ public class UnmodifibleChessBoardTest {
 	public void testInitialise() {
 		board.initialise();
 		assertEquals(NO_CHESSPIECE, 
-				board.getPieceFromBoardAt(new Location("A1")));
+				board.get(new Location("A1")));
 	}
 }

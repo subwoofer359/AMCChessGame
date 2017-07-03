@@ -40,7 +40,7 @@ public final class ChessBoardExternalizer {
         for(Coordinate coord : Coordinate.values()) {
             for(int i = 0; i < ChessBoard.BOARD_WIDTH; i++) {
                 Location location = new Location(coord, ChessBoard.BOARD_WIDTH - i);
-                ChessPiece piece = board.getPieceFromBoardAt(location);
+                ChessPiece piece = board.get(location);
                 if(piece != NO_CHESSPIECE) {
                     sb.append(getChessPieceSymbol(piece));
                     sb.append(location.asString().toLowerCase());

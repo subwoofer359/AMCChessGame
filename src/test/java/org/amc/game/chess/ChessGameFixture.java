@@ -17,19 +17,19 @@ public class ChessGameFixture {
 
     public void putPieceOnBoardAt(ChessPiece piece, Location location) {
         if (board != null) {
-            board.putPieceOnBoardAt(piece, location);
+            board.put(piece, location);
         }
     }
 
     public void removePieceOnBoardAt(Location location) {
         if (board != null) {
-            board.removePieceOnBoardAt(location);
+            board.remove(location);
         }
     }
 
     public ChessPiece getPieceFromBoardAt(Location location) {
         if (board != null) {
-            return board.getPieceFromBoardAt(location);
+            return board.get(location);
         } else {
             return null;
         }

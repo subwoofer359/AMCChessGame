@@ -126,28 +126,28 @@ class ChessGamePromotePawnTest {
     public void testPromotionOfAnEmptySquare() {
         Location promotionLocation = new Location("a3");
         ChessPiece pieceToBePromotedTo = RookPiece.getRookPiece(playerBlack.colour);
-        assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == NO_CHESSPIECE;
+        assert chessGame.chessBoard.get(promotionLocation) == NO_CHESSPIECE;
         
         try {
             pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
             fail();
         } catch(IllegalMoveException ime) {
-            assert chessGame.chessBoard.getPieceFromBoardAt(promotionLocation) == NO_CHESSPIECE;
+            assert chessGame.chessBoard.get(promotionLocation) == NO_CHESSPIECE;
             assertCurrentPlayerHasNotChanged();
             assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
         }
     }
 
     private void assertIsAPawn(Location location) {
-        assert chessGame.chessBoard.getPieceFromBoardAt(location)?.getClass() == PawnPiece.class;
+        assert chessGame.chessBoard.get(location)?.getClass() == PawnPiece.class;
     }
     
     private void assertIsARook(Location location) {
-        assert chessGame.chessBoard.getPieceFromBoardAt(location)?.getClass() == RookPiece.class;
+        assert chessGame.chessBoard.get(location)?.getClass() == RookPiece.class;
     }
     
     private void assertIsNotAPawn(Location location) {
-        assert chessGame.chessBoard.getPieceFromBoardAt(location)?.getClass() != PawnPiece.class;
+        assert chessGame.chessBoard.get(location)?.getClass() != PawnPiece.class;
     }
     
     private void assertCurrentPlayerHasChanged() {

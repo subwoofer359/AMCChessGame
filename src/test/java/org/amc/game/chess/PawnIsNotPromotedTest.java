@@ -49,10 +49,10 @@ public class PawnIsNotPromotedTest {
 
     @Test
     public void test() {
-        board.putPieceOnBoardAt(piece, move.getStart());
+        board.put(piece, move.getStart());
         assertFalse("Move should not lead to promotion", promotion.isRuleApplicable(chessGame, move));
         promotion.applyRule(chessGame, move);
-        assertEquals(piece, board.getPieceFromBoardAt(move.getStart()));
+        assertEquals(piece, board.get(move.getStart()));
     }
 
 }

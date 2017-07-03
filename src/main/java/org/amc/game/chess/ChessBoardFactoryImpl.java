@@ -29,7 +29,7 @@ public class ChessBoardFactoryImpl implements ChessBoardFactory {
     private ChessBoard getChessBoard(List<ChessPieceLocation> pieceLocations) {
         ChessBoard board = new ChessBoard();
         for (ChessPieceLocation cpl : pieceLocations) {
-            board.putPieceOnBoardAt(cpl.getPiece(), cpl.getLocation());
+            board.put(cpl.getPiece(), cpl.getLocation());
         }
         return board;
     }

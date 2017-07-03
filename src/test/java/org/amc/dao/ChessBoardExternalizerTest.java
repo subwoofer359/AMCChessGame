@@ -55,7 +55,7 @@ public class ChessBoardExternalizerTest {
 		ChessPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
 		pawn = pawn.moved();
 		Location location = new Location(locationStr);
-		board.putPieceOnBoardAt(pawn, location);
+		board.put(pawn, location);
 		
 		String chessBoardStr = ChessBoardExternalizer.getChessBoardString(board);
 		

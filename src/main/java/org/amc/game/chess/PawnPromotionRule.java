@@ -43,7 +43,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
      */
     @Override
     public boolean isRuleApplicable(AbstractChessGame game, Move move) {
-        ChessPiece piece = game.getChessBoard().getPieceFromBoardAt(move.getStart());
+        ChessPiece piece = game.getChessBoard().get(move.getStart());
         return isRuleApplicable(move.getEnd(), piece) && 
         		piece.isValidMove(game.getChessBoard(), move);  
         		
@@ -62,9 +62,9 @@ public final class PawnPromotionRule extends PawnPieceRule {
     
     public void promotePawnTo(ChessGame chessGame, Location location, ChessPiece promotedPiece) throws IllegalMoveException {
         ChessBoard board = chessGame.getChessBoard();
-        ChessPiece pieceToBePromoted = board.getPieceFromBoardAt(location);
+        ChessPiece pieceToBePromoted = board.get(location);
         validatePromotionMove(location, pieceToBePromoted, promotedPiece);
-        board.putPieceOnBoardAt(promotedPiece, location);
+        board.put(promotedPiece, location);
         returnChessGameToRunningState(chessGame);
     }
     

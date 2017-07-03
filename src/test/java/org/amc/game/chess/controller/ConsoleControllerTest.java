@@ -36,15 +36,15 @@ public class ConsoleControllerTest {
         ChessGamePlayer player2 = new RealChessGamePlayer(new HumanPlayer("Test2"), Colour.WHITE);
         game = new StandardChessGameFactory().getChessGame(new ChessBoard(), player1, player2);
         board = game.getChessBoard();
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         startLocation = new Location(Coordinate.A, 1);
         endLocation = new Location(Coordinate.B, 2);
         
         piece = BishopPiece.getBishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(piece, startLocation);
+        board.put(piece, startLocation);
     }
 
     @Test
@@ -55,8 +55,8 @@ public class ConsoleControllerTest {
         controller.setConsole(userInput);
 
         controller.takeTurn();
-        assertEquals(piece.moved(), board.getPieceFromBoardAt(endLocation));
-        assertEquals(NO_CHESSPIECE, board.getPieceFromBoardAt(startLocation));
+        assertEquals(piece.moved(), board.get(endLocation));
+        assertEquals(NO_CHESSPIECE, board.get(startLocation));
     }
 
     @Test(expected = IllegalMoveException.class)
@@ -67,8 +67,8 @@ public class ConsoleControllerTest {
         controller.setConsole(userInput);
 
         controller.takeTurn();
-        assertEquals(piece, board.getPieceFromBoardAt(endLocation));
-        assertNull(board.getPieceFromBoardAt(startLocation));
+        assertEquals(piece, board.get(endLocation));
+        assertNull(board.get(startLocation));
     }
 
     public static class MockUserInput implements ConsoleController.UserConsole {

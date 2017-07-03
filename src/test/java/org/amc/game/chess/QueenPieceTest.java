@@ -40,7 +40,7 @@ public class QueenPieceTest extends ChessPieceTest {
     @Override
     public void testOnEmptyBoardIsValidMove() {
         QueenPiece queen = QueenPiece.getQueenPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(queen, testStartPosition);
+        board.put(queen, testStartPosition);
 
         for (Location endPosition : validLocationsFromD5) {
             System.out.println(endPosition);
@@ -54,7 +54,7 @@ public class QueenPieceTest extends ChessPieceTest {
     @Override
     public void testOnEmptyBoardIsNotValidMove() {
         QueenPiece rook = QueenPiece.getQueenPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(rook, testStartPosition);
+        board.put(rook, testStartPosition);
 
         for (Location endPosition : notValidLocationsFromD5) {
             assertFalse(rook.isValidMove(board, new Move(testStartPosition, endPosition)));
@@ -65,7 +65,7 @@ public class QueenPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardIsValidCapture() {
         QueenPiece queen = QueenPiece.getQueenPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(queen, testStartPosition);
+        board.put(queen, testStartPosition);
         List<Location> validCaptureLocations = new ArrayList<Location>();
         validCaptureLocations.add(new Location("D1"));
         validCaptureLocations.add(new Location("D8"));
@@ -77,7 +77,7 @@ public class QueenPieceTest extends ChessPieceTest {
         validCaptureLocations.add(new Location("H1"));
 
         for (Location endPosition : validCaptureLocations) {
-            board.putPieceOnBoardAt(QueenPiece.getQueenPiece(Colour.BLACK), endPosition);
+            board.put(QueenPiece.getQueenPiece(Colour.BLACK), endPosition);
             System.out.println(endPosition);
             assertTrue(queen.isValidMove(board, new Move(testStartPosition, endPosition)));
 
@@ -88,7 +88,7 @@ public class QueenPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardInvalidCapture() {
         QueenPiece queen = QueenPiece.getQueenPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(queen, testStartPosition);
+        board.put(queen, testStartPosition);
         List<Location> validCaptureLocations = new ArrayList<Location>();
         validCaptureLocations.add(new Location("D1"));
         validCaptureLocations.add(new Location("D8"));
@@ -99,7 +99,7 @@ public class QueenPieceTest extends ChessPieceTest {
         validCaptureLocations.add(new Location("A2"));
         validCaptureLocations.add(new Location("H1"));
         for (Location endPosition : validCaptureLocations) {
-            board.putPieceOnBoardAt(QueenPiece.getQueenPiece(Colour.WHITE), endPosition);
+            board.put(QueenPiece.getQueenPiece(Colour.WHITE), endPosition);
             System.out.println(endPosition);
             assertFalse(queen.isValidMove(board, new Move(testStartPosition, endPosition)));
 
@@ -112,8 +112,8 @@ public class QueenPieceTest extends ChessPieceTest {
     public void testOnBoardIsNotValidMove() {
         QueenPiece queen = QueenPiece.getQueenPiece(Colour.WHITE);
         QueenPiece blockingQueen = QueenPiece.getQueenPiece(Colour.WHITE);
-        board.putPieceOnBoardAt(queen, testStartPosition);
-        board.putPieceOnBoardAt(blockingQueen, new Location("B7"));
+        board.put(queen, testStartPosition);
+        board.put(blockingQueen, new Location("B7"));
 
         assertFalse(queen.isValidMove(board, new Move(testStartPosition, new Location(
                         "A1"))));

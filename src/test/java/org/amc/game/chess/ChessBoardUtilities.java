@@ -18,7 +18,7 @@ public class ChessBoardUtilities {
     }
     
     public void addChessPieceToBoard(ChessPiece piece, String location) {
-        board.putPieceOnBoardAt(piece, new Location(location));
+        board.put(piece, new Location(location));
     }
     
     public void addPawnPieceToBoard(Colour colour, String location) {
@@ -26,19 +26,19 @@ public class ChessBoardUtilities {
     }
     
     public ChessPiece getPieceOnBoard(String location) {
-        return board.getPieceFromBoardAt(new Location(location));
+        return board.get(new Location(location));
     }
     
     public void removePiece(String location) {
-    	board.removePieceOnBoardAt(new Location(location));
+    	board.remove(new Location(location));
     }
 
     public static void compareBoards(ChessBoard firstBoard, ChessBoard secondBoard) {
         for(Coordinate coord : Coordinate.values()) {
             for(int i = 1; i <= ChessBoard.BOARD_WIDTH; i++) {
                 Location location = new Location(coord, i);
-                ChessPiece pieceOne = firstBoard.getPieceFromBoardAt(location);
-                ChessPiece pieceTwo = secondBoard.getPieceFromBoardAt(location);
+                ChessPiece pieceOne = firstBoard.get(location);
+                ChessPiece pieceTwo = secondBoard.get(location);
                 if(pieceOne == null) {
                     if(pieceTwo != null) {
                         fail("First board is missing a Chess Piece");

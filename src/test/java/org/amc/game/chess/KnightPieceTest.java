@@ -33,7 +33,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnEmptyBoardIsValidMove() {
         KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(knight, testStartPosition);
+        board.put(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
             assertTrue(knight.isValidMove(board, new Move(testStartPosition, endPosition)));
@@ -44,7 +44,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnEmptyBoardIsNotValidMove() {
         KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(knight, testStartPosition);
+        board.put(knight, testStartPosition);
 
         for (Location endPosition : notValidLocationsFromD4) {
             assertFalse(knight.isValidMove(board, new Move(testStartPosition, endPosition)));
@@ -56,10 +56,10 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardIsValidCapture() {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
-            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), validLocationsFromD4[i]);
+            board.put(BishopPiece.getBishopPiece(Colour.WHITE), validLocationsFromD4[i]);
         }
         KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(knight, testStartPosition);
+        board.put(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
             assertTrue(knight.isValidMove(board, new Move(testStartPosition, endPosition)));
@@ -70,10 +70,10 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardInvalidCapture() {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
-            board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), validLocationsFromD4[i]);
+            board.put(BishopPiece.getBishopPiece(Colour.BLACK), validLocationsFromD4[i]);
         }
         KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(knight, testStartPosition);
+        board.put(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
             assertFalse(knight.isValidMove(board, new Move(testStartPosition, endPosition)));

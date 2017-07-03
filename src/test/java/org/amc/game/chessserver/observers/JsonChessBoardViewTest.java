@@ -140,7 +140,7 @@ public class JsonChessBoardViewTest {
 
     private String getChessPieceSymbol(String file, String rank) {
         return String.valueOf(ChessPieceTextSymbol.getChessPieceTextSymbol(chessGame.getChessBoard()
-                        .getPieceFromBoardAt(getLocation(file, rank))));
+                        .get(getLocation(file, rank))));
     }
 
     private Location getLocation(String file, String rank) {

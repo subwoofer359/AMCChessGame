@@ -49,7 +49,7 @@ final class CastlingRule implements ChessMoveRule{
     }
 
     private boolean isCastlingMove(ChessBoard board, Move move) {
-        ChessPiece piece = board.getPieceFromBoardAt(move.getStart());
+        ChessPiece piece = board.get(move.getStart());
         return  piece instanceof KingPiece &&
                 isKingsFirstMoveTwoSquaresRightOrLeft(piece, move);
     }
@@ -77,7 +77,7 @@ final class CastlingRule implements ChessMoveRule{
     }
 
     private boolean canKingCastleToTheRight(ChessBoard board, int rank) {
-        ChessPiece rook = board.getPieceFromBoardAt(new Location(H, rank));
+        ChessPiece rook = board.get(new Location(H, rank));
         return isNoChessPiecesBetweenKingAndRightRook(board, rank) && hasRookNotMoved(rook);
 
     }
@@ -88,7 +88,7 @@ final class CastlingRule implements ChessMoveRule{
     }
 
     private boolean canKingCastleToTheLeft(ChessBoard board, int rank) {
-        ChessPiece rook = board.getPieceFromBoardAt(new Location(A, rank));
+        ChessPiece rook = board.get(new Location(A, rank));
         return isNoChessPiecesBetweenKingAndLeftRook(board, rank) && hasRookNotMoved(rook);
     }
 

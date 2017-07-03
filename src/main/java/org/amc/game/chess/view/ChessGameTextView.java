@@ -55,7 +55,7 @@ public class ChessGameTextView implements Observer {
     private StringBuilder printSquare(ChessBoard chessBoard, Coordinate coordinate, int row) {
         StringBuilder sb = new StringBuilder();
         sb.append('|');
-        ChessPiece piece = chessBoard.getPieceFromBoardAt(new Location(coordinate, row));// getPieceFromBoardAt(col,
+        ChessPiece piece = chessBoard.get(new Location(coordinate, row));// getPieceFromBoardAt(col,
                                                                                          // row);
         if (piece == NO_CHESSPIECE) {
             sb.append("   ");

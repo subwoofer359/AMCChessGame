@@ -18,7 +18,7 @@ final class EmptyChessBoard extends ChessBoard {
     }
 
     @Override
-    public void putPieceOnBoardAt(ChessPiece piece, Location location) {
+    public void put(ChessPiece piece, Location location) {
     	//do nothing
     }
 }

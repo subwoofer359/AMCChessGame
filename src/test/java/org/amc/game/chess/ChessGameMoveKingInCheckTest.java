@@ -33,10 +33,10 @@ public class ChessGameMoveKingInCheckTest {
         board = new ChessBoard();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(attackingPiece, new Location(H, 4));
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(attackingPiece, new Location(H, 4));
+        board.put(KingPiece.getKingPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.putPieceOnBoardAt(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getKingPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
     }
 
@@ -50,20 +50,20 @@ public class ChessGameMoveKingInCheckTest {
 
     @Test(expected = IllegalMoveException.class)
     public void test() throws IllegalMoveException {
-        ChessPiece piece = board.getPieceFromBoardAt(defendingChessPieceMove.getEnd());
-        ChessPiece kingPiece = board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
+        ChessPiece piece = board.get(defendingChessPieceMove.getEnd());
+        ChessPiece kingPiece = board.get(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
-        assertEquals(piece, board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));
-        assertEquals(kingPiece, board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
+        assertEquals(piece, board.get(defendingChessPieceMove.getEnd()));
+        assertEquals(kingPiece, board.get(defendingChessPieceMove.getStart()));
     }
 
     @Test(expected = IllegalMoveException.class)
     public void testCaptureIntoCheck() throws IllegalMoveException {
         ChessPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        board.putPieceOnBoardAt(pawn, defendingChessPieceMove.getEnd());
-        ChessPiece kingPiece = board.getPieceFromBoardAt(defendingChessPieceMove.getStart());
+        board.put(pawn, defendingChessPieceMove.getEnd());
+        ChessPiece kingPiece = board.get(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);
-        assertEquals(pawn, board.getPieceFromBoardAt(defendingChessPieceMove.getEnd()));
-        assertEquals(kingPiece, board.getPieceFromBoardAt(defendingChessPieceMove.getStart()));
+        assertEquals(pawn, board.get(defendingChessPieceMove.getEnd()));
+        assertEquals(kingPiece, board.get(defendingChessPieceMove.getStart()));
     }
 }
