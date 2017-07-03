@@ -53,73 +53,73 @@ public class BugCG44MoveToSameSquareAllowed {
 
     @Test
     public void testBlackQueenNoneMove() {
-        QueenPiece queen = QueenPiece.getQueenPiece(Colour.BLACK);
+        QueenPiece queen = QueenPiece.getPiece(Colour.BLACK);
         assertFalse(queen.isValidMove(board, moves.get("blackQueen")));
     }
     
     @Test
     public void testWhiteQueenNoneMove() {
-        QueenPiece queen = QueenPiece.getQueenPiece(Colour.WHITE);
+        QueenPiece queen = QueenPiece.getPiece(Colour.WHITE);
         assertFalse(queen.isValidMove(board, moves.get("whiteQueen")));
     }
     
     @Test
     public void testBlackPawnNoneMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
         assertFalse(pawn.isValidMove(board, moves.get("blackPawn")));
     }
     
     @Test
     public void testWhitePawnNoneMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         assertFalse(pawn.isValidMove(board, moves.get("whitePawn")));
     }
     
     @Test
     public void testBlackBishopNoneMove() {
-        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getPiece(Colour.BLACK);
         assertFalse(bishop.isValidMove(board, moves.get("blackBishop")));
     }
     
     @Test
     public void testWhiteBishopNoneMove() {
-        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getPiece(Colour.WHITE);
         assertFalse(bishop.isValidMove(board, moves.get("whiteBishop")));
     }
     
     @Test
     public void testBlackKingNoneMove() {
-        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getPiece(Colour.BLACK);
         assertFalse(king.isValidMove(board, moves.get("blackKing")));
     }
     
     @Test
     public void testWhiteKingNoneMove() {
-        KingPiece king = KingPiece.getKingPiece(Colour.WHITE);
+        KingPiece king = KingPiece.getPiece(Colour.WHITE);
         assertFalse(king.isValidMove(board, moves.get("whiteKing")));
     }
     
     @Test
     public void testBlackKnightNoneMove() {
-        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getPiece(Colour.BLACK);
         assertFalse(knight.isValidMove(board, moves.get("blackKnight")));
     }
     
     @Test
     public void testWhiteKnightNoneMove() {
-        KnightPiece knight = KnightPiece.getKnightPiece(Colour.WHITE);
+        KnightPiece knight = KnightPiece.getPiece(Colour.WHITE);
         assertFalse(knight.isValidMove(board, moves.get("whiteKnight")));
     }
     
     @Test
     public void testBlackRookNoneMove() {
-        RookPiece rook = RookPiece.getRookPiece(Colour.BLACK);
+        RookPiece rook = RookPiece.getPiece(Colour.BLACK);
         assertFalse(rook.isValidMove(board, moves.get("blackRook")));
     }
     
     @Test
     public void testWhiteRookNoneMove() {
-        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         assertFalse(rook.isValidMove(board, moves.get("whiteRook")));
     }
 

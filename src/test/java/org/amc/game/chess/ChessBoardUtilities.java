@@ -22,7 +22,7 @@ public class ChessBoardUtilities {
     }
     
     public void addPawnPieceToBoard(Colour colour, String location) {
-        addChessPieceToBoard(PawnPiece.getPawnPiece(colour), location);
+        addChessPieceToBoard(PawnPiece.getPiece(colour), location);
     }
     
     public ChessPiece getPieceOnBoard(String location) {

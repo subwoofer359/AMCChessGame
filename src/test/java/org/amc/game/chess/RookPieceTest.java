@@ -26,7 +26,7 @@ public class RookPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testOnEmptyBoardIsValidMove() {
-        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         board.put(rook, testStartPosition);
 
         for (Location endPosition : ValidMovements.getListOfUpAndDownLocationsFromD5()) {
@@ -39,7 +39,7 @@ public class RookPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testOnEmptyBoardIsNotValidMove() {
-        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         board.put(rook, testStartPosition);
 
         for (Location endPosition : notValidLocationsFromD5) {
@@ -56,11 +56,11 @@ public class RookPieceTest extends ChessPieceTest {
         validCaptureLocations.add(new Location("H5"));
         validCaptureLocations.add(new Location("A5"));
 
-        RookPiece rook = RookPiece.getRookPiece(Colour.BLACK);
+        RookPiece rook = RookPiece.getPiece(Colour.BLACK);
         board.put(rook, testStartPosition);
 
         for (Location endPosition : validCaptureLocations) {
-            board.put(BishopPiece.getBishopPiece(Colour.WHITE), endPosition);
+            board.put(BishopPiece.getPiece(Colour.WHITE), endPosition);
             assertTrue(rook.isValidMove(board, new Move(testStartPosition, endPosition)));
         }
 
@@ -75,11 +75,11 @@ public class RookPieceTest extends ChessPieceTest {
         validCaptureLocations.add(new Location("H5"));
         validCaptureLocations.add(new Location("A5"));
 
-        RookPiece rook = RookPiece.getRookPiece(Colour.BLACK);
+        RookPiece rook = RookPiece.getPiece(Colour.BLACK);
         board.put(rook, testStartPosition);
 
         for (Location endPosition : validCaptureLocations) {
-            board.put(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
+            board.put(BishopPiece.getPiece(Colour.BLACK), endPosition);
             assertFalse(rook.isValidMove(board, new Move(testStartPosition, endPosition)));
         }
 
@@ -101,10 +101,10 @@ public class RookPieceTest extends ChessPieceTest {
         blockingPiecesPosition.add(new Location("B5"));
 
         for (Location endPosition : blockingPiecesPosition) {
-            board.put(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
+            board.put(BishopPiece.getPiece(Colour.BLACK), endPosition);
         }
 
-        RookPiece rook = RookPiece.getRookPiece(Colour.BLACK);
+        RookPiece rook = RookPiece.getPiece(Colour.BLACK);
         board.put(rook, testStartPosition);
 
         for (Location endPosition : validMoveLocations) {
@@ -116,7 +116,7 @@ public class RookPieceTest extends ChessPieceTest {
 
     @Test
     public void testCanSlide() {
-        assertTrue(RookPiece.getRookPiece(Colour.BLACK).canSlide());
+        assertTrue(RookPiece.getPiece(Colour.BLACK).canSlide());
     }
 
 }

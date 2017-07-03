@@ -35,11 +35,11 @@ public class ChessGameMoveKingOutOfCheckTest {
         ChessGameFactory factory = new StandardChessGameFactory();
         chessGame = factory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
-        ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
+        ChessPiece attackingPiece = BishopPiece.getPiece(Colour.BLACK);
         board.put(attackingPiece, new Location(H, 4));
-        board.put(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(KingPiece.getPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.put(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
     }
 

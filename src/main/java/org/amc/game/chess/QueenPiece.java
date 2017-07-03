@@ -15,7 +15,7 @@ public final class QueenPiece extends ComplexPiece {
     private static final QueenPiece QUEEN_WHITE_MOVED = new QueenPiece(Colour.WHITE, true);
     private static final QueenPiece QUEEN_BLACK_MOVED = new QueenPiece(Colour.BLACK, true);
 
-    public static QueenPiece getQueenPiece(Colour colour) {
+    public static QueenPiece getPiece(Colour colour) {
         if(Colour.WHITE == colour) {
             return QUEEN_WHITE;
         } else {

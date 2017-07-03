@@ -94,9 +94,9 @@ public class ChessBoardTest {
     @Test
     public void cloneConstuctorPieceMovedCopyTest() {
         board.initialise();
-        board.put(KingPiece.getKingPiece(Colour.BLACK).moved(),
+        board.put(KingPiece.getPiece(Colour.BLACK).moved(),
                 StartingSquare.BLACK_KING.getLocation());
-        board.put(KingPiece.getKingPiece(Colour.WHITE).moved(),
+        board.put(KingPiece.getPiece(Colour.WHITE).moved(),
                 StartingSquare.WHITE_KING.getLocation());
         ChessBoard clone = new ChessBoard(board);
         assertTrue(clone.get(StartingSquare.BLACK_KING.getLocation()).hasMoved());

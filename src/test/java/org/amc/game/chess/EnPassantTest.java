@@ -54,7 +54,7 @@ public class EnPassantTest {
         final String blackBishopEndPosition = "F5";
         
         cbUtils.addPawnPieceToBoard(Colour.WHITE, whitePawnStartPosition);
-        cbUtils.addChessPieceToBoard(BishopPiece.getBishopPiece(Colour.BLACK), blackBishopEndPosition);
+        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.BLACK), blackBishopEndPosition);
 
         Move blackMove = cbUtils.createMove(blackBishopStartPosition, blackBishopEndPosition);
         Move whiteEnPassantMove = cbUtils.createMove(whitePawnStartPosition, "F6");
@@ -115,7 +115,7 @@ public class EnPassantTest {
         final String blackPawnStartPosition = "F7";
         final String blackPawnEndPosition = "F5";
         
-        final PawnPiece whitePawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        final PawnPiece whitePawn = PawnPiece.getPiece(Colour.WHITE);
         cbUtils.addChessPieceToBoard(whitePawn, whitePawnStartPosition);
         cbUtils.addPawnPieceToBoard(Colour.BLACK, blackPawnEndPosition);
 
@@ -132,7 +132,7 @@ public class EnPassantTest {
 
     @Test
     public void testBlackEnPassantCapture() throws IllegalMoveException {
-        PawnPiece blackPawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece blackPawn = PawnPiece.getPiece(Colour.BLACK);
         final String whitePawnStartPosition = "F2";
         final String whitePawnEndPosition = "F4";
         final String blackPawnStartPosition = "G4";
@@ -152,7 +152,7 @@ public class EnPassantTest {
 
     @Test
     public void notMoveEnPassantCapture() {
-        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getPiece(Colour.WHITE);
         final String startSquare = "A2";
         final String endSquare = "B3";
         Move move = cbUtils.createMove(startSquare, endSquare);

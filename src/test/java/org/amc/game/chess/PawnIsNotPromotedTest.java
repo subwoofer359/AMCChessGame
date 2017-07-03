@@ -39,11 +39,11 @@ public class PawnIsNotPromotedTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { PawnPiece.getPawnPiece(Colour.WHITE), new Move("A2-A1") },
-                { PawnPiece.getPawnPiece(Colour.WHITE), new Move("H2-H1") },
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A7-A8") },
+                { PawnPiece.getPiece(Colour.WHITE), new Move("A2-A1") },
+                { PawnPiece.getPiece(Colour.WHITE), new Move("H2-H1") },
+                { PawnPiece.getPiece(Colour.BLACK), new Move("A7-A8") },
                 //invalid move for a pawn
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A7-A1") }});
+                { PawnPiece.getPiece(Colour.BLACK), new Move("A7-A1") }});
 
     }
 

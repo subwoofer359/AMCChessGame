@@ -22,7 +22,7 @@ public final class KnightPiece extends SimplePiece {
     private static final KnightPiece KNIGHT_WHITE_MOVED = new KnightPiece(Colour.WHITE, true);
     private static final KnightPiece KNIGHT_BLACK_MOVED = new KnightPiece(Colour.BLACK, true);
 
-    public static KnightPiece getKnightPiece(Colour colour) {
+    public static KnightPiece getPiece(Colour colour) {
         if(Colour.WHITE == colour) {
             return KNIGHT_WHITE;
         } else {

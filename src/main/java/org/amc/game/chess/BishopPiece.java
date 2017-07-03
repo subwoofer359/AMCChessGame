@@ -24,7 +24,7 @@ public final class BishopPiece extends ComplexPiece {
         super(colour, hasMoved);
     }
 
-    public static BishopPiece getBishopPiece(Colour colour) {
+    public static BishopPiece getPiece(Colour colour) {
         if (colour == Colour.WHITE) {
             return BISHOP_WHITE;
         } else {

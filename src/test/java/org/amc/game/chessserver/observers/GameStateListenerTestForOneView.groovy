@@ -72,7 +72,7 @@ class GameStateListenerTestForOneView {
     @Test
     public void promotionWhiteTest() throws DAOException, ParseException {
         ChessBoard board = mock(ChessBoard.class);
-        ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPawnPiece(Colour.WHITE), new Location("A8"));
+        ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.WHITE), new Location("A8"));
         
         when(board.getPawnToBePromoted(Colour.WHITE)).thenReturn(cpl);
         serverGame.getChessGame().setChessBoard(board);
@@ -85,7 +85,7 @@ class GameStateListenerTestForOneView {
     @Test
     public void promotionBlackTest() throws DAOException, ParseException {
         ChessBoard board = mock(ChessBoard.class);
-        ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPawnPiece(Colour.BLACK), new Location("A1"));
+        ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.BLACK), new Location("A1"));
         
         when(board.getPawnToBePromoted(Colour.BLACK)).thenReturn(cpl);
         serverGame.getChessGame().setChessBoard(board);

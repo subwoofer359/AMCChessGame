@@ -32,7 +32,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testOnEmptyBoardIsValidMove() {
-        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getPiece(Colour.BLACK);
         board.put(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
@@ -43,7 +43,7 @@ public class KnightPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testOnEmptyBoardIsNotValidMove() {
-        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getPiece(Colour.BLACK);
         board.put(knight, testStartPosition);
 
         for (Location endPosition : notValidLocationsFromD4) {
@@ -56,9 +56,9 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardIsValidCapture() {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
-            board.put(BishopPiece.getBishopPiece(Colour.WHITE), validLocationsFromD4[i]);
+            board.put(BishopPiece.getPiece(Colour.WHITE), validLocationsFromD4[i]);
         }
-        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getPiece(Colour.BLACK);
         board.put(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
@@ -70,9 +70,9 @@ public class KnightPieceTest extends ChessPieceTest {
     @Override
     public void testOnBoardInvalidCapture() {
         for (int i = 0; i < validLocationsFromD4.length; i++) {
-            board.put(BishopPiece.getBishopPiece(Colour.BLACK), validLocationsFromD4[i]);
+            board.put(BishopPiece.getPiece(Colour.BLACK), validLocationsFromD4[i]);
         }
-        KnightPiece knight = KnightPiece.getKnightPiece(Colour.BLACK);
+        KnightPiece knight = KnightPiece.getPiece(Colour.BLACK);
         board.put(knight, testStartPosition);
 
         for (Location endPosition : validLocationsFromD4) {
@@ -90,6 +90,6 @@ public class KnightPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testCanSlide() {
-        assertFalse(KnightPiece.getKnightPiece(Colour.BLACK).canSlide());
+        assertFalse(KnightPiece.getPiece(Colour.BLACK).canSlide());
     }
 }

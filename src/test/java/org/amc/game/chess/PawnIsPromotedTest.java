@@ -33,9 +33,9 @@ public class PawnIsPromotedTest {
         chessGame = new StandardChessGameFactory().getChessGame(new ChessBoard(), 
                         whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
-        board.put(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(KingPiece.getPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.put(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
         this.promotion = PawnPromotionRule.getInstance();
         
@@ -45,9 +45,9 @@ public class PawnIsPromotedTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("A2-A1") },
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Move("H2-H1") },
-                { PawnPiece.getPawnPiece(Colour.WHITE), new Move("A7-A8") } });
+                { PawnPiece.getPiece(Colour.BLACK), new Move("A2-A1") },
+                { PawnPiece.getPiece(Colour.BLACK), new Move("H2-H1") },
+                { PawnPiece.getPiece(Colour.WHITE), new Move("A7-A8") } });
 
     }
 

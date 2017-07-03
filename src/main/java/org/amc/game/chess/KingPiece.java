@@ -24,7 +24,7 @@ public final class KingPiece extends SimplePiece {
         super(colour, hasMoved);
     }
 
-    public static KingPiece getKingPiece(Colour colour) {
+    public static KingPiece getPiece(Colour colour) {
         if(Colour.WHITE == colour) {
             return KING_WHITE;
         } else {

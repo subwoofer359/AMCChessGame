@@ -20,7 +20,7 @@ public class KingPieceTest {
 
     @Test
     public void testIsValidMoveOnEmptyBoard() {
-        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getPiece(Colour.BLACK);
         cbUtils.addChessPieceToBoard(king, "F7");
         assertTrue(king.isValidMove(board, cbUtils.createMove("F7", "F8")));
         assertTrue(king.isValidMove(board, cbUtils.createMove("F7", "F6")));
@@ -35,7 +35,7 @@ public class KingPieceTest {
 
     @Test
     public void testIsNotValidMoveOnEmptyBoard() {
-        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getPiece(Colour.BLACK);
         cbUtils.addChessPieceToBoard(king, "F7");
         assertFalse(king.isValidMove(board, cbUtils.createMove("F7", "A8")));
         assertFalse(king.isValidMove(board, cbUtils.createMove("F7", "B6")));
@@ -54,9 +54,9 @@ public class KingPieceTest {
 
     @Test
     public void testIsValidMoveOnBoard() {
-        KingPiece king = KingPiece.getKingPiece(Colour.BLACK);
-        KingPiece kingWhite = KingPiece.getKingPiece(Colour.WHITE);
-        KingPiece anotherBlackKing = KingPiece.getKingPiece(Colour.BLACK);
+        KingPiece king = KingPiece.getPiece(Colour.BLACK);
+        KingPiece kingWhite = KingPiece.getPiece(Colour.WHITE);
+        KingPiece anotherBlackKing = KingPiece.getPiece(Colour.BLACK);
         cbUtils.addChessPieceToBoard(king, "F7");
         cbUtils.addChessPieceToBoard(kingWhite, "E7");
         cbUtils.addChessPieceToBoard(anotherBlackKing, "G7");
@@ -73,7 +73,7 @@ public class KingPieceTest {
 
     @Test
     public void testGetPossibleMoveLocations() {
-        KingPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
+        KingPiece whiteKing = KingPiece.getPiece(Colour.WHITE);
         cbUtils.addChessPieceToBoard(whiteKing, StartingSquare.WHITE_KING.getLocation().asString());
         Set<Location> expectedMoveLocations = new HashSet<>();
         expectedMoveLocations.add(new Location("D1"));
@@ -90,6 +90,6 @@ public class KingPieceTest {
 
     @Test
     public void testCanSlisde() {
-        assertTrue(KingPiece.getKingPiece(Colour.BLACK).canSlide());
+        assertTrue(KingPiece.getPiece(Colour.BLACK).canSlide());
     }
 }

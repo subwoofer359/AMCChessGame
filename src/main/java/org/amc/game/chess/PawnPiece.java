@@ -27,7 +27,7 @@ public final class PawnPiece extends SimplePiece {
         this(colour, false);
     }
 
-    public static PawnPiece getPawnPiece(Colour colour) {
+    public static PawnPiece getPiece(Colour colour) {
         if (colour == Colour.WHITE) {
             return PAWN_WHITE;
         } else {

@@ -26,9 +26,9 @@ public class ChessGameTest {
         
         cbUtils = new ChessBoardUtilities(chessGameFixture.getBoard());
         
-        cbUtils.addChessPieceToBoard(KingPiece.getKingPiece(Colour.WHITE),
+        cbUtils.addChessPieceToBoard(KingPiece.getPiece(Colour.WHITE),
                         WHITE_KING.getLocationStr());
-        cbUtils.addChessPieceToBoard(KingPiece.getKingPiece(Colour.BLACK),
+        cbUtils.addChessPieceToBoard(KingPiece.getPiece(Colour.BLACK),
                         BLACK_KING.getLocationStr());
         
     }
@@ -49,14 +49,14 @@ public class ChessGameTest {
 
     @Test(expected = IllegalMoveException.class)
     public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
-        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getPiece(Colour.WHITE);
         cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
         chessGameFixture.move(blackPlayer, cbUtils.createMove(START_LOCATION, "B7"));
     }
 
     @Test
     public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
-        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.WHITE);
+        BishopPiece bishop = BishopPiece.getPiece(Colour.WHITE);
         cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
         chessGameFixture.move(whitePlayer, cbUtils.createMove(START_LOCATION, END_LOCATION));
         assertEquals(bishop.moved(), cbUtils.getPieceOnBoard(END_LOCATION));
@@ -65,7 +65,7 @@ public class ChessGameTest {
 
     @Test
     public void doesGameRuleApply() {
-        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         final String rookStartPosition = "H1";
         Move move = cbUtils.createMove(WHITE_KING.getLocationStr(), "G1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
@@ -74,7 +74,7 @@ public class ChessGameTest {
 
     @Test
     public void doesNotGameRuleApply() {
-        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         final String rookStartPosition = "H1";
         Move move = cbUtils.createMove(WHITE_KING.getLocationStr(), "F1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
@@ -83,7 +83,7 @@ public class ChessGameTest {
 
     @Test
     public void gameRuleAppliedTest() throws IllegalMoveException {
-        RookPiece rook = RookPiece.getRookPiece(Colour.WHITE);
+        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         String rookStartPosition = "H1";
         Move move = cbUtils.createMove(WHITE_KING.getLocationStr(), "G1");
         cbUtils.addChessPieceToBoard(rook, rookStartPosition);
@@ -92,7 +92,7 @@ public class ChessGameTest {
     
     @Test
     public void testMovesAreSaved() throws IllegalMoveException {
-        BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
+        BishopPiece bishop = BishopPiece.getPiece(Colour.BLACK);
         cbUtils.addChessPieceToBoard(bishop, START_LOCATION);
         chessGameFixture.changePlayer();
         chessGameFixture.move(blackPlayer, cbUtils.createMove(START_LOCATION, END_LOCATION));

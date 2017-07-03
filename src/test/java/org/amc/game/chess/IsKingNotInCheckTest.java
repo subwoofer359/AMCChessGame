@@ -29,9 +29,9 @@ public class IsKingNotInCheckTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { BishopPiece.getBishopPiece(Colour.BLACK), new Location(A, 2) },
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Location(E, 2) },
-                { BishopPiece.getBishopPiece(Colour.WHITE), new Location(A, 2) } });
+                { BishopPiece.getPiece(Colour.BLACK), new Location(A, 2) },
+                { PawnPiece.getPiece(Colour.BLACK), new Location(E, 2) },
+                { BishopPiece.getPiece(Colour.WHITE), new Location(A, 2) } });
 
     }
 
@@ -44,8 +44,8 @@ public class IsKingNotInCheckTest {
     @Test
     public void testKingIsNotChecked() {
         ChessBoard board = new ChessBoard();
-        ChessPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
-        ChessPiece blackKing = KingPiece.getKingPiece(Colour.BLACK);
+        ChessPiece whiteKing = KingPiece.getPiece(Colour.WHITE);
+        ChessPiece blackKing = KingPiece.getPiece(Colour.BLACK);
         board.put(whiteKing, StartingSquare.WHITE_KING.getLocation());
         board.put(blackKing, StartingSquare.BLACK_KING.getLocation());
         board.put(attackingChessPiece, attackingChessPieceLocation);

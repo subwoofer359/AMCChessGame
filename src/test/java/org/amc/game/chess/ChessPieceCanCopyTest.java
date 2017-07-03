@@ -21,10 +21,10 @@ public class ChessPieceCanCopyTest {
     @Parameters
     public static Collection<?> addedChessPieces() {
 
-        return Arrays.asList(new Object[][] { { RookPiece.getRookPiece(Colour.WHITE) },
-                { BishopPiece.getBishopPiece(Colour.BLACK) }, { QueenPiece.getQueenPiece(Colour.WHITE) },
-                { KingPiece.getKingPiece(Colour.BLACK) }, { KnightPiece.getKnightPiece(Colour.WHITE) },
-                { PawnPiece.getPawnPiece(Colour.BLACK) } });
+        return Arrays.asList(new Object[][] { { RookPiece.getPiece(Colour.WHITE) },
+                { BishopPiece.getPiece(Colour.BLACK) }, { QueenPiece.getPiece(Colour.WHITE) },
+                { KingPiece.getPiece(Colour.BLACK) }, { KnightPiece.getPiece(Colour.WHITE) },
+                { PawnPiece.getPiece(Colour.BLACK) } });
 
     }
 

@@ -77,29 +77,29 @@ public class SimpleChessBoardSetupNotation implements ChessBoardSetupNotation {
 
         switch (ChessPieceNotation.valueOf(chessPieceStr)) {
         case K:
-            return KingPiece.getKingPiece(Colour.BLACK);
+            return KingPiece.getPiece(Colour.BLACK);
         case k:
-            return KingPiece.getKingPiece(Colour.WHITE);
+            return KingPiece.getPiece(Colour.WHITE);
         case Q:
-            return QueenPiece.getQueenPiece(Colour.BLACK);
+            return QueenPiece.getPiece(Colour.BLACK);
         case q:
-            return QueenPiece.getQueenPiece(Colour.WHITE);
+            return QueenPiece.getPiece(Colour.WHITE);
         case B:
-            return BishopPiece.getBishopPiece(Colour.BLACK);
+            return BishopPiece.getPiece(Colour.BLACK);
         case b:
-            return BishopPiece.getBishopPiece(Colour.WHITE);
+            return BishopPiece.getPiece(Colour.WHITE);
         case R:
-            return RookPiece.getRookPiece(Colour.BLACK);
+            return RookPiece.getPiece(Colour.BLACK);
         case r:
-            return RookPiece.getRookPiece(Colour.WHITE);
+            return RookPiece.getPiece(Colour.WHITE);
         case N:
-            return KnightPiece.getKnightPiece(Colour.BLACK);
+            return KnightPiece.getPiece(Colour.BLACK);
         case n:
-            return KnightPiece.getKnightPiece(Colour.WHITE);
+            return KnightPiece.getPiece(Colour.WHITE);
         case P:
-            return PawnPiece.getPawnPiece(Colour.BLACK);
+            return PawnPiece.getPiece(Colour.BLACK);
         case p:
-            return PawnPiece.getPawnPiece(Colour.WHITE);
+            return PawnPiece.getPiece(Colour.WHITE);
         default:
             return null;
         }

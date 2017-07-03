@@ -32,11 +32,11 @@ public class ChessGameMoveKingInCheckTest {
     public void setUp() throws Exception {
         board = new ChessBoard();
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-        ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
+        ChessPiece attackingPiece = BishopPiece.getPiece(Colour.BLACK);
         board.put(attackingPiece, new Location(H, 4));
-        board.put(KingPiece.getKingPiece(Colour.WHITE),
+        board.put(KingPiece.getPiece(Colour.WHITE),
                         StartingSquare.WHITE_KING.getLocation());
-        board.put(KingPiece.getKingPiece(Colour.BLACK),
+        board.put(KingPiece.getPiece(Colour.BLACK),
                         StartingSquare.BLACK_KING.getLocation());
     }
 
@@ -59,7 +59,7 @@ public class ChessGameMoveKingInCheckTest {
 
     @Test(expected = IllegalMoveException.class)
     public void testCaptureIntoCheck() throws IllegalMoveException {
-        ChessPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        ChessPiece pawn = PawnPiece.getPiece(Colour.BLACK);
         board.put(pawn, defendingChessPieceMove.getEnd());
         ChessPiece kingPiece = board.get(defendingChessPieceMove.getStart());
         chessGame.move(currentPlayer, defendingChessPieceMove);

@@ -111,7 +111,7 @@ public class GameStateListenerTest {
     @Test
     public void promotionTest() throws DAOException, ParseException {
     	ChessBoard board = mock(ChessBoard.class);
-    	ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPawnPiece(Colour.WHITE), new Location("A8"));
+    	ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.WHITE), new Location("A8"));
     	
     	when(board.getPawnToBePromoted(Colour.WHITE)).thenReturn(cpl);
     	serverGame.getChessGame().setChessBoard(board);

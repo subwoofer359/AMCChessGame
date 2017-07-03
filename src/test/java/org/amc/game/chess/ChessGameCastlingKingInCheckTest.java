@@ -36,13 +36,13 @@ public class ChessGameCastlingKingInCheckTest {
 		cbUtils = new ChessBoardUtilities(board);
 
 		chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-		ChessPiece attackingPiece = BishopPiece.getBishopPiece(Colour.BLACK);
+		ChessPiece attackingPiece = BishopPiece.getPiece(Colour.BLACK);
 		cbUtils.addChessPieceToBoard(attackingPiece, "E3");
-		kingPiece = KingPiece.getKingPiece(Colour.WHITE);
-		rookPiece = RookPiece.getRookPiece(Colour.WHITE);
+		kingPiece = KingPiece.getPiece(Colour.WHITE);
+		rookPiece = RookPiece.getPiece(Colour.WHITE);
 		cbUtils.addChessPieceToBoard(kingPiece, WHITE_KING.getLocationStr());
 		cbUtils.addChessPieceToBoard(rookPiece, WHITE_ROOK_RIGHT.getLocationStr());
-		cbUtils.addChessPieceToBoard(KingPiece.getKingPiece(Colour.BLACK), BLACK_KING.getLocationStr());
+		cbUtils.addChessPieceToBoard(KingPiece.getPiece(Colour.BLACK), BLACK_KING.getLocationStr());
 	}
 
 	@Parameters

@@ -33,16 +33,16 @@ public class IsKingInCheckTest {
     public static Collection<?> addedChessPieces() {
 
         return Arrays.asList(new Object[][] {
-                { BishopPiece.getBishopPiece(Colour.BLACK), new Location("A5") },
-                { PawnPiece.getPawnPiece(Colour.BLACK), new Location("F2") },
-                { KnightPiece.getKnightPiece(Colour.BLACK), new Location("D3") } });
+                { BishopPiece.getPiece(Colour.BLACK), new Location("A5") },
+                { PawnPiece.getPiece(Colour.BLACK), new Location("F2") },
+                { KnightPiece.getPiece(Colour.BLACK), new Location("D3") } });
 
     }
 
     @Test
     public void testKingIsChecked() {
         ChessBoard board = new ChessBoard();
-        ChessPiece whiteKing = KingPiece.getKingPiece(Colour.WHITE);
+        ChessPiece whiteKing = KingPiece.getPiece(Colour.WHITE);
         board.put(whiteKing, StartingSquare.WHITE_KING.getLocation());
         board.put(attackingChessPiece, attackingChessPieceLocation);
         ChessGame chessGame = new ChessGame(board, whitePlayer, blackPlayer);

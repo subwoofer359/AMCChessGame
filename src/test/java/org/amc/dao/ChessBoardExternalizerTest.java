@@ -52,7 +52,7 @@ public class ChessBoardExternalizerTest {
 	public void testExternalisingPieceMoved() {
 		final String locationStr = "a1";
 		board = new ChessBoard();
-		ChessPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+		ChessPiece pawn = PawnPiece.getPiece(Colour.WHITE);
 		pawn = pawn.moved();
 		Location location = new Location(locationStr);
 		board.put(pawn, location);

@@ -16,7 +16,7 @@ public final class RookPiece extends ComplexPiece {
     private static final RookPiece ROOK_BLACK_MOVED  = new RookPiece(Colour.BLACK, true);
 
 
-    public static RookPiece getRookPiece(Colour colour) {
+    public static RookPiece getPiece(Colour colour) {
         if(Colour.WHITE == colour) {
             return ROOK_WHITE;
         } else {

@@ -75,10 +75,10 @@ public class IsKingCheckmatedTest {
         board.remove(new Location(E, 7));
         board.remove(new Location(F, 2));
         board.remove(new Location(G, 2));
-        board.put(PawnPiece.getPawnPiece(Colour.BLACK), new Location(E, 5));
-        board.put(QueenPiece.getQueenPiece(Colour.BLACK), new Location(D, 8));
-        board.put(PawnPiece.getPawnPiece(Colour.WHITE), new Location(G, 4));
-        board.put(PawnPiece.getPawnPiece(Colour.WHITE), new Location(F, 3));
+        board.put(PawnPiece.getPiece(Colour.BLACK), new Location(E, 5));
+        board.put(QueenPiece.getPiece(Colour.BLACK), new Location(D, 8));
+        board.put(PawnPiece.getPiece(Colour.WHITE), new Location(G, 4));
+        board.put(PawnPiece.getPiece(Colour.WHITE), new Location(F, 3));
         Move queenMove = new Move(new Location(D, 8), new Location(H, 4));
         board.move(queenMove);
         PlayersKingCheckmateCondition pkcc = new PlayersKingCheckmateCondition(

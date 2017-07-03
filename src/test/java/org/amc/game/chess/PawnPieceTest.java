@@ -39,12 +39,12 @@ public class PawnPieceTest extends ChessPieceTest {
     @Test
     @Override
     public void testCanSlide() {
-        assertTrue(PawnPiece.getPawnPiece(Colour.BLACK).canSlide());
+        assertTrue(PawnPiece.getPiece(Colour.BLACK).canSlide());
     }
 
     @Test
     public void testIsMovingForwardOneSquareOnly() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         pawn.moved();
         placeOnBoard(pawn, whiteStart);
         String endLocationOne = "F3";
@@ -53,7 +53,7 @@ public class PawnPieceTest extends ChessPieceTest {
 
     @Test
     public void testMoveBackOneSquare() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         pawn.moved();
         placeOnBoard(pawn, whiteStart);
         String endLocationOne = "F1";
@@ -62,7 +62,7 @@ public class PawnPieceTest extends ChessPieceTest {
 
     @Test
     public void testMoveNoSquare() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         String startLocation = "F3";
         placeOnBoard(pawn, startLocation);
         String endLocationOne = "F3";
@@ -112,7 +112,7 @@ public class PawnPieceTest extends ChessPieceTest {
 	}
 
     private void testOnEmptyBoardIsValidWhiteMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         placeOnBoard(pawn, whiteStart);
 
         assertTrue(pawn.isValidMove(board, newMove(whiteStart, "F3")));
@@ -125,7 +125,7 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnEmptyBoardIsValidBlackMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
         placeOnBoard(pawn, (blackStart));
 
         assertTrue(pawn.isValidMove(board, newMove(blackStart, "F6")));
@@ -134,7 +134,7 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnEmptyBoardIsNotValidWhiteMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         placeOnBoard(pawn, whiteStart);
 
         for (String endLocation : invalidWhiteMovesFromF2) {
@@ -144,7 +144,7 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnEmptyBoardIsNotValidBlackMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
         placeOnBoard(pawn, blackStart);
         
         for (String endLocation : invalidBlackMovesFromF7) {
@@ -154,7 +154,7 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnEmptyBoardIsNotValidNonIntialWhiteMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         pawn = (PawnPiece)pawn.moved();
         placeOnBoard(pawn, whiteStart);
         String endLocation = "F4";
@@ -162,7 +162,7 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnEmptyBoardIsNotValidNonIntialBlackMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
         pawn.moved();
         placeOnBoard(pawn, blackStart);
         String endLocation = "F4";
@@ -170,8 +170,8 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnBoardIsValidWhiteCapture() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
-        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
+        PawnPiece enemyPawn = PawnPiece.getPiece(Colour.BLACK);
         String captureLocationOne = "E3";
         String captureLocationTwo = "G3";
         placeOnBoard(pawn, whiteStart);
@@ -182,8 +182,8 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnBoardIsValidBlackCapture() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
+        PawnPiece enemyPawn = PawnPiece.getPiece(Colour.WHITE);
         String captureLocationOne = "E6";
         String captureLocationTwo = "G6";
         placeOnBoard(pawn, blackStart);
@@ -194,28 +194,28 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnBoardInvalidWhiteCapture() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
         String captureLocationOne = "E3";
         String captureLocationTwo = "G3";
         placeOnBoard(pawn, whiteStart);
-        placeOnBoard(PawnPiece.getPawnPiece(Colour.WHITE), captureLocationOne);
+        placeOnBoard(PawnPiece.getPiece(Colour.WHITE), captureLocationOne);
         assertFalse(pawn.isValidMove(board, newMove(whiteStart, captureLocationOne)));
         assertFalse(pawn.isValidMove(board, newMove(whiteStart, captureLocationTwo)));
     }
 
     private void testOnBoardInvalidBlackCapture() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
         String captureLocationOne = "E6";
         String captureLocationTwo = "G6";
         placeOnBoard(pawn, blackStart);
-        placeOnBoard(PawnPiece.getPawnPiece(Colour.BLACK), captureLocationOne);
+        placeOnBoard(PawnPiece.getPiece(Colour.BLACK), captureLocationOne);
         assertFalse(pawn.isValidMove(board, newMove(blackStart, captureLocationOne)));
         assertFalse(pawn.isValidMove(board, newMove(blackStart, captureLocationTwo)));
     }
 
     private void testOnBoardIsNotValidBlackMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.BLACK);
-        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.WHITE);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.BLACK);
+        PawnPiece enemyPawn = PawnPiece.getPiece(Colour.WHITE);
         placeOnBoard(pawn, blackStart);
         String endLocationOne = "F6";
         String endLocationTwo = "F5";
@@ -227,8 +227,8 @@ public class PawnPieceTest extends ChessPieceTest {
     }
 
     private void testOnBoardIsNotValidWhiteMove() {
-        PawnPiece pawn = PawnPiece.getPawnPiece(Colour.WHITE);
-        PawnPiece enemyPawn = PawnPiece.getPawnPiece(Colour.BLACK);
+        PawnPiece pawn = PawnPiece.getPiece(Colour.WHITE);
+        PawnPiece enemyPawn = PawnPiece.getPiece(Colour.BLACK);
         placeOnBoard(pawn, whiteStart);
         String endLocationOne = "F3";
         String endLocationTwo = "F4";
