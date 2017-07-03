@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.GameObserver;
 import org.amc.game.chessserver.ServerChessGame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -62,10 +61,6 @@ public class ObserverFactoryChainImplTest {
         }
         chain = spy(chains.get(0));
         
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

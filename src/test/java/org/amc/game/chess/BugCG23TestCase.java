@@ -28,10 +28,6 @@ public class BugCG23TestCase {
         new ChessBoardView(board);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void test() throws ParseException, IllegalMoveException {
         Move move = new Move("C6-B7");

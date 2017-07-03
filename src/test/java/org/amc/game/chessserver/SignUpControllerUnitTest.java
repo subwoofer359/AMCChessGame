@@ -13,7 +13,6 @@ import org.amc.game.chessserver.spring.EmailValidator;
 import org.amc.game.chessserver.spring.FullNameValidator;
 import org.amc.game.chessserver.spring.PasswordValidator;
 import org.amc.game.chessserver.spring.UserNameValidator;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -60,11 +59,7 @@ public class SignUpControllerUnitTest {
         fieldErrorCaptor = ArgumentCaptor.forClass(String.class);
         messageErrorCaptor = ArgumentCaptor.forClass(String.class);
     }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    
     @Test
     public void testCreateEntryInUserTable() throws DAOException {
         ArgumentCaptor<User> userArgument = ArgumentCaptor.forClass(User.class);

@@ -2,7 +2,6 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,10 +21,6 @@ public class RookPieceTest extends ChessPieceTest {
     @Before
     public void setUp() throws Exception {
         board = new ChessBoard();
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

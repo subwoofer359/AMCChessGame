@@ -11,7 +11,6 @@ import java.util.Map;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,10 +37,6 @@ public class InValidUserNameTest {
 		this.userDAO = mock(DAO.class);
 		Map<String, Object> errorMap = new HashMap<String, Object>();
 		errors = new MapBindingResult(errorMap, "userName");
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 	
 	@Parameters

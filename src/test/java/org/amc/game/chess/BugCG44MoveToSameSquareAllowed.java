@@ -2,7 +2,6 @@ package org.amc.game.chess;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,10 +49,6 @@ public class BugCG44MoveToSameSquareAllowed {
         blackPlayer=new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         board=boardFactory.getChessBoard("Ka8:Nb8:Bc8:Rd8:Qe8:Pf8:ka1:nb1:bc1:rd1:qe1:pf1");
         chessGame=new ChessGame(board, whitePlayer, blackPlayer);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

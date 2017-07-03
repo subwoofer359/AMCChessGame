@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,10 +34,6 @@ public class QueenPieceTest extends ChessPieceTest {
     @Before
     public void setUp() throws Exception {
         board = new ChessBoard();
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

@@ -16,7 +16,6 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,10 +36,6 @@ public class OneViewServerChessGameConstructorTest {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
         };
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

@@ -20,6 +20,8 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.security.core.session.SessionRegistry;
 
 public class ObserverFactoryChainFixture {
+	
+	private ObserverFactoryChainFixture() {}
 
     
     public static ObserverFactoryChain getUpObserverFactoryChain() {

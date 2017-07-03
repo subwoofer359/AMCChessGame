@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.view.ChessBoardView;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,10 +22,6 @@ public class GameStateTest {
         blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
         factory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
         chessGame = new ChessGame(board, whitePlayer, blackPlayer);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

@@ -73,11 +73,9 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
             } catch (MailException | MessagingException e) {
                 log.error(e);
                 return SENT_FAILED;
+            } catch (RuntimeException re) {
+            	throw re;
             } catch (Exception e) {
-            	if(e instanceof RuntimeException) {
-            		throw e;
-            	}
-                log.error(e);
                 return SENT_FAILED;
             }
             return SENT_SUCCESS;

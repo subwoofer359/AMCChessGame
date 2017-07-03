@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,10 +27,6 @@ public class UserNameAvailableTest {
         userDAO = mock(DAO.class);
         controller = new UserNameAvailable();
         controller.setUserDAO(userDAO);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test
