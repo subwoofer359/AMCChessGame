@@ -19,9 +19,9 @@ import groovy.transform.TypeChecked;;
 @TypeChecked
 class GameSubjectTest {
 
-	private static final int ZERO = 0;
-	private static final int ONE = 1;
-	private static final int TWO = 2;
+	static final int ZERO = 0;
+	static final int ONE = 1;
+	static final int TWO = 2;
 
 	@Test
 	void testConstructor() {

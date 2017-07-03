@@ -42,8 +42,13 @@ abstract class SimplePiece implements ChessPiece {
      */
     @Override
     public boolean isValidMove(ChessBoard board, Move move) {
-        return validMovement(move) &&
+        return isChessPieceAtStart(board, move) && 
+        	validMovement(move) &&
             canMakeMove(board, move);
+    }
+    
+    private boolean isChessPieceAtStart(ChessBoard board, Move move) {
+    	return board.getPieceFromBoardAt(move.getStart()) == this;
     }
 
     /**

@@ -1,11 +1,11 @@
 package org.amc.game.chess;
 
 import static org.junit.Assert.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.util.Arrays;
 
 public class BishopPieceTest extends ChessPieceTest {
     private ChessBoard board;
@@ -14,96 +14,82 @@ public class BishopPieceTest extends ChessPieceTest {
     @Before
     public void setUp() throws Exception {
         board = new ChessBoard();
+        setChessBoard(board);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.amc.game.chess.ChessPieceTest#testOnEmptyBoardIsValidMove()
-     */
     @Override
     @Test
     public void testOnEmptyBoardIsValidMove() {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, this.testStartPosition);
 
-        for (Location endPosition : ValidMovements.getListOfDiagonalLocationsFromD5()) {
-            System.out.println(endPosition);
+        ValidMovements.getListOfDiagonalLocationsFromD5().forEach(endPosition -> {
             assertTrue(bishop.isValidMove(board, new Move(testStartPosition, endPosition)));
-
-        }
+        });
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.amc.game.chess.ChessPieceTest#testOnEmptyBoardIsNotValidMove()
-     */
     @Override
     @Test
     public void testOnEmptyBoardIsNotValidMove() throws Exception {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
 
         board.putPieceOnBoardAt(bishop, new Location("F8"));
-        boolean isValid = bishop.isValidMove(this.board, new Move("D4-G7"));
-        isValid = isValid & bishop.isValidMove(this.board, new Move("D4-D6"));
-        isValid = isValid & bishop.isValidMove(this.board, new Move("D4-A3"));
-        isValid = isValid & bishop.isValidMove(this.board, new Move("D4-A8"));
-        // A non move
-        isValid = isValid & bishop.isValidMove(this.board, new Move("D4-D4"));
-        assertFalse(isValid);
+        String[] invalidMoves = {
+        		"D4-G7",
+        		"D4-D6",
+        		"D4-A3",
+        		"D4-A8", 
+        		"D4-D4" 
+        };
+        assertNotValidMove(bishop, invalidMoves);
+    }
+    
+    private void assertNotValidMove(ChessPiece piece, String[] moves) {
+    	Arrays.asList(moves).forEach(move -> {
+    		assertFalse("Shouldn't be a valid move: " + move, piece.isValidMove(board, new Move(move)));
+    	});
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.amc.game.chess.ChessPieceTest#testOnBoardIsValidCapture()
-     */
     @Override
     @Test
     public void testOnBoardIsValidCapture() throws ParseException {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, this.testStartPosition);
 
-        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("A8"));
-        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("G8"));
-        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("A2"));
-        board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.WHITE), new Location("H1"));
+        String[] bishopLocations = {
+        		"A8",
+        		"G8",
+        		"A2",
+        		"H1"
+        };
+        
+        putBishopOnBoard(Colour.WHITE, bishopLocations);
 
-        for (Location endPosition : ValidMovements.getListOfDiagonalLocationsFromD5()) {
-            System.out.println(endPosition);
+        ValidMovements.getListOfDiagonalLocationsFromD5().forEach( endPosition -> {
             assertTrue(bishop.isValidMove(board, new Move(testStartPosition, endPosition)));
-        }
-
+        });
+    }
+    
+    private void putBishopOnBoard(Colour colour, String[] locations) {
+    	Arrays.asList(locations).forEach(location -> {
+    		placeOnBoard(BishopPiece.getBishopPiece(colour), location);
+    	});
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.amc.game.chess.ChessPieceTest#testOnBoardInvalidCapture()
-     */
     @Override
     @Test
     public void testOnBoardInvalidCapture() {
         BishopPiece bishop = BishopPiece.getBishopPiece(Colour.BLACK);
         board.putPieceOnBoardAt(bishop, this.testStartPosition);
 
-        for (Location endPosition : ValidMovements.getListOfDiagonalLocationsFromD5()) {
+        ValidMovements.getListOfDiagonalLocationsFromD5().forEach(endPosition -> {
             board.putPieceOnBoardAt(BishopPiece.getBishopPiece(Colour.BLACK), endPosition);
             assertFalse(bishop.isValidMove(board, new Move(testStartPosition, endPosition)));
-        }
+        });
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.amc.game.chess.ChessPieceTest#testOnBoardIsNotValidMove()
-     */
+
     @Override
     @Test
     public void testOnBoardIsNotValidMove() throws ParseException {

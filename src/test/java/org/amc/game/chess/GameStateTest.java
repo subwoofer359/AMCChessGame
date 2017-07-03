@@ -1,8 +1,8 @@
 package org.amc.game.chess;
 
+import static org.amc.game.chess.AbstractChessGame.GameState.*;
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.view.ChessBoardView;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class GameStateTest {
 
     @Test
     public void runningStateTest() {
-        assertEquals(GameState.RUNNING, chessGame.getGameState());
+        assertEquals(RUNNING, chessGame.getGameState());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class GameStateTest {
         view.displayTheBoard();
         chessGame.changePlayer();
         chessGame.move(blackPlayer, new Move("E6-E8"));
-        assertEquals(GameState.WHITE_IN_CHECK, chessGame.getGameState());
+        assertEquals(WHITE_IN_CHECK, chessGame.getGameState());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.move(whitePlayer, new Move("E1-E2"));
-        assertEquals(GameState.BLACK_IN_CHECK, chessGame.getGameState());
+        assertEquals(BLACK_IN_CHECK, chessGame.getGameState());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.move(whitePlayer, new Move("E1-E2"));
-        assertEquals(GameState.BLACK_CHECKMATE, chessGame.getGameState());
+        assertEquals(BLACK_CHECKMATE, chessGame.getGameState());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class GameStateTest {
         view.displayTheBoard();
         chessGame.changePlayer();
         chessGame.move(blackPlayer, new Move("E8-E7"));
-        assertEquals(GameState.WHITE_CHECKMATE, chessGame.getGameState());
+        assertEquals(WHITE_CHECKMATE, chessGame.getGameState());
     }
 
     @Test
@@ -78,10 +78,10 @@ public class GameStateTest {
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.move(whitePlayer, new Move("E1-E2"));
-        assertEquals(GameState.BLACK_IN_CHECK, chessGame.getGameState());
+        assertEquals(BLACK_IN_CHECK, chessGame.getGameState());
         chessGame.changePlayer();
         chessGame.move(blackPlayer, new Move("E8-F7"));
-        assertEquals(GameState.RUNNING, chessGame.getGameState());
+        assertEquals(RUNNING, chessGame.getGameState());
     }
 
     @Test
@@ -92,24 +92,28 @@ public class GameStateTest {
         view.displayTheBoard();
         chessGame.changePlayer();
         chessGame.move(blackPlayer, new Move("E6-E8"));
-        assertEquals(GameState.WHITE_IN_CHECK, chessGame.getGameState());
+        assertEquals(WHITE_IN_CHECK, chessGame.getGameState());
         chessGame.changePlayer();
         chessGame.move(whitePlayer, new Move("E1-F2"));
-        assertEquals(GameState.RUNNING, chessGame.getGameState());
+        assertEquals(RUNNING, chessGame.getGameState());
     }
 
     @Test
     public void changeFromWhiteToBlackCheck() throws ParseException, IllegalMoveException {
-        ChessBoard board = factory.getChessBoard("Ka8:ke1:Qe8:bb1");
+        final String chessBoardStr = "Ka8:ke1:Qe8:bb1";
+        final String blackMove = "E8-E7";
+        final String whiteMove = "B1-E4";
+        
+    	ChessBoard board = factory.getChessBoard(chessBoardStr);
         chessGame.setChessBoard(board);
         ChessBoardView view = new ChessBoardView(board);
         view.displayTheBoard();
         chessGame.changePlayer();
-        chessGame.move(blackPlayer, new Move("E8-E7"));
-        assertEquals(GameState.WHITE_IN_CHECK, chessGame.getGameState());
+        chessGame.move(blackPlayer, new Move(blackMove));
+        assertEquals(WHITE_IN_CHECK, chessGame.getGameState());
         chessGame.changePlayer();
-        chessGame.move(whitePlayer, new Move("B1-E4"));
-        assertEquals(GameState.BLACK_IN_CHECK, chessGame.getGameState());
+        chessGame.move(whitePlayer, new Move(whiteMove));
+        assertEquals(BLACK_IN_CHECK, chessGame.getGameState());
     }
 
     @Test
@@ -120,7 +124,7 @@ public class GameStateTest {
         view.displayTheBoard();
         chessGame.changePlayer();
         chessGame.move(blackPlayer, new Move("E4-F5"));
-        assertEquals(GameState.STALEMATE, chessGame.getGameState());
+        assertEquals(STALEMATE, chessGame.getGameState());
     }
 
 }

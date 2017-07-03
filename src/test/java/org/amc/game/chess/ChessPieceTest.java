@@ -1,7 +1,7 @@
 package org.amc.game.chess;
 
 public abstract class ChessPieceTest {
-    
+	private ChessBoard board;
     /**
      * Simple valid move on an empty chess board
      */
@@ -31,4 +31,12 @@ public abstract class ChessPieceTest {
      * Test if piece can slide
      */
     public abstract void testCanSlide() throws Exception;
+    
+    public void setChessBoard(ChessBoard board) {
+    	this.board = board;
+    }
+    
+    void placeOnBoard(ChessPiece piece , String location) {
+    	board.putPieceOnBoardAt(piece, new Location(location));
+    }
 }
