@@ -25,13 +25,13 @@ public class UnmodifibleChessBoardTest {
 	@Test
 	public void testMove() {
 		board.move(new Move("A2-A3"));
-		ChessBoardUtilities.compareBoards(board, chessBoard);
+		ChessBoardUtil.compareBoards(board, chessBoard);
 	}
 	
 	@Test
 	public void testPutPieceOnBoardAt() {
 		board.put(PawnPiece.getPiece(Colour.BLACK),  new Location("A4"));
-		ChessBoardUtilities.compareBoards(board, chessBoard);
+		ChessBoardUtil.compareBoards(board, chessBoard);
 	}
 	
 	@Test

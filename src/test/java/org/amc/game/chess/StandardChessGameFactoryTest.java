@@ -19,7 +19,7 @@ public class StandardChessGameFactoryTest {
     public void testGetChessGameBoardPlayerPlayer() {
         ChessGame game = factory.getChessGame(chessGameFixture.getBoard(),
                         chessGameFixture.getWhitePlayer(), chessGameFixture.getBlackPlayer());
-        ChessBoardUtilities.compareBoards(chessGameFixture.getBoard(), game.getChessBoard());
+        ChessBoardUtil.compareBoards(chessGameFixture.getBoard(), game.getChessBoard());
         assertEquals(chessGameFixture.getWhitePlayer(), game.getWhitePlayer());
         assertEquals(chessGameFixture.getBlackPlayer(), game.getBlackPlayer());
         assertEquals(3, game.getChessMoveRules().size());

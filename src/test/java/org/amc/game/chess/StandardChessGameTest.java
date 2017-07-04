@@ -47,7 +47,7 @@ public class StandardChessGameTest {
 		assertEquals(fixture.getWhitePlayer(), game.getWhitePlayer());
 		assertNotNull(game.getChessBoard());
 		assertFalse(game.getChessBoard() == fixture.getBoard());
-		ChessBoardUtilities.compareBoards(fixture.getBoard(), game.getChessBoard());
+		ChessBoardUtil.compareBoards(fixture.getBoard(), game.getChessBoard());
 	}
 	
 	private void testForChessRules(ChessGame game) {

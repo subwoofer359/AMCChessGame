@@ -4,7 +4,7 @@ import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import static org.junit.Assert.*;
 
-import org.amc.game.chess.ChessBoardUtilities;
+import org.amc.game.chess.ChessBoardUtil;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.ComparePlayers;
 
@@ -41,7 +41,7 @@ public class TwoViewServerChessGameConstructorTest {
         assertEquals(0, scgGame.getNoOfObservers());
         assertNull(scgGame.getChessGameFactory());
 
-        ChessBoardUtilities.compareBoards(fixture.getChessGame().getChessBoard(), scgGame
+        ChessBoardUtil.compareBoards(fixture.getChessGame().getChessBoard(), scgGame
                         .getChessGame().getChessBoard());
     }
 

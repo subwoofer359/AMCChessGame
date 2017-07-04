@@ -22,13 +22,13 @@ public class CastlingTest {
     private ChessGameFixture chessGameFixture;
     private ChessGame chessGame;
     
-    private ChessBoardUtilities cbUtils;
+    private ChessBoardUtil cbUtils;
 
     @Before
     public void setUp() throws Exception {
         chessGameFixture = new ChessGameFixture();
         chessGame = chessGameFixture.getChessGame();
-        cbUtils = new ChessBoardUtilities(chessGame.getChessBoard());
+        cbUtils = new ChessBoardUtil(chessGame.getChessBoard());
 
         gameRule = CastlingRule.getInstance();
         whiteKing = KingPiece.getPiece(Colour.WHITE);
@@ -38,131 +38,131 @@ public class CastlingTest {
         whiteKingStartPosition = WHITE_KING.getLocation().asString();
         whiteLeftRookStartPosition = WHITE_ROOK_LEFT.getLocation().asString();
         whiteRightRookStartPosition = WHITE_ROOK_RIGHT.getLocation().asString();
-        cbUtils.addChessPieceToBoard(whiteKing, whiteKingStartPosition);
-        cbUtils.addChessPieceToBoard(whiteRightRook, whiteRightRookStartPosition);
-        cbUtils.addChessPieceToBoard(whiteLeftRook, whiteLeftRookStartPosition);
-        cbUtils.addChessPieceToBoard(blackKing, BLACK_KING.getLocation().asString());
+        cbUtils.add(whiteKing, whiteKingStartPosition);
+        cbUtils.add(whiteRightRook, whiteRightRookStartPosition);
+        cbUtils.add(whiteLeftRook, whiteLeftRookStartPosition);
+        cbUtils.add(blackKing, BLACK_KING.getLocation().asString());
 
     }
 
     @Test
     public void testLeftSideCastling() {
-        assertTrue(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        assertTrue(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLeftLocation)));
     }
 
     @Test
     public void testRightSideCastling() {
-        assertTrue(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        assertTrue(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testKingMovedCastlingNotAllowed() {
-        cbUtils.addChessPieceToBoard(whiteKing.moved(), whiteKingStartPosition);
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(whiteKing.moved(), whiteKingStartPosition);
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testRightRookMovedCastlingNotAllowed() {
-        cbUtils.addChessPieceToBoard(whiteKing.moved(), whiteKingStartPosition);
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(whiteKing.moved(), whiteKingStartPosition);
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testLeftRookMovedCastlingNotAllowed() {
-        cbUtils.addChessPieceToBoard(whiteKing.moved(), whiteKingStartPosition);
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(whiteKing.moved(), whiteKingStartPosition);
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLeftLocation)));
     }
 
     @Test
     public void testKingHasMoveOneSquare() {
         String castlingKingLocation = "F1";
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLocation)));
     }
 
     @Test
     public void testKingHasTwoSquareUpAndAcrossTheBoard() {
         String castlingKingLocation = "G3";
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLocation)));
     }
 
     @Test
     public void testNotLeftRook() {
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE),
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE),
                         whiteLeftRookStartPosition);
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLeftLocation)));
     }
 
     @Test
     public void testNotRightRook() {
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE),
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE),
                         whiteRightRookStartPosition);
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testSquareBetweenKingAndRightRookNotEmpty() {
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE), "F1");
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE), "F1");
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingRightLocation)));
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE), castlingKingRightLocation);
-        cbUtils.removePiece("F1");
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE), castlingKingRightLocation);
+        cbUtils.remove("F1");
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingRightLocation)));
     }
 
     @Test
     public void testSquareBetweenKingAndLeftRookNotEmpty() {
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE), "B1");
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE), "B1");
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLeftLocation)));
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE), castlingKingLeftLocation);
-        cbUtils.removePiece("B1");
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE), castlingKingLeftLocation);
+        cbUtils.remove("B1");
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLeftLocation)));
-        cbUtils.removePiece(castlingKingLeftLocation);
-        cbUtils.addChessPieceToBoard(BishopPiece.getPiece(Colour.WHITE), "D1");
-        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.createMove(whiteKingStartPosition,
+        cbUtils.remove(castlingKingLeftLocation);
+        cbUtils.add(BishopPiece.getPiece(Colour.WHITE), "D1");
+        assertFalse(gameRule.isRuleApplicable(chessGame, cbUtils.newMove(whiteKingStartPosition,
                         castlingKingLeftLocation)));
     }
 
     @Test
     public void testRightRookMovesToCastlePosition() throws IllegalMoveException {
-        Move whiteKingCastleMove = cbUtils.createMove(whiteKingStartPosition, castlingKingRightLocation);
+        Move whiteKingCastleMove = cbUtils.newMove(whiteKingStartPosition, castlingKingRightLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
-        ChessPiece piece = cbUtils.getPieceOnBoard("F1");
+        ChessPiece piece = cbUtils.getPiece("F1");
         assertEquals(piece, whiteRightRook.moved());
     }
 
     @Test
     public void testLeftRookMovesToCastlePosition() throws IllegalMoveException {
-        Move whiteKingCastleMove = cbUtils.createMove(whiteKingStartPosition, castlingKingLeftLocation);
+        Move whiteKingCastleMove = cbUtils.newMove(whiteKingStartPosition, castlingKingLeftLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
-        ChessPiece piece = cbUtils.getPieceOnBoard("D1");
+        ChessPiece piece = cbUtils.getPiece("D1");
         assertEquals(piece, whiteLeftRook.moved());
     }
 
     @Test
     public void testKingMovesRighttoCastlePosition() throws IllegalMoveException {
-        Move whiteKingCastleMove = cbUtils.createMove(whiteKingStartPosition, castlingKingRightLocation);
+        Move whiteKingCastleMove = cbUtils.newMove(whiteKingStartPosition, castlingKingRightLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
-        ChessPiece piece = cbUtils.getPieceOnBoard(castlingKingRightLocation);
+        ChessPiece piece = cbUtils.getPiece(castlingKingRightLocation);
         assertEquals(piece, whiteKing.moved());
     }
 
     @Test
     public void testKingMovesLefttoCastlePosition() throws IllegalMoveException {
-        Move whiteKingCastleMove = cbUtils.createMove(whiteKingStartPosition, castlingKingLeftLocation);
+        Move whiteKingCastleMove = cbUtils.newMove(whiteKingStartPosition, castlingKingLeftLocation);
         chessGame.move(chessGameFixture.getWhitePlayer(), whiteKingCastleMove);
-        ChessPiece piece = cbUtils.getPieceOnBoard(castlingKingLeftLocation);
+        ChessPiece piece = cbUtils.getPiece(castlingKingLeftLocation);
         assertEquals(piece, whiteKing.moved());
     }
 }

@@ -3,7 +3,7 @@ package org.amc.dao;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessBoardUtilities;
+import org.amc.game.chess.ChessBoardUtil;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Location;
@@ -24,7 +24,7 @@ public class ChessBoardExternalizerTest {
 		board = ChessBoardExternalizer.getChessBoard(BOARD_SETUP);
 		ChessBoard secondBoard = new ChessBoard();
 		secondBoard.initialise();
-		ChessBoardUtilities.compareBoards(board, secondBoard);
+		ChessBoardUtil.compareBoards(board, secondBoard);
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class ChessBoardExternalizerTest {
 		String boardStr = ChessBoardExternalizer.getChessBoardString(board);
 		ChessBoard secondChessBoard = ChessBoardExternalizer
 				.getChessBoard(boardStr);
-		ChessBoardUtilities.compareBoards(board, secondChessBoard);
+		ChessBoardUtil.compareBoards(board, secondChessBoard);
 	}
 
 	@Test

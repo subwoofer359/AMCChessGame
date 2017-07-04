@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.amc.DAOException;
 import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessBoardUtilities;
+import org.amc.game.chess.ChessBoardUtil;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Move;
@@ -67,7 +67,7 @@ public class ChessGameDAOIT {
         newBoard.initialise();
         
         new ChessBoardView(game.getChessBoard());
-        ChessBoardUtilities.compareBoards(newBoard, game.getChessBoard());
+        ChessBoardUtil.compareBoards(newBoard, game.getChessBoard());
         
         for(String move : MOVES) {
             Move gameMove = new Move(move);
@@ -79,7 +79,7 @@ public class ChessGameDAOIT {
   
         
         game = chessGameDAO.getEntity(id);
-        ChessBoardUtilities.compareBoards(newBoard, game.getChessBoard());
+        ChessBoardUtil.compareBoards(newBoard, game.getChessBoard());
     }
     
     /**

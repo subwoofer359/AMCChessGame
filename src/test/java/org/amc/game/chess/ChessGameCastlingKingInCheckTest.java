@@ -22,7 +22,7 @@ public class ChessGameCastlingKingInCheckTest {
 	private ChessGame chessGame;
 	private ChessPiece kingPiece;
 	private ChessPiece rookPiece;
-	private ChessBoardUtilities cbUtils;
+	private ChessBoardUtil cbUtils;
 
 	public ChessGameCastlingKingInCheckTest(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
 		this.currentPlayer = currentPlayer;
@@ -33,16 +33,16 @@ public class ChessGameCastlingKingInCheckTest {
 	public void setUp() throws Exception {
 		ChessBoard board = new ChessBoard();
 		new ChessBoardView(board);
-		cbUtils = new ChessBoardUtilities(board);
+		cbUtils = new ChessBoardUtil(board);
 
 		chessGame = new ChessGame(board, whitePlayer, blackPlayer);
 		ChessPiece attackingPiece = BishopPiece.getPiece(Colour.BLACK);
-		cbUtils.addChessPieceToBoard(attackingPiece, "E3");
+		cbUtils.add(attackingPiece, "E3");
 		kingPiece = KingPiece.getPiece(Colour.WHITE);
 		rookPiece = RookPiece.getPiece(Colour.WHITE);
-		cbUtils.addChessPieceToBoard(kingPiece, WHITE_KING.getLocationStr());
-		cbUtils.addChessPieceToBoard(rookPiece, WHITE_ROOK_RIGHT.getLocationStr());
-		cbUtils.addChessPieceToBoard(KingPiece.getPiece(Colour.BLACK), BLACK_KING.getLocationStr());
+		cbUtils.add(kingPiece, WHITE_KING.getLocationStr());
+		cbUtils.add(rookPiece, WHITE_ROOK_RIGHT.getLocationStr());
+		cbUtils.add(KingPiece.getPiece(Colour.BLACK), BLACK_KING.getLocationStr());
 	}
 
 	@Parameters
@@ -56,8 +56,8 @@ public class ChessGameCastlingKingInCheckTest {
 	@Test(expected = IllegalMoveException.class)
 	public void testInvalidMoveExceptionThrown() throws IllegalMoveException {
 		chessGame.move(currentPlayer, defendingChessPieceMove);
-		assertEquals(kingPiece, cbUtils.getPieceOnBoard(WHITE_KING.getLocationStr()));
-		assertEquals(rookPiece, cbUtils.getPieceOnBoard(WHITE_ROOK_RIGHT.getLocationStr()));
+		assertEquals(kingPiece, cbUtils.getPiece(WHITE_KING.getLocationStr()));
+		assertEquals(rookPiece, cbUtils.getPiece(WHITE_ROOK_RIGHT.getLocationStr()));
 	}
 
 	@Test
@@ -66,8 +66,8 @@ public class ChessGameCastlingKingInCheckTest {
 			chessGame.move(currentPlayer, defendingChessPieceMove);
 			fail("call to move should thrown an IllegalMoveException");
 		} catch (IllegalMoveException ime) {
-			assertEquals(kingPiece, cbUtils.getPieceOnBoard(WHITE_KING.getLocationStr()));
-			assertEquals(rookPiece, cbUtils.getPieceOnBoard(WHITE_ROOK_RIGHT.getLocationStr()));
+			assertEquals(kingPiece, cbUtils.getPiece(WHITE_KING.getLocationStr()));
+			assertEquals(rookPiece, cbUtils.getPiece(WHITE_ROOK_RIGHT.getLocationStr()));
 		}
 
 	}

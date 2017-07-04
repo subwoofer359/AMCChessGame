@@ -277,7 +277,7 @@ public class StompControllerIT {
         }
         AbstractServerChessGame savedGame = serverChessGameDAO.getServerChessGame(gameUUID);
 
-        ChessBoardUtilities.compareBoards(scg.getChessGame().getChessBoard(), savedGame
+        ChessBoardUtil.compareBoards(scg.getChessGame().getChessBoard(), savedGame
                         .getChessGame().getChessBoard());
         assertNotNull(savedGame);
 

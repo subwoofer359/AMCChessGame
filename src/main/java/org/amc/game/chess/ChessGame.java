@@ -37,7 +37,7 @@ public class ChessGame extends AbstractChessGame {
         isPlayersTurn(player);
         isNeedToDoAPromotion();
         ChessPiece piece = getChessBoard().get(move.getStart());
-        checkChessPieceExistsOnSquare(piece, move);
+        //checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, getChessBoard(), piece, move);
         if (isOpponentsKingInCheck(player, getChessBoard())) {

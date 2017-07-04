@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
-import org.amc.game.chess.ChessBoardUtilities;
+import org.amc.game.chess.ChessBoardUtil;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
@@ -30,7 +30,7 @@ public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
     private ServerChessGame serverChessGame;
     private ChessGamePlayer whitePlayer;
     private static ChessBoardFactory boardFactory;
-    private ChessBoardUtilities cbUtils;
+    private ChessBoardUtil cbUtils;
 
     @BeforeClass
     public static void setUpFactory() {
@@ -44,7 +44,7 @@ public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
         ChessBoard board = boardFactory
                         .getChessBoard("ra8:nc8:rc6:pd3:pb2:pe2:pf2:ph2:nb1:ke1:Pf7:Pg6:Ph6:Ka5:Pc3");
         new ChessBoardView(board);
-        cbUtils = new ChessBoardUtilities(board); 
+        cbUtils = new ChessBoardUtil(board); 
         
         ChessGame chessGame = new ChessGame(board, whitePlayer, blackPlayer);
         chessGame.setChessBoard(board);
@@ -53,7 +53,7 @@ public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
 
     @Test
     public void test() throws IllegalMoveException {
-        serverChessGame.move(whitePlayer, cbUtils.createMove("C6", "B6"));
+        serverChessGame.move(whitePlayer, cbUtils.newMove("C6", "B6"));
         assertTrue(serverChessGame.getCurrentStatus() == ServerChessGame.ServerGameStatus.FINISHED);
     }
 

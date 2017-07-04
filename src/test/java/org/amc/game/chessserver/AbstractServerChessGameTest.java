@@ -5,7 +5,7 @@ import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 import static org.junit.Assert.*;
 
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessBoardUtilities;
+import org.amc.game.chess.ChessBoardUtil;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
@@ -92,7 +92,7 @@ public class AbstractServerChessGameTest {
 		assertEquals(NO_OBSERVERS, scgGame.getNoOfObservers());
 		assertNull("Should be no ChessGameFactory", scgGame.getChessGameFactory());
 
-		ChessBoardUtilities.compareBoards(fixture.getChessGame().getChessBoard(),
+		ChessBoardUtil.compareBoards(fixture.getChessGame().getChessBoard(),
 				scgGame.getChessGame().getChessBoard());
 	}
 
