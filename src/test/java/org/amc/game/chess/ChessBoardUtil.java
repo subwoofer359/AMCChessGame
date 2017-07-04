@@ -16,6 +16,9 @@ public class ChessBoardUtil {
     public Move newMove(String start, String end) {
         return new Move(start + Move.MOVE_SEPARATOR + end);
     }
+    public Move newMove(StartingSquare start, String end) {
+        return new Move(start.toString() + Move.MOVE_SEPARATOR + end);
+    }
     
     public void add(ChessPiece piece, String location) {
         board.put(piece, new Location(location));

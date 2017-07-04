@@ -27,9 +27,9 @@ public class ChessGameTest {
         cbUtils = new ChessBoardUtil(chessGameFixture.getBoard());
         
         cbUtils.add(KingPiece.getPiece(Colour.WHITE),
-                        WHITE_KING.getLocationStr());
+                        WHITE_KING.toString());
         cbUtils.add(KingPiece.getPiece(Colour.BLACK),
-                        BLACK_KING.getLocationStr());
+                        BLACK_KING.toString());
         
     }
 
@@ -67,7 +67,7 @@ public class ChessGameTest {
     public void doesGameRuleApply() {
         RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         final String rookStartPosition = "H1";
-        Move move = cbUtils.newMove(WHITE_KING.getLocationStr(), "G1");
+        Move move = cbUtils.newMove(WHITE_KING.toString(), "G1");
         cbUtils.add(rook, rookStartPosition);
         assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
@@ -76,7 +76,7 @@ public class ChessGameTest {
     public void doesNotGameRuleApply() {
         RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         final String rookStartPosition = "H1";
-        Move move = cbUtils.newMove(WHITE_KING.getLocationStr(), "F1");
+        Move move = cbUtils.newMove(WHITE_KING.toString(), "F1");
         cbUtils.add(rook, rookStartPosition);
         assertFalse(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
@@ -85,7 +85,7 @@ public class ChessGameTest {
     public void gameRuleAppliedTest() throws IllegalMoveException {
         RookPiece rook = RookPiece.getPiece(Colour.WHITE);
         String rookStartPosition = "H1";
-        Move move = cbUtils.newMove(WHITE_KING.getLocationStr(), "G1");
+        Move move = cbUtils.newMove(WHITE_KING.toString(), "G1");
         cbUtils.add(rook, rookStartPosition);
         assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
     }
@@ -156,7 +156,7 @@ public class ChessGameTest {
      */
     @Test(expected = IllegalMoveException.class)
     public void notPlayersTurn() throws IllegalMoveException {
-        Move move = cbUtils.newMove(BLACK_KING.getLocationStr(), "E7");
+        Move move = cbUtils.newMove(BLACK_KING, "E7");
         chessGameFixture.move(blackPlayer, move);
         assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
     }

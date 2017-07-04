@@ -40,7 +40,8 @@ public enum StartingSquare {
     /**
      * @return {@link Location} as a {@link String}
      */
-    public String getLocationStr() {
+    @Override
+    public String toString() {
     	return location.asString();
-    }
+    }    
 }
