@@ -1,7 +1,5 @@
 package org.amc.game.chess;
 
-import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -37,7 +35,6 @@ public class ChessGame extends AbstractChessGame {
         isPlayersTurn(player);
         isNeedToDoAPromotion();
         ChessPiece piece = getChessBoard().get(move.getStart());
-        //checkChessPieceExistsOnSquare(piece, move);
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, getChessBoard(), piece, move);
         if (isOpponentsKingInCheck(player, getChessBoard())) {
@@ -63,22 +60,11 @@ public class ChessGame extends AbstractChessGame {
         }
     }
 
-    private void checkChessPieceExistsOnSquare(ChessPiece piece, Move move)
-                    throws IllegalMoveException {
-        if (piece == NO_CHESSPIECE) {
-            throw new IllegalMoveException("No piece at " + move.getStart());
-        }
-    }
-
     private void checkItsthePlayersPiece(ChessGamePlayer player, ChessPiece piece)
                     throws IllegalMoveException {
-        if (notPlayersChessPiece(player, piece)) {
+        if (player.getColour() != piece.getColour()) {
             throw new IllegalMoveException("Player can only move their own pieces");
         }
-    }
-
-    private boolean notPlayersChessPiece(ChessGamePlayer player, ChessPiece piece) {
-        return player.getColour() != piece.getColour();
     }
 
     private void moveThePlayersChessPiece(ChessGamePlayer player, ChessBoard board,
