@@ -3,7 +3,6 @@ package org.amc.game.chess;
 import static org.junit.Assert.*;
 import static org.amc.game.chess.SimpleChessBoardSetupNotation.MOVE_TOKEN;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,10 +18,6 @@ public class SimpleChessBoardSetupNotationTest {
     @Before
     public void setUp() throws Exception {
         chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

@@ -12,7 +12,6 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
 import org.amc.game.chessserver.observers.ObserverFactoryChainFixture;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -41,10 +40,6 @@ public class StartPageControllerCreateGameTest {
         scgFactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         controller.setServerChessGameFactory(scgFactory);
         controller.setServerChessGameDAO(sCGDAO);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

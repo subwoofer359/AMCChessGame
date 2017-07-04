@@ -14,7 +14,6 @@ import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -50,10 +49,6 @@ public class ServerJoinControllerJoinGameTest {
             }
         });
         when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(chessGame);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

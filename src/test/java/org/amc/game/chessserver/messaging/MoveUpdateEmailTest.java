@@ -15,7 +15,6 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -73,10 +72,6 @@ public class MoveUpdateEmailTest {
         template.setChessBoardSVGFactory(cbsi);
         template.setTemplateEngine(templateEngine);
         
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

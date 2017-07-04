@@ -1,10 +1,7 @@
 package org.amc.game.chessserver.spring;
 
- 
-
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,14 +46,9 @@ public class CsrfMatcherTest {
         request.setPathInfo(requestPath);
     }
 
-    @After
-    public void tearDown() throws Exception {
-        assertEquals(passTest, matcher.matches(request));
-    }
-
     @Test
     public void test() {
-  
+    	assertEquals(passTest, matcher.matches(request));
     }
 
 }

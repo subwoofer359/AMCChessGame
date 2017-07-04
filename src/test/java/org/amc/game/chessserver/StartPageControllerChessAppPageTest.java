@@ -8,7 +8,6 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.RealChessGamePlayer;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -36,10 +35,6 @@ public class StartPageControllerChessAppPageTest {
         
         controller.setServerChessGameFactory(scgFactory);
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

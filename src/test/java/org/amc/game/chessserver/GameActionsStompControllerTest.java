@@ -15,7 +15,6 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.messaging.OfflineChessGameMessager;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -89,10 +88,6 @@ public class GameActionsStompControllerTest {
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payoadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

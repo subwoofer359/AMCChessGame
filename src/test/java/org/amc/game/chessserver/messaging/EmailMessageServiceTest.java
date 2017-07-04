@@ -7,7 +7,6 @@ import java.io.File;
 
 import org.amc.User;
 import org.amc.game.chessserver.messaging.EmailMessageService.SendMessage;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -75,10 +74,6 @@ public class EmailMessageServiceTest {
         user.setName("Adrian Mc");
     }
 
-    @After
-    public void tearDown() throws Exception {
-       
-    }
 
     @Test
     public void testFromAddress() throws Exception{

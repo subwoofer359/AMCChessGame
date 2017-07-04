@@ -4,7 +4,6 @@ package org.amc.game.chess;
 import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,10 +15,6 @@ public class UnmodifibleChessBoardTest {
 	@Before
 	public void setUp() throws Exception {
 		chessBoard = new ChessBoard();
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

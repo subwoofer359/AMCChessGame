@@ -16,14 +16,6 @@ class ChessBoardGetPieceToBePromotedTest {
     public static void setUpBeforeClass() throws Exception {
         cFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     }
-    
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @Test
     public void testFindWhitePawnForPromotion() {

@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +30,6 @@ public class InValidEmailAddrTest {
 	public void setUp() throws Exception {
 		Map<String, Object> errorMap = new HashMap<String, Object>();
 		errors = new MapBindingResult(errorMap, "userName");
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Parameters

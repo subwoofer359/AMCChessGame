@@ -32,7 +32,6 @@ import org.amc.game.chessserver.StompController;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.amc.game.chessserver.observers.JsonChessGameView;
 import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,137 +49,133 @@ import java.util.Map;
  */
 public class JsonChessBoardViewTest {
 
-    private ServerChessGame serverGame;
-    private ChessGame chessGame;
-    private static ChessBoardFactory chBoardFactory;
-    private ChessGamePlayer whitePlayer;
-    private SimpMessagingTemplate template;
-    private GsonBuilder gson;
-    
-    @SuppressWarnings("rawtypes")
-    private ArgumentCaptor<Map> headersArgument;
-    private ArgumentCaptor<String> destinationArgument;
-    ArgumentCaptor<String> messageArgument;
-    
-    private static final long GAME_UID = 1234l;
+	private ServerChessGame serverGame;
+	private ChessGame chessGame;
+	private static ChessBoardFactory chBoardFactory;
+	private ChessGamePlayer whitePlayer;
+	private SimpMessagingTemplate template;
+	private GsonBuilder gson;
 
-    @BeforeClass
-    public static void setupFactory() {
-        chBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-    }
+	@SuppressWarnings("rawtypes")
+	private ArgumentCaptor<Map> headersArgument;
+	private ArgumentCaptor<String> destinationArgument;
+	ArgumentCaptor<String> messageArgument;
 
-    @Before
-    public void setUp() throws Exception {
-        whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        ChessBoard board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
-        chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
+	private static final long GAME_UID = 1234l;
 
-        template = mock(SimpMessagingTemplate.class);
-        headersArgument = ArgumentCaptor.forClass(Map.class);
-        messageArgument = ArgumentCaptor.forClass(String.class);
-        destinationArgument = ArgumentCaptor.forClass(String.class);
-        
-        serverGame = new TwoViewServerChessGame(GAME_UID, chessGame);
-        chessGame = serverGame.getChessGame();
-        
-        gson = new GsonBuilder();
-        gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
-        gson.registerTypeHierarchyAdapter(ChessGamePlayer.class, new ChessGamePlayerDeserializer());
-        
-        new JsonChessGameView(template).setGameToObserver(serverGame);
-        
-    }
+	@BeforeClass
+	public static void setupFactory() {
+		chBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
+	}
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
+		whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
+		ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
+		ChessBoard board = chBoardFactory.getChessBoard("Ke8:Qf8:Pe7:Pf7:ke1:qd1:pe2:pd2:pg4");
+		chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
 
-    /**
-     * Moves piece on chessboard to trigger an update to JsonChessBoardView
-     * Compares both the ChessBoard configuration to the JSON representation for
-     * correctness.
-     * 
-     * @throws IllegalMoveException
-     */
-    @SuppressWarnings("unchecked")
-    @Test
-    public void test() throws IllegalMoveException {
-        serverGame.move(whitePlayer, new Move("E2-E3"));
-        
-        verify(template).convertAndSend(destinationArgument.capture(), messageArgument.capture(), headersArgument.capture());
+		template = mock(SimpMessagingTemplate.class);
+		headersArgument = ArgumentCaptor.forClass(Map.class);
+		messageArgument = ArgumentCaptor.forClass(String.class);
+		destinationArgument = ArgumentCaptor.forClass(String.class);
 
-        JsonChessGame jBoard = gson.create().fromJson(messageArgument.getValue(), JsonChessGame.class);
+		serverGame = new TwoViewServerChessGame(GAME_UID, chessGame);
+		chessGame = serverGame.getChessGame();
 
-        compareChessBoardAndJsonBoard(jBoard);
+		gson = new GsonBuilder();
+		gson.registerTypeAdapter(Player.class, new PlayerDeserializer());
+		gson.registerTypeHierarchyAdapter(ChessGamePlayer.class, new ChessGamePlayerDeserializer());
 
-        compareChessGamePlayerAndJsonPlayer(jBoard);
-        
-        checkForUpdateMessageHeader();
-        
-        verifyMessageDestination(destinationArgument.getValue());
-    }
+		new JsonChessGameView(template).setGameToObserver(serverGame);
 
-    private void compareChessBoardAndJsonBoard(JsonChessGame jBoard) {
-        for (String squareName : jBoard.getSquares().keySet()) {
-            String file = squareName.substring(0, 1);
-            String rank = squareName.substring(1, 2);
-            String expectedChessSymbol = getChessPieceSymbol(file, rank);
-            String actualChessSymbol = jBoard.getSquares().get(squareName);
+	}
 
-            assertEquals(expectedChessSymbol, actualChessSymbol);
-        }
-    }
+	/**
+	 * Moves piece on chessboard to trigger an update to JsonChessBoardView
+	 * Compares both the ChessBoard configuration to the JSON representation for
+	 * correctness.
+	 * 
+	 * @throws IllegalMoveException
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public void test() throws IllegalMoveException {
+		serverGame.move(whitePlayer, new Move("E2-E3"));
 
-    private void compareChessGamePlayerAndJsonPlayer(JsonChessGame game) {
-        assertEquals(this.chessGame.getCurrentPlayer().getName(), game.getCurrentPlayer().getName());
-        assertEquals(this.chessGame.getCurrentPlayer().getColour(), game.getCurrentPlayer()
-                        .getColour());
-    }
+		verify(template).convertAndSend(destinationArgument.capture(), messageArgument.capture(),
+				headersArgument.capture());
 
-    private String getChessPieceSymbol(String file, String rank) {
-        return String.valueOf(ChessPieceTextSymbol.getChessPieceTextSymbol(chessGame.getChessBoard()
-                        .get(getLocation(file, rank))));
-    }
+		JsonChessGame jBoard = gson.create().fromJson(messageArgument.getValue(), JsonChessGame.class);
 
-    private Location getLocation(String file, String rank) {
-        return new Location(Coordinate.valueOf(file), Integer.parseInt(rank));
-    }
+		compareChessBoardAndJsonBoard(jBoard);
 
-    private void checkForUpdateMessageHeader(){
-        assertEquals(MessageType.UPDATE,headersArgument.getValue().get(StompController.MESSAGE_HEADER_TYPE));
-    }
-    
-    private void verifyMessageDestination(String destination) {
-        assertEquals(String.format("%s/%d", JsonChessGameView.MESSAGE_DESTINATION, GAME_UID), destination);
-    }
-    
-    /**
-     * GSON Deserialiser required to deserialise Player objects
-     * 
-     * @author Adrian Mclaughlin
-     *
-     */
-    private class PlayerDeserializer implements JsonDeserializer<Player> {
+		compareChessGamePlayerAndJsonPlayer(jBoard);
 
-        @Override
-        public Player deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
-                        throws JsonParseException {
-            JsonObject object = arg0.getAsJsonObject();
-            return new HumanPlayer(object.get("name").getAsString());
-        }
-    }
-    
-    private class ChessGamePlayerDeserializer implements JsonDeserializer<ChessGamePlayer> {
+		checkForUpdateMessageHeader();
 
-        @Override
-        public ChessGamePlayer deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
-                        throws JsonParseException {
-            JsonObject object = arg0.getAsJsonObject();
-            JsonObject playerJson = object.getAsJsonObject("player");
-            Colour colour = Colour.valueOf(object.get("colour").getAsString());
-            return new RealChessGamePlayer(new HumanPlayer(playerJson.get("name").getAsString()), colour);
-        }
-    }
+		verifyMessageDestination(destinationArgument.getValue());
+	}
+
+	private void compareChessBoardAndJsonBoard(JsonChessGame jBoard) {
+		for (String squareName : jBoard.getSquares().keySet()) {
+			String file = squareName.substring(0, 1);
+			String rank = squareName.substring(1, 2);
+			String expectedChessSymbol = getChessPieceSymbol(file, rank);
+			String actualChessSymbol = jBoard.getSquares().get(squareName);
+
+			assertEquals(expectedChessSymbol, actualChessSymbol);
+		}
+	}
+
+	private void compareChessGamePlayerAndJsonPlayer(JsonChessGame game) {
+		assertEquals(this.chessGame.getCurrentPlayer().getName(), game.getCurrentPlayer().getName());
+		assertEquals(this.chessGame.getCurrentPlayer().getColour(), game.getCurrentPlayer().getColour());
+	}
+
+	private String getChessPieceSymbol(String file, String rank) {
+		return String.valueOf(
+				ChessPieceTextSymbol.getChessPieceTextSymbol(chessGame.getChessBoard().get(getLocation(file, rank))));
+	}
+
+	private Location getLocation(String file, String rank) {
+		return new Location(Coordinate.valueOf(file), Integer.parseInt(rank));
+	}
+
+	private void checkForUpdateMessageHeader() {
+		assertEquals(MessageType.UPDATE, headersArgument.getValue().get(StompController.MESSAGE_HEADER_TYPE));
+	}
+
+	private void verifyMessageDestination(String destination) {
+		assertEquals(String.format("%s/%d", JsonChessGameView.MESSAGE_DESTINATION, GAME_UID), destination);
+	}
+
+	/**
+	 * GSON Deserialiser required to deserialise Player objects
+	 * 
+	 * @author Adrian Mclaughlin
+	 *
+	 */
+	private class PlayerDeserializer implements JsonDeserializer<Player> {
+
+		@Override
+		public Player deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
+				throws JsonParseException {
+			JsonObject object = arg0.getAsJsonObject();
+			return new HumanPlayer(object.get("name").getAsString());
+		}
+	}
+
+	private class ChessGamePlayerDeserializer implements JsonDeserializer<ChessGamePlayer> {
+
+		@Override
+		public ChessGamePlayer deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2)
+				throws JsonParseException {
+			JsonObject object = arg0.getAsJsonObject();
+			JsonObject playerJson = object.getAsJsonObject("player");
+			Colour colour = Colour.valueOf(object.get("colour").getAsString());
+			return new RealChessGamePlayer(new HumanPlayer(playerJson.get("name").getAsString()), colour);
+		}
+	}
 
 }

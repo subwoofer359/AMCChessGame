@@ -1,8 +1,6 @@
 package org.amc.game.chessserver.spring;
 
 import static org.junit.Assert.*;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -20,10 +18,6 @@ class EmailValidatorTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         validator = new EmailValidator();
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

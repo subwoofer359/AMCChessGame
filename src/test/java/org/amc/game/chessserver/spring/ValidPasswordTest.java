@@ -2,7 +2,6 @@ package org.amc.game.chessserver.spring;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,10 +38,6 @@ public class ValidPasswordTest {
     public void setUp() throws Exception {
         Map<String, Object> errorMap = new HashMap<String, Object>();
         errors = new MapBindingResult(errorMap, "fullName");
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

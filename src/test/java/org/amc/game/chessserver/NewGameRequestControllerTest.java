@@ -13,7 +13,6 @@ import org.amc.dao.DAOInterface;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGameFactory.GameType;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ExtendedModelMap;
@@ -60,10 +59,6 @@ public class NewGameRequestControllerTest {
 		opponentUser.setUserName(opponent.getUserName());
 		opponentUser.setName(opponent.getName());
 		opponentUser.setPlayer(opponent);
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

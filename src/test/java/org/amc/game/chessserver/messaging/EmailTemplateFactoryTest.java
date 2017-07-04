@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.messaging.EmailTemplateFactory.FactoryInstantinationException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -29,10 +28,6 @@ public class EmailTemplateFactoryTest {
         
         stEngine = mock(SpringTemplateEngine.class);
         factory.setTemplateEngine(stEngine);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

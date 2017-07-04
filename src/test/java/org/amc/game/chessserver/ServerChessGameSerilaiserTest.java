@@ -8,7 +8,6 @@ import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,10 +41,6 @@ public class ServerChessGameSerilaiserTest {
 
 		chessGameInfo = new ChessGameInfo(gameUID, ServerGameStatus.IN_PROGRESS,
 				whitePlayer.getUserName(), blackPlayer.getUserName());
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

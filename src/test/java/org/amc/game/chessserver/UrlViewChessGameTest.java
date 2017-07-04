@@ -8,7 +8,6 @@ import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -40,10 +39,6 @@ public class UrlViewChessGameTest {
         
         when(scgGame.getPlayer()).thenReturn(cgFixture.getWhitePlayer());
         when(scgGame.getOpponent()).thenReturn(cgFixture.getBlackPlayer());        
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

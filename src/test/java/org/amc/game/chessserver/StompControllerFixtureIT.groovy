@@ -83,8 +83,6 @@ public class StompControllerFixtureIT {
         this.clientOutboundChannel.addInterceptor(this.clientOutboundChannelInterceptor);
     }
 
-
-
     @After
     public void tearDown() throws Exception {
         this.fixture.tearDown();

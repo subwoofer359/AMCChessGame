@@ -77,11 +77,7 @@ class ServerChessGameDAOAddObserversTest {
             .thenReturn(query);
             
     }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
+	
     @Test
     public void testAddObservers() {
 

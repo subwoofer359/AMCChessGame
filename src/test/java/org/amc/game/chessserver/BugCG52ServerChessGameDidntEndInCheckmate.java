@@ -14,7 +14,6 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.view.ChessBoardView;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,10 +41,6 @@ public class BugCG52ServerChessGameDidntEndInCheckmate {
 		ChessGame chessGame = new ChessGame(board, whitePlayer, blackPlayer);
 		chessGame.setChessBoard(board);
 		serverChessGame = new TwoViewServerChessGame(0l, chessGame);
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

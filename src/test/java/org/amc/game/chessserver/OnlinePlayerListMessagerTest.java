@@ -48,10 +48,6 @@ public class OnlinePlayerListMessagerTest {
         when(registry.getAllPrincipals()).thenReturn(listOfUsers);    
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void test() {
         messager.sendPlayerList();

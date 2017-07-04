@@ -3,7 +3,6 @@ package org.amc.game.chessserver;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,10 +20,6 @@ public class LogOutControllerTest {
         controller = new LogOutController();
         request = mock(HttpServletRequest.class);
         session = mock(HttpSession.class);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

@@ -2,7 +2,6 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockFilterChain;
@@ -27,10 +26,6 @@ public class CacheFilterTest {
         MockServletContext context = new MockServletContext();
         fConfig = new MockFilterConfig(context);
         chain = new MockFilterChain();
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

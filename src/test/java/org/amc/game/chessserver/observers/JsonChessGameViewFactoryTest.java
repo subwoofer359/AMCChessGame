@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import org.amc.game.GameObserver;
 import org.amc.game.chessserver.ServerChessGame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -26,10 +25,6 @@ public class JsonChessGameViewFactoryTest {
                 return new JsonChessGameView(template);
             }
         };
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

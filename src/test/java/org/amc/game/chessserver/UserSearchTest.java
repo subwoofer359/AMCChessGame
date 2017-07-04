@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 
 import org.amc.dao.UserDetails;
 import org.amc.dao.UserSearchDAO;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,10 +34,6 @@ public class UserSearchTest {
         UserDetails user = new UserDetails(USERNAME, FULLNAME);
         
         when(userDAO.findUsers(eq(searchTerm))).thenReturn(Arrays.asList(user));
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

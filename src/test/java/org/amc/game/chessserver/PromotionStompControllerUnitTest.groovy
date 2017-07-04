@@ -16,7 +16,6 @@ import org.amc.game.chess.Move
 import org.amc.game.chess.PawnPromotionRule;
 import org.amc.game.chess.SimpleChessBoardSetupNotation;
 import org.amc.game.chess.StandardChessGameFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -49,10 +48,6 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
         def chessGame = factory.getChessGame(board, whitePlayer, blackPlayer);
         scg.setChessGame(chessGame);
         scg.move(whitePlayer, new Move("a7-a8")); 
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

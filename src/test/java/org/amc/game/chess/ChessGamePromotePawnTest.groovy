@@ -37,10 +37,6 @@ class ChessGamePromotePawnTest {
         chessGame.move(playerWhite, move);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void test() {
         assert chessGame.getGameState() == GameState.PAWN_PROMOTION;

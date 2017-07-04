@@ -18,7 +18,6 @@ import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -111,10 +110,6 @@ public class OfflineChessGameMessagerTest {
         serverChessGame.attachObserver(offlineGMessager);
 
         move = new Move("A2-A3");
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

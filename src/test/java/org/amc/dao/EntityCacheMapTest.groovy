@@ -38,10 +38,6 @@ class EntityCacheMapTest {
         emc.setEntityManagerFactory(factory);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testGetEntityManagerNoEntityInCache() {
         when(factory.createEntityManager()).thenReturn(em);

@@ -38,10 +38,6 @@ class EntityCacheMapGetThreadTest {
         emc.setEntityManagerFactory(entityManagerfactory);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     void testGetEntityManager() {
         def size = 50;
