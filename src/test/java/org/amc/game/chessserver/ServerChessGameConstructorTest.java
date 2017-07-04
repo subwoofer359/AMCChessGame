@@ -15,29 +15,34 @@ import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class ServerChessGameConstructorTest {
-    private ChessGameFactory chessGameFactory;
-    private ChessGameFixture fixture;
-    private ChessGame mockChessGame;
-    
-    private static final long UID = 120l;
+	private static final long UID = 120l;
     private static final long INVALID_UID = 233l;
-
+    
+	private ChessGameFactory chessGameFactory;
+    private ChessGame chessGame;
+    
+    @Mock
+    private ChessGame mockCGame;
+    
     @Before
     public void setUp() throws Exception {
+    	MockitoAnnotations.initMocks(this);
+    	
         chessGameFactory = new ChessGameFactory() {
             @Override
-            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
-                            ChessGamePlayer playerBlack) {
+            public ChessGame getChessGame(ChessBoard board, 
+            		ChessGamePlayer playerWhite,
+                    ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
         };
         
-        fixture = new ChessGameFixture();
-        fixture.initialise();
-        mockChessGame = mock(ChessGame.class);
-        
+        chessGame = new ChessGameFixture().getChessGame();
+        chessGame.getChessBoard().initialise();  
     }
         
     private ServerChessGame createServerChessGame(long UID, Player player) {
@@ -85,57 +90,56 @@ public class ServerChessGameConstructorTest {
     @Test
     public void testMove() throws IllegalMoveException {
         
-        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
-        scgGame.setChessGame(mockChessGame);
-        when(mockChessGame.getGameState()).thenReturn(GameState.RUNNING);
+        ServerChessGame scgGame = createServerChessGame(UID, chessGame);
+        scgGame.setChessGame(mockCGame);
+        when(mockCGame.getGameState()).thenReturn(GameState.RUNNING);
         
         Move move = new Move("A2-A3");
-        scgGame.move(fixture.getCurrentPlayer(), move);
-        verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
-        verify(mockChessGame, times(1)).changePlayer();
-        verify(mockChessGame, times(2)).getGameState();
+        scgGame.move(chessGame.getCurrentPlayer(), move);
+        verify(mockCGame, times(1)).move(eq(chessGame.getWhitePlayer()), eq(move));
+        verify(mockCGame, times(1)).changePlayer();
+        verify(mockCGame, times(2)).getGameState();
     }
     
     @Test
     public void checkStatusInCheckTest() throws IllegalMoveException {
         
-        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
-        scgGame.setChessGame(mockChessGame);
-        when(mockChessGame.getGameState()).thenReturn(GameState.BLACK_IN_CHECK);
+        ServerChessGame scgGame = createServerChessGame(UID, chessGame);
+        scgGame.setChessGame(mockCGame);
+        when(mockCGame.getGameState()).thenReturn(GameState.BLACK_IN_CHECK);
         
         Move move = new Move("A2-A3");
-        scgGame.move(fixture.getCurrentPlayer(), move);
-        verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
-        verify(mockChessGame, times(1)).changePlayer();
-        verify(mockChessGame, times(3)).getGameState();
+        scgGame.move(chessGame.getCurrentPlayer(), move);
+        verify(mockCGame, times(1)).move(eq(chessGame.getWhitePlayer()), eq(move));
+        verify(mockCGame, times(1)).changePlayer();
+        verify(mockCGame, times(3)).getGameState();
     }
     
     @Test
     public void checkStatusStalemateTest() throws IllegalMoveException {
-        
-        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
-        scgGame.setChessGame(mockChessGame);
-        when(mockChessGame.getGameState()).thenReturn(GameState.STALEMATE);
+        ServerChessGame scgGame = createServerChessGame(UID, chessGame);
+        scgGame.setChessGame(mockCGame);
+        when(mockCGame.getGameState()).thenReturn(GameState.STALEMATE);
         
         Move move = new Move("A2-A3");
-        scgGame.move(fixture.getCurrentPlayer(), move);
-        verify(mockChessGame, times(1)).move(eq(fixture.getWhitePlayer()), eq(move));
-        verify(mockChessGame, times(1)).changePlayer();
-        verify(mockChessGame, times(2)).getGameState();
+        scgGame.move(chessGame.getCurrentPlayer(), move);
+        verify(mockCGame, times(1)).move(eq(chessGame.getWhitePlayer()), eq(move));
+        verify(mockCGame, times(1)).changePlayer();
+        verify(mockCGame, times(2)).getGameState();
         assertEquals(ServerGameStatus.FINISHED, scgGame.getCurrentStatus());
         
     }
     
     @Test
     public void testMoveOnNullChessBoard() throws IllegalMoveException {
-        ServerChessGame scgGame = createServerChessGame(UID, fixture.getChessGame());
+        ServerChessGame scgGame = createServerChessGame(UID, chessGame);
         scgGame.setChessGame(null);
         
         Move move = new Move("A2-A3");
-        scgGame.move(fixture.getCurrentPlayer(), move);
+        scgGame.move(chessGame.getCurrentPlayer(), move);
         
-        verify(mockChessGame, times(0)).move(eq(fixture.getWhitePlayer()), eq(move));
-        verify(mockChessGame, times(0)).changePlayer();
-        verify(mockChessGame, times(0)).getGameState();
+        verify(mockCGame, times(0)).move(eq(chessGame.getWhitePlayer()), eq(move));
+        verify(mockCGame, times(0)).changePlayer();
+        verify(mockCGame, times(0)).getGameState();
     }
 }

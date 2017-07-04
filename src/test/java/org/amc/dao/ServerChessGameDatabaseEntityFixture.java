@@ -31,9 +31,9 @@ public class ServerChessGameDatabaseEntityFixture {
     private Player whitePlayer;
     private Player blackPlayer;
     private AbstractServerChessGame scgGame;
+    private ChessGame chessGame;
     private final long UID = 29393L;
     private final ServerChessGameDAO scgDAO;
-    private final ChessGameFixture cgFixture;
     private ChessGameFactory chessGamefactory; 
     private EntityManager entityManager;
     
@@ -44,12 +44,12 @@ public class ServerChessGameDatabaseEntityFixture {
         scgDAO.setEntityManager(entityManager);
         DAOInterface<Player> playerDAO = new DAO<>(HumanPlayer.class);
         playerDAO.setEntityManager(entityManager);
-        cgFixture = new ChessGameFixture();
+        chessGame = new ChessGameFixture().getChessGame();
         
         whitePlayer = playerDAO.findEntities("userName", "laura").get(0);
         blackPlayer = playerDAO.findEntities("userName", "nobby").get(0);
         
-        cgFixture.getBoard().initialise();
+        chessGame.getChessBoard().initialise();
         
         AbstractServerChessGame scgGame = createServerGame(UID);
         addServerChessGameToDataBase(scgGame);
@@ -69,7 +69,7 @@ public class ServerChessGameDatabaseEntityFixture {
     }
     
     private AbstractServerChessGame createServerGame(long id) {
-        ChessGame chessGame = chessGamefactory.getChessGame(cgFixture.getBoard(), 
+        ChessGame chessGame = chessGamefactory.getChessGame(this.chessGame.getChessBoard(), 
                         new RealChessGamePlayer(whitePlayer, Colour.WHITE),
                         new RealChessGamePlayer(blackPlayer, Colour.BLACK));
         scgGame = new TwoViewServerChessGame(id, chessGame);

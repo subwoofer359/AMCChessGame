@@ -24,6 +24,10 @@ public class ChessBoardUtil {
         board.put(piece, new Location(location));
     }
     
+    public void add(ChessPiece piece, StartingSquare square) {
+        board.put(piece, square.getLocation());
+    }
+    
     public void addPawnPiece(Colour colour, String location) {
         add(PawnPiece.getPiece(colour), location);
     }

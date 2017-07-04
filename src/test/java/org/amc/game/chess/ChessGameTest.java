@@ -9,67 +9,67 @@ import org.junit.*;
 import java.util.List;
 
 public class ChessGameTest {
-
-    private ChessGameFixture chessGameFixture;
     private ChessBoardUtil cbUtils;
     private static final String END_LOCATION = "B7";
     private static final String START_LOCATION = "A8";
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
+    
+    private ChessGame chessGame;
 
     @Before
     public void setUp() throws Exception {
-        chessGameFixture = new ChessGameFixture();
+    	chessGame = new ChessGameFixture().getChessGame();
 
-        whitePlayer = chessGameFixture.getWhitePlayer();
-        blackPlayer = chessGameFixture.getBlackPlayer();
+        whitePlayer = chessGame.getWhitePlayer();
+        blackPlayer = chessGame.getBlackPlayer();
         
-        cbUtils = new ChessBoardUtil(chessGameFixture.getBoard());
         
-        cbUtils.add(KingPiece.getPiece(Colour.WHITE),
-                        WHITE_KING.toString());
-        cbUtils.add(KingPiece.getPiece(Colour.BLACK),
-                        BLACK_KING.toString());
         
+        cbUtils = new ChessBoardUtil(chessGame.getChessBoard());
+        
+        cbUtils.add(KingPiece.getPiece(Colour.WHITE), WHITE_KING);
+        cbUtils.add(KingPiece.getPiece(Colour.BLACK), BLACK_KING); 
     }
 
     @Test
     public void testChangePlayer() {    	
-        assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
-        chessGameFixture.changePlayer();
-        assertEquals(blackPlayer, chessGameFixture.getCurrentPlayer());
-        chessGameFixture.changePlayer();
-        assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
+        assertEquals(whitePlayer, chessGame.getCurrentPlayer());
+        chessGame.changePlayer();
+        assertEquals(blackPlayer, chessGame.getCurrentPlayer());
+        chessGame.changePlayer();
+        assertEquals(whitePlayer, chessGame.getCurrentPlayer());
     }
 
     @Test(expected = IllegalMoveException.class)
     public void testMoveWithAnEmptySquare() throws IllegalMoveException {
-        chessGameFixture.move(whitePlayer, cbUtils.newMove(START_LOCATION, END_LOCATION));
+        chessGame.move(whitePlayer, cbUtils.newMove(START_LOCATION, END_LOCATION));
     }
 
     @Test(expected = IllegalMoveException.class)
     public void testPlayerCantMoveOtherPlayersPiece() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getPiece(Colour.WHITE);
         cbUtils.add(bishop, START_LOCATION);
-        chessGameFixture.move(blackPlayer, cbUtils.newMove(START_LOCATION, "B7"));
+        chessGame.move(blackPlayer, cbUtils.newMove(START_LOCATION, "B7"));
     }
 
     @Test
     public void testPlayerCanMoveTheirOwnPiece() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getPiece(Colour.WHITE);
         cbUtils.add(bishop, START_LOCATION);
-        chessGameFixture.move(whitePlayer, cbUtils.newMove(START_LOCATION, END_LOCATION));
+        chessGame.move(whitePlayer, cbUtils.newMove(START_LOCATION, END_LOCATION));
         assertEquals(bishop.moved(), cbUtils.getPiece(END_LOCATION));
         assertEquals(NO_CHESSPIECE, cbUtils.getPiece(START_LOCATION));
     }
 
     @Test
     public void doesGameRuleApply() {
-        RookPiece rook = RookPiece.getPiece(Colour.WHITE);
-        final String rookStartPosition = "H1";
-        Move move = cbUtils.newMove(WHITE_KING.toString(), "G1");
-        cbUtils.add(rook, rookStartPosition);
-        assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
+    	final String rookStartPosition = "H1";
+        final String kingEndPosition = "G1";
+    	
+        Move castlingMove = cbUtils.newMove(WHITE_KING.toString(), kingEndPosition);
+        cbUtils.add(RookPiece.getPiece(Colour.WHITE), rookStartPosition);
+        assertTrue(chessGame.doesAGameRuleApply(chessGame, castlingMove));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ChessGameTest {
         final String rookStartPosition = "H1";
         Move move = cbUtils.newMove(WHITE_KING.toString(), "F1");
         cbUtils.add(rook, rookStartPosition);
-        assertFalse(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
+        assertFalse(chessGame.doesAGameRuleApply(chessGame, move));
     }
 
     @Test
@@ -87,17 +87,17 @@ public class ChessGameTest {
         String rookStartPosition = "H1";
         Move move = cbUtils.newMove(WHITE_KING.toString(), "G1");
         cbUtils.add(rook, rookStartPosition);
-        assertTrue(chessGameFixture.doesAGameRuleApply(chessGameFixture, move));
+        assertTrue(chessGame.doesAGameRuleApply(chessGame, move));
     }
     
     @Test
     public void testMovesAreSaved() throws IllegalMoveException {
         BishopPiece bishop = BishopPiece.getPiece(Colour.BLACK);
         cbUtils.add(bishop, START_LOCATION);
-        chessGameFixture.changePlayer();
-        chessGameFixture.move(blackPlayer, cbUtils.newMove(START_LOCATION, END_LOCATION));
+        chessGame.changePlayer();
+        chessGame.move(blackPlayer, cbUtils.newMove(START_LOCATION, END_LOCATION));
         
-        Move lastMove = chessGameFixture.getTheLastMove();
+        Move lastMove = chessGame.getTheLastMove();
         
 		assertEquals(lastMove.getStart().asString(), START_LOCATION);
         assertEquals(lastMove.getEnd().asString(), END_LOCATION);
@@ -105,24 +105,24 @@ public class ChessGameTest {
 
     @Test
     public void getEmptyMove() {
-        Move move = chessGameFixture.getTheLastMove();
+        Move move = chessGame.getTheLastMove();
         assertTrue(move instanceof EmptyMove);
     }
     
     @Test
     public void cloneConstuctorMoveListCopyTest() {
-        chessGameFixture.initialise();
-        ChessGame clone = new ChessGame(chessGameFixture.getChessGame());
-        assertTrue(chessGameFixture.getTheLastMove().equals(clone.getTheLastMove()));
+        chessGame.getChessBoard().initialise();
+        ChessGame clone = new ChessGame(chessGame);
+        assertTrue(chessGame.getTheLastMove().equals(clone.getTheLastMove()));
         assertEquals(GameState.RUNNING, clone.getGameState());
     }
     
     @Test
     public void cloneConstuctorRuleListCopyTest() {
-        chessGameFixture.initialise();
-        ChessGame clone = new ChessGame(chessGameFixture.getChessGame());
+        chessGame.getChessBoard().initialise();
+        ChessGame clone = new ChessGame(chessGame);
         clone.addChessMoveRule(EnPassantRule.getInstance());
-        assertEquals(3, chessGameFixture.getChessGame().getChessMoveRules().size());
+        assertEquals(3, chessGame.getChessMoveRules().size());
         assertEquals(4, clone.getChessMoveRules().size());
         assertTrue(clone.getChessMoveRules().contains(EnPassantRule.getInstance()));
     }
@@ -133,11 +133,13 @@ public class ChessGameTest {
         game.addChessMoveRule(EnPassantRule.getInstance());
         
         ChessGame copy = new ChessGame(game);
+        
         testForChessRules(copy);
         assertEquals(game.getBlackPlayer(), copy.getBlackPlayer());
         assertEquals(game.getWhitePlayer(), copy.getWhitePlayer());
         assertNotNull(copy.getChessBoard());
         assertFalse(game.getChessBoard() == copy.getChessBoard());
+        
         ChessBoardUtil.compareBoards(game.getChessBoard(), copy.getChessBoard());
         assertEquals(GameState.NEW, copy.getGameState());
     }
@@ -157,7 +159,7 @@ public class ChessGameTest {
     @Test(expected = IllegalMoveException.class)
     public void notPlayersTurn() throws IllegalMoveException {
         Move move = cbUtils.newMove(BLACK_KING, "E7");
-        chessGameFixture.move(blackPlayer, move);
-        assertEquals(whitePlayer, chessGameFixture.getCurrentPlayer());
+        chessGame.move(blackPlayer, move);
+        assertEquals(whitePlayer, chessGame.getCurrentPlayer());
     }
 }
