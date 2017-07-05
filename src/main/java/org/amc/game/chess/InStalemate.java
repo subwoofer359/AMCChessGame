@@ -1,5 +1,7 @@
 package org.amc.game.chess;
 
+import org.amc.game.chess.ChessBoard.ChessPieceLocation;
+
 public class InStalemate {
 	
 	private static final InStalemate INSTANCE = new InStalemate();
@@ -19,14 +21,18 @@ public class InStalemate {
             return false;
         }
        
-        return board.getListOfPieces(player).stream().filter(pieceLoc -> {
-        		return !pieceLoc.getPiece().getPossibleMoveLocations(
-        				board, pieceLoc.getLocation()).stream()
-        				.filter(location -> willPlayerNotBeInCheck(
-        						player, opponent, board, new Move(
-        								pieceLoc.getLocation(), location)))
-        				.findAny().isPresent();
-        	}).findFirst().isPresent();
+        return !board.getListOfPieces(player).stream().filter(pieceLoc -> 
+        isPieceNotInStalement(pieceLoc, player, opponent, board)).findFirst().isPresent();
+    }
+    
+    private boolean isPieceNotInStalement(ChessPieceLocation pieceLoc, ChessGamePlayer player,
+    		ChessGamePlayer opponent, ChessBoard board) {
+    	return pieceLoc.getPiece().getPossibleMoveLocations(
+				board, pieceLoc.getLocation()).stream()
+				.filter(location -> willPlayerNotBeInCheck(
+						player, opponent, board, new Move(
+								pieceLoc.getLocation(), location)))
+				.findAny().isPresent();
     }
     
 	private boolean willPlayerNotBeInCheck(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board,
