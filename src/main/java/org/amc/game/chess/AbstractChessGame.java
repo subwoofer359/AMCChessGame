@@ -162,9 +162,9 @@ public abstract class AbstractChessGame  implements Serializable {
      * @param move {@link Move}
      * @return Boolean true if a Game rule applies to the Player's move
      */
-    boolean doesAGameRuleApply(ChessGame game, Move move) {
+    boolean doesAGameRuleApply(Move move) {
         for (ChessMoveRule rule : chessRules) {
-            if (rule.isRuleApplicable(game, move)) {
+            if (rule.isRuleApplicable(this, move)) {
                 return true;
             }
         }

@@ -73,7 +73,7 @@ public class ChessGame extends AbstractChessGame {
                     ChessPiece piece, Move move) throws IllegalMoveException {
         if (isPlayersKingInCheck(player, board)) {
             doNormalMove(player, piece, move);
-        } else if (doesAGameRuleApply(this, move)) {
+        } else if (doesAGameRuleApply(move)) {
             thenApplyGameRule(player, move);
         } else {
             doNormalMove(player, piece, move);

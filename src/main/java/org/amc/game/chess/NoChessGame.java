@@ -32,7 +32,7 @@ public class NoChessGame extends ChessGame {
 	}
 
 	@Override
-	boolean doesAGameRuleApply(ChessGame game, Move move) {
+	boolean doesAGameRuleApply(Move move) {
 		return false;
 	}
 

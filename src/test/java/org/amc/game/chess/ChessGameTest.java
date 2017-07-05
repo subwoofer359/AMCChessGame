@@ -69,7 +69,7 @@ public class ChessGameTest {
     	
         Move castlingMove = cbUtils.newMove(WHITE_KING.toString(), kingEndPosition);
         cbUtils.add(RookPiece.getPiece(Colour.WHITE), rookStartPosition);
-        assertTrue(chessGame.doesAGameRuleApply(chessGame, castlingMove));
+        assertTrue(chessGame.doesAGameRuleApply(castlingMove));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ChessGameTest {
         final String rookStartPosition = "H1";
         Move move = cbUtils.newMove(WHITE_KING.toString(), "F1");
         cbUtils.add(rook, rookStartPosition);
-        assertFalse(chessGame.doesAGameRuleApply(chessGame, move));
+        assertFalse(chessGame.doesAGameRuleApply(move));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ChessGameTest {
         String rookStartPosition = "H1";
         Move move = cbUtils.newMove(WHITE_KING.toString(), "G1");
         cbUtils.add(rook, rookStartPosition);
-        assertTrue(chessGame.doesAGameRuleApply(chessGame, move));
+        assertTrue(chessGame.doesAGameRuleApply(move));
     }
     
     @Test

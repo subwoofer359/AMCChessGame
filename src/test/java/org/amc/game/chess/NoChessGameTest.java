@@ -75,7 +75,7 @@ public class NoChessGameTest {
 	
 	@Test
 	public void doesAGameRuleApplyTest() {
-		assertFalse("Should always return false", game.doesAGameRuleApply(game, new Move("a1-a2")));
+		assertFalse("Should always return false", game.doesAGameRuleApply(new Move("a1-a2")));
 	}
 	
 	@Test
