@@ -1,49 +1,38 @@
 package org.amc.game.chess;
 
-import org.amc.game.chess.ChessBoard.ChessPieceLocation;
-
-import java.util.List;
-import java.util.Set;
-
 public class InStalemate {
-    
-    private final ChessGamePlayer player;
-    private final ChessGamePlayer opponent;
-    private final ChessBoard board;
+	
+	private static final InStalemate INSTANCE = new InStalemate();
+	
+	public static InStalemate getInstance() {
+		return INSTANCE;
+	}
+	
     private final KingInCheck inCheck;
     
-    public InStalemate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
+    private InStalemate() {
         inCheck = KingInCheck.getInstance();
-        this.player=player;
-        this.opponent=opponent;
-        this.board=board;
     }
     
-    public boolean isStalemate(){
+    public boolean isStalemate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board){
         if(inCheck.isPlayersKingInCheck(player, opponent, board)){
             return false;
         }
-        List<ChessPieceLocation> playersPieces=board.getListOfPlayersPiecesOnTheBoard(player);
-        for(ChessPieceLocation cpl:playersPieces){
-            Set<Location> possibleMoveLocations=cpl.getPiece().getPossibleMoveLocations(board, cpl.getLocation());
-            for(Location moveLocation:possibleMoveLocations){
-                Move move = new Move(cpl.getLocation(),moveLocation);
-                if(willPlayerNotBeInCheck(move)){
-                    return false;
-                }
-            }
-        }
-        return true;
+       
+        return board.getListOfPieces(player).stream().filter(pieceLoc -> {
+        		return !pieceLoc.getPiece().getPossibleMoveLocations(
+        				board, pieceLoc.getLocation()).stream()
+        				.filter(location -> willPlayerNotBeInCheck(
+        						player, opponent, board, new Move(
+        								pieceLoc.getLocation(), location)))
+        				.findAny().isPresent();
+        	}).findFirst().isPresent();
     }
     
-    private boolean willPlayerNotBeInCheck(Move move){
-        ChessBoard testBoard=new ChessBoard(board);
-        testBoard.move(move);
-        return !isPlayersKingInCheck(testBoard);
-    }
-    
-    boolean isPlayersKingInCheck(ChessBoard board) {
-        return this.inCheck.isPlayersKingInCheck(player, opponent, board);
-    }
-
+	private boolean willPlayerNotBeInCheck(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board,
+			Move move) {
+		ChessBoard testBoard = new ChessBoard(board);
+		testBoard.move(move);
+		return !inCheck.isPlayersKingInCheck(player, opponent, testBoard);
+	}
 }

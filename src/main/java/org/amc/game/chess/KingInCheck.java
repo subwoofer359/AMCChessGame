@@ -21,8 +21,8 @@ final class KingInCheck {
      * @return Boolean true if the opponent can capture the Player's king on the next turn
      */
     public boolean isPlayersKingInCheck(ChessGamePlayer player,ChessGamePlayer opponent,ChessBoard board){
-        Location playersKingLocation=board.getPlayersKingLocation(player);
-        List<ChessPieceLocation> listOfEnemysPieces=board.getListOfPlayersPiecesOnTheBoard(opponent);
+        Location playersKingLocation=board.getKingLocation(player);
+        List<ChessPieceLocation> listOfEnemysPieces=board.getListOfPieces(opponent);
         for(ChessPieceLocation pieceLocation:listOfEnemysPieces){
             Move move=new Move(pieceLocation.getLocation(),playersKingLocation);
             if(pieceLocation.getPiece().isValidMove(board, move)){

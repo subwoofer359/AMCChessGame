@@ -111,8 +111,8 @@ public class ChessBoardTest {
     @Test
     public void getListOfPlayersPiecesOnTheBoardTest() throws ParseException {
         ChessBoard board = factory.getChessBoard("Ke1:ke2:Bf1:nf3:na1:ra2");
-        List<?> blackPieceList = board.getListOfPlayersPiecesOnTheBoard(blackPlayer);
-        List<?> whitePieceList = board.getListOfPlayersPiecesOnTheBoard(whitePlayer);
+        List<?> blackPieceList = board.getListOfPieces(blackPlayer);
+        List<?> whitePieceList = board.getListOfPieces(whitePlayer);
         assertTrue("Incorrect list of Players pieces on the board", 
         		blackPieceList.size() == 2 && whitePieceList.size() == 4);
     }
@@ -120,8 +120,8 @@ public class ChessBoardTest {
     @Test
     public void getPlayersKingLocationTest() throws ParseException {
         ChessBoard board = factory.getChessBoard("Ke1:ka1");
-        Location blackKingLocation = board.getPlayersKingLocation(blackPlayer);
-        Location whiteKingLocation = board.getPlayersKingLocation(whitePlayer);
+        Location blackKingLocation = board.getKingLocation(blackPlayer);
+        Location whiteKingLocation = board.getKingLocation(whitePlayer);
 
         assertTrue(new Location("E1").equals(blackKingLocation));
         assertTrue(new Location("A1").equals(whiteKingLocation));
@@ -130,6 +130,6 @@ public class ChessBoardTest {
     @Test(expected = RuntimeException.class)
     public void getPlayersKingLocationFailTest() throws ParseException {
         ChessBoard board = factory.getChessBoard("ka1");
-        board.getPlayersKingLocation(blackPlayer);
+        board.getKingLocation(blackPlayer);
     }
 }

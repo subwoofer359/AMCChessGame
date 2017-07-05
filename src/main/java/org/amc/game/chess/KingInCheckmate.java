@@ -31,13 +31,13 @@ class KingInCheckmate {
         this.board = board;
 
         this.playersKingLocation = findThePlayersKing();
-        this.enemyLocations = board.getListOfPlayersPiecesOnTheBoard(opponent);
+        this.enemyLocations = board.getListOfPieces(opponent);
         this.attackingPieces = getAllPiecesAttackingTheKing();
-        this.playersPieces = board.getListOfPlayersPiecesOnTheBoard(player);
+        this.playersPieces = board.getListOfPieces(player);
     }
 
     private final ChessPieceLocation findThePlayersKing() {
-        Location kingLocation = board.getPlayersKingLocation(player);
+        Location kingLocation = board.getKingLocation(player);
         return new ChessPieceLocation(board.get(kingLocation), kingLocation);
     }
     

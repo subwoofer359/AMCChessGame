@@ -231,7 +231,7 @@ public class ChessBoard extends DefaultSubject {
      *            Player
      * @return List
      */
-    List<ChessPieceLocation> getListOfPlayersPiecesOnTheBoard(ChessGamePlayer player) {
+    List<ChessPieceLocation> getListOfPieces(ChessGamePlayer player) {
         List<ChessPieceLocation> listOfPieces = new ArrayList<>();
         for (Coordinate letterIndex : Coordinate.values()) {
             searchFileForChessPieces(player, letterIndex, listOfPieces);
@@ -264,7 +264,7 @@ public class ChessBoard extends DefaultSubject {
      * @throws IllegalStateException
      *             if no King is found
      */
-    Location getPlayersKingLocation(ChessGamePlayer player) {
+    Location getKingLocation(ChessGamePlayer player) {
         for (Coordinate letterIndex : Coordinate.values()) {
             for (int i = 1; i <= BOARD_WIDTH; i++) {
                 ChessPiece piece = get(letterIndex.getIndex(), i);

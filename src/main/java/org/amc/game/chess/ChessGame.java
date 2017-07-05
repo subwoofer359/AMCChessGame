@@ -18,6 +18,9 @@ public class ChessGame extends AbstractChessGame {
 
     @Transient
     private final KingInCheck kingInCheck = KingInCheck.getInstance();
+    
+    @Transient
+    private final InStalemate inStalemate = InStalemate.getInstance();
 
     protected ChessGame() {
         super();
@@ -38,14 +41,12 @@ public class ChessGame extends AbstractChessGame {
         ChessPiece piece = getChessBoard().get(move.getStart());
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, getChessBoard(), piece, move);
+        
         if (isOpponentsKingInCheck(player, getChessBoard())) {
             isOpponentKingInCheckMate(player);
-        } else {
-            InStalemate stalemate = new InStalemate(getOpposingPlayer(player), player,
-                            getChessBoard());
-            if (stalemate.isStalemate()) {
+        } else if (inStalemate.isStalemate(getOpposingPlayer(player), player,
+                getChessBoard())) {
                 setGameState(GameState.STALEMATE);
-            }
         }
     }
 
@@ -88,7 +89,7 @@ public class ChessGame extends AbstractChessGame {
         ChessGamePlayer opponent = getOpposingPlayer(player);
         boolean inCheck = kingInCheck.isPlayersKingInCheck(opponent, player, board);
         if (inCheck) {
-            setGameState(Colour.WHITE.equals(opponent.getColour()) ? GameState.WHITE_IN_CHECK
+            setGameState(Colour.WHITE == opponent.getColour() ? GameState.WHITE_IN_CHECK
                             : GameState.BLACK_IN_CHECK);
         }
         return inCheck;
@@ -99,7 +100,7 @@ public class ChessGame extends AbstractChessGame {
         KingInCheckmate okcc = new KingInCheckmate(opponent, player,
                         getChessBoard());
         if (okcc.isCheckMate()) {
-            setGameState(Colour.WHITE.equals(opponent.getColour()) ? GameState.WHITE_CHECKMATE
+            setGameState(Colour.WHITE == opponent.getColour() ? GameState.WHITE_CHECKMATE
                             : GameState.BLACK_CHECKMATE);
             return true;
         } else {
