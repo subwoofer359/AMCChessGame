@@ -43,7 +43,7 @@ public class ChessGame extends AbstractChessGame {
         moveThePlayersChessPiece(player, getChessBoard(), piece, move);
         
         if (isOpponentsKingInCheck(player, getChessBoard())) {
-            isOpponentKingInCheckMate(player);
+            checkOpponentKingInCheckMate(player);
         } else if (inStalemate.isStalemate(getOpposingPlayer(player), player,
                 getChessBoard())) {
                 setGameState(GameState.STALEMATE);
@@ -95,7 +95,7 @@ public class ChessGame extends AbstractChessGame {
         return inCheck;
     }
 
-    boolean isOpponentKingInCheckMate(ChessGamePlayer player) {
+    boolean checkOpponentKingInCheckMate(ChessGamePlayer player) {
         ChessGamePlayer opponent = getOpposingPlayer(player);
         KingInCheckmate okcc = new KingInCheckmate(opponent, player,
                         getChessBoard());
