@@ -13,10 +13,11 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "chessGames")
 public class ChessGame extends AbstractChessGame {
+	
     private static final long serialVersionUID = 5323277982974698086L;
 
     @Transient
-    private final PlayerKingInCheckCondition kingInCheck = PlayerKingInCheckCondition.getInstance();
+    private final KingInCheck kingInCheck = KingInCheck.getInstance();
 
     protected ChessGame() {
         super();

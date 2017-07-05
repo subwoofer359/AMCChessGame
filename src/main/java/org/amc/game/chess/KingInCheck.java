@@ -4,15 +4,15 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 
 import java.util.List;
 
-final class PlayerKingInCheckCondition {
+final class KingInCheck {
 	
-	private static final PlayerKingInCheckCondition instance = new PlayerKingInCheckCondition();
+	private static final KingInCheck instance = new KingInCheck();
 	
-	public static final PlayerKingInCheckCondition getInstance() {
+	public static final KingInCheck getInstance() {
 		return instance;
 	}
 	
-	private PlayerKingInCheckCondition() {
+	private KingInCheck() {
 	}
     /**
      * Checks to see if the opponent's ChessPieces are attacking the Player's king

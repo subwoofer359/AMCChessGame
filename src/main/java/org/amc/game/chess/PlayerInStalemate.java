@@ -10,10 +10,10 @@ public class PlayerInStalemate {
     private final ChessGamePlayer player;
     private final ChessGamePlayer opponent;
     private final ChessBoard board;
-    private final PlayerKingInCheckCondition inCheck;
+    private final KingInCheck inCheck;
     
     public PlayerInStalemate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
-        inCheck = PlayerKingInCheckCondition.getInstance();
+        inCheck = KingInCheck.getInstance();
         this.player=player;
         this.opponent=opponent;
         this.board=board;

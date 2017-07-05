@@ -16,7 +16,7 @@ import java.util.Set;
  */
 class PlayersKingCheckmateCondition {
 
-    private final PlayerKingInCheckCondition kingIsChecked = PlayerKingInCheckCondition.getInstance();
+    private final KingInCheck kingIsChecked = KingInCheck.getInstance();
     private final ChessGamePlayer player;
     private final ChessGamePlayer opponent;
     private final ChessBoard board;
