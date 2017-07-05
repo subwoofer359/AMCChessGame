@@ -5,14 +5,14 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import java.util.List;
 import java.util.Set;
 
-public class PlayerInStalemate {
+public class InStalemate {
     
     private final ChessGamePlayer player;
     private final ChessGamePlayer opponent;
     private final ChessBoard board;
     private final KingInCheck inCheck;
     
-    public PlayerInStalemate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
+    public InStalemate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
         inCheck = KingInCheck.getInstance();
         this.player=player;
         this.opponent=opponent;

@@ -33,7 +33,7 @@ public class BugCG23TestCase {
         Move move = new Move("C6-B7");
         chessGame.move(chessGame.getWhitePlayer(), move);
         chessGame.changePlayer();
-        PlayersKingCheckmateCondition pkcc = new PlayersKingCheckmateCondition(chessGame.getBlackPlayer(), 
+        KingInCheckmate pkcc = new KingInCheckmate(chessGame.getBlackPlayer(), 
                         chessGame.getWhitePlayer(), chessGame.getChessBoard());
         assertFalse(pkcc.isCheckMate());
     }
