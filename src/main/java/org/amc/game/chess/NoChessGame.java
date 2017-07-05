@@ -53,7 +53,6 @@ public class NoChessGame extends ChessGame {
 
 	@Override
 	public ChessBoard getChessBoard() {
-		// TODO Auto-generated method stub
 		return EmptyChessBoard.EMPTY_CHESSBOARD;
 	}
 
