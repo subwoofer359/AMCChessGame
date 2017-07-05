@@ -1,6 +1,7 @@
 package org.amc.dao
 
 import org.junit.Before;
+import org.junit.Ignore
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -15,6 +16,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.EntityManager;
 
+/**
+ * Test needs to be rework and not require Spring for initialisation of Cleaner
+ * and Thread.Sleep to decide when to check if task is complete
+ * @return
+ */
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(['/EntityManagerFactory.groovy', '/perTestConfig/EMCCleanerConfig.groovy'])
@@ -27,9 +34,7 @@ class EntityManagerCacheCleanerIT {
     WebApplicationContext wac;
     
     def threads = [];
-    
-    
-    
+ 
     @Before
     void setUp() {
         MockitoAnnotations.initMocks(this);
