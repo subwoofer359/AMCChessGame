@@ -12,7 +12,7 @@
 
 <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.6/interact.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/chesspieces.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/chessboard.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/player.js"></script>
@@ -209,7 +209,7 @@ $(document).ready(function(){
         <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
             <div class="alert alert-warning" role="alert"></div>
         </div>
-        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-8">
+        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-12">
             <div class="inner col-xs-offset-1 col-xs-11">
             </div><!-- col-xs-11 -->
         </div>

@@ -12,7 +12,7 @@
 
 <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.6/interact.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/chesspieces.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/chessboard.js"></script>
 <script src="${pageContext.request.contextPath}/jsfull/player.js"></script>
