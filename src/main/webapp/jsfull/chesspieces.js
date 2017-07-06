@@ -40,7 +40,7 @@ var chesspieces_module = (function () {
         }
         throw 'Not valid ChessBoard coordinate';
     }
-
+  
     function ChessPieces(playerColour) {
         this.playerColour = playerColour;
     }
@@ -79,6 +79,13 @@ var chesspieces_module = (function () {
             }
             return 'chesspiece';
         },
+        getCoordX : function (location) {
+            return this.x + (this.offsetXY * (coordinates[location.file] - 1))
+        },
+        
+        getCoordY : function (location) {
+            return this.y + (this.offsetXY * (8 - location.rank))
+        },
         /**
         * SVG pawn
         * @public
@@ -90,25 +97,15 @@ var chesspieces_module = (function () {
         */
         pawn : function (id, squareCoordinates, pieceColour) {
             var location = parseSquareCoordinates(squareCoordinates),
-                coordX = this.x + (this.offsetXY * (coordinates[location.file] - 1)),
-                coordY = this.y + (this.offsetXY * (8 - location.rank)),
-                classes = this.getClasses(pieceColour);
+                coordX = this.getCoordX(location),
+                coordY = this.getCoordY(location),
+                classes = this.getClasses(pieceColour),
+                style = 'style="fill:' + pieceColour.fill + ';fill-opacity:1;stroke:' + pieceColour.stroke + ';stroke-width:0.40499824;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:3.5;stroke-opacity:0.98453603;stroke-dasharray:none;stroke-dashoffset:50;"';
 
-            return '<g ' +
-                    'transform="translate(' + coordX + ',' + coordY + ')" ' +
-                    'id="' + id + '" ' +
-                    'class="' + classes + '" ' +
-                    '> ' +
-                    '<path ' +
-                    'd="m 19.201062,45.600762 c 8.40554,0.058 16.81108,0.1154 25.21663,0.1731 -3.30135,-7.251102 -11.05511,-13.612602 -9.90404,-21.753502 -2.17012,0 -4.34024,0 -6.51036,0 2.0749,8.0832 -5.86815,14.3869 -8.80223,21.580402 z" ' +
-                    'style="fill:' + pieceColour.fill + ';fill-opacity:1;stroke:' + pieceColour.stroke + ';stroke-width:0.40499824;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:3.5;stroke-opacity:0.98453603;stroke-dasharray:none;stroke-dashoffset:50" /> ' +
-                        '<path ' +
-                        'd="m 41.045412,15.486384 c 0,4.7665 -4.3606,8.6304 -9.73967,8.6304 -5.37908,0 -9.73968,-3.8639 -9.73968,-8.6304 0,-4.7664 4.3606,-8.6303005 9.73968,-8.6303005 5.37907,0 9.73967,3.8639005 9.73967,8.6303005 z" ' +
-                        'style="fill:' + pieceColour.fill + ';fill-opacity:1;stroke:' + pieceColour.stroke + ';stroke-width:0.40499824;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:3.5;stroke-opacity:0.98453603;stroke-dasharray:none;stroke-dashoffset:50" /> ' +
-                        '<path ' +
-                        'd="m 12.181722,58.139172 c 10.92761,0 27.7945,0.35681 38.72211,0.35681 0,-4.2696 0.97188,-9.5206 -3.13162,-12.8983 -10.92761,0 -21.63925,0 -32.56686,0 -3.77954,2.3072 -3.02363,8.27179 -3.02363,12.54149 z" ' +
-                        'style="fill:' + pieceColour.fill + ';fill-opacity:1;stroke:' + pieceColour.stroke + ';stroke-width:0.71832072;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:3.5;stroke-opacity:0.98453603;stroke-dasharray:none;stroke-dashoffset:50" /> ' +
-                '</g> ';
+            return '<g transform="translate(' + coordX + ',' + coordY + ')" id="' + id + '" class="' + classes + '"> ' +
+                    '<path d="m 19.201062,45.600762 c 8.40554,0.058 16.81108,0.1154 25.21663,0.1731 -3.30135,-7.251102 -11.05511,-13.612602 -9.90404,-21.753502 -2.17012,0 -4.34024,0 -6.51036,0 2.0749,8.0832 -5.86815,14.3869 -8.80223,21.580402 z" ' + style + '/> ' +
+                        '<path d="m 41.045412,15.486384 c 0,4.7665 -4.3606,8.6304 -9.73967,8.6304 -5.37908,0 -9.73968,-3.8639 -9.73968,-8.6304 0,-4.7664 4.3606,-8.6303005 9.73968,-8.6303005 5.37907,0 9.73967,3.8639005 9.73967,8.6303005 z" ' + style + '/>' +
+                        '<path d="m 12.181722,58.139172 c 10.92761,0 27.7945,0.35681 38.72211,0.35681 0,-4.2696 0.97188,-9.5206 -3.13162,-12.8983 -10.92761,0 -21.63925,0 -32.56686,0 -3.77954,2.3072 -3.02363,8.27179 -3.02363,12.54149 z" ' + style + '/></g>';
         },
         /**
         * SVG rook
@@ -121,8 +118,8 @@ var chesspieces_module = (function () {
         */
         rook : function (id, squareCoordinates, pieceColour) {
             var location = parseSquareCoordinates(squareCoordinates),
-                coordX = this.x + (this.offsetXY * (coordinates[location.file] - 1)),
-                coordY = this.y + (this.offsetXY * (8 - location.rank)),
+                coordX = this.getCoordX(location),
+                coordY = this.getCoordY(location),
                 classes = this.getClasses(pieceColour),
                 style = 'style="fill:' + pieceColour.fill + 
                     ';fill-opacity:1;stroke:' + pieceColour.stroke + 
@@ -139,8 +136,8 @@ var chesspieces_module = (function () {
         },
         bishop : function (id, squareCoordinates, pieceColour) {
             var location = parseSquareCoordinates(squareCoordinates),
-                coordX = this.offsetXY * (coordinates[location.file] - 1),
-                coordY = this.y + (this.offsetXY * (8 - location.rank)),
+                coordX = this.getCoordX(location),
+                coordY = this.getCoordY(location),
                 classes = this.getClasses(pieceColour);
             return '<g ' +  'id="' + id + '" class="' + classes + '" transform="translate(' + coordX + ',' + coordY + ')"><rect width="35.355339" height="4.0406103" x="12.648308" y="55.91304"  style="fill:' + pieceColour.fill + ';fill-opacity:1;stroke:'  + pieceColour.stroke + ';stroke-width:0.7;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:50" />' + 
                         '<rect width="30.430845" height="4.2931485" x="14.921153" y="51.367386" style="fill:' + pieceColour.fill + ';fill-opacity:1;stroke:'  + pieceColour.stroke + ';stroke-width:0.7;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:50" />' +
@@ -151,8 +148,8 @@ var chesspieces_module = (function () {
         },
         knight : function (id, squareCoordinates, pieceColour) {
             var location = parseSquareCoordinates(squareCoordinates),
-                coordX = this.offsetXY * (coordinates[location.file] - 1),
-                coordY = this.y + (this.offsetXY * (8 - location.rank)),
+                coordX = this.getCoordX(location),
+                coordY = this.getCoordY(location),
                 classes = this.getClasses(pieceColour);
             return '<g transform="translate(' + coordX + ',' + coordY + ')" id="' + id + '"  class="' + classes + '" style="fill:' + pieceColour.fill + '"><g transform="matrix(0.47208604,0,0,0.5491603,-78.452298,-1000.8994)" >' +
             '<path d="m 231.714,1837.494 c 37.531,4.161 54.642,26.149 53.007,94.791 h -75.885 c -0.894,-36.918 30.719,-21.425 24.182,-68.82"  style="fill:' + pieceColour.fill + '" />' +
@@ -168,8 +165,8 @@ var chesspieces_module = (function () {
         },
         queen : function (id, squareCoordinates, pieceColour) {
             var location = parseSquareCoordinates(squareCoordinates),
-                coordX = this.offsetXY * (coordinates[location.file] - 1),
-                coordY = this.y + (this.offsetXY * (8 - location.rank)),
+                coordX = this.getCoordX(location),
+                coordY = this.getCoordY(location),
                 classes = this.getClasses(pieceColour);
             return '<g transform="translate(' + coordX + ',' + coordY + ')" id="' + id + '" class="' + classes + '" style="fill:' + pieceColour.fill + '"> ' +
             '<path d="m 16.91246,16.87538 c 0,2.13562 -1.35857,3.8663 -3.03312,3.8663 -1.67558,0 -3.03311,-1.73112 -3.03311,-3.8663 0,-2.13518 1.35787,-3.86585 3.03311,-3.86585 1.67455,-4.4e-4 3.03312,1.73067 3.03312,3.86585 z" style="fill:' + pieceColour.fill + ';stroke:' + pieceColour.fill + ';stroke-width:0.2277;stroke-linecap:round;stroke-linejoin:round" />' +
@@ -192,8 +189,8 @@ var chesspieces_module = (function () {
         },
         king : function (id, squareCoordinates, pieceColour) {
             var location = parseSquareCoordinates(squareCoordinates),
-                coordX = this.offsetXY * (coordinates[location.file] - 1),
-                coordY = this.y + (this.offsetXY * (8 - location.rank)),
+                coordX = this.getCoordX(location),
+                coordY = this.getCoordY(location),
                 classes = this.getClasses(pieceColour);
             return '<g transform="translate(' + coordX + ',' + coordY + ')" id="' + id + '" class="' + classes + '" style="fill:' + pieceColour.fill + '">' +
                 '<path d="M 31.498132,15.653006 V 5.6201861" style="fill:' + pieceColour.fill + ';stroke:' + pieceColour.fill + ';stroke-width:1.63150001;stroke-linecap:round" />' +

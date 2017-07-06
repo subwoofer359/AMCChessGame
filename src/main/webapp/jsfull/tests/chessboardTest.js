@@ -21,8 +21,6 @@ QUnit.test("testing chessboard.js: creating a blank chess board", function (asse
     $("#qunit-fixture").append(chessboard_module.createBlankChessBoardSVG());
 
     $board = $("#qunit-fixture svg");
-    //assert.equal($board.attr("width"), "500px");
-    //assert.equal($board.attr("height"), "500px");
 
     $squares = $("#qunit-fixture rect");
     assert.equal($squares.length, 64);
@@ -47,8 +45,6 @@ QUnit.test("testing chessboard.js: create a non blank chess board", function (as
     $("#qunit-fixture").append("<div id='chessboard-surround'></div>");
     chessboard_module.createChessBoard("WHITE", json);
     $board = $("#chessboard-surround svg");
-    //assert.equal($board.attr("width"), "500px");
-    //assert.equal($board.attr("height"), "500px");
     $chesspieces = $board.find("g.chesspiece");
     assert.equal($chesspieces.length, 32);
 
