@@ -34,8 +34,8 @@ InteractActions.prototype = {
             // keep the dragged position in the data-x/data-y attributes
             x = event.dx,
             y = event.dy,
-            correctY = target.transform.baseVal[0].matrix.f,
-            correctX = target.transform.baseVal[0].matrix.e;
+            correctX = target.transform.baseVal[0].matrix.e,
+            correctY = target.transform.baseVal[0].matrix.f;
         // translate the element
         target.setAttribute('transform', 'translate(' + (x + correctX) + ', ' + (y + correctY) + ')');
     },

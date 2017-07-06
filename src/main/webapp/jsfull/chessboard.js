@@ -1,5 +1,5 @@
 /*global $*/
-/*global chesspieces_module*/
+/*global chesspiecesModule*/
 /*global document*/
 
 /**
@@ -8,7 +8,7 @@
  * @author Adrian McLaughlin
  */
 
-var chessboard_module = (function () {
+var chessboardModule = (function () {
     "use strict";
     var letterCoordinates = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ],
         boardWidth = 8,
@@ -75,7 +75,7 @@ var chessboard_module = (function () {
             chesspieces,
             piecesOnBoard = "";
 
-        chesspieces = new chesspieces_module.ChessPieces(playerColour);
+        chesspieces = new chesspiecesModule.ChessPieces(playerColour);
 
         for (location in json.squares) {
             if (json.squares.hasOwnProperty(location)) {

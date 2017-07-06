@@ -178,10 +178,10 @@ $(document).ready(function(){
     stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
     stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
     
-    var stompClient = chessgameportal_module.setupOneViewStompConnection(stompObject);
+    var stompClient = chessgameportalModule.setupOneViewStompConnection(stompObject);
     chessGameInteract(new OneViewInteractActions( stompClient, "${GAME_UUID}" ));
     
-    chessgameportal_module.addMessageDialogListener();
+    chessgameportalModule.addMessageDialogListener();
     
 });
 

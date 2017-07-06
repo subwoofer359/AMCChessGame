@@ -1,8 +1,8 @@
 /*global QUnit*/
 /*global $*/
-/*global chessboard_module*/
-/*global chesspieces_module*/
-/*global chessgameportal_module*/
+/*global chessboardModule*/
+/*global chesspiecesModule*/
+/*global chessgameportalModule*/
 var stompObject = {},
     gameUID,
     playerName,
@@ -14,7 +14,7 @@ var stompObject = {},
     oldCreateChessBoard,
     chessboardString = '{"squares":{"G1":"n","G2":"p","E1":"k","E2":"p","C1":"b","C2":"p","A1":"r","G7":"P","A2":"p","G8":"N","E7":"P","E8":"K","C7":"P","C8":"B","A7":"P","A8":"R","H1":"r","H2":"p","F1":"b","F2":"p","D1":"q","D2":"p","B1":"n","H7":"P","B2":"p","H8":"R","F7":"P","F8":"B","D7":"P","D8":"Q","B7":"P","B8":"N"},"currentPlayer":{"colour":"WHITE","player":{"id":6,"name":"Caleb Doyle","userName":"Caleb"}}}';
 
-/* mock function for player.js:updarePlayer */
+/* mock function for player.js:updatePlayer */
 function updatePlayer() {
     "use strict";
     updatePlayerCall = true;
@@ -23,8 +23,8 @@ function updatePlayer() {
 /* mock function for chessboard.js:createChessBoard */
 (function () {
     "use strict";
-    oldCreateChessBoard = chessboard_module.createChessBoard;
-    chessboard_module.createChessBoard = function (playerColour, json) {
+    oldCreateChessBoard = chessboardModule.createChessBoard;
+    chessboardModule.createChessBoard = function (playerColour, json) {
         updateChessBoardCall = true;
         oldCreateChessBoard(playerColour, json);
     };
@@ -37,9 +37,9 @@ QUnit.module("Stomp Message tests", {
         stompObject.gameUID = "1234";
         stompObject.playerName = "testPlayer";
         stompObject.opponentName = "testOpponent";
-        stompObject.playerColour = chesspieces_module.ChessPieces.prototype.colour.black;
+        stompObject.playerColour = chesspiecesModule.ChessPieces.prototype.colour.black;
         stompObject.headers = {};
-        myStompActions = new chessgameportal_module.StompActions(stompObject.gameUID, stompObject.playerName,
+        myStompActions = new chessgameportalModule.StompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);
         updatePlayerCall = false;
         updateChessBoardCall = false;
@@ -58,7 +58,7 @@ QUnit.test("testing StompActions: function updateChessBoard", function (assert) 
 QUnit.test("testing StompActions: function updateChessBoard", function (assert) {
     "use strict";
     var json = chessboardString,
-        oneViewStompActions = new chessgameportal_module.OneViewStompActions(stompObject.gameUID, stompObject.playerName,
+        oneViewStompActions = new chessgameportalModule.OneViewStompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);
     oneViewStompActions.updateChessBoard(json);
     assert.equal(true, updatePlayerCall);
@@ -221,6 +221,6 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert
 QUnit.test("testing openStompConnection: fail with error", function (assert) {
     "use strict";
     assert.throws(function () {
-        chessgameportal_module.openStompConnection("", function () { chessboard_module.createChessBoard(""); });
+        chessgameportalModule.openStompConnection("", function () { chessboardModule.createChessBoard(""); });
     }, "callback function isn't an instance of StompActions");
 });

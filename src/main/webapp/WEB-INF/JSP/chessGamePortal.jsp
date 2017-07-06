@@ -217,10 +217,10 @@ $(document).ready(function(){
     stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
     stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
     
-    var stompClient = chessgameportal_module.setupStompConnection(stompObject);
+    var stompClient = chessgameportalModule.setupStompConnection(stompObject);
     chessGameInteract(new InteractActions ( stompClient, "${GAME_UUID}" ));
     
-    chessgameportal_module.addMessageDialogListener();
+    chessgameportalModule.addMessageDialogListener();
 });
 
 </script>

@@ -2,13 +2,13 @@
 
 /*global WebSocket*/
 /*global updatePlayer*/
-/*global chessboard_module*/
+/*global chessboardModule*/
 /*global Stomp*/
 /*global SockJS*/
 /*global headers*/
 
 
-var chessgameportal_module = (function () {
+var chessgameportalModule = (function () {
     "use strict";
     /* makes Message disappear when chessboard is clicked*/
     function addMessageDialogListener() {
@@ -69,7 +69,7 @@ var chessgameportal_module = (function () {
          * @param {string} JSON to be parsed into a chessboard object
          */
         updateChessBoard : function (chessBoardJson) {
-            chessboard_module.createChessBoard(this.playerColour, chessBoardJson);
+            chessboardModule.createChessBoard(this.playerColour, chessBoardJson);
             this.oldChessBoard = chessBoardJson;
             updatePlayer(chessBoardJson);
         },
@@ -84,7 +84,7 @@ var chessgameportal_module = (function () {
             if (message.headers.TYPE === "ERROR") {
                 this.showFadingAlertMessage(message.body);
                 if (this.oldChessBoard !== undefined && !$.isEmptyObject(this.oldChessBoard)) {
-                    chessboard_module.createChessBoard(this.playerColour, this.oldChessBoard);
+                    chessboardModule.createChessBoard(this.playerColour, this.oldChessBoard);
                 }
             } else if (message.headers.TYPE === "UPDATE") {
                 this.updateChessBoard(message.body);

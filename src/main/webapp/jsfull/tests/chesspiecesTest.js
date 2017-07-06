@@ -3,17 +3,17 @@
 QUnit.module("chesspieces test");
 
 /*global coordinates*/
-/*global chessboard_module*/
-/*global chesspieces_module*/
+/*global chessboardModule*/
+/*global chesspiecesModule*/
 /*global parseSquareCoordinates*/
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function (assert) {
     "use strict";
     var i,
         t,
         coordinate,
-        coordinates = chesspieces_module.coordinates,
-        chesspieces = chesspieces_module,
-        boardWidth = chessboard_module.boardWidth;
+        coordinates = chesspiecesModule.coordinates,
+        chesspieces = chesspiecesModule,
+        boardWidth = chessboardModule.boardWidth;
 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {
@@ -29,13 +29,13 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Exception ", function (assert) {
     "use strict";
     assert.throws(function () {
-        chesspieces_module.parseSquareCoordinates("A9");
+        chesspiecesModule.parseSquareCoordinates("A9");
     }, /Not valid ChessBoard coordinate/);
     assert.throws(function () {
-        chesspieces_module.parseSquareCoordinates("A");
+        chesspiecesModule.parseSquareCoordinates("A");
     }, /Not valid ChessBoard coordinate/);
     assert.throws(function () {
-        chesspieces_module.parseSquareCoordinates("I1");
+        chesspiecesModule.parseSquareCoordinates("I1");
     }, /Not valid ChessBoard coordinate/);
 });
 
@@ -43,7 +43,7 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Excep
 
 QUnit.test("testing chesspieces.js: white player pawn creation", function (assert) {
     "use strict";
-    var chesspieces = new chesspieces_module.ChessPieces("WHITE"),
+    var chesspieces = new chesspiecesModule.ChessPieces("WHITE"),
         whiteId = "whiteId",
         blackId = "blackId",
         whiteChesspiece,
@@ -63,7 +63,7 @@ QUnit.test("testing chesspieces.js: white player pawn creation", function (asser
 
 QUnit.test("testing chesspieces.js: black player pawn creation", function (assert) {
     "use strict";
-    var chesspieces = new chesspieces_module.ChessPieces("BLACK"),
+    var chesspieces = new chesspiecesModule.ChessPieces("BLACK"),
         whiteId = "whiteId",
         blackId = "blackId",
         whiteChesspiece,

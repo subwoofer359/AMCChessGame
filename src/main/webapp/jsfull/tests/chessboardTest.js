@@ -1,5 +1,5 @@
 /*global QUnit*/
-/*global chessboard_module*/
+/*global chessboardModule*/
 /*global $*/
 var json;
 QUnit.module("chessboard tests", {
@@ -17,8 +17,8 @@ QUnit.test("testing chessboard.js: creating a blank chess board", function (asse
     var $board,
         $squares;
 
-    assert.equal(chessboard_module.boardWidth, 8);
-    $("#qunit-fixture").append(chessboard_module.createBlankChessBoardSVG());
+    assert.equal(chessboardModule.boardWidth, 8);
+    $("#qunit-fixture").append(chessboardModule.createBlankChessBoardSVG());
 
     $board = $("#qunit-fixture svg");
 
@@ -43,7 +43,7 @@ QUnit.test("testing chessboard.js: create a non blank chess board", function (as
         $chesspieces;
 
     $("#qunit-fixture").append("<div id='chessboard-surround'></div>");
-    chessboard_module.createChessBoard("WHITE", json);
+    chessboardModule.createChessBoard("WHITE", json);
     $board = $("#chessboard-surround svg");
     $chesspieces = $board.find("g.chesspiece");
     assert.equal($chesspieces.length, 32);
@@ -59,7 +59,7 @@ QUnit.test("testing chessboard.js: test no of chess pieces on chessboard", funct
     var $board;
 
     $("#qunit-fixture").append("<div id='chessboard-surround'></div>");
-    chessboard_module.createChessBoard("WHITE", json);
+    chessboardModule.createChessBoard("WHITE", json);
     $board = $("#chessboard-surround svg");
     assert.equal($board.find('g[id^="pawn"]').length, 16);
     assert.equal($board.find('g[id^="knight"]').length, 4);

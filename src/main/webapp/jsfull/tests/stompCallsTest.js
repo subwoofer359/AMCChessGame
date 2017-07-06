@@ -1,6 +1,6 @@
 /*global QUnit*/
 /*global $*/
-/*global chessgameportal_module*/
+/*global chessgameportalModule*/
 /*global console*/
 /*jslint unparam: true*/
 
@@ -44,7 +44,7 @@ QUnit.module("Stomp Calls Test", {
 QUnit.test("testing Stomp Calls Test", function (assert) {
     "use strict";
     var sentMessage;
-    chessgameportal_module.openStompConnection("", {}, new chessgameportal_module.StompActions("gameUID", "playerName", "opponentName", "playerColour"));
+    chessgameportalModule.openStompConnection("", {}, new chessgameportalModule.StompActions("gameUID", "playerName", "opponentName", "playerColour"));
     assert.equal(subscriptions.indexOf(USER_UPDATES), 0);
     assert.equal(subscriptions.indexOf(TOPIC_UPDATES + "gameUID"), 1);
     sentMessage = messages.pop();

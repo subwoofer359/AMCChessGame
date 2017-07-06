@@ -4,7 +4,7 @@
  * @author Adrian McLaughlin
  */
 
-var chesspieces_module = (function () {
+var chesspiecesModule = (function () {
     'use strict';
     /*
     * Chess Letter coordinates
