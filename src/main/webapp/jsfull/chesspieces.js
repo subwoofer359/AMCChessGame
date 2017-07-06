@@ -80,11 +80,11 @@ var chesspiecesModule = (function () {
             return 'chesspiece';
         },
         getCoordX : function (location) {
-            return this.x + (this.offsetXY * (coordinates[location.file] - 1))
+            return this.x + (this.offsetXY * (coordinates[location.file] - 1));
         },
         
         getCoordY : function (location) {
-            return this.y + (this.offsetXY * (8 - location.rank))
+            return this.y + (this.offsetXY * (8 - location.rank));
         },
         /**
         * SVG pawn
