@@ -33,8 +33,9 @@ var chessboard_module = (function () {
             letter,
             rect;
 
-        svgDocument.setAttribute('height', '500px');
-        svgDocument.setAttribute('width', '500px');
+        svgDocument.setAttribute('viewBox', '0 0 500 500');
+        //svgDocument.setAttribute('height', '500px');
+        //svgDocument.setAttribute('width', '500px');
         layer.setAttribute('id', 'layer1');
 
         for (i = boardWidth; i > 0; i -= 1) {
