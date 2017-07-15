@@ -10,6 +10,7 @@ import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.KingPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.NoChessGame;
 import org.amc.game.chess.PawnPiece;
 import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.RookPiece;
@@ -26,7 +27,7 @@ import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.JPEGTranscoder;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.log4j.Logger;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -47,13 +48,12 @@ public class ChessBoardSVGFactory {
 
     private static final String SVG_NODE_G = "g";
 
-    private static final String OUTPUT_DIR = "temp";
+    //Absolute path being used to servlet container
+    static String OUTPUT_DIR = "/usr/local/tomcat/temp/";
     
     private static final String TEMP_FILE_PREFIX = "svg_";
     
-    private static final String TEMP_FILE_SUFFIX = ".jpg";
-
-    private static final float KEY_QUALITY = .8f;
+    private static final String TEMP_FILE_SUFFIX = ".png";
 
     private Map<Class<? extends ChessPiece>, SVGChessPiece> sVGElementfactory;
 
@@ -72,6 +72,7 @@ public class ChessBoardSVGFactory {
     }
 
     private void createSVGDocument() {
+    	logger.info("createSVGDocument");
         DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
         document = impl.createDocument(svgNS, "svg", null);
         Element svgRoot = document.getDocumentElement();
@@ -104,7 +105,7 @@ public class ChessBoardSVGFactory {
     private void addChessPieces() {
         ChessGame chessGame = this.serverChessGame.getChessGame();
 
-        if (chessGame == null) {
+        if (chessGame == NoChessGame.NO_CHESSGAME) {
             logger.debug("ChessBoard doesn't exist in this ServerChessGame");
         } else {
             ChessBoard board = chessGame.getChessBoard();
@@ -126,8 +127,6 @@ public class ChessBoardSVGFactory {
         }
     }
 
-    
-
     public void setServerChessGame(AbstractServerChessGame serverChessGame) {
         this.serverChessGame = serverChessGame;
         document = null;
@@ -137,23 +136,27 @@ public class ChessBoardSVGFactory {
         createSVGIfItDoesntExists();
         
         File file = createImageFile();
-        
+
         try(OutputStream ostream = new FileOutputStream(file)){
         	generateImgFromSvg(ostream);
         } catch(TranscoderException te) {
-        	logger.debug(te);
+        	logger.error("Transcoding Error:");
         	throw new IOException(te);
         }
         return file;
 
     }
     
+    /*
+     * PNGTranscoder is being used as JPEGTranscoder just hangs
+     */
     private void generateImgFromSvg(OutputStream ostream) throws TranscoderException, IOException {
-    	JPEGTranscoder t = new JPEGTranscoder();
-        t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, KEY_QUALITY);
+    	PNGTranscoder p = new PNGTranscoder();
+       
     	TranscoderInput input = new TranscoderInput(document);
     	TranscoderOutput output = new TranscoderOutput(ostream);
-    	t.transcode(input, output);
+    	
+    	p.transcode(input, output);
     	ostream.flush();
     	ostream.close();
     }
@@ -164,9 +167,9 @@ public class ChessBoardSVGFactory {
         }
     }
     
-    private File createImageFile() throws IOException {        
-        File file = File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX, new File(OUTPUT_DIR));
-        logger.info("Creating SVG file:" + file.getAbsolutePath());
-        return file;
+    private File createImageFile() throws IOException {
+    		File file = File.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX, new File(OUTPUT_DIR));
+    		logger.info("Creating SVG file:" + file.getAbsolutePath());
+    		return file;
     }
 }

@@ -1,7 +1,5 @@
 package org.amc.game.chessserver.messaging;
 
-import java.io.File;
-
 public abstract class PlayerChessGameEmail extends EmailTemplate {
 	
 	static final int GAMEUID_LENGTH = 5;
@@ -23,7 +21,8 @@ public abstract class PlayerChessGameEmail extends EmailTemplate {
 	}
 	@Override
 	public void addImages() {
-		 addEmbeddedImage(BACKGROUND_IMAGE_RESOURCE, new File(backgroundImagePath));
+		 addEmbeddedImage(getMailImageFactory().getServletPathImage(BACKGROUND_IMAGE_RESOURCE,
+				 backgroundImagePath, EmailTemplate.IMAGE_TYPE));
 	}
 	
 	

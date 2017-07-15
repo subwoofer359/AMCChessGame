@@ -113,3 +113,20 @@ QUnit.test("ChessPiece toString", function (assert) {
     var chessPiece = new ChessPiece("BLACK");
     assert.equal(chessPiece.toString(), "");
 });
+
+/*
+QUnit.test("ChessPiece embed in string", function (assert) {
+    "use strict";
+    var chessPiece = new ChessPiece("BLACK"),
+        values = {
+            name : 'Ted',
+            phoneNumber : '9394993'
+        },
+        str = '${name}\'s phone number is ${phone number}',
+        result;
+
+        result = chessPiece.embedIntoString(str, values);
+
+        assert.equal(result, values.name + '\'s phone number is ' + values.phoneNumber);
+});
+*/

@@ -1,15 +1,15 @@
 package org.amc.game.chessserver.messaging;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+
+import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
 public abstract class EmailTemplate {
 	
@@ -17,28 +17,21 @@ public abstract class EmailTemplate {
     
     static final String BACKGROUND_IMAGE_RESOURCE = "background";
     
-    static final String backgroundImagePath;
-    
-    static {
-        if(System.getProperty("user.dir").contains("workspace")) {
-            
-            backgroundImagePath = "src/main/webapp/img/1700128.jpg";
-        } else {
-            backgroundImagePath = "webapps/AMCChessGame/img/1700128.jpg";
-        }
-    }
+    static final String backgroundImagePath = "/img/1700128.jpg";;
 
-    private static String URL_ROOT;
+    static final String IMAGE_TYPE = "image/jpg";
     
-	private static final String IMAGE_TYPE = "image/jpg";
+    private static String URL_ROOT = "";
 	
 	private static final String DEFAULT_EMAIL_SUBJECT = "Move update from AMCChessGame";
 	
-	private SpringTemplateEngine templateEngine;
+	private TemplateEngineAdapter templateEngine;
+	
+	private MailImageFactory mailImageFactory;
 
     private AbstractServerChessGame serverChessGame;
 
-    private Player otherPlayer;
+    private Player otherPlayer = NO_PLAYER;
     
     private Map<String, EmbeddedMailImage> images = new HashMap<>();
     
@@ -81,21 +74,17 @@ public abstract class EmailTemplate {
 
         return this.templateEngine.process(emailTemplateName, ctx);
     }
-
-    protected void addTempEmbeddedImage(String contentId, File filePath) {
-        images.put(contentId, new EmbeddedMailImage(contentId, filePath, IMAGE_TYPE));
-    }
     
-    protected void addEmbeddedImage(String contentId, File filePath) {
-        images.put(contentId, new EmbeddedMailImage(contentId, filePath, IMAGE_TYPE, false));
+    protected void addEmbeddedImage(EmbeddedMailImage embeddedMailImage) {
+    	images.put(embeddedMailImage.getContentId(), embeddedMailImage);
     }
         
     @Autowired
-    public void setTemplateEngine(SpringTemplateEngine templateEngine) {
+    public void setTemplateEngine(TemplateEngineAdapter templateEngine) {
         this.templateEngine = templateEngine;
     }
     
-    SpringTemplateEngine getTemplateEngine() {
+    TemplateEngineAdapter getTemplateEngine() {
         return this.templateEngine;
     }
     
@@ -143,16 +132,26 @@ public abstract class EmailTemplate {
         this.emailTemplateName = emailTemplateName;
     }
     
-    public static String getUrlRoot() {
+    public MailImageFactory getMailImageFactory() {
+    	if(mailImageFactory == null) {
+    		throw new NullPointerException("MailImageFactory not set");
+    	}
+		return mailImageFactory;
+	}
+
+	public void setMailImageFactory(MailImageFactory mailImageFactory) {
+		this.mailImageFactory = mailImageFactory;
+	}
+
+	public static String getUrlRoot() {
         synchronized (EmailTemplate.class) {
             return EmailTemplate.URL_ROOT;
         }
-        
     }
     
     public static void setUrlRoot(String urlRoot) {
         synchronized (EmailTemplate.class) {
-            if(URL_ROOT == null) {
+            if(URL_ROOT == "") {
                 URL_ROOT = urlRoot;
             }
         }

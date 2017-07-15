@@ -454,6 +454,67 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+		<id>prod</id>
+		<build>
+			<plugins>
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<executions>
+						<execution>
+						<phase>package</phase>
+						<goals>
+						<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<!-- Database properties -->
+								<delete file="${project.build.outputDirectory}/database.properties"/>
+								<copy file="src/main/resources/database.prod.properties"
+									tofile="${project.build.outputDirectory}/database.properties"/>
+								
+								<!-- Server properties -->
+								<delete file="${project.build.outputDirectory}/server.properties"/>
+								<copy file="src/main/resources/server.prod.properties"
+									tofile="${project.build.outputDirectory}/server.properties"/>
+									
+								<!-- persistence xml -->
+								<delete file="${project.build.outputDirectory}/META-INF/persistence.xml"/>
+								<copy file="src/main/resources/META-INF/persistence.prod.xml"
+									tofile="${project.build.outputDirectory}/META-INF/persistence.xml"/>
+									
+								<!-- Context.xml -->
+								<delete file="${project.basedir}/target/AMCChessGame/META-INF/context.xml"/>
+								
+								<copy file="src/main/webapp/META-INF/context.prod.xml"
+									tofile="${project.basedir}/target/AMCChessGame/META-INF/context.xml"/>
+							</tasks>
+						</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration><skip>true</skip></configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<configuration><skipTests>true</skipTests></configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+						<packagingExcludes>**/context.xml</packagingExcludes>
+					
+					</configuration>
+				</plugin>
+			</plugins>
+		</build>
+		</profile>
+	</profiles>
 
 	<reporting>
 		<plugins>

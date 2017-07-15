@@ -209,7 +209,7 @@ $(document).ready(function(){
     
     stompObject.headers = {};
     stompObject.headers[headerName] = token;
-    stompObject.URL = "http://${pageContext.request.localAddr}:8080" +
+    stompObject.URL = "http://${HOSTIP}:8080" +
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame";
     stompObject.gameUUID = "${GAME_UUID}";

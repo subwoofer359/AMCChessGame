@@ -1,6 +1,5 @@
 package org.amc.game.chessserver.messaging;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.amc.game.chess.ChessGame;
@@ -38,11 +37,16 @@ public class MoveUpdateEmail extends EmailTemplate {
     @Override
     public void addImages() {
         try {
-            addTempEmbeddedImage(CHESSBOARD_IMAGE_RESOURCE, createChessBoardImage());
-            addEmbeddedImage(BACKGROUND_IMAGE_RESOURCE, new File(backgroundImagePath));
+        	logger.info("adding chessboard picture");
+            addEmbeddedImage(getMailImageFactory().getTempServletPathImage(CHESSBOARD_IMAGE_RESOURCE,
+            		createChessBoardImage(), EmailTemplate.IMAGE_TYPE));
+            logger.info("adding background picture");
+            addEmbeddedImage(getMailImageFactory().getServletPathImage(BACKGROUND_IMAGE_RESOURCE,
+            		backgroundImagePath, EmailTemplate.IMAGE_TYPE));
             
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            logger.error("Error Adding Images to Move Email:" + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -62,9 +66,9 @@ public class MoveUpdateEmail extends EmailTemplate {
         addContextVariable(TEMPLATE_BACKGROUND_TAG, BACKGROUND_IMAGE_RESOURCE);
     }
     
-    private File createChessBoardImage() throws IOException {
+    private String createChessBoardImage() throws IOException {
         chessBoardSVGFactory.setServerChessGame(getServerChessGame());
-    	return chessBoardSVGFactory.getChessBoardImage();
+    	return chessBoardSVGFactory.getChessBoardImage().getAbsolutePath();
     }
     
     @Autowired

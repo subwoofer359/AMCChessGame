@@ -2,60 +2,29 @@ package org.amc.game.chessserver.messaging;
 
 import java.io.File;
 
+import javax.mail.internet.MimeMessage;
 
-class EmbeddedMailImage {
+/**
+ * Encapsulates information of an image to be embedding in
+ * a {@link MimeMessage}
+ * @author Adrian Mclaughlin
+ *
+ */
+public interface EmbeddedMailImage {
 
-    private String contentId;
-    private File filePath;
-    private String contentType;
-    private boolean toBeDeleted;
+	public String getContentId();
+
+    public File getImageSource();
+
+    public String getContentType();
+
+    public void setContentId(String contentId);
     
-    EmbeddedMailImage(String contentId, File filePath, String contentType) {
-        this.contentId = contentId;
-        this.filePath = filePath;
-        this.contentType = contentType;
-        this.toBeDeleted = true;
-    }
-    
-    EmbeddedMailImage(String contentId, File filePath, String contentType, boolean toBeDeleted) {
-        this.contentId = contentId;
-        this.filePath = filePath;
-        this.contentType = contentType;
-        this.toBeDeleted = toBeDeleted;
-    }
+    public String getPath();
 
-    public String getContentId() {
-        return contentId;
-    }
+    public void setPath(String filePath);
 
-    public File getImageSource() {
-        return filePath;
-    }
+    public void setContentType(String contentType);
 
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
-    }
-
-    public void setFilePath(File filePath) {
-        this.filePath = filePath;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public boolean isToBeDeleted() {
-        return toBeDeleted;
-    }
-
-    public void setToBeDeleted(boolean toBeDeleted) {
-        this.toBeDeleted = toBeDeleted;
-    }
-    
-    
-
+    public boolean isToBeDeleted();
 }

@@ -35,6 +35,9 @@ public final class StartupShutdownListener implements ServletContextListener {
         // Setting up logger
         // System.out.println(arg0.getServletContext().getRealPath("/")+"WEB-INF/log4j.properties");
         // PropertyConfigurator.configure("log4j.properties");
+    	String hostName = System.getenv("HOSTIP");
+    	arg0.getServletContext().setAttribute("HOSTIP", hostName);
+    	log.info("Storing HOSTNAME:" + hostName);
         log.info("Servlet started up....");
     }
 

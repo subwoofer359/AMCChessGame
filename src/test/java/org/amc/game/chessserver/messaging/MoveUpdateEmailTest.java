@@ -17,6 +17,8 @@ import org.amc.game.chessserver.ServerChessGame;
 import org.amc.game.chessserver.TwoViewServerChessGame;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
@@ -24,19 +26,29 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class MoveUpdateEmailTest {
 
     private MoveUpdateEmail template;
+    private TemplateEngineAdapter templateEngineAdapter;
     private SpringTemplateEngine templateEngine;
     private Player player;
     private Player opponent;
     private ServerChessGame scg;
     private final long GAME_UID = 20202l;
     
+    private MailImageFactory mailImageFactory;
+    
+    @Mock
+    private ServletContext servletContext;
+    
     @Before
     public void setUp() throws Exception {
+    	MockitoAnnotations.initMocks(this);
+    	ChessBoardSVGFactory.OUTPUT_DIR = "temp";
+    	
         player = new HumanPlayer("Adrian McLaughlin");
         scg = new TwoViewServerChessGame(GAME_UID, player);
         opponent = new HumanPlayer("Player 2");
@@ -49,7 +61,16 @@ public class MoveUpdateEmailTest {
         });
         scg.addOpponent(opponent);
         
-        FileTemplateResolver emailTemplateResolver = new FileTemplateResolver();
+        setUpTemplateEngine();
+        
+        mailImageFactory = new MailImageFactory();
+        mailImageFactory.setServletContext(servletContext);
+     
+        initialiseTemplate(scg.getPlayer(), scg);   
+    }
+    
+    private void setUpTemplateEngine() {
+    	FileTemplateResolver emailTemplateResolver = new FileTemplateResolver();
         emailTemplateResolver.setPrefix("src/main/resources/mail/");
         emailTemplateResolver.setTemplateMode("HTML5");
         emailTemplateResolver.setCharacterEncoding("UTF-8");
@@ -59,36 +80,39 @@ public class MoveUpdateEmailTest {
         
         emailTemplateResolver.initialize();
         templateEngine.initialize();
-     
-        initialiseTemplate(scg.getPlayer(), scg);
-        
+        templateEngineAdapter = new TemplateEngineAdapter(templateEngine);
     }
     
     private void initialiseTemplate(Player player, ServerChessGame scg) throws ParserConfigurationException {
         ChessBoardSVGFactory cbsi = new ChessBoardSVGFactory(scg);
         
         template = new MoveUpdateEmail(player, scg);
-        template.setTemplateEngine(templateEngine);
+        template.setTemplateEngine(templateEngineAdapter);
         template.setChessBoardSVGFactory(cbsi);
-        template.setTemplateEngine(templateEngine);
+        template.setTemplateEngine(templateEngineAdapter);
+        template.setMailImageFactory(mailImageFactory);
+        
         
     }
-
+    
     @Test
     public void test() throws Exception {
-        template.getEmailHtml();  
+    	template.getEmailHtml();  
         Map<String, EmbeddedMailImage> images = template.getEmbeddedImages();
+        
         assertTrue(images.size() == 2);
         
         EmbeddedMailImage imageBackground = images.get(MoveUpdateEmail.BACKGROUND_IMAGE_RESOURCE);
+        
         assertEquals(imageBackground.getContentId(), MoveUpdateEmail.BACKGROUND_IMAGE_RESOURCE);
         assertEquals(imageBackground.getContentType(), "image/jpg");
-        assertEquals(imageBackground.getImageSource().getPath(), EmailTemplate.backgroundImagePath);
+        assertEquals(imageBackground.getPath(), EmailTemplate.backgroundImagePath);
         
         EmbeddedMailImage imageChessboard = images.get(MoveUpdateEmail.CHESSBOARD_IMAGE_RESOURCE);
+        
         assertEquals(imageChessboard.getContentId(), MoveUpdateEmail.CHESSBOARD_IMAGE_RESOURCE);
         assertEquals(imageChessboard.getContentType(), "image/jpg");
-        assertNotNull(imageChessboard.getImageSource().getPath());
+        assertNotNull(imageChessboard.getPath());
     }
     
     @Test
