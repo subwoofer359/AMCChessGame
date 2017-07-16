@@ -282,6 +282,7 @@
 							<directory>temp</directory>
 							<includes>
 								<include>**/*.jpg</include>
+								<include>**/*.png</include>
 							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
