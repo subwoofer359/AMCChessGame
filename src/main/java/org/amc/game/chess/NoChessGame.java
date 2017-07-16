@@ -68,8 +68,7 @@ public class NoChessGame extends ChessGame {
 
 	@Override
 	void setPromotionState() {
-		// TODO Auto-generated method stub
-		super.setPromotionState();
+		//do nothing
 	}
 
 	@Override

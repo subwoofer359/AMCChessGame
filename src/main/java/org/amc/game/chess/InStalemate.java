@@ -80,7 +80,7 @@ public class InStalemate {
 	 * @author Adrian Mclaughlin
 	 *
 	 */
-	private class Game {
+	private static class Game {
 		ChessGamePlayer player;
 		ChessGamePlayer opponent;
 		ChessBoard board;

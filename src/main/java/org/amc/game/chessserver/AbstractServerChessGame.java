@@ -175,8 +175,8 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     public void setCurrentStatus(ServerGameStatus currentStatus) {
         synchronized (this) {
             this.currentStatus = currentStatus;
+            notifyObservers(this.currentStatus);
         }
-        notifyObservers(this.currentStatus);
     }
     
     

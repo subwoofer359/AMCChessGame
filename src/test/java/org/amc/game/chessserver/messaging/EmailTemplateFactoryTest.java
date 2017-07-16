@@ -8,7 +8,6 @@ import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.messaging.EmailTemplateFactory.FactoryInstantinationException;
-import org.amc.util.SpringHostInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -119,13 +118,22 @@ public class EmailTemplateFactoryTest {
     }
     
     @Test
-    public void testSetSpringHostInfo() {
+    public void testUrlRoot() {
+    	final String contextPath = "/AMCChessGame";
+    	final String urlRoot = "/test/path/";
+    	final String host = "192.168.1.1";
+    	final String port = "8080";
     	
-    	SpringHostInfo info = new SpringHostInfo(servletContext, "192.168.1.1", 8080);
-    	factory.setSpringHostInfo(info);
+    	when(servletContext.getInitParameter(eq("URL_APP_PATH"))).thenReturn(urlRoot);
+    	when(servletContext.getAttribute(eq("PORT"))).thenReturn(port);
+    	when(servletContext.getAttribute(eq("HOSTIP"))).thenReturn(host);
+    	when(servletContext.getContextPath()).thenReturn(contextPath);
     	
-    	assertEquals(EmailTemplate.getUrlRoot(), 
-    			info.getHostUrl() + EmailTemplateFactory.URL_APP_PATH);
+    	factory.setServletContext(servletContext);
+    	
+    	EmailTemplate emailTemp = factory.getEmailTemplate(ChessGame.class);
+    	
+    	assertEquals("http://" + host + ":" + port + contextPath + urlRoot, emailTemp.getUrlRoot());
 
     }
 

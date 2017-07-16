@@ -26,18 +26,12 @@
     	</property>
 	</bean>
 	
-	<bean id="springHostInfo" class="org.amc.util.SpringHostInfo">
-		<constructor-arg ref="servletContext"/>
-		<constructor-arg value="${server.hostname}"/>
-		<constructor-arg value="${server.port}"/>
-	</bean>
-	
 	<bean id="mailImageFactory" class="org.amc.game.chessserver.messaging.MailImageFactory"/>
 	
 	<bean id="emailTemplateFactory" class="org.amc.game.chessserver.messaging.EmailTemplateFactory" scope="prototype">
 		<lookup-method name="getChessBoardSVGFactory" bean="chessBoardSVGFactory"/>
 		<property name="templateEngine" ref="templateEngine" />
-		<property name="springHostInfo" ref="springHostInfo" />
+		<property name="servletContext" ref="servletContext" />
 		<property name="mailImageFactory" ref="mailImageFactory"/>
 	</bean>
 	

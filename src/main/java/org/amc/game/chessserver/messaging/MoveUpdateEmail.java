@@ -38,7 +38,7 @@ public class MoveUpdateEmail extends EmailTemplate {
     public void addImages() {
         try {
         	logger.info("adding chessboard picture");
-            addEmbeddedImage(getMailImageFactory().getTempServletPathImage(CHESSBOARD_IMAGE_RESOURCE,
+            addEmbeddedImage(getMailImageFactory().getTempRootPathImage(CHESSBOARD_IMAGE_RESOURCE,
             		createChessBoardImage(), EmailTemplate.IMAGE_TYPE));
             logger.info("adding background picture");
             addEmbeddedImage(getMailImageFactory().getServletPathImage(BACKGROUND_IMAGE_RESOURCE,

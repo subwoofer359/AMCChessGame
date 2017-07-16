@@ -63,10 +63,10 @@ public class GameTableController {
     }
     
     static class ChessGameInfoSerialiser implements JsonSerializer<ChessGameInfo> {
-        final String UID = "uid";
-        final String CURRENT_STATUS = "currentStatus";
-        final String PLAYER = "player";
-        final String OPPONENT = "opponent";
+        private static final String UID = "uid";
+        private static final String CURRENT_STATUS = "currentStatus";
+        private static final String PLAYER = "player";
+        private static final String OPPONENT = "opponent";
 
 		@Override
 		public JsonElement serialize(ChessGameInfo chessGameInfo, Type arg1, JsonSerializationContext arg2) {

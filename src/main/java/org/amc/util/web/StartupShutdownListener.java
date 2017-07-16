@@ -23,6 +23,10 @@ public final class StartupShutdownListener implements ServletContextListener {
     
     public final static Logger log = Logger.getLogger(StartupShutdownListener.class);
 
+    private final static String HOST_IP = "HOSTIP";
+    
+    private final static String PORT = "PORT";
+    
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         log.info("Servlet shut down....");
@@ -32,12 +36,13 @@ public final class StartupShutdownListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
-        // Setting up logger
-        // System.out.println(arg0.getServletContext().getRealPath("/")+"WEB-INF/log4j.properties");
-        // PropertyConfigurator.configure("log4j.properties");
-    	String hostName = System.getenv("HOSTIP");
-    	arg0.getServletContext().setAttribute("HOSTIP", hostName);
-    	log.info("Storing HOSTNAME:" + hostName);
+    	String hostName = System.getenv(HOST_IP);
+    	arg0.getServletContext().setAttribute(HOST_IP, hostName);
+ 
+        String port = System.getenv(PORT);
+        arg0.getServletContext().setAttribute(PORT, port);
+        
+        log.info(String.format("Storing Server information: (%s:%s)", hostName, port));
         log.info("Servlet started up....");
     }
 

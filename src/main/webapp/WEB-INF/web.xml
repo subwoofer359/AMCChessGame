@@ -41,6 +41,12 @@
         </param-value>
 	</context-param>
 	
+	<context-param>
+		<description>The URL part to view the chess game using UrlViewChessGameController</description>
+		<param-name>URL_APP_PATH</param-name>
+		<param-value>/app/chessgame/urlview/</param-value>
+	</context-param>
+	
 	<!-- Spring controllers -->
 
 	<servlet>

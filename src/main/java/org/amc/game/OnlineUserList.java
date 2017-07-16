@@ -19,19 +19,19 @@ public final class OnlineUserList {
 		userSet = new HashSet<User>();
 	}
 	
-	public final void addUser(User user) {
+	public void addUser(User user) {
 		synchronized (this) {
 			userSet.add(user);
 		}
 	}
 	
-	public final void removeUser(User user) {
+	public void removeUser(User user) {
 		synchronized (this) {
 			userSet.remove(user);
 		}
 	}
 	
-	public final boolean isOnline(User user) {
+	public boolean isOnline(User user) {
 		synchronized (this) {
 			return userSet.contains(user);
 		}

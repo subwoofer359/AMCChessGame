@@ -2,6 +2,7 @@ package org.amc.dao;
 
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -69,12 +70,12 @@ public class EntityManagerCache {
     
     Set<Long> getOldestEntityManagers(Calendar date) {
        Set<Long> oldest = new HashSet<>();
-       Set<Long> gameUids = entityManagerMap.keySet();
+       Set<Map.Entry<Long, ManagerInfo>> gameUids = entityManagerMap.entrySet();
 
-       for(Long gameUid : gameUids) {
-           ManagerInfo info = entityManagerMap.get(gameUid);
+       for(Map.Entry<Long, ManagerInfo> entry : gameUids) {
+           ManagerInfo info = entityManagerMap.get(entry.getKey());
            if(info.getLastUsedDate().before(date)) {
-               oldest.add(gameUid);
+               oldest.add(entry.getKey());
            }
        }
        return oldest;

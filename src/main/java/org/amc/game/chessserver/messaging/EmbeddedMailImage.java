@@ -12,19 +12,19 @@ import javax.mail.internet.MimeMessage;
  */
 public interface EmbeddedMailImage {
 
-	public String getContentId();
+	String getContentId();
 
-    public File getImageSource();
+    File getImageSource();
 
-    public String getContentType();
+    String getContentType();
 
-    public void setContentId(String contentId);
+    void setContentId(String contentId);
     
-    public String getPath();
+    String getPath();
 
-    public void setPath(String filePath);
+    void setPath(String filePath);
 
-    public void setContentType(String contentType);
+    void setContentType(String contentType);
 
-    public boolean isToBeDeleted();
+    boolean isToBeDeleted();
 }

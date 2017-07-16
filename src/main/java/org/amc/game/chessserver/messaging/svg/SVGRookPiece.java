@@ -14,7 +14,7 @@ public class SVGRookPiece extends SVGChessPiece {
     @Override
     public Element getChessPieceElement(String id, Location location, Colour pieceColour) {
         SVGColour svgColour = SVGColour.getColour(pieceColour);
-        float coordX = X + (offsetXY * (location.getLetter().ordinal()));
+        float coordX = X + offsetXY * (location.getLetter().ordinal());
         float coordY = -offsetXY * (location.getNumber() - 1);
 
         Element g = document.createElementNS(svgNS, "g");

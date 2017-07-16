@@ -115,12 +115,14 @@ public class EmailMessageService implements GameMessageService<EmailTemplate> {
 		 */
 		private void deleteImages(EmailTemplate message) {
 			Collection<EmbeddedMailImage> embeddedImages = message.getEmbeddedImages().values();
-			Iterator<EmbeddedMailImage> iterator = (embeddedImages.iterator());
+			Iterator<EmbeddedMailImage> iterator = embeddedImages.iterator();
 			
 			while (iterator.hasNext()) {
 				EmbeddedMailImage image = iterator.next();
 				if (image.isToBeDeleted() && image.getImageSource() != null) {
-					image.getImageSource().delete();
+					if (!image.getImageSource().delete()) {
+						log.error(String.format("File:%s couldn't be deleted", image.getImageSource().getName()));
+					}
 				}
 			}
 		}

@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 	
 	<websocket:message-broker application-destination-prefix="/app">
-        <websocket:stomp-endpoint path="/chessgame" allowed-origins="http://192.168.1.6:8080, http://192.168.1.5:8080">
+        <websocket:stomp-endpoint path="/chessgame" allowed-origins="*">
         	<websocket:handshake-interceptors>
         		<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
         	</websocket:handshake-interceptors>

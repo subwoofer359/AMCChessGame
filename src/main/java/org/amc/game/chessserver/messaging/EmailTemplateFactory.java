@@ -4,9 +4,10 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.UrlViewChessGameController;
-import org.amc.util.SpringHostInfo;
 import org.apache.log4j.Logger;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+
+import javax.servlet.ServletContext;
 
 public abstract class EmailTemplateFactory {
 
@@ -16,10 +17,12 @@ public abstract class EmailTemplateFactory {
 	
 	private MailImageFactory mailImageFactory;
 	
+	private String urlRoot = "";
+	
 	/**
 	 * The URL part to view the chess game using {@link UrlViewChessGameController}
 	 */
-	static final String URL_APP_PATH = "/app/chessgame/urlview/";
+
 
 	public EmailTemplate getEmailTemplate(Class<?> clss) {
 		if (clss.equals(Player.class)) {
@@ -27,6 +30,7 @@ public abstract class EmailTemplateFactory {
 			
 			email.setTemplateEngine(templateEngine);
 			email.setMailImageFactory(mailImageFactory);
+			email.setUrlRoot(urlRoot);
 			return email;
 		} else if (clss.equals(ChessGame.class)) {
 			MoveUpdateEmail email = new MoveUpdateEmail();
@@ -34,6 +38,7 @@ public abstract class EmailTemplateFactory {
 			email.setChessBoardSVGFactory(getChessBoardSVGFactory());
 			email.setTemplateEngine(templateEngine);
 			email.setMailImageFactory(mailImageFactory);
+			email.setUrlRoot(urlRoot);
 			return email;
 		} else {
 		    logger.error("Factory received object of invalid class:" + clss.getSimpleName());
@@ -48,6 +53,7 @@ public abstract class EmailTemplateFactory {
 	            
 	            email.setTemplateEngine(templateEngine);
 	            email.setMailImageFactory(mailImageFactory);
+	            email.setUrlRoot(urlRoot);
 	            return email;
 	        } else {
 	            logger.error("Factory received ServerGameStatus of invalid status:" + status.toString());
@@ -68,9 +74,17 @@ public abstract class EmailTemplateFactory {
 		this.mailImageFactory = mailImageFactory;
 	}
 	
-	public void setSpringHostInfo(SpringHostInfo springHostInfo) {
-			EmailTemplate.setUrlRoot(springHostInfo.getHostUrl() + URL_APP_PATH);
-			logger.debug("URL_ROOT ------------>" + EmailTemplate.getUrlRoot());
+	public void setServletContext(ServletContext servletContext) {
+		urlRoot = new StringBuilder("http://")
+			.append((String)servletContext.getAttribute("HOSTIP"))
+			.append(':')
+			.append((String)servletContext.getAttribute("PORT"))
+			.append(servletContext.getContextPath())
+			.append(servletContext.getInitParameter("URL_APP_PATH"))
+			.toString();
+		
+		
+		logger.debug("URL_ROOT ------------>" + urlRoot);
 	}
 
 	public abstract ChessBoardSVGFactory getChessBoardSVGFactory();

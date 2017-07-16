@@ -11,7 +11,8 @@ package org.amc.game.chess;
  */
 public final class PawnPromotionRule extends PawnPieceRule {
 	
-	public static String ERROR_CAN_ONLY_PROMOTE_PAWN = "Can't promote Chess pieces other than a pawn";
+	public static final String ERROR_CAN_ONLY_PROMOTE_PAWN = "Can't promote Chess pieces " + 
+			"other than a pawn";
 
     private static final int BLACK_PROMOTION_RANK = 1;
     private static final int WHITE_PROMOTION_RANK = 8;

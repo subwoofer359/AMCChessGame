@@ -3,6 +3,7 @@ package org.amc;
 import org.amc.game.chess.Player;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -67,7 +68,7 @@ public class User {
     }
 
     public char[] getPassword() {
-        return password;
+    	return Arrays.copyOf(password, password.length);
     }
 
     public boolean getEnabled() {
@@ -87,7 +88,7 @@ public class User {
     }
 
     public void setPassword(char[] password) {
-        this.password = password;
+        this.password = Arrays.copyOf(password, password.length);
     }
 
     public void setEnabled(boolean enabled) {

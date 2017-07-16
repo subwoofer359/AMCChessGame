@@ -13,8 +13,8 @@ public class SVGPawnPiece extends SVGChessPiece {
 
     public Element getChessPieceElement(String id, Location location, Colour pieceColour) {
         SVGColour svgColour = SVGColour.getColour(pieceColour);
-        float coordX = X + (offsetXY * (location.getLetter().ordinal()));
-        float coordY = Y - (offsetXY * (location.getNumber() - 1));
+        float coordX = X + offsetXY * (location.getLetter().ordinal());
+        float coordY = Y - offsetXY * (location.getNumber() - 1);
 
         Element g = document.createElementNS(svgNS, "g");
         g.setAttributeNS(null, "transform", "translate(" + coordX + "," + coordY + ")");

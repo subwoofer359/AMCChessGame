@@ -20,8 +20,6 @@ public abstract class EmailTemplate {
     static final String backgroundImagePath = "/img/1700128.jpg";;
 
     static final String IMAGE_TYPE = "image/jpg";
-    
-    private static String URL_ROOT = "";
 	
 	private static final String DEFAULT_EMAIL_SUBJECT = "Move update from AMCChessGame";
 	
@@ -40,6 +38,8 @@ public abstract class EmailTemplate {
     private String emailSubject;
     
     private String emailTemplateName = "";
+    
+    private String urlRoot = "";
     
     public EmailTemplate() {
         emailSubject = DEFAULT_EMAIL_SUBJECT;
@@ -68,8 +68,8 @@ public abstract class EmailTemplate {
         
         final Context ctx = new Context(Locale.getDefault());
         
-        for(String key:contextVariables.keySet()) {
-            ctx.setVariable(key, contextVariables.get(key));
+        for(Map.Entry<String, Object> entry  : contextVariables.entrySet()) {
+        	ctx.setVariable(entry.getKey(), entry.getValue());
         }
 
         return this.templateEngine.process(emailTemplateName, ctx);
@@ -143,17 +143,13 @@ public abstract class EmailTemplate {
 		this.mailImageFactory = mailImageFactory;
 	}
 
-	public static String getUrlRoot() {
-        synchronized (EmailTemplate.class) {
-            return EmailTemplate.URL_ROOT;
-        }
+	public String getUrlRoot() {
+        return urlRoot;
     }
     
-    public static void setUrlRoot(String urlRoot) {
-        synchronized (EmailTemplate.class) {
-            if(URL_ROOT == "") {
-                URL_ROOT = urlRoot;
-            }
-        }
+    public void setUrlRoot(String urlRoot) {
+    	if("".equals(this.urlRoot)) {
+    		this.urlRoot = urlRoot;
+    	}
     }
 }

@@ -86,20 +86,18 @@ public class EmailTemplateTest {
 
 	@Test
 	void testURLRoot() {
-		assertNotNull('Should be empty string or another value', EmailTemplate.getUrlRoot());
+		assertNotNull('Should be empty string or another value', email.getUrlRoot());
 
-		//Set URL_Root value if not already set and test
-		if(EmailTemplate.getUrlRoot().equals('')) {
-			final String URL_ROOT = '/tmp';
+		final String URL_ROOT = '/tmp';
 
-			EmailTemplate.setUrlRoot(URL_ROOT);
+		email.setUrlRoot(URL_ROOT);
 
-			assertEquals('Should be a value', URL_ROOT, EmailTemplate.getUrlRoot());
-		}
+		assertEquals('Should be a value', URL_ROOT, email.getUrlRoot());
+		
 
-		EmailTemplate.setUrlRoot('ANOTHER/VALUE');
+		email.setUrlRoot('ANOTHER/VALUE');
 
-		assertNotEquals('Value can only be set once', 'ANOTHER/VALUE', EmailTemplate.getUrlRoot());
+		assertNotEquals('Value can only be set once', 'ANOTHER/VALUE', email.getUrlRoot());
 	}
 
 	@Test
