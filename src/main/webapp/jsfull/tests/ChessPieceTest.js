@@ -3,17 +3,33 @@
 
 
 var Colour,
-    ChessPiece = ChessPieceModule.ChessPiece;
+    ChessPiece = ChessPiecesModule.ChessPiece;
     
-QUnit.module("Chesspiece object test", function () {
-    Colour = ChessPieceModule.Colour;
+QUnit.module("Chesspiece object test", {
+    beforeEach : function () {
+        Colour = ChessPiecesModule.Colour;
+    }
+});
+
+QUnit.test("Colour properties test", function (assert) {
+    "use strict";
+    assert.expect(4);
+    assert.ok(ChessPiecesModule.Colour.white.fill, "Property fill should exist");
+    assert.ok(ChessPiecesModule.Colour.white.stroke, "Property stroke should exist");
+    assert.ok(ChessPiecesModule.Colour.black.fill, "Property fill should exist");
+    assert.ok(ChessPiecesModule.Colour.black.stroke, "Property Stroke should exist");
 });
 
 QUnit.test("ChessPiece object creation", function (assert) {
     "use strict";
     var chessPiece = new ChessPiece("BLACK");
 
-    assert.equal(chessPiece.colour, "BLACK");
+    assert.equal(chessPiece.pieceColour, Colour.black);
+});
+
+QUnit.test("ChessPiece object creation with Colour object", function (assert) {
+    var chessPiece = new ChessPiece(Colour.black);
+    assert.equal(chessPiece.pieceColour, Colour.black, "Should be set to Colour black object");
 });
 
 QUnit.test("ChessPiece constants", function (assert) {
@@ -113,20 +129,3 @@ QUnit.test("ChessPiece toString", function (assert) {
     var chessPiece = new ChessPiece("BLACK");
     assert.equal(chessPiece.toString(), "");
 });
-
-/*
-QUnit.test("ChessPiece embed in string", function (assert) {
-    "use strict";
-    var chessPiece = new ChessPiece("BLACK"),
-        values = {
-            name : 'Ted',
-            phoneNumber : '9394993'
-        },
-        str = '${name}\'s phone number is ${phone number}',
-        result;
-
-        result = chessPiece.embedIntoString(str, values);
-
-        assert.equal(result, values.name + '\'s phone number is ' + values.phoneNumber);
-});
-*/

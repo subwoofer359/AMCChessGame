@@ -13,7 +13,24 @@ var chessboardModule = (function () {
     var letterCoordinates = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ],
         boardWidth = 8,
         whiteSquareColour = '#e6e6e6',
-        blackSquareColour = '#000000';
+        blackSquareColour = '#000000',
+        Colour = ChessPiecesModule.Colour,
+        constPieces = {
+            blackQueen : new ChessPiecesModule.QueenPiece(Colour.black),
+            blackKing : new ChessPiecesModule.KingPiece(Colour.black),
+            blackKnight : new ChessPiecesModule.KnightPiece(Colour.black),
+            blackBishop : new ChessPiecesModule.BishopPiece(Colour.black),
+            blackRook : new ChessPiecesModule.RookPiece(Colour.black),
+            blackPawn : new ChessPiecesModule.PawnPiece(Colour.black),
+
+            whiteQueen : new ChessPiecesModule.QueenPiece(Colour.white),
+            whiteKing : new ChessPiecesModule.KingPiece(Colour.white),
+            whiteKnight : new ChessPiecesModule.KnightPiece(Colour.white),
+            whiteBishop : new ChessPiecesModule.BishopPiece(Colour.white),
+            whiteRook : new ChessPiecesModule.RookPiece(Colour.white),
+            whitePawn : new ChessPiecesModule.PawnPiece(Colour.white)
+        };
+        
 
 
     /**
@@ -72,60 +89,57 @@ var chessboardModule = (function () {
     function createChessPiecesElements(playerColour, chessboardJSON) {
         var json = JSON.parse(chessboardJSON),
             location,
-            chesspieces,
             piecesOnBoard = "";
-
-        chesspieces = new chesspiecesModule.ChessPieces(playerColour);
 
         for (location in json.squares) {
             if (json.squares.hasOwnProperty(location)) {
                 switch (json.squares[location]) {
                 case "p":
-                    piecesOnBoard += chesspieces.pawn("pawn-" + location, location, chesspieces.colour.white);
+                    piecesOnBoard += constPieces.whitePawn.toString("pawn-" + location, location, playerColour);
                     break;
 
                 case "P":
-                    piecesOnBoard += chesspieces.pawn("pawn-" + location, location, chesspieces.colour.black);
+                    piecesOnBoard += constPieces.blackPawn.toString("pawn-" + location, location, playerColour);
                     break;
 
                 case 'r':
-                    piecesOnBoard += chesspieces.rook("rook-" + location, location, chesspieces.colour.white);
+                    piecesOnBoard += constPieces.whiteRook.toString("rook-" + location, location, playerColour);
                     break;
 
                 case 'R':
-                    piecesOnBoard += chesspieces.rook("rook-" + location, location, chesspieces.colour.black);
+                    piecesOnBoard += constPieces.blackRook.toString("rook-" + location, location, playerColour);
                     break;
 
                 case 'B':
-                    piecesOnBoard += chesspieces.bishop("bishop-" + location, location, chesspieces.colour.black);
+                    piecesOnBoard += constPieces.blackBishop.toString("bishop-" + location, location, playerColour);
                     break;
 
                 case 'b':
-                    piecesOnBoard += chesspieces.bishop("bishop-" + location, location, chesspieces.colour.white);
-                    break;
+                    piecesOnBoard += constPieces.whiteBishop.toString("bishop-" + location, location, playerColour);
+                   break;
 
                 case 'N':
-                    piecesOnBoard += chesspieces.knight("knight-" + location, location, chesspieces.colour.black);
+                    piecesOnBoard += constPieces.blackKnight.toString("knight-" + location, location, playerColour);
                     break;
 
                 case 'n':
-                    piecesOnBoard += chesspieces.knight("knight-" + location, location, chesspieces.colour.white);
+                    piecesOnBoard += constPieces.whiteKnight.toString("knight-" + location, location, playerColour);
                     break;
 
                 case 'Q':
-                    piecesOnBoard += chesspieces.queen("queen-" + location, location, chesspieces.colour.black);
+                    piecesOnBoard += constPieces.blackQueen.toString("queen-" + location, location, playerColour);
                     break;
 
                 case 'q':
-                    piecesOnBoard += chesspieces.queen("queen-" + location, location, chesspieces.colour.white);
+                    piecesOnBoard += constPieces.whiteQueen.toString("queen-" + location, location, playerColour);
                     break;
 
                 case 'K':
-                    piecesOnBoard += chesspieces.king("king-" + location, location, chesspieces.colour.black);
+                    piecesOnBoard += constPieces.blackKing.toString("king-" + location, location, playerColour);
                     break;
 
                 case 'k':
-                    piecesOnBoard += chesspieces.king("king-" + location, location, chesspieces.colour.white);
+                    piecesOnBoard += constPieces.whiteKing.toString("king-" + location, location, playerColour);
                     break;
                 }
             }

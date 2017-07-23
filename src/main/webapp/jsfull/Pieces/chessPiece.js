@@ -1,8 +1,14 @@
-var ChessPieceModule = (function () {
-
     var Colour = {
-            white :{},
-            black : {}
+            white :{
+                fill : '#ffd5d5',
+                stroke : '#000000',
+                toString : function () { return 'WHITE'; }
+            },
+            black : {
+                fill : '#191406',
+                stroke : '#ffffff',
+                toString : function () { return 'BLACK'; }
+            }
         },
         coordinates = {
             A : 1,
@@ -15,8 +21,26 @@ var ChessPieceModule = (function () {
             H : 8
         }
 
-    function ChessPiece(colour) {
-        this.colour = colour;
+    function ChessPiece(pieceColour) {
+        this.pieceColour = checkColour(pieceColour);
+    }
+
+    function checkColour(colour) {
+        if (typeof(colour) === 'string') {
+            switch (colour) {
+                case "BLACK":
+                    return Colour.black;
+                case "WHITE":
+                    return Colour.white;
+                default:
+                    throw new Error("Can't create ChessPiece Object");
+            }
+        } else if (typeof(colour) === 'object' && (colour === Colour.black || 
+            colour === Colour.white)) {
+            return colour;
+        } else {
+            throw new Error("Can't create ChessPiece Object");
+        }
     }
 
     ChessPiece.prototype = {
@@ -40,8 +64,9 @@ var ChessPieceModule = (function () {
         offsetXY : 62.5,
         
         getClasses : function (playerColour) {
-            if ((this.colour === "WHITE" && playerColour === Colour.white) ||
-                (this.colour === "BLACK" && playerColour === Colour.black)) {
+            var colour = checkColour(playerColour);
+            if ((this.pieceColour === Colour.white && colour === Colour.white) ||
+                (this.pieceColour === Colour.black && colour === Colour.black)) {
                 return 'chesspiece draggable';
             }
             return 'chesspiece';
@@ -75,12 +100,7 @@ var ChessPieceModule = (function () {
         },
         toString : function () {
             return "";
-        }
+        },
+        getColour : function () {   return this.pieceColour; },
+        checkColour : checkColour
     }
-
-    return {
-        Colour : Colour,
-        coordinates : coordinates,
-        ChessPiece : ChessPiece
-    }
-})();

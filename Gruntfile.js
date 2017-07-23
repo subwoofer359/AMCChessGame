@@ -64,15 +64,17 @@ module.exports = function (grunt) {
         },
         concat:{
             dist: {
-                src: ['src/main/webapp/jsfull/Pieces/chessPiece.js',
+                src: [  'src/main/webapp/jsfull/Pieces/header.js',
+                        'src/main/webapp/jsfull/Pieces/chessPiece.js',
                         'src/main/webapp/jsfull/Pieces/pawnPiece.js',
                         'src/main/webapp/jsfull/Pieces/bishopPiece.js',
                         'src/main/webapp/jsfull/Pieces/knightPiece.js',
                         'src/main/webapp/jsfull/Pieces/rookPiece.js',
                         'src/main/webapp/jsfull/Pieces/queenPiece.js',
-                        'src/main/webapp/jsfull/Pieces/kingPiece.js'
+                        'src/main/webapp/jsfull/Pieces/kingPiece.js',
+                        'src/main/webapp/jsfull/Pieces/footer.js'
                     ],
-                dest: 'src/main/webapp/jsfull/AChessPieces.js'
+                dest: 'src/main/webapp/jsfull/ChessPieces.js'
             }
         }
     });
