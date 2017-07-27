@@ -62,7 +62,7 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        concat:{
+        concat: {
             dist: {
                 src: [  'src/main/webapp/jsfull/Pieces/header.js',
                         'src/main/webapp/jsfull/Pieces/chessPiece.js',
@@ -76,6 +76,17 @@ module.exports = function (grunt) {
                     ],
                 dest: 'src/main/webapp/jsfull/ChessPieces.js'
             }
+        },
+        ts: {
+            default : {
+                src: ["src/main/webapp/jsfull/**", "!src/main/webapp/jsfull/Pieces/**"],
+                dest: "src/main/webapp/js",
+                options: {
+                    rootDir: "src/main/webapp/jsfull",
+                    allowJs: true,
+                    target: "es5"
+                }
+            }
         }
     });
 
@@ -86,8 +97,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-qunit-istanbul');
+    grunt.loadNpmTasks('grunt-ts');
 
-    grunt.registerTask('default', ['concat', 'jshint', 'uglify', 'qunit', 'cssmin']);
+    grunt.registerTask('default', ['ts', 'concat', 'jshint', 'uglify', 'qunit', 'cssmin']);
     grunt.registerTask('QUnit', ['qunit']);
     grunt.registerTask('css_min', ['cssmin']);
     grunt.registerTask('createModule', ['concat']);
