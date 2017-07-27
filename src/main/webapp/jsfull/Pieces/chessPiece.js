@@ -19,7 +19,7 @@
             F : 6,
             G : 7,
             H : 8
-        }
+        };
 
     function ChessPiece(pieceColour) {
         this.pieceColour = checkColour(pieceColour);
@@ -103,4 +103,4 @@
         },
         getColour : function () {   return this.pieceColour; },
         checkColour : checkColour
-    }
+    };

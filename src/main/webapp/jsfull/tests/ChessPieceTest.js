@@ -120,7 +120,7 @@ QUnit.test("ChessPiece parseSquareCoordinates", function (assert) {
     "use strict";
     var chessPiece = new ChessPiece("BLACK");
     assert.throws(function () {
-        chessPiece.parseSquareCoordinates("T1")
+        chessPiece.parseSquareCoordinates("T1");
     });
 });
 
