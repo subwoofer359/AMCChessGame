@@ -9,7 +9,15 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
-            all: ['Gruntfile.js', 'src/main/webapp/jsfull/**/*.js', 'test/**/*.js', '!src/main/webapp/jsfull/**/bootstrap.min.js']
+            all: [
+                'Gruntfile.js',
+                'src/main/webapp/jsfull/**/*.js',
+                'test/**/*.js',
+                '!src/main/webapp/jsfull/Pieces/**.js',
+                '!src/main/webapp/jsfull/sinon*.js',
+                '!src/main/webapp/jsfull/**/bootstrap.min.js'
+
+            ],
         },
         qunit: {
             all: ['src/main/webapp/WEB-INF/Tests/Qunit.html'],
@@ -99,7 +107,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-qunit-istanbul');
     grunt.loadNpmTasks('grunt-ts');
 
-    grunt.registerTask('default', ['ts', 'concat', 'jshint', 'uglify', 'qunit', 'cssmin']);
+    grunt.registerTask('default', ['concat', 'ts', 'jshint', 'qunit']);
     grunt.registerTask('QUnit', ['qunit']);
     grunt.registerTask('css_min', ['cssmin']);
     grunt.registerTask('createModule', ['concat']);
