@@ -1,7 +1,15 @@
 /*global QUnit*/
 /*global $*/
+
+import { Colour } from "../Pieces/ChessPiece";
+import { QueenPiece } from "../Pieces/QueenPiece"
+import { KingPiece } from "../Pieces/KingPiece"
+import { KnightPiece } from "../Pieces/KnightPiece"
+import { RookPiece } from "../Pieces/RookPiece"
+import { PawnPiece } from "../Pieces/PawnPiece"
+import { BishopPiece } from "../Pieces/BishopPiece"
+
 var pieces,
-    Colour = ChessPiecesModule.Colour,
     testData = {
         location : "B2",
         id : 234,
@@ -13,12 +21,12 @@ QUnit.module("ChessPiece object test", {
     beforeEach : function () {
         "use strict";
         pieces = [
-            new ChessPiecesModule.RookPiece(Colour.black),
-            new ChessPiecesModule.QueenPiece(Colour.white),
-            new ChessPiecesModule.BishopPiece(Colour.black),
-            new ChessPiecesModule.KingPiece(Colour.white),
-            new ChessPiecesModule.KnightPiece(Colour.black),
-            new ChessPiecesModule.PawnPiece(Colour.white)
+            new RookPiece(Colour.black),
+            new QueenPiece(Colour.white),
+            new BishopPiece(Colour.black),
+            new KingPiece(Colour.white),
+            new KnightPiece(Colour.black),
+            new PawnPiece(Colour.white)
         ];
     }
 });

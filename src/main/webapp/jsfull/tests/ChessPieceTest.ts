@@ -1,23 +1,17 @@
 /*global QUnit*/
 /*global $*/
 
+import { Colour, ChessPiece } from "../Pieces/ChessPiece";
 
-var Colour,
-    ChessPiece = ChessPiecesModule.ChessPiece;
-    
-QUnit.module("Chesspiece object test", {
-    beforeEach : function () {
-        Colour = ChessPiecesModule.Colour;
-    }
-});
+QUnit.module("Chesspiece object test");
 
 QUnit.test("Colour properties test", function (assert) {
     "use strict";
     assert.expect(4);
-    assert.ok(ChessPiecesModule.Colour.white.fill, "Property fill should exist");
-    assert.ok(ChessPiecesModule.Colour.white.stroke, "Property stroke should exist");
-    assert.ok(ChessPiecesModule.Colour.black.fill, "Property fill should exist");
-    assert.ok(ChessPiecesModule.Colour.black.stroke, "Property Stroke should exist");
+    assert.ok(Colour.white.fill, "Property fill should exist");
+    assert.ok(Colour.white.stroke, "Property stroke should exist");
+    assert.ok(Colour.black.fill, "Property fill should exist");
+    assert.ok(Colour.black.stroke, "Property Stroke should exist");
 });
 
 QUnit.test("ChessPiece object creation", function (assert) {
@@ -98,19 +92,17 @@ QUnit.test("ChessPiece getCoordY", function (assert) {
 
     assert.equal(chessPiece.getCoordY(location), 62.5 * 7);
 
-    location.rank = '2';
-
+    location.rank = 2;
     assert.equal(chessPiece.getCoordY(location), 62.5 * 6);
 
-    location.rank = '8';
+    location.rank = 8;
 
     assert.equal(chessPiece.getCoordY(location), 0);
 });
 
 QUnit.test("ChessPiece parseSquareCoordinates", function (assert) {
     "use strict";
-    var chessPiece = new ChessPiece("BLACK"), 
-    location = chessPiece.parseSquareCoordinates("A1");
+    var location = ChessPiece.parseSquareCoordinates("A1");
 
     assert.equal(location.file, "A");
     assert.equal(location.rank, "1");
@@ -118,14 +110,12 @@ QUnit.test("ChessPiece parseSquareCoordinates", function (assert) {
 
 QUnit.test("ChessPiece parseSquareCoordinates", function (assert) {
     "use strict";
-    var chessPiece = new ChessPiece("BLACK");
     assert.throws(function () {
-        chessPiece.parseSquareCoordinates("T1");
+        ChessPiece.parseSquareCoordinates("T1");
     });
 });
 
 QUnit.test("ChessPiece toString", function (assert) {
     "use strict";
-    var chessPiece = new ChessPiece("BLACK");
-    assert.equal(chessPiece.toString(), "");
+    assert.equal(ChessPiece.toString(), "");
 });
