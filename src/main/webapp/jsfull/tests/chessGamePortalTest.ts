@@ -3,7 +3,11 @@
 /*global chessboardModule*/
 /*global chesspiecesModule*/
 /*global chessgameportalModule*/
-var stompObject = {},
+
+import {chessboardModule} from "../chessboard";
+import "../chessGamePortal";
+
+var stompObject: any= {},
     gameUID,
     playerName,
     opponentName,
@@ -58,7 +62,7 @@ QUnit.test("testing StompActions: function updateChessBoard", function (assert) 
 QUnit.test("testing StompActions: function updateChessBoard", function (assert) {
     "use strict";
     var json = chessboardString,
-        oneViewStompActions = new chessgameportalModule.OneViewStompActions(stompObject.gameUID, stompObject.playerName,
+        oneViewStompActions : any = new chessgameportalModule.OneViewStompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);
     oneViewStompActions.updateChessBoard(json);
     assert.equal(true, updatePlayerCall);
@@ -68,7 +72,7 @@ QUnit.test("testing StompActions: function updateChessBoard", function (assert) 
 
 QUnit.test("testing StompActions: function userUpdate(ERROR)", function (assert) {
     "use strict";
-    var message = {},
+    var message :  any = {},
         json = '{"squares":{"C8":"B"}}',
         $alertBox;
     message.headers = {};
@@ -97,7 +101,7 @@ QUnit.test("testing StompActions: function userUpdate(ERROR)", function (assert)
 
 QUnit.test("testing StompActions: function userUpdate(UPDATE)", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         json = '{"squares":{"C8":"B"}}';
     message.headers = {};
     message.headers.TYPE = "UPDATE";
@@ -108,7 +112,7 @@ QUnit.test("testing StompActions: function userUpdate(UPDATE)", function (assert
 
 QUnit.test("testing StompActions: function topicUpdate(ERROR)", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         json = '{"squares":{"C8":"B"}}';
     message.headers = {};
     message.headers.TYPE = "ERROR";
@@ -120,7 +124,7 @@ QUnit.test("testing StompActions: function topicUpdate(ERROR)", function (assert
 
 QUnit.test("testing StompActions: function topicUpdate(STATUS - White Checkmate) ", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         $alertBox;
     message.headers = {};
     message.headers.TYPE = "STATUS";
@@ -135,7 +139,7 @@ QUnit.test("testing StompActions: function topicUpdate(STATUS - White Checkmate)
 
 QUnit.test("testing StompActions: function topicUpdate(STATUS - Black Checkmate) ", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         $alertBox;
     message.headers = {};
     message.headers.TYPE = "STATUS";
@@ -150,7 +154,7 @@ QUnit.test("testing StompActions: function topicUpdate(STATUS - Black Checkmate)
 
 QUnit.test("testing StompActions: function topicUpdate(STATUS - Stalemate) ", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         $alertBox;
     message.headers = {};
     message.headers.TYPE = "STATUS";
@@ -164,7 +168,7 @@ QUnit.test("testing StompActions: function topicUpdate(STATUS - Stalemate) ", fu
 
 QUnit.test("testing StompActions: function topicUpdate(STATUS - White king in check) ", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         $alertBox;
     message.headers = {};
     message.headers.TYPE = "STATUS";
@@ -179,7 +183,7 @@ QUnit.test("testing StompActions: function topicUpdate(STATUS - White king in ch
 
 QUnit.test("testing StompActions: function topicUpdate(STATUS - Black king in check) ", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         $alertBox;
     message.headers = {};
     message.headers.TYPE = "STATUS";
@@ -195,7 +199,7 @@ QUnit.test("testing StompActions: function topicUpdate(STATUS - Black king in ch
 
 QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert) {
     "use strict";
-    var message = {},
+    var message : any = {},
         $alertBox;
     message.headers = {};
     message.headers.TYPE = "INFO";
@@ -209,7 +213,7 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert
 
 QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert) {
     "use strict";
-    var message = {};
+    var message : any = {};
     message.headers = {};
     message.headers.TYPE = "UPDATE";
     message.body = '{"squares":{"C8":"B"}}';
@@ -220,7 +224,20 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert
 
 QUnit.test("testing openStompConnection: fail with error", function (assert) {
     "use strict";
+
+    let testAction = function () {
+        chessgameportalModule.StompActions.call(
+            this, 
+            gameUID, 
+            playerName, 
+            opponentName, 
+            playerColour);
+    };
+
+    testAction.prototype = Object.create(chessgameportalModule.StompActions.prototype);
+    //chessboardModule.createChessBoard("","");
+
     assert.throws(function () {
-        chessgameportalModule.openStompConnection("", function () { chessboardModule.createChessBoard(""); });
+        chessgameportalModule.openStompConnection("", "", new testAction());
     }, "callback function isn't an instance of StompActions");
 });

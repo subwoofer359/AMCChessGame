@@ -92,7 +92,9 @@ module.exports = function (grunt) {
                 options: {
                     rootDir: "src/main/webapp/jsfull",
                     allowJs: true,
-                    target: "es5"
+                    target: "es5",
+                    module: "umd"
+
                 }
             }
         }

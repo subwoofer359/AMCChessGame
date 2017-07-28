@@ -1,5 +1,8 @@
 /*global QUnit*/
 /*global $*/
+import { chessboardModule } from "../chessboard";
+import "../ChessPieces";
+
 QUnit.module("chesspieces test");
 
 /*global coordinates*/
@@ -10,6 +13,7 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
     "use strict";
     var i,
         t,
+        Colour = ChessPiecesModule.Colour,
         coordinate,
         coordinates = ChessPiecesModule.coordinates,
         chesspieces = ChessPiecesModule,
@@ -19,7 +23,7 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {
             for (t = 1; t <= boardWidth; t += 1) {
-                coordinate = piece.parseSquareCoordinates(i + t);
+                coordinate = ChessPiecesModule.parseSquareCoordinates(i + t);
                 assert.equal(coordinate.file, i);
                 assert.equal(coordinate.rank, t);
             }
@@ -31,14 +35,14 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Excep
     "use strict";
     var piece = new ChessPiecesModule.BishopPiece(Colour.black);
     assert.throws(function () {
-        piece.parseSquareCoordinates("A9");
+        ChessPiecesModule.parseSquareCoordinates("A9");
     }, /Not valid ChessBoard coordinate/);
 
     assert.throws(function () {
-        piece.parseSquareCoordinates("A");
+        ChessPiecesModule.parseSquareCoordinates("A");
     }, /Not valid ChessBoard coordinate/);
     
     assert.throws(function () {
-        piece.parseSquareCoordinates("I1");
+        ChessPiecesModule.parseSquareCoordinates("I1");
     }, /Not valid ChessBoard coordinate/);
 });

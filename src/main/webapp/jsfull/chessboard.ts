@@ -7,15 +7,17 @@
  * @file related chessboard functions
  * @author Adrian McLaughlin
  */
+import "jquery";
+import "./ChessPieces"
 
-var chessboardModule = (function () {
+export var chessboardModule = (function () {
     "use strict";
     var letterCoordinates = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ],
-        boardWidth = 8,
-        whiteSquareColour = '#e6e6e6',
-        blackSquareColour = '#000000',
-        Colour = ChessPiecesModule.Colour,
-        constPieces = {
+        boardWidth : number = 8,
+        whiteSquareColour : string = '#e6e6e6',
+        blackSquareColour :string = '#000000',
+        Colour : any = ChessPiecesModule.Colour,
+        constPieces : any = {
             blackQueen : new ChessPiecesModule.QueenPiece(Colour.black),
             blackKing : new ChessPiecesModule.KingPiece(Colour.black),
             blackKnight : new ChessPiecesModule.KnightPiece(Colour.black),
@@ -39,20 +41,18 @@ var chessboardModule = (function () {
      * @public
      * @returns SVG element
      */
-    function createBlankChessBoardSVG() {
+    function createBlankChessBoardSVG() : string {
         var svgDocument = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
             svgNS = svgDocument.namespaceURI,
             layer = document.createElementNS(svgNS, 'g'),
-            x = 0,
-            y = 0,
-            whiteToggle = true,
-            i,
-            letter,
+            x : number = 0,
+            y : number = 0,
+            whiteToggle : boolean = true,
+            i : number,
+            letter : string,
             rect;
 
         svgDocument.setAttribute('viewBox', '0 0 500 500');
-        //svgDocument.setAttribute('height', '500px');
-        //svgDocument.setAttribute('width', '500px');
         layer.setAttribute('id', 'layer1');
 
         for (i = boardWidth; i > 0; i -= 1) {
@@ -83,13 +83,13 @@ var chessboardModule = (function () {
 
         }
         svgDocument.appendChild(layer);
-        return svgDocument;
+        return svgDocument.toString();
     }
 
-    function createChessPiecesElements(playerColour, chessboardJSON) {
+    function createChessPiecesElements(playerColour, chessboardJSON) : string {
         var json = JSON.parse(chessboardJSON),
-            location,
-            piecesOnBoard = "";
+            location : string,
+            piecesOnBoard : string = "";
 
         for (location in json.squares) {
             if (json.squares.hasOwnProperty(location)) {
@@ -147,7 +147,7 @@ var chessboardModule = (function () {
         return piecesOnBoard;
     }
 
-    function createChessBoard(playerColour, chessboardJSON) {
+    function createChessBoard(playerColour, chessboardJSON) : void {
         var chessBoardSVG = $("#chessboard-surround"),
             board;
         chessBoardSVG.html(createBlankChessBoardSVG());

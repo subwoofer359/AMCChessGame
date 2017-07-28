@@ -1,6 +1,9 @@
 /*global QUnit*/
 /*global chessboardModule*/
 /*global $*/
+
+import {chessboardModule} from "../chessboard";
+
 var json;
 QUnit.module("chessboard tests", {
     beforeEach: function () {
