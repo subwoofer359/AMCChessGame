@@ -1,7 +1,8 @@
 /*global QUnit*/
 /*global $*/
 import { chessboardModule } from "../chessboard";
-import "../ChessPieces";
+import { coordinates, Colour, ChessPiece } from "../Pieces/ChessPiece";
+import { BishopPiece } from "../Pieces/BishopPiece"
 
 QUnit.module("chesspieces test");
 
@@ -13,17 +14,16 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
     "use strict";
     var i,
         t,
-        Colour = ChessPiecesModule.Colour,
+        Colour = Colour,
         coordinate,
-        coordinates = ChessPiecesModule.coordinates,
-        chesspieces = ChessPiecesModule,
+        //coordinates = coordinates,
         boardWidth = chessboardModule.boardWidth,
-        piece = new ChessPiecesModule.BishopPiece(Colour.black);
+        piece = new BishopPiece(Colour.black);
 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {
             for (t = 1; t <= boardWidth; t += 1) {
-                coordinate = ChessPiecesModule.parseSquareCoordinates(i + t);
+                coordinate = ChessPiece.parseSquareCoordinates(i + t);
                 assert.equal(coordinate.file, i);
                 assert.equal(coordinate.rank, t);
             }
@@ -33,16 +33,16 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
 
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Exception ", function (assert) {
     "use strict";
-    var piece = new ChessPiecesModule.BishopPiece(Colour.black);
+    var piece = new BishopPiece(Colour.black);
     assert.throws(function () {
-        ChessPiecesModule.parseSquareCoordinates("A9");
+        ChessPiece.parseSquareCoordinates("A9");
     }, /Not valid ChessBoard coordinate/);
 
     assert.throws(function () {
-        ChessPiecesModule.parseSquareCoordinates("A");
+        ChessPiece.parseSquareCoordinates("A");
     }, /Not valid ChessBoard coordinate/);
     
     assert.throws(function () {
-        ChessPiecesModule.parseSquareCoordinates("I1");
+        ChessPiece.parseSquareCoordinates("I1");
     }, /Not valid ChessBoard coordinate/);
 });

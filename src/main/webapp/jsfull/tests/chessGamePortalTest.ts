@@ -4,8 +4,9 @@
 /*global chesspiecesModule*/
 /*global chessgameportalModule*/
 
-import {chessboardModule} from "../chessboard";
+import { chessboardModule } from "../chessboard";
 import "../chessGamePortal";
+import  { Colour } from "../Pieces/ChessPiece";
 
 var stompObject: any= {},
     gameUID,
@@ -41,7 +42,7 @@ QUnit.module("Stomp Message tests", {
         stompObject.gameUID = "1234";
         stompObject.playerName = "testPlayer";
         stompObject.opponentName = "testOpponent";
-        stompObject.playerColour = ChessPiecesModule.Colour.black;
+        stompObject.playerColour = Colour.black;
         stompObject.headers = {};
         myStompActions = new chessgameportalModule.StompActions(stompObject.gameUID, stompObject.playerName,
                                           stompObject.opponentName, stompObject.playerColour);

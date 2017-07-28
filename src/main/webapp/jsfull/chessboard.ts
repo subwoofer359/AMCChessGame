@@ -8,7 +8,13 @@
  * @author Adrian McLaughlin
  */
 import "jquery";
-import "./ChessPieces"
+import { QueenPiece } from "./Pieces/QueenPiece"
+import { KingPiece } from "./Pieces/KingPiece"
+import { KnightPiece } from "./Pieces/KnightPiece"
+import { RookPiece } from "./Pieces/RookPiece"
+import { PawnPiece } from "./Pieces/PawnPiece"
+import { BishopPiece } from "./Pieces/BishopPiece"
+
 
 export var chessboardModule = (function () {
     "use strict";
@@ -16,21 +22,21 @@ export var chessboardModule = (function () {
         boardWidth : number = 8,
         whiteSquareColour : string = '#e6e6e6',
         blackSquareColour :string = '#000000',
-        Colour : any = ChessPiecesModule.Colour,
+        Colour : any = Colour,
         constPieces : any = {
-            blackQueen : new ChessPiecesModule.QueenPiece(Colour.black),
-            blackKing : new ChessPiecesModule.KingPiece(Colour.black),
-            blackKnight : new ChessPiecesModule.KnightPiece(Colour.black),
-            blackBishop : new ChessPiecesModule.BishopPiece(Colour.black),
-            blackRook : new ChessPiecesModule.RookPiece(Colour.black),
-            blackPawn : new ChessPiecesModule.PawnPiece(Colour.black),
+            blackQueen : new QueenPiece(Colour.black),
+            blackKing : new KingPiece(Colour.black),
+            blackKnight : new KnightPiece(Colour.black),
+            blackBishop : new BishopPiece(Colour.black),
+            blackRook : new RookPiece(Colour.black),
+            blackPawn : new PawnPiece(Colour.black),
 
-            whiteQueen : new ChessPiecesModule.QueenPiece(Colour.white),
-            whiteKing : new ChessPiecesModule.KingPiece(Colour.white),
-            whiteKnight : new ChessPiecesModule.KnightPiece(Colour.white),
-            whiteBishop : new ChessPiecesModule.BishopPiece(Colour.white),
-            whiteRook : new ChessPiecesModule.RookPiece(Colour.white),
-            whitePawn : new ChessPiecesModule.PawnPiece(Colour.white)
+            whiteQueen : new QueenPiece(Colour.white),
+            whiteKing : new KingPiece(Colour.white),
+            whiteKnight : new KnightPiece(Colour.white),
+            whiteBishop : new BishopPiece(Colour.white),
+            whiteRook : new RookPiece(Colour.white),
+            whitePawn : new PawnPiece(Colour.white)
         };
         
 

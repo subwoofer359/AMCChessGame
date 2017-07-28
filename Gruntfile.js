@@ -13,7 +13,6 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 'src/main/webapp/jsfull/**/*.js',
                 'test/**/*.js',
-                '!src/main/webapp/jsfull/Pieces/**.js',
                 '!src/main/webapp/jsfull/sinon*.js',
                 '!src/main/webapp/jsfull/**/bootstrap.min.js'
 
@@ -70,24 +69,9 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        concat: {
-            dist: {
-                src: [  'src/main/webapp/jsfull/Pieces/header.js',
-                        'src/main/webapp/jsfull/Pieces/chessPiece.js',
-                        'src/main/webapp/jsfull/Pieces/pawnPiece.js',
-                        'src/main/webapp/jsfull/Pieces/bishopPiece.js',
-                        'src/main/webapp/jsfull/Pieces/knightPiece.js',
-                        'src/main/webapp/jsfull/Pieces/rookPiece.js',
-                        'src/main/webapp/jsfull/Pieces/queenPiece.js',
-                        'src/main/webapp/jsfull/Pieces/kingPiece.js',
-                        'src/main/webapp/jsfull/Pieces/footer.js'
-                    ],
-                dest: 'src/main/webapp/jsfull/ChessPieces.js'
-            }
-        },
         ts: {
             default : {
-                src: ["src/main/webapp/jsfull/**", "!src/main/webapp/jsfull/Pieces/**"],
+                src: ["src/main/webapp/jsfull/**"],
                 dest: "src/main/webapp/js",
                 options: {
                     rootDir: "src/main/webapp/jsfull",
@@ -105,11 +89,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-qunit-istanbul');
     grunt.loadNpmTasks('grunt-ts');
 
-    grunt.registerTask('default', ['concat', 'ts', 'jshint', 'qunit']);
+    grunt.registerTask('default', ['ts', 'jshint', 'qunit']);
     grunt.registerTask('QUnit', ['qunit']);
     grunt.registerTask('css_min', ['cssmin']);
     grunt.registerTask('createModule', ['concat']);
