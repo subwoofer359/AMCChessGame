@@ -8,12 +8,14 @@
  * @author Adrian McLaughlin
  */
 import "jquery";
-import { QueenPiece } from "./Pieces/QueenPiece"
-import { KingPiece } from "./Pieces/KingPiece"
-import { KnightPiece } from "./Pieces/KnightPiece"
-import { RookPiece } from "./Pieces/RookPiece"
-import { PawnPiece } from "./Pieces/PawnPiece"
-import { BishopPiece } from "./Pieces/BishopPiece"
+
+import { Colour } from "./Pieces/ChessPiece";
+import { QueenPiece } from "./Pieces/QueenPiece";
+import { KingPiece } from "./Pieces/KingPiece";
+import { KnightPiece } from "./Pieces/KnightPiece";
+import { RookPiece } from "./Pieces/RookPiece";
+import { PawnPiece } from "./Pieces/PawnPiece";
+import { BishopPiece } from "./Pieces/BishopPiece";
 
 
 export var chessboardModule = (function () {
@@ -22,7 +24,7 @@ export var chessboardModule = (function () {
         boardWidth : number = 8,
         whiteSquareColour : string = '#e6e6e6',
         blackSquareColour :string = '#000000',
-        Colour : any = Colour,
+        serialiser = new XMLSerializer(),
         constPieces : any = {
             blackQueen : new QueenPiece(Colour.black),
             blackKing : new KingPiece(Colour.black),
@@ -89,7 +91,7 @@ export var chessboardModule = (function () {
 
         }
         svgDocument.appendChild(layer);
-        return svgDocument.toString();
+        return serialiser.serializeToString(svgDocument);
     }
 
     function createChessPiecesElements(playerColour, chessboardJSON) : string {

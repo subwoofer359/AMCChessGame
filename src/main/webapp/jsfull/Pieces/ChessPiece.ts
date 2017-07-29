@@ -27,19 +27,19 @@ export class ChessPiece {
      * @member
      *
      */
-    x : 0;
+    x = 0;
     
     /**
      * y-axis origin in the SVG chessboard
      * @member
      */
-    y : 0;
+    y = 0;
     
     /**
      * The size of the SVG squares in pixels
      * @member
      */
-    offsetXY : 62.5;
+    offsetXY = 62.5;
 
     pieceColour : {fill, stroke};
 
