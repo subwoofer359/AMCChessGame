@@ -11,12 +11,12 @@
     
 <%@ include file="/BootStrapHeader.jsp" %>
 
- <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
  <script src="${pageContext.request.contextPath}/js/sidebar.js"></script>
  <script src="${pageContext.request.contextPath}/js/selectTableRow.js"></script>
- <script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
- <script src="${pageContext.request.contextPath}/jsfull/ChessApplicationPage.js"></script>
+ <script src="${pageContext.request.contextPath}/js/ajaxCSRF.js"></script>
+ <script src="${pageContext.request.contextPath}/js/ChessApplicationPage.js"></script>
 <style>
     @import url(${pageContext.request.contextPath}/css/General.css);
     @import url(${pageContext.request.contextPath}/css/selectTableRow.css);

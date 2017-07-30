@@ -8,16 +8,12 @@
 
 <%@ include file="/BootStrapHeader.jsp" %>    
 
-<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/ChessPieces.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/chessboard.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/player.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/chessGamePortal.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/chessGameInteract.js"></script>
+<script src="${pageContext.request.contextPath}/js/require.js"></script>
 
 <title>Chess Game</title>
 <style>
@@ -160,31 +156,43 @@
     }    
 </style>
 <script>
-$(document).ready(function(){
-    var headerName = "${_csrf.headerName}",
-        token = "${_csrf.token}",
-        stompObject = {};
+    var chessboardModule;
+    require(['../../js/app.js'], function() {
+        require([
+                    "../../js/chessboard.js",
+                    "../../js/chessGameInteract.js",
+                    "../../js/chessGamePortal.js",
+                    "../../js/player.js"
+                ], function (myApp) {
+            
+            
+            $(document).ready(function(){
+                var headerName = "${_csrf.headerName}",
+                    token = "${_csrf.token}",
+                    stompObject = {};
     
-    stompObject.currentPlayer = {};
-    stompObject.currentPlayer.userName = "${GAME.player.userName}";
-    stompObject.currentPlayer.colour = "${GAME.player.colour}";
-    stompObject.headers = {};
-    stompObject.headers[headerName] = token;
-    stompObject.URL = "http://${HOSTIP}:${PORT}" +
+                chessboardModule = myApp.chessboardModule;
+                
+                stompObject.currentPlayer = {};
+                stompObject.currentPlayer.userName = "${GAME.player.userName}";
+                stompObject.currentPlayer.colour = "${GAME.player.colour}";
+                stompObject.headers = {};
+                stompObject.headers[headerName] = token;
+                stompObject.URL = "http://" + location.hostname + ":" + location.port +
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame";
-    stompObject.gameUUID = "${GAME_UUID}";
-    stompObject.playerName = '<c:out value="${GAME.player.name}"/>';
-    stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
-    stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
+                stompObject.gameUUID = "${GAME_UUID}";
+                stompObject.playerName = '<c:out value="${GAME.player.name}"/>';
+                stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
+                stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
+                
+                var stompClient = chessgameportalModule.setupOneViewStompConnection(stompObject);
+                chessGameInteract(new OneViewInteractActions( stompClient, "${GAME_UUID}" ));
     
-    var stompClient = chessgameportalModule.setupOneViewStompConnection(stompObject);
-    chessGameInteract(new OneViewInteractActions( stompClient, "${GAME_UUID}" ));
-    
-    chessgameportalModule.addMessageDialogListener();
-    
-});
-
+                chessgameportalModule.addMessageDialogListener();
+            });
+        });
+    });
 </script>
 </head>
 <body>
@@ -202,7 +210,7 @@ $(document).ready(function(){
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 
-        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">
+        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12 hidden-xs">
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>

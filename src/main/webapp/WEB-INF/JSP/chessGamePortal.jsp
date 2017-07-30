@@ -240,14 +240,14 @@ $(document).ready(function(){
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 
-        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">
+        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12 hidden-xs">
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>
         <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
             <div class="alert alert-warning" role="alert"></div>
         </div>
-        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-8">
+        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-12">
             <div class="inner col-xs-offset-1 col-xs-11">
             </div><!-- col-xs-11 -->
         </div>

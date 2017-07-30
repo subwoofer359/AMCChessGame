@@ -10,7 +10,7 @@ $(document).ready(function(){
 
 	stompObject.headers = {};
 	stompObject.headers[headerName] = token;
-	stompObject.URL = "http://${HOSTIP}:${PORT}" +
+	stompObject.URL = "http://" + location.hostname + ":" + location.port +
                 "${pageContext.request.contextPath}" +
                 "/app/chessgame/chessgame";
 	var stompClient,
