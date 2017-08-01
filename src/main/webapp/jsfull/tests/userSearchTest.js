@@ -8,6 +8,7 @@
 /*global jQuery */
 /*global userSearch */
 /*global setTimeout */
+
 var $fixture;
 QUnit.module('UserSearch tests', {
     beforeEach: function () {

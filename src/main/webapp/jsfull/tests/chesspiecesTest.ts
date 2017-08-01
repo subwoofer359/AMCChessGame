@@ -14,9 +14,7 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
     "use strict";
     var i,
         t,
-        Colour = Colour,
         coordinate,
-        //coordinates = coordinates,
         boardWidth = chessboardModule.boardWidth,
         piece = new BishopPiece(Colour.black);
 

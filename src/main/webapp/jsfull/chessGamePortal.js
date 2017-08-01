@@ -69,9 +69,20 @@ var chessgameportalModule = (function () {
          * @param {string} JSON to be parsed into a chessboard object
          */
         updateChessBoard : function (chessBoardJson) {
-            chessboardModule.createChessBoard(this.playerColour, chessBoardJson);
-            this.oldChessBoard = chessBoardJson;
-            updatePlayer(chessBoardJson);
+            var board = $.parseJSON(chessBoardJson),
+                move = "";
+            
+            if (board.lastMove.start) {
+                move = board.lastMove.start.letter + board.lastMove.start.number +
+                    "-" + board.lastMove.end.letter + board.lastMove.end.number;
+            };
+
+            var that = this;
+            chessboardModule.move(move, function () {
+                chessboardModule.createChessBoard(that.playerColour, chessBoardJson);
+                that.oldChessBoard = chessBoardJson;
+                updatePlayer(chessBoardJson);
+            });
         },
 
         /**
@@ -157,7 +168,9 @@ var chessgameportalModule = (function () {
     OneViewStompActions.prototype.updateChessBoard = function (chessBoardJson) {
         var board = $.parseJSON(chessBoardJson);
         this.playerColour = board.currentPlayer.colour;
-        StompActions.prototype.updateChessBoard.call(this, chessBoardJson);
+        chessboardModule.createChessBoard(this.playerColour, chessBoardJson);
+        this.oldChessBoard = chessBoardJson;
+        updatePlayer(chessBoardJson);
     };
 
 

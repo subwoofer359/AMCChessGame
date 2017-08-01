@@ -74,7 +74,7 @@ export class ChessPiece {
     * @throws {string} if coordinate can't be parsed
     */
     static parseSquareCoordinates(squareCoordinates: string) {
-        var coordinateRegex = /([A-H])([1-8])/,
+        var coordinateRegex = /^([A-H])([1-8])$/,
             coordinate;
         if (coordinateRegex.test(squareCoordinates)) {
             coordinate = coordinateRegex.exec(squareCoordinates);

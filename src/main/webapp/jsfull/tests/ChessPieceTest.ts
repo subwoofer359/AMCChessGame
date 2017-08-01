@@ -117,5 +117,5 @@ QUnit.test("ChessPiece parseSquareCoordinates", function (assert) {
 
 QUnit.test("ChessPiece toString", function (assert) {
     "use strict";
-    assert.equal(ChessPiece.toString(), "");
+    assert.equal(new ChessPiece("BLACK").toString("", "", Colour.black), "");
 });

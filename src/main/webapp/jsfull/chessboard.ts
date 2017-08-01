@@ -8,14 +8,17 @@
  * @author Adrian McLaughlin
  */
 import "jquery";
+import * as Snap from "snapsvg";
 
-import { Colour } from "./Pieces/ChessPiece";
+import { Colour, ChessPiece } from "./Pieces/ChessPiece";
 import { QueenPiece } from "./Pieces/QueenPiece";
 import { KingPiece } from "./Pieces/KingPiece";
 import { KnightPiece } from "./Pieces/KnightPiece";
 import { RookPiece } from "./Pieces/RookPiece";
 import { PawnPiece } from "./Pieces/PawnPiece";
 import { BishopPiece } from "./Pieces/BishopPiece";
+
+
 
 
 export var chessboardModule = (function () {
@@ -164,9 +167,43 @@ export var chessboardModule = (function () {
         chessBoardSVG.html(chessBoardSVG.html());
     }
 
+    function move(moveStr : string, callback ?: () => void ) : void {
+        let s = Snap("svg");
+        if (moveStr === "" || !s) {
+            if (callback) {
+                callback();
+            }
+            return;
+        }
+
+        let moveRegex = /^([A-H][1-8])-([A-H][1-8])$/,
+            piece = new ChessPiece(Colour.black);
+        if (moveRegex.test(moveStr)) {
+            let squares = moveRegex.exec(moveStr),
+                start = ChessPiece.parseSquareCoordinates(squares[1]),
+                end = ChessPiece.parseSquareCoordinates(squares[2]),
+                startLoc = {
+                    x: piece.getCoordX(start), 
+                    y: piece.getCoordY(start)
+                },
+                endLoc = {
+                    x: piece.getCoordX(end), 
+                    y: piece.getCoordY(end)
+                },
+                pieceToMove = s.select(`g[id *= "${squares[1]}"]`);
+                  
+                pieceToMove.transform(`T${startLoc.x},${startLoc.y}`);
+                pieceToMove.animate({transform: `t${endLoc.x},${endLoc.y}`}, 1000, mina.bounce, callback);
+                
+        } else {
+            throw "Not valid Move coordinates";
+        }
+    }
+
     return {
         boardWidth : boardWidth,
         createBlankChessBoardSVG : createBlankChessBoardSVG,
-        createChessBoard : createChessBoard
+        createChessBoard : createChessBoard,
+        move : move
     };
 }());

@@ -13,11 +13,7 @@
 <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/ChessPieces.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/chessboard.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/player.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/chessGamePortal.js"></script>
-<script src="${pageContext.request.contextPath}/jsfull/chessGameInteract.js"></script>
+<script src="${pageContext.request.contextPath}/js/require.js"></script>
 
 <title>Chess Game</title>
 <style>
@@ -201,27 +197,39 @@
     
 </style>
 <script>
-$(document).ready(function(){
-    
-    var headerName = "${_csrf.headerName}",
-        token = "${_csrf.token}",
-        stompObject = {};
-    
-    stompObject.headers = {};
-    stompObject.headers[headerName] = token;
-    stompObject.URL = "http://${HOSTIP}:${PORT}" +
-                        "${pageContext.request.contextPath}" +
-                        "/app/chessgame/chessgame";
-    stompObject.gameUUID = "${GAME_UUID}";
-    stompObject.playerName = '<c:out value="${GAME.player.name}"/>';
-    stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
-    stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
-    
-    var stompClient = chessgameportalModule.setupStompConnection(stompObject);
-    chessGameInteract(new InteractActions ( stompClient, "${GAME_UUID}" ));
-    
-    chessgameportalModule.addMessageDialogListener();
-});
+    var chessboardModule;
+    require(['../../js/app.js'], function () {
+        require([
+            	"snapsvg",
+                "../../js/chessboard.js",
+                "../../js/chessGameInteract.js",
+                "../../js/chessGamePortal.js",
+                "../../js/player.js"
+            ], function (Snap, myApp) {
+                    $(document).ready(function(){
+                        var headerName = "${_csrf.headerName}",
+                            token = "${_csrf.token}",
+                            stompObject = {};
+                        
+                        chessboardModule = myApp.chessboardModule;
+                        
+                        stompObject.headers = {};
+                        stompObject.headers[headerName] = token;
+                        stompObject.URL = "http://${HOSTIP}:${PORT}" +
+                                            "${pageContext.request.contextPath}" +
+                                            "/app/chessgame/chessgame";
+                        stompObject.gameUUID = "${GAME_UUID}";
+                        stompObject.playerName = '<c:out value="${GAME.player.name}"/>';
+                        stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
+                        stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
+                        
+                        var stompClient = chessgameportalModule.setupStompConnection(stompObject);
+                        chessGameInteract(new InteractActions ( stompClient, "${GAME_UUID}" ));
+                        
+                        chessgameportalModule.addMessageDialogListener();
+                    });
+        });
+    });
 
 </script>
 </head>

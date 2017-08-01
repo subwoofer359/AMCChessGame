@@ -159,11 +159,12 @@
     var chessboardModule;
     require(['../../js/app.js'], function() {
         require([
+            		"snapsvg",
                     "../../js/chessboard.js",
                     "../../js/chessGameInteract.js",
                     "../../js/chessGamePortal.js",
                     "../../js/player.js"
-                ], function (myApp) {
+                ], function (Snap, myApp) {
             
             
             $(document).ready(function(){

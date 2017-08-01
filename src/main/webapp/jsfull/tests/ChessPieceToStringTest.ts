@@ -1,7 +1,7 @@
 /*global QUnit*/
 /*global $*/
 
-import { Colour } from "../Pieces/ChessPiece";
+import { Colour, ChessPiece } from "../Pieces/ChessPiece";
 import { QueenPiece } from "../Pieces/QueenPiece"
 import { KingPiece } from "../Pieces/KingPiece"
 import { KnightPiece } from "../Pieces/KnightPiece"
@@ -44,7 +44,7 @@ QUnit.test("ChessPiece toString for translate attribute", function (assert) {
     "use strict";
 
     pieces.forEach(function (element) {
-        var coord = element.parseSquareCoordinates(testData.location),
+        var coord = ChessPiece.parseSquareCoordinates(testData.location),
             coordRex = new RegExp('translate\\(' + element.getCoordX(coord) + 
         ',' + element.getCoordY(coord) + '\\)');
 

@@ -3,34 +3,48 @@
 <head>
     <meta charset="utf-8">
     <title>QUnit tests</title>
-    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.18.0.css">    
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.18.0.css">
+    <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+     <script src="../../js/require.js"></script>
 </head>
 <body>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/qunit/qunit-1.18.0.js"></script>
-    <script src="../../js/ChessPieces.js"></script>
-    <script src="../../js/chessboard.js"></script>
-    
-    <script src="../../js/chessGameInteract.js"></script>
-    <script src="../../js/chessGamePortal.js"></script>
-    <script src="../../js/User.js"></script>
-    <script src="../../js/Promotion.js"></script>
-    <script src="../../js/sinon-1.17.3.js"></script>
-    <script src="../../js/userSearch.js"></script>
-    <script src="../../js/tests/chessboardTest.js"></script>
-    <script src="../../js/tests/chesspiecesTest.js"></script>
-    <script src="../../js/tests/chessGameInteractTest.js"></script>
-    <script src="../../js/tests/chessGamePortalTest.js"></script>
-    <script src="../../js/tests/stompCallsTest.js"></script>
-    <script src="../../js/tests/userTest.js"></script>
-    <script src="../../js/tests/PromotionTestFunctions.js"></script>
-    <script src="../../js/tests/PromotionParseMessageTest.js"></script>
-    <script src="../../js/tests/PromotionTest.js"></script>
-    <script src="../../js/tests/UiHandlerTest.js"></script>
-    <script src="../../js/tests/userSearchTest.js"></script>
-    <script src="../../js/tests/ChessPieceTest.js"></script>
-    <script src="../../js/tests/ChessPieceToStringTest.js"></script>
+    <script>
+        var chessboardModule;
+        require(['./qunit.config.js',
+                 'http://code.jquery.com/qunit/qunit-1.18.0.js'],
+            function() {
+                QUnit.config.autostart = false;
+                require(['sinon',
+                        '../../js/chessboard.js',
+                        '../../js/player.js',
+                        '../../js/tests/chessboardTest.js',
+                        '../../js/tests/ChessPieceToStringTest.js',
+                        '../../js/tests/ChessPieceTest.js',
+                        '../../js/tests/chesspiecesTest.js',
+                        '../../js/chessGameInteract.js',
+                        '../../js/tests/chessGameInteractTest.js',
+                        '../../js/chessGamePortal.js',
+                        //'../../js/tests/chessGamePortalTest.js',
+                        '../../js/tests/stompCallsTest.js',
+                        '../../js/User.js',
+                        '../../js/tests/userTest.js',
+                        '../../js/Promotion.js',
+                        '../../js/tests/PromotionTestFunctions.js',
+                        '../../js/tests/PromotionParseMessageTest.js',
+                        '../../js/tests/PromotionTest.js',
+                        '../../js/tests/UiHandlerTest.js',
+                        '../../js/userSearch.js',
+                        '../../js/tests/userSearchTest.js',
+                        '../../js/tests/ChessBoardMoveTest.js'
+                        
+                    ], function(sinon, tempChessboardModule) {
+                        chessboardModule = tempChessboardModule.chessboardModule;
+                        QUnit.load();
+                        QUnit.start();      
+                    });   
+        });
+    </script>
 </body>
 </html>

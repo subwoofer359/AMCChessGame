@@ -56,8 +56,8 @@ QUnit.test("testing StompActions: function updateChessBoard", function (assert) 
     var json = chessboardString;
 
     myStompActions.updateChessBoard(json);
-    assert.equal(true, updatePlayerCall);
-    assert.equal(true, updateChessBoardCall);
+    assert.ok(updatePlayerCall);
+    assert.ok(updateChessBoardCall);
 });
 
 QUnit.test("testing StompActions: function updateChessBoard", function (assert) {
@@ -217,7 +217,10 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", function (assert
     var message : any = {};
     message.headers = {};
     message.headers.TYPE = "UPDATE";
-    message.body = '{"squares":{"C8":"B"}}';
+    message.body = `{"squares":{"C8":"B"},
+                    "currentPlayer":
+                        {"player":{"id":24,"name":"Nicole O\u0027Brien","userName":"nicole"},
+                        "id":115,"colour":"WHITE","version":1}}`;
 
     myStompActions.topicUpdate(message);
     assert.equal(updateChessBoardCall, true);
