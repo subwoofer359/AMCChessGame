@@ -33,6 +33,11 @@ public class EmptyMove extends Move {
     public String toString() {
         return "(Empty Move)";
     }
+    
+    @Override
+    public String asString() {
+    	return "";
+    }
 
     @Override
     public Location getStart() {

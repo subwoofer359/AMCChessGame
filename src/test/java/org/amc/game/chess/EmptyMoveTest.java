@@ -18,7 +18,12 @@ public class EmptyMoveTest {
         assertEquals(move.getEnd().getLetter(), ChessBoard.Coordinate.A);
         assertEquals(move.getEnd().getNumber(), 1);
         System.out.println(move.toString());
-
+    }
+    
+    @Test
+    public void testString() {
+    	Move move = new EmptyMove();
+    	assertEquals("Should be equal to the empty string", "", move.asString());
     }
 
 }

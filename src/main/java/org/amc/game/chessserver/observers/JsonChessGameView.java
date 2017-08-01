@@ -12,6 +12,7 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
+import org.amc.game.chess.Move;
 import org.amc.game.chess.view.ChessPieceTextSymbol;
 import org.amc.game.chessserver.MessageType;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -85,8 +86,12 @@ public class JsonChessGameView extends GameObserver {
     public static class JsonChessGame {
 
         private Map<String, String> squares;
+        
         private ChessGamePlayer currentPlayer;
+        
         private GameState gameState;
+        
+        private String lastMove;
        
         private JsonChessGame(){
             squares = new HashMap<>();
@@ -114,6 +119,7 @@ public class JsonChessGameView extends GameObserver {
             convertChessBoard(chessGame.getChessBoard());
             currentPlayer = chessGame.getCurrentPlayer();
             gameState = chessGame.getGameState();
+            lastMove = chessGame.getTheLastMove().asString();
         }
        
 
@@ -127,6 +133,10 @@ public class JsonChessGameView extends GameObserver {
         
         GameState getGameState() {
             return this.gameState;
+        }
+        
+        String getLastMove() {
+        	return this.lastMove;
         }
         
     }
