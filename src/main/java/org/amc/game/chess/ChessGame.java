@@ -75,6 +75,7 @@ public class ChessGame extends AbstractChessGame {
             doNormalMove(player, piece, move);
         } else if (doesAGameRuleApply(move)) {
             thenApplyGameRule(player, move);
+            this.allGameMoves.add(move);
         } else {
             doNormalMove(player, piece, move);
         }

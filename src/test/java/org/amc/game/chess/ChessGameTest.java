@@ -102,6 +102,24 @@ public class ChessGameTest {
 		assertEquals(lastMove.getStart().asString(), START_LOCATION);
         assertEquals(lastMove.getEnd().asString(), END_LOCATION);
     }
+    
+    @Test
+    public void testMovesAreSavedOnRuleApplied() throws IllegalMoveException {
+    	final RookPiece rook = RookPiece.getPiece(Colour.WHITE);
+    	cbUtils.add(rook, WHITE_ROOK_RIGHT);
+    	String startLocation = "E1";
+    	String endLocation = "G1"; 
+    	
+    	chessGame.move(whitePlayer, cbUtils.newMove(startLocation, endLocation));
+        
+        Move lastMove = chessGame.getTheLastMove();
+        
+        assertEquals("Should only be one move saved", 
+        		1, chessGame.allGameMoves.size());
+        
+		assertEquals(lastMove.getStart().asString(), startLocation);
+        assertEquals(lastMove.getEnd().asString(), endLocation);
+    }
 
     @Test
     public void getEmptyMove() {
