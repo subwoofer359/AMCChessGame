@@ -15,7 +15,8 @@ module.exports = function (grunt) {
                 'test/**/*.js',
                 '!src/main/webapp/jsfull/sinon*.js',
                 '!src/main/webapp/jsfull/**/bootstrap.min.js',
-                '!src/main/webapp/jsfull/**/require.js'
+                '!src/main/webapp/jsfull/**/require.js',
+		'!src/main/webapp/jsfull/**/snap.svg.js'
 
             ],
         },
