@@ -71,7 +71,7 @@ QUnit.test("ChessPiece toString for classes attribute with String", function (as
     pieces.forEach(function (element) {
         var classesRex = new RegExp('class="' + element.getClasses(Colour.black) + '"');
 
-        svg = element.toString(testData.id, testData.location, testData.playerColour.toString());
+        svg = element.toString(testData.id, testData.location, testData.playerColour.toString);
         assert.ok(classesRex.exec(svg), "class attribute not found");
     });
 });
@@ -79,7 +79,7 @@ QUnit.test("ChessPiece toString for classes attribute with String", function (as
 QUnit.test("ChessPiece toString for fill property", function (assert) {
     "use strict";
     pieces.forEach(function (element) {
-        var classesRex = new RegExp('fill:' + element.getColour().fill);
+        var classesRex = new RegExp('fill:' + element.pieceColour.fill);
 
         svg = element.toString(testData.id, testData.location, "BLACK");
         assert.ok(classesRex.exec(svg), "class attribute not found");

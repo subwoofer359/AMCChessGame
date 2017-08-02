@@ -168,36 +168,46 @@ export var chessboardModule = (function () {
     }
 
     function move(moveStr : string, callback ?: () => void ) : void {
-        let s = Snap("svg");
-        if (moveStr === "" || !s) {
-            if (callback) {
-                callback();
+        let s = Snap("svg"),
+            moveRegex = /^([A-H][1-8])-([A-H][1-8])$/;
+        
+        if (moveStr !== "" && s) {
+            if (moveRegex.test(moveStr)) {
+                let square = moveRegex.exec(moveStr),
+                    coord = getMoveCoordinates(square[1], square[2]),
+                    pieceToMove = s.select(`g[id *= "${square[1]}"]`);
+                
+                if (pieceToMove) {
+                    pieceToMove.transform(`T${coord.start.x},${coord.start.y}`);
+                    pieceToMove.animate({transform: `t${coord.end.x},${coord.end.y}`}, 1000, mina.bounce, callback);
+                    return;
+                }
+            } else {
+                throw "Not valid Move coordinates";
             }
-            return;
         }
 
-        let moveRegex = /^([A-H][1-8])-([A-H][1-8])$/,
-            piece = new ChessPiece(Colour.black);
-        if (moveRegex.test(moveStr)) {
-            let squares = moveRegex.exec(moveStr),
-                start = ChessPiece.parseSquareCoordinates(squares[1]),
-                end = ChessPiece.parseSquareCoordinates(squares[2]),
-                startLoc = {
-                    x: piece.getCoordX(start), 
-                    y: piece.getCoordY(start)
-                },
-                endLoc = {
-                    x: piece.getCoordX(end), 
-                    y: piece.getCoordY(end)
-                },
-                pieceToMove = s.select(`g[id *= "${squares[1]}"]`);
-                  
-                pieceToMove.transform(`T${startLoc.x},${startLoc.y}`);
-                pieceToMove.animate({transform: `t${endLoc.x},${endLoc.y}`}, 1000, mina.bounce, callback);
-                
-        } else {
-            throw "Not valid Move coordinates";
+        if (callback) {
+            callback();
         }
+    }
+
+    function getMoveCoordinates(start: string, end: string) {
+        let piece = new ChessPiece(Colour.white),
+            s = ChessPiece.parseSquareCoordinates(start),
+            e = ChessPiece.parseSquareCoordinates(end),
+            startLoc = {
+                    x: piece.getCoordX(s), 
+                    y: piece.getCoordY(s)
+                },
+            endLoc = {
+                    x: piece.getCoordX(e), 
+                    y: piece.getCoordY(e)
+            };
+        return {
+            start : startLoc, 
+            end : endLoc
+        };
     }
 
     return {
