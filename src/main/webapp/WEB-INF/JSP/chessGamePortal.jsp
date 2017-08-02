@@ -202,10 +202,11 @@
         require([
             	"snapsvg",
                 "../../js/chessboard.js",
+                "../../js/InteractActions.js",
                 "../../js/chessGameInteract.js",
                 "../../js/chessGamePortal.js",
                 "../../js/player.js"
-            ], function (Snap, myApp) {
+            ], function (Snap, myApp, interact) {
                     $(document).ready(function(){
                         var headerName = "${_csrf.headerName}",
                             token = "${_csrf.token}",
@@ -215,7 +216,7 @@
                         
                         stompObject.headers = {};
                         stompObject.headers[headerName] = token;
-                        stompObject.URL = "http://${HOSTIP}:${PORT}" +
+                        stompObject.URL = "http://" + location.hostname + ":" + location.port +
                                             "${pageContext.request.contextPath}" +
                                             "/app/chessgame/chessgame";
                         stompObject.gameUUID = "${GAME_UUID}";
@@ -224,7 +225,7 @@
                         stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
                         
                         var stompClient = chessgameportalModule.setupStompConnection(stompObject);
-                        chessGameInteract(new InteractActions ( stompClient, "${GAME_UUID}" ));
+                        chessGameInteract(new interact.InteractActions ( stompClient, "${GAME_UUID}" ));
                         
                         chessgameportalModule.addMessageDialogListener();
                     });

@@ -70,14 +70,13 @@ var chessgameportalModule = (function () {
          */
         updateChessBoard : function (chessBoardJson) {
             var board = $.parseJSON(chessBoardJson),
-                move = "";
-            
-            if (board.lastMove.start) {
-                move = board.lastMove.start.letter + board.lastMove.start.number +
-                    "-" + board.lastMove.end.letter + board.lastMove.end.number;
-            };
+                move = "",
+                that = this;
 
-            var that = this;
+            if(board.lastMove) {
+                move = board.lastMove;
+            }
+            
             chessboardModule.move(move, function () {
                 chessboardModule.createChessBoard(that.playerColour, chessBoardJson);
                 that.oldChessBoard = chessBoardJson;

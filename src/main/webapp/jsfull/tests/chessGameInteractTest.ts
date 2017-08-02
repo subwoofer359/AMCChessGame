@@ -3,19 +3,23 @@
 /*global OneViewInteractActions*/
 /*global console*/
 
-var stompClient = {
+import { InteractActions } from "../InteractActions";
+import { OneViewInteractActions } from "../OneViewInteractActions";
+
+let stompClient: any = {
     send : function (destination, priorityObj, moveString) {
         "use strict";
         this.destination = destination;
         this.priorityObj = priorityObj;
         this.moveString = moveString;
     }
-},
-    event;
+}
+
+let event: any;
 
 function createEvent() {
     "use strict";
-    var event = {};
+    let event: any = {};
 
     event.target = {};
     event.relatedTarget = {};

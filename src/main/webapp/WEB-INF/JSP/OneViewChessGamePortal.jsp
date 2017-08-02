@@ -161,10 +161,11 @@
         require([
             		"snapsvg",
                     "../../js/chessboard.js",
+                    "../../js/OneViewInteractActions.js",
                     "../../js/chessGameInteract.js",
                     "../../js/chessGamePortal.js",
                     "../../js/player.js"
-                ], function (Snap, myApp) {
+                ], function (Snap, myApp, interact) {
             
             
             $(document).ready(function(){
@@ -188,7 +189,7 @@
                 stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
                 
                 var stompClient = chessgameportalModule.setupOneViewStompConnection(stompObject);
-                chessGameInteract(new OneViewInteractActions( stompClient, "${GAME_UUID}" ));
+                chessGameInteract(new interact.OneViewInteractActions( stompClient, "${GAME_UUID}" ));
     
                 chessgameportalModule.addMessageDialogListener();
             });
