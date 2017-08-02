@@ -16,8 +16,7 @@ module.exports = function (grunt) {
                 '!src/main/webapp/jsfull/sinon*.js',
                 '!src/main/webapp/jsfull/**/bootstrap.min.js',
                 '!src/main/webapp/jsfull/**/require.js',
-		'!src/main/webapp/jsfull/**/snap.svg.js'
-
+		        '!src/main/webapp/jsfull/**/snap.svg.js'
             ],
         },
         qunit: {
@@ -83,10 +82,21 @@ module.exports = function (grunt) {
 
                 }
             }
+        },
+        tslint : {
+            options: {
+                configuration: "./tslint.json"
+            },
+            files: {
+                src: [
+                    "src/main/webapp/jsfull/**/*.ts"
+                ]
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks("grunt-tslint");
     grunt.loadNpmTasks('grunt-githooks');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -97,5 +107,4 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['ts', 'jshint', 'qunit']);
     grunt.registerTask('QUnit', ['qunit']);
     grunt.registerTask('css_min', ['cssmin']);
-    grunt.registerTask('createModule', ['concat']);
 };
