@@ -1,16 +1,17 @@
-export var Colour = {
-        white :{
-            fill : '#ffd5d5',
-            stroke : '#000000',
-            toString : function () { return 'WHITE'; }
-        },
+export let Colour = {
         black : {
             fill : '#191406',
             stroke : '#ffffff',
-            toString : function () { return 'BLACK'; }
-        }
-    },
-    coordinates = {
+            toString : 'BLACK',
+        },
+        white : {
+            fill : '#ffd5d5',
+            stroke : '#000000',
+            toString : 'WHITE',
+        },
+    };
+
+export let coordinates = {
         A : 1,
         B : 2,
         C : 3,
@@ -18,82 +19,83 @@ export var Colour = {
         E : 5,
         F : 6,
         G : 7,
-        H : 8
+        H : 8,
     };
 
 export class ChessPiece {
+
+    /**
+     * Parses a Square coordinate in the form <letter><number>
+     * into an object with properties rank and file
+     *
+     * @access public
+     * @param {string} squareCoordinates
+     * @return {object} containing rank and file coordinates
+     * @throws {string} if coordinate can't be parsed
+     */
+    public static parseSquareCoordinates(squareCoordinates: string) {
+        const coordinateRegex = /^([A-H])([1-8])$/;
+
+        if (coordinateRegex.test(squareCoordinates)) {
+            const coordinate = coordinateRegex.exec(squareCoordinates);
+            return {file : coordinate[1],
+                    rank : coordinate[2],
+                };
+        }
+        throw new Error('Not valid ChessBoard coordinate');
+    }
+
     /**
      * x-axis origin in the SVG chessboard
      * @member
      *
      */
-    x = 0;
-    
+    public readonly x = 0;
+
     /**
      * y-axis origin in the SVG chessboard
      * @member
      */
-    y = 0;
-    
+    public readonly y = 0;
+
     /**
      * The size of the SVG squares in pixels
      * @member
      */
-    offsetXY = 62.5;
+    public  readonly offsetXY = 62.5;
 
-    pieceColour : {fill, stroke};
+    private  _pieceColour: { fill, stroke };
 
     constructor(pieceColour) {
-        this.pieceColour = this.checkColour(pieceColour);
+        this._pieceColour = this.checkColour(pieceColour);
     }
 
-    getClasses(playerColour) : string {
-        var colour = this.checkColour(playerColour);
-        if ((this.pieceColour === Colour.white && colour == Colour.white) ||
-            (this.pieceColour === Colour.black && colour == Colour.black)) {
+    public getCoordX(location) {
+        return this.x + (this.offsetXY * (coordinates[location.file] - 1));
+    }
+
+    public getCoordY(location) {
+        return this.y + (this.offsetXY * (8 - location.rank));
+    }
+
+    public toString(id: string, squareCoordinates: string, playerColour: { fill, stroke }): string {
+        return "";
+    }
+
+    public get pieceColour(): { fill, stroke } {
+        return this._pieceColour;
+    }
+
+    public getClasses(playerColour): string {
+        const colour = this.checkColour(playerColour);
+        if ((this.pieceColour === Colour.white && colour === Colour.white) ||
+            (this.pieceColour === Colour.black && colour === Colour.black)) {
             return 'chesspiece draggable';
         }
         return 'chesspiece';
     }
 
-    getCoordX(location) {
-        return this.x + (this.offsetXY * (coordinates[location.file] - 1));
-    }
-
-    getCoordY(location) {
-        return this.y + (this.offsetXY * (8 - location.rank));
-    }
-
-            /**
-    * Parses a Square coordinate in the form <letter><number>
-    * into an object with properties rank and file
-    *
-    * @access public
-    * @param {string} squareCoordinates
-    * @return {object} containing rank and file coordinates
-    * @throws {string} if coordinate can't be parsed
-    */
-    static parseSquareCoordinates(squareCoordinates: string) {
-        var coordinateRegex = /^([A-H])([1-8])$/,
-            coordinate;
-        if (coordinateRegex.test(squareCoordinates)) {
-            coordinate = coordinateRegex.exec(squareCoordinates);
-            return {file : coordinate[1],
-                    rank : coordinate[2]
-                };
-        }
-        throw 'Not valid ChessBoard coordinate';
-    }
-
-    toString(id: string, squareCoordinates: string, playerColour:{fill, stroke}): string {
-        return "";
-    }
-
-    getColour() {   
-        return this.pieceColour; 
-    }
-
-    checkColour(colour) {
+    private checkColour(colour) {
         if (typeof(colour) === 'string') {
             switch (colour) {
                 case "BLACK":
@@ -103,7 +105,7 @@ export class ChessPiece {
                 default:
                     throw new Error("Can't create ChessPiece Object");
             }
-        } else if (typeof(colour) === 'object' && (colour === Colour.black || 
+        } else if (typeof(colour) === 'object' && (colour === Colour.black ||
             colour === Colour.white)) {
             return colour;
         } else {
