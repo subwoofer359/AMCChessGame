@@ -540,6 +540,8 @@
 
 										<copy file="src/main/webapp/META-INF/context.prod.xml"
 											tofile="${project.basedir}/target/AMCChessGame/META-INF/context.xml" />
+										<copy file="${project.basedir}/target/AMCChessGame.war"
+											tofile="${project.basedir}/docker/AMCChessGame.war" />
 									</tasks>
 								</configuration>
 							</execution>
@@ -592,5 +594,5 @@
 		<system>Jira</system>
 		<url>http://192.168.1.5:8081/</url>
 	</issueManagement>
-	<version>2.0alpha</version>
+	<version>2.1alpha</version>
 </project>
