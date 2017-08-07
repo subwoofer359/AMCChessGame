@@ -1,5 +1,6 @@
 import * as Chessboard from "./Chessboard";
 import { StompActions } from "./StompActions";
+import { StompObject } from "./StompObject";
 
 /**
  * Creates a new StompActions which is used in an One View Chess Game
@@ -12,8 +13,8 @@ import { StompActions } from "./StompActions";
  * @param {string} playerColour colour of the player playing the game
  */
 export class OneViewStompActions extends StompActions {
-    constructor(gameUID, playerName, opponentName, playerColour) {
-        super(gameUID, playerName, opponentName, playerColour);
+    constructor(stompObject: StompObject) {
+        super(stompObject);
     }
 
     /**

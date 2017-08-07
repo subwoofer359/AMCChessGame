@@ -1,6 +1,7 @@
 
 import * as Chessboard from "./Chessboard";
 import "./player";
+import { StompObject } from "./StompObject";
 
 /**
  * Creates a new StompActions which is used in a Two View Chess Game
@@ -44,11 +45,11 @@ export class StompActions {
      */
     private updatePlayer: (message) => void = updatePlayer;
 
-    constructor(gameUID, playerName: string, opponentName: string, playerColour) {
-        this.gameUID = gameUID;
-        this.playerName = playerName;
-        this.opponentName = opponentName;
-        this.playerColour = playerColour;
+    constructor(stompObject: StompObject) {
+        this.gameUID = stompObject.gameUUID;
+        this.playerName = stompObject.playerName;
+        this.opponentName = stompObject.opponentName;
+        this.playerColour = stompObject.playerColour;
     }
 
     /**

@@ -159,33 +159,24 @@
     require(["../../js/app.js"], function() {
         require(["snapsvg",
                  "../../js/chessGamePortal",
-                 "../../js/OneViewInteractActions.js",
-                 "../../js/chessGameInteract.js"
-                ], function (Snap, chessGamePortal, interact) {
+                 "../../js/StompObject"
+                ], function (Snap, chessGamePortal, stompObj) {
 
-                var headerName = "${_csrf.headerName}",
-                    token = "${_csrf.token}",
-                    stompObject = {};
-                
-                stompObject.currentPlayer = {};
-                stompObject.currentPlayer.userName = "${GAME.player.userName}";
-                stompObject.currentPlayer.colour = "${GAME.player.colour}";
-                stompObject.headers = {};
-                stompObject.headers[headerName] = token;
-                stompObject.URL = "http://" + location.hostname + ":" + location.port +
+                var s = new stompObj.StompObject(
+                    "http://" + location.hostname + ":" + location.port +
                         "${pageContext.request.contextPath}" +
-                        "/app/chessgame/chessgame";
-                stompObject.gameUUID = "${GAME_UUID}";
-                stompObject.playerName = '<c:out value="${GAME.player.name}"/>';
-                stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
-                stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
+                        "/app/chessgame/chessgame",
+                    "${GAME_UUID}",
+                    '<c:out value="${GAME.player.name}"/>',
+                    '<c:out value="${GAME.opponent.name}"/>',
+                    '<c:out value="${CHESSPLAYER.colour}"/>');
                 
+                s.headers["${_csrf.headerName}"] = "${_csrf.token}";
+
                 // todo: A Hack to be fixed
                 chessGamePortal.setStompjs(Stomp);
-                var stompClient = chessGamePortal.setupOneViewStompConnection(stompObject);
-                chessGameInteract(new interact.OneViewInteractActions( stompClient, "${GAME_UUID}" ));
-    
-                chessGamePortal.addMessageDialogListener();
+
+                chessGamePortal.setupOneViewStompConnection(s);
         });
     });
 </script>

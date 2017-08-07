@@ -7,10 +7,11 @@ import * as chessGamePortal from "../chessGamePortal";
 import { OneViewStompActions } from "../OneViewStompActions";
 import { Colour } from "../Pieces/ChessPiece";
 import { StompActions } from "../StompActions";
+import { StompObject } from "../StompObject";
 import * as Chessboard from "./MockChessBoard";
 import * as UpdatePlayer from "./MockPlayer";
 
-const stompObject: any = {};
+let stompObj: StompObject;
 
 let myStompActions;
 
@@ -23,13 +24,13 @@ const chessboardString = `{"squares":{"G1":"n","G2":"p","E1":"k","E2":"p","C1":"
 QUnit.module("Stomp Message tests", {
     beforeEach : () => {
         $("#qunit-fixture").html('<div id="my-alert"><div class="alert"></div></div>');
-        stompObject.gameUID = "1234";
-        stompObject.playerName = "testPlayer";
-        stompObject.opponentName = "testOpponent";
-        stompObject.playerColour = Colour.black;
-        stompObject.headers = {};
-        myStompActions = new StompActions(stompObject.gameUID, stompObject.playerName,
-                                          stompObject.opponentName, stompObject.playerColour);
+        stompObj = new StompObject();
+        stompObj.gameUUID = "1234";
+        stompObj.playerName = "testPlayer";
+        stompObj.opponentName = "testOpponent";
+        stompObj.playerColour = Colour.black.toString;
+
+        myStompActions = new StompActions(stompObj);
         myStompActions.chessboard = Chessboard;
         myStompActions.updatePlayer = UpdatePlayer.updatePlayer;
     },
@@ -45,8 +46,7 @@ QUnit.test("testing StompActions: function updateChessBoard", (assert) => {
 
 QUnit.test("testing StompActions: function updateChessBoard", (assert) => {
     const json = chessboardString;
-    const oneViewStompActions: any = new OneViewStompActions(stompObject.gameUID, stompObject.playerName,
-                                          stompObject.opponentName, stompObject.playerColour);
+    const oneViewStompActions: any = new OneViewStompActions(stompObj);
     oneViewStompActions.updateChessBoard(json);
     assert.ok(UpdatePlayer.updatePlayerCall, "UpdatePlayer should be called");
     assert.ok(Chessboard.updateChessBoardCall, "UpdateChessBoard should be called");
@@ -204,8 +204,3 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", (assert) => {
     assert.equal(Chessboard.updateChessBoardCall, true);
 });
 
-QUnit.test("testing openStompConnection: fail with error", (assert) => {
-    assert.throws(() => {
-        chessGamePortal.openStompConnection("", "", {});
-    }, "callback function isn't an instance of StompActions");
-});

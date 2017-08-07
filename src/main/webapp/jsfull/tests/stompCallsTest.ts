@@ -6,6 +6,7 @@
 
 import * as chessGamePortal from "../chessGamePortal";
 import { StompActions } from "../StompActions";
+import { StompObject } from "../StompObject";
 
 const SockJS = function(URL) {
     this.url = URL;
@@ -47,8 +48,9 @@ QUnit.test("testing Stomp Calls Test", (assert) => {
     chessGamePortal.setSockJs(SockJS);
     chessGamePortal.setStompjs(Stomp);
 
-    chessGamePortal.openStompConnection("", {}, new StompActions("gameUID", "playerName", "opponentName",
-        "playerColour"));
+    const stompObject = new StompObject("url", "gameUID", "playerName", "opponentName", "playerColour");
+
+    chessGamePortal.openStompConnection(stompObject, new StompActions(stompObject));
 
     assert.equal(subscriptions.indexOf(USER_UPDATES), 0);
     assert.equal(subscriptions.indexOf(TOPIC_UPDATES + "gameUID"), 1);

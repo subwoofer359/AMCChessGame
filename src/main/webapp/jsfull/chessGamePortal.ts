@@ -9,8 +9,12 @@
 
 import * as _SockJS from "sockjs-client";
 import * as _Stomp from "stompjs";
+import "./chessGameInteract";
+import { InteractActions } from "./InteractActions";
+import { OneViewInteractActions } from "./OneViewInteractActions";
 import { OneViewStompActions } from "./OneViewStompActions";
 import { StompActions } from "./StompActions";
+import { StompObject } from "./StompObject";
 
 let SockJS = _SockJS;
 let Stomp = _Stomp;
@@ -28,7 +32,7 @@ export function addMessageDialogListener() {
  * @param {object} headers contains values to place into the STOMP headers
  * @param {StompActions} stompCallBack callback object
  */
-export function openStompConnection(websocketURL, headers, stompCallBack) {
+export function openStompConnection(stompObj: StompObject, stompCallBack) {
     let stompClient;
     let socket;
     const USER_UPDATES = "/user/queue/updates";
@@ -38,12 +42,9 @@ export function openStompConnection(websocketURL, headers, stompCallBack) {
     const APP_QUIT = "/app/quit/";
     const APP_SAVE = "/app/save/";
 
-    if (!(typeof stompCallBack === "object" && stompCallBack instanceof StompActions)) {
-        throw new Error("callback function isn't an instance of StompActions");
-    }
-    socket = new SockJS(websocketURL);
+    socket = new SockJS(stompObj.url);
     stompClient = Stomp.over(socket);
-    stompClient.connect(headers, function onStompConnect() {
+    stompClient.connect(stompObj.headers, function onStompConnect() {
         stompClient.subscribe(USER_UPDATES, (message) => {
             stompCallBack.userUpdate.call(stompCallBack, message);
         });
@@ -72,11 +73,12 @@ export function openStompConnection(websocketURL, headers, stompCallBack) {
  * @param {object} stompObject contains values required to open a connection
  * @returns stompClient STOMP connection object
  */
-export function setupStompConnection(stompObject) {
-    const stompCallBack = new StompActions(stompObject.gameUUID, stompObject.playerName,
-            stompObject.opponentName, stompObject.playerColour);
-    const stompClient = openStompConnection(stompObject.URL, stompObject.headers, stompCallBack);
+export function setupStompConnection(stompObject: StompObject) {
+    const stompCallBack = new StompActions(stompObject);
+    const stompClient = openStompConnection(stompObject, stompCallBack);
 
+    chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID));
+    addMessageDialogListener();
     return stompClient;
 }
 
@@ -87,10 +89,11 @@ export function setupStompConnection(stompObject) {
  * @returns stompClient STOMP connection object
  */
 export function setupOneViewStompConnection(stompObject) {
-    const stompCallBack = new OneViewStompActions(stompObject.gameUUID, stompObject.playerName,
-            stompObject.opponentName, stompObject.playerColour);
-    const stompClient = openStompConnection(stompObject.URL, stompObject.headers, stompCallBack);
+    const stompCallBack = new OneViewStompActions(stompObject);
+    const stompClient = openStompConnection(stompObject, stompCallBack);
 
+    chessGameInteract(new OneViewInteractActions(stompClient, stompObject.gameUUID));
+    addMessageDialogListener();
     return stompClient;
 }
 
