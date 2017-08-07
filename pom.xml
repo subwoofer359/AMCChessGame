@@ -312,6 +312,10 @@
 								<include>derby.log</include>
 							</includes>
 						</fileset>
+						<fileset>
+							<directory>src/main/webapp/js</directory>
+							<includes>**/*</includes>
+						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
