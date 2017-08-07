@@ -1,18 +1,18 @@
 /*global ChessPieceModule */
-import {ChessPiece, Colour} from './ChessPiece';
-    
+import {ChessPiece, Colour} from "./ChessPiece";
+
 export class QueenPiece extends ChessPiece {
     constructor(pieceColour) {
         super(pieceColour);
     }
 
-    toString(id, squareCoordinates, playerColour) {
-        var location = ChessPiece.parseSquareCoordinates(squareCoordinates),
-            clazz = this.getClasses(playerColour),
-            xCoord = this.getCoordX(location),
-            yCoord = this.getCoordY(location);
+    public toString(id, squareCoordinates, playerColour): string {
+        const location = ChessPiece.parseSquareCoordinates(squareCoordinates);
+        const clazz = this.getClasses(playerColour);
+        const xCoord = this.getCoordX(location);
+        const yCoord = this.getCoordY(location);
 
-        return `<g transform="translate(${xCoord},${yCoord})" id="${id}" class="${clazz}" style="fill:${this.pieceColour.fill}"> 
+        return `<g transform="translate(${xCoord},${yCoord})" id="${id}" class="${clazz}" style="fill:${this.pieceColour.fill}">
             <path d="m 16.91246,16.87538 c 0,2.13562 -1.35857,3.8663 -3.03312,3.8663 -1.67558,0 -3.03311,-1.73112 -3.03311,-3.8663 0,-2.13518 1.35787,-3.86585 3.03311,-3.86585 1.67455,-4.4e-4 3.03312,1.73067 3.03312,3.86585 z" style="fill:${this.pieceColour.fill};stroke:${this.pieceColour.fill};stroke-width:0.2277;stroke-linecap:round;stroke-linejoin:round" />
             <path d="m 25.48446,12.02711 c 0,2.13561 -1.35787,3.8663 -3.03242,3.8663 -1.67558,0 -3.03311,-1.73113 -3.03311,-3.8663 0,-2.13518 1.35787,-3.86585 3.03311,-3.86585 1.67455,0 3.03242,1.73067 3.03242,3.86585 " style="fill:${this.pieceColour.fill};stroke:${this.pieceColour.fill};stroke-width:0.2277;stroke-linecap:round;stroke-linejoin:round" />
             <path d="m 34.46742,10.80481 c 0,2.13518 -1.35787,3.86585 -3.03242,3.86585 -1.67558,0 -3.03311,-1.73111 -3.03311,-3.86585 0,-2.13562 1.35787,-3.86629 3.03311,-3.86629 1.67455,-4.4e-4 3.03242,1.73067 3.03242,3.86629 z" style="fill:${this.pieceColour.fill};stroke:${this.pieceColour.fill};stroke-width:0.2277;stroke-linecap:round;stroke-linejoin:round" />
@@ -32,5 +32,5 @@ export class QueenPiece extends ChessPiece {
             <path d="m 20.02035,41.56513 c 3.68737,-1.352 19.49042,-1.352 23.1778,0"  style="fill:none;stroke:${this.pieceColour.stroke};stroke-width:0.72600001;stroke-linecap:round;stroke-linejoin:round" />
             <path d="m 20.54712,46.29715 c 6.32123,-1.35201 15.80305,-1.35201 22.12426,0"  style="fill:none;stroke:${this.pieceColour.stroke};stroke-width:0.72600001;stroke-linecap:round;stroke-linejoin:round" />
             <path d="m 18.96786,49.67718 c 5.26768,-1.35201 19.49044,-1.35201 24.7581,0"  style="fill:none;stroke:${this.pieceColour.stroke};stroke-width:0.72600001;stroke-linecap:round;stroke-linejoin:round" /></g>`;
-    };
+    }
 }

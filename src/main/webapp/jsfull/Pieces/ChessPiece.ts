@@ -1,13 +1,13 @@
 export let Colour = {
         black : {
-            fill : '#191406',
-            stroke : '#ffffff',
-            toString : 'BLACK',
+            fill : "#191406",
+            stroke : "#ffffff",
+            toString : "BLACK",
         },
         white : {
-            fill : '#ffd5d5',
-            stroke : '#000000',
-            toString : 'WHITE',
+            fill : "#ffd5d5",
+            stroke : "#000000",
+            toString : "WHITE",
         },
     };
 
@@ -31,7 +31,7 @@ export class ChessPiece {
      * @access public
      * @param {string} squareCoordinates
      * @return {object} containing rank and file coordinates
-     * @throws {string} if coordinate can't be parsed
+     * @throws {string} if coordinate can"t be parsed
      */
     public static parseSquareCoordinates(squareCoordinates: string) {
         const coordinateRegex = /^([A-H])([1-8])$/;
@@ -42,7 +42,7 @@ export class ChessPiece {
                     rank : coordinate[2],
                 };
         }
-        throw new Error('Not valid ChessBoard coordinate');
+        throw new Error("Not valid ChessBoard coordinate");
     }
 
     /**
@@ -64,10 +64,10 @@ export class ChessPiece {
      */
     public  readonly offsetXY = 62.5;
 
-    private  _pieceColour: { fill, stroke };
+    private  PieceColour: { fill, stroke };
 
     constructor(pieceColour) {
-        this._pieceColour = this.checkColour(pieceColour);
+        this.PieceColour = this.checkColour(pieceColour);
     }
 
     public getCoordX(location) {
@@ -83,20 +83,20 @@ export class ChessPiece {
     }
 
     public get pieceColour(): { fill, stroke } {
-        return this._pieceColour;
+        return this.PieceColour;
     }
 
     public getClasses(playerColour): string {
         const colour = this.checkColour(playerColour);
         if ((this.pieceColour === Colour.white && colour === Colour.white) ||
             (this.pieceColour === Colour.black && colour === Colour.black)) {
-            return 'chesspiece draggable';
+            return "chesspiece draggable";
         }
-        return 'chesspiece';
+        return "chesspiece";
     }
 
     private checkColour(colour) {
-        if (typeof(colour) === 'string') {
+        if (typeof(colour) === "string") {
             switch (colour) {
                 case "BLACK":
                     return Colour.black;
@@ -105,7 +105,7 @@ export class ChessPiece {
                 default:
                     throw new Error("Can't create ChessPiece Object");
             }
-        } else if (typeof(colour) === 'object' && (colour === Colour.black ||
+        } else if (typeof(colour) === "object" && (colour === Colour.black ||
             colour === Colour.white)) {
             return colour;
         } else {

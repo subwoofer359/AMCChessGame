@@ -197,22 +197,15 @@
     
 </style>
 <script>
-    var chessboardModule;
     require(['../../js/app.js'], function () {
-        require([
-            	"snapsvg",
-                "../../js/chessboard.js",
+        require(["snapsvg",
+                 "../../js/chessGamePortal.js",
                 "../../js/InteractActions.js",
                 "../../js/chessGameInteract.js",
-                "../../js/chessGamePortal.js",
-                "../../js/player.js"
-            ], function (Snap, myApp, interact) {
-                    $(document).ready(function(){
+            ], function (Snap, chessGamePortal, interact) {
                         var headerName = "${_csrf.headerName}",
                             token = "${_csrf.token}",
                             stompObject = {};
-                        
-                        chessboardModule = myApp.chessboardModule;
                         
                         stompObject.headers = {};
                         stompObject.headers[headerName] = token;
@@ -224,11 +217,12 @@
                         stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
                         stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
                         
-                        var stompClient = chessgameportalModule.setupStompConnection(stompObject);
-                        chessGameInteract(new interact.InteractActions ( stompClient, "${GAME_UUID}" ));
+                        chessGamePortal.setStompjs(Stomp);
+
+                        var stompClient = chessGamePortal.setupStompConnection(stompObject);
+                        chessGameInteract(new interact.InteractActions (stompClient, "${GAME_UUID}"));
                         
-                        chessgameportalModule.addMessageDialogListener();
-                    });
+                        chessGamePortal.addMessageDialogListener();
         });
     });
 

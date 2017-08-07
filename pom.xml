@@ -594,5 +594,5 @@
 		<system>Jira</system>
 		<url>http://192.168.1.5:8081/</url>
 	</issueManagement>
-	<version>2.1alpha</version>
+	<version>2.2alpha</version>
 </project>

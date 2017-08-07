@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <script src="https://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/require.js"></script>
 
@@ -156,24 +156,16 @@
     }    
 </style>
 <script>
-    var chessboardModule;
-    require(['../../js/app.js'], function() {
-        require([
-            		"snapsvg",
-                    "../../js/chessboard.js",
-                    "../../js/OneViewInteractActions.js",
-                    "../../js/chessGameInteract.js",
-                    "../../js/chessGamePortal.js",
-                    "../../js/player.js"
-                ], function (Snap, myApp, interact) {
-            
-            
-            $(document).ready(function(){
+    require(["../../js/app.js"], function() {
+        require(["snapsvg",
+                 "../../js/chessGamePortal",
+                 "../../js/OneViewInteractActions.js",
+                 "../../js/chessGameInteract.js"
+                ], function (Snap, chessGamePortal, interact) {
+
                 var headerName = "${_csrf.headerName}",
                     token = "${_csrf.token}",
                     stompObject = {};
-    
-                chessboardModule = myApp.chessboardModule;
                 
                 stompObject.currentPlayer = {};
                 stompObject.currentPlayer.userName = "${GAME.player.userName}";
@@ -188,11 +180,12 @@
                 stompObject.opponentName = '<c:out value="${GAME.opponent.name}"/>';
                 stompObject.playerColour = '<c:out value="${CHESSPLAYER.colour}"/>';
                 
-                var stompClient = chessgameportalModule.setupOneViewStompConnection(stompObject);
+                // todo: A Hack to be fixed
+                chessGamePortal.setStompjs(Stomp);
+                var stompClient = chessGamePortal.setupOneViewStompConnection(stompObject);
                 chessGameInteract(new interact.OneViewInteractActions( stompClient, "${GAME_UUID}" ));
     
-                chessgameportalModule.addMessageDialogListener();
-            });
+                chessGamePortal.addMessageDialogListener();
         });
     });
 </script>

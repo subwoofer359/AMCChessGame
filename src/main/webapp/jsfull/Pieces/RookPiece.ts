@@ -1,19 +1,18 @@
 /*global ChessPieceModule */
 
-import {ChessPiece, Colour} from './ChessPiece';
-
+import {ChessPiece, Colour} from "./ChessPiece";
 
 export class RookPiece extends ChessPiece {
     constructor(pieceColour) {
         super(pieceColour);
     }
 
-    toString(id, squareCoordinates, playerColour) {
-        var location = ChessPiece.parseSquareCoordinates(squareCoordinates),
-            clazz = this.getClasses(playerColour),
-            xCoord = this.getCoordX(location),
-            yCoord = this.getCoordY(location),
-            style = `style="fill:${this.pieceColour.fill};fill-opacity:1;stroke:${this.pieceColour.stroke}
+    public toString(id, squareCoordinates, playerColour): string {
+        const location = ChessPiece.parseSquareCoordinates(squareCoordinates);
+        const clazz = this.getClasses(playerColour);
+        const xCoord = this.getCoordX(location);
+        const yCoord = this.getCoordY(location);
+        const style = `style="fill:${this.pieceColour.fill};fill-opacity:1;stroke:${this.pieceColour.stroke}
                 ;stroke-width:0.44588459;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:3.5;
                 stroke-opacity:0.98453603;stroke-dasharray:none;stroke-dashoffset:50"`;
 

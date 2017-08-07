@@ -1,17 +1,17 @@
 /*global ChessPieceModule */
 
-import {ChessPiece, Colour} from './ChessPiece';
+import {ChessPiece, Colour} from "./ChessPiece";
 
 export class BishopPiece extends ChessPiece {
     constructor(pieceColour) {
         super(pieceColour);
     }
 
-    toString(id: string, squareCoordinates: string, playerColour:{fill, stroke}): string {
-        var location = ChessPiece.parseSquareCoordinates(squareCoordinates),
-            clazz = this.getClasses(playerColour),
-            xCoord = this.getCoordX(location),
-            yCoord = this.getCoordY(location);
+    public toString(id: string, squareCoordinates: string, playerColour: {fill, stroke}): string {
+        const location = ChessPiece.parseSquareCoordinates(squareCoordinates);
+        const clazz = this.getClasses(playerColour);
+        const xCoord = this.getCoordX(location);
+        const yCoord = this.getCoordY(location);
 
         return `<g id="${id}" class="${clazz}" transform="translate(${xCoord},${yCoord})">
                 <rect width="35.355339" height="4.0406103" x="12.648308" y="55.91304"  style="fill:${this.pieceColour.fill};fill-opacity:1;stroke:${this.pieceColour.stroke};stroke-width:0.7;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:50" />

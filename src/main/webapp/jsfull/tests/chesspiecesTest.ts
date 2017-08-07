@@ -1,22 +1,22 @@
 /*global QUnit*/
 /*global $*/
-import { chessboardModule } from "../chessboard";
-import { coordinates, Colour, ChessPiece } from "../Pieces/ChessPiece";
-import { BishopPiece } from "../Pieces/BishopPiece"
+import * as Chessboard from "../Chessboard";
+import { BishopPiece } from "../Pieces/BishopPiece";
+import { ChessPiece, Colour, coordinates } from "../Pieces/ChessPiece";
 
 QUnit.module("chesspieces test");
 
 /*global coordinates*/
-/*global chessboardModule*/
+/*global Chessboard*/
 /*global chesspiecesModule*/
 /*global parseSquareCoordinates*/
-QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function (assert) {
+QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", (assert) => {
     "use strict";
-    var i,
-        t,
-        coordinate,
-        boardWidth = chessboardModule.boardWidth,
-        piece = new BishopPiece(Colour.black);
+    let i;
+    let t;
+    let coordinate;
+    const boardWidth = Chessboard.boardWidth;
+    const piece = new BishopPiece(Colour.black);
 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {
@@ -29,18 +29,18 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", function 
     }
 });
 
-QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Exception ", function (assert) {
+QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Exception ", (assert) => {
     "use strict";
-    var piece = new BishopPiece(Colour.black);
-    assert.throws(function () {
+    const piece = new BishopPiece(Colour.black);
+    assert.throws(() => {
         ChessPiece.parseSquareCoordinates("A9");
     }, /Not valid ChessBoard coordinate/);
 
-    assert.throws(function () {
+    assert.throws(() => {
         ChessPiece.parseSquareCoordinates("A");
     }, /Not valid ChessBoard coordinate/);
-    
-    assert.throws(function () {
+
+    assert.throws(() => {
         ChessPiece.parseSquareCoordinates("I1");
     }, /Not valid ChessBoard coordinate/);
 });

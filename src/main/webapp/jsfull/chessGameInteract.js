@@ -4,6 +4,7 @@
  */
 
 /*global interact*/
+
 function chessGameInteract(interactCallBack) {
     "use strict";
 
@@ -51,4 +52,3 @@ function chessGameInteract(interactCallBack) {
         }
     });
 }
-

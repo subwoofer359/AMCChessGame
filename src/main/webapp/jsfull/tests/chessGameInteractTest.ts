@@ -6,43 +6,41 @@
 import { InteractActions } from "../InteractActions";
 import { OneViewInteractActions } from "../OneViewInteractActions";
 
-let stompClient: any = {
-    send : function (destination, priorityObj, moveString) {
-        "use strict";
+const stompClient: any = {
+    send(destination, priorityObj, moveString) {
         this.destination = destination;
         this.priorityObj = priorityObj;
         this.moveString = moveString;
-    }
-}
+    },
+};
 
-let event: any;
+let event: any = {};
+const gameUID: string = "3939393";
 
 function createEvent() {
-    "use strict";
-    let event: any = {};
 
     event.target = {};
     event.relatedTarget = {};
     event.target.classList = {
+        addedClasses : [],
         removedClasses : [],
-        addedClasses : []
     };
     event.relatedTarget.classList = {
+        addedClasses : [],
         removedClasses : [],
-        addedClasses : []
     };
 
-    event.relatedTarget.classList.remove = function (aClass) {
+    event.relatedTarget.classList.remove = function(aClass) {
         this.removedClasses.push(aClass);
     };
-    event.relatedTarget.classList.add = function (aClass) {
+    event.relatedTarget.classList.add = function(aClass) {
         this.addedClasses.push(aClass);
     };
 
-    event.target.classList.remove = function (aClass) {
+    event.target.classList.remove = function(aClass) {
         this.removedClasses.push(aClass);
     };
-    event.target.classList.add = function (aClass) {
+    event.target.classList.add = function(aClass) {
         this.addedClasses.push(aClass);
     };
 
@@ -50,43 +48,40 @@ function createEvent() {
 }
 
 QUnit.module("chessGameInteract Unit tests", {
-    beforeEach: function () {
+    beforeEach: () => {
         "use strict";
         event = createEvent();
-    }
+    },
 });
 
-QUnit.test("testing chessGameInteract: function onDropDeactivate ", function (assert) {
+QUnit.test("testing chessGameInteract: function onDropDeactivate ", (assert) => {
     "use strict";
-    var gameUID = "3939393",
-        interactActions = new InteractActions(stompClient, gameUID);
+    const interactActions = new InteractActions(stompClient, gameUID);
     interactActions.onDropDeactivate(event);
+
     assert.equal(event.target.classList.removedClasses.length, 2);
 });
 
-QUnit.test("chessGameInteract: function onDropActivate", function (assert) {
+QUnit.test("chessGameInteract: function onDropActivate", (assert) => {
     "use strict";
-    var gameUID = "3939393",
-        interactActions = new InteractActions(stompClient, gameUID);
+    const interactActions = new InteractActions(stompClient, gameUID);
     interactActions.onDropActivate(event);
     assert.equal(event.target.classList.addedClasses.length, 1);
 });
 
-QUnit.test("chessGameInteract: function onDragEnter", function (assert) {
+QUnit.test("chessGameInteract: function onDragEnter", (assert) => {
     "use strict";
-    var gameUID = "3939393",
-        interactActions = new InteractActions(stompClient, gameUID);
+    const interactActions = new InteractActions(stompClient, gameUID);
     interactActions.onDragEnter(event);
     assert.equal(event.target.classList.addedClasses.length, 1);
     assert.equal(event.relatedTarget.classList.addedClasses.length, 1);
 });
 
-QUnit.test("chessGameInteract: function onDrop", function (assert) {
+QUnit.test("chessGameInteract: function onDrop", (assert) => {
     "use strict";
-    var gameUID = "3939393",
-        interactActions = new InteractActions(stompClient, gameUID),
-        expectedPriority = {priority: 9},
-        expectedDestination = "/app/move/" + gameUID;
+    const interactActions = new InteractActions(stompClient, gameUID);
+    const expectedPriority = {priority: 9};
+    const expectedDestination = "/app/move/" + gameUID;
     interactActions.sourceId = "A1";
     event.target.id = "A2";
     interactActions.onDrop(event);
@@ -98,12 +93,11 @@ QUnit.test("chessGameInteract: function onDrop", function (assert) {
     assert.equal(stompClient.destination, expectedDestination);
 });
 
-QUnit.test("chessGameInteract: OneViewInteractActions: function onDrop", function (assert) {
-    "use strict";
-    var gameUID = "3939393",
-        interactActions = new OneViewInteractActions(stompClient, gameUID),
-        expectedPriority = {priority: 9},
-        expectedDestination = "/app/oneViewMove/" + gameUID;
+QUnit.test("chessGameInteract: OneViewInteractActions: function onDrop", (assert) => {
+    const interactActions = new OneViewInteractActions(stompClient, gameUID);
+    const expectedPriority = {priority: 9};
+    const expectedDestination = "/app/oneViewMove/" + gameUID;
+
     interactActions.sourceId = "A1";
     event.target.id = "A2";
     interactActions.onDrop(event);
@@ -115,10 +109,9 @@ QUnit.test("chessGameInteract: OneViewInteractActions: function onDrop", functio
     assert.equal(stompClient.destination, expectedDestination);
 });
 
-QUnit.test("chessGameInteract: function onDragLeave", function (assert) {
+QUnit.test("chessGameInteract: function onDragLeave", (assert) => {
     "use strict";
-    var gameUID = "3939393",
-        interactActions = new InteractActions(stompClient, gameUID);
+    const interactActions = new InteractActions(stompClient, gameUID);
 
     event.target.id = "A1";
     interactActions.onDragLeave(event);

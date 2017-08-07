@@ -1,15 +1,16 @@
 /*global ChessPieceModule */
-import {ChessPiece, Colour} from './ChessPiece';
+import { ChessPiece, Colour } from "./ChessPiece";
+
 export class KnightPiece extends ChessPiece {
             constructor(pieceColour) {
                 super(pieceColour);
             }
-    
-    toString(id, squareCoordinates, playerColour) {
-        var location = ChessPiece.parseSquareCoordinates(squareCoordinates),
-            clazz = this.getClasses(playerColour),
-            xCoord = this.getCoordX(location),
-            yCoord = this.getCoordY(location);
+
+    public toString(id, squareCoordinates, playerColour): string {
+        const location = ChessPiece.parseSquareCoordinates(squareCoordinates);
+        const clazz = this.getClasses(playerColour);
+        const xCoord = this.getCoordX(location);
+        const yCoord = this.getCoordY(location);
 
         return `<g transform="translate(${xCoord},${yCoord})" id="${id}"  class="${clazz}" style="fill:${this.pieceColour.fill}"><g transform="matrix(0.47208604,0,0,0.5491603,-78.452298,-1000.8994)" >
             <path d="m 231.714,1837.494 c 37.531,4.161 54.642,26.149 53.007,94.791 h -75.885 c -0.894,-36.918 30.719,-21.425 24.182,-68.82"  style="fill:${this.pieceColour.fill}" />
@@ -35,5 +36,5 @@ export class KnightPiece extends ChessPiece {
             ;stroke-width:0.72600001;stroke-linecap:round;stroke-linejoin:round" />
             <path d="m 239.712,1841.618 -0.921,3.374 1.688,0.307 c 9.513,1.464 19.396,6.854 26.302,19.92 6.905,13.066 9.892,32.666 8.366,63.167 l -0.153,1.534 h 5.367 v -1.534 c 1.543,-30.85 -3.616,
                 -50.734 -10.896,-64.509 -7.28,-13.775 -17.756,-20.349 -28.181,-21.952 l -1.572,-0.307 z"  style="fill:${this.pieceColour.stroke}" /></g></g>`;
-    };
+    }
 }

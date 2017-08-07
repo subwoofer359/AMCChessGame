@@ -9,12 +9,17 @@
   "dependencies": {
     "@types/lodash": "^4.14.71",
     "@types/snapsvg": "^0.4.29",
+    "@types/sockjs": "^0.3.31",
+    "@types/sockjs-client": "^1.0.31",
+    "@types/stompjs": "^2.3.0",
     "grunt": "~1.0.1",
     "typescript": "*"
   },
   "devDependencies": {
+    "@types/interact.js": "^1.0.22",
     "@types/jquery": "^2.0.47",
     "@types/qunit": "^2.0.31",
+    "@types/sockjs-client": "^1.0.31",
     "grunt-cli": "~1.2.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "~2.2.1",
@@ -26,8 +31,8 @@
     "grunt-lib-phantomjs-istanbul": "~1.0.1",
     "grunt-qunit-istanbul": "~1.0.0",
     "grunt-ts": "~6.0.0-beta.16",
-    "tslint": "5.5.0",
-    "grunt-tslint": "^5.0.1"
+    "grunt-tslint": "^5.0.1",
+    "tslint": "5.5.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
