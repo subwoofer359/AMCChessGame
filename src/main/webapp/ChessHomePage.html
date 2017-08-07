@@ -125,9 +125,7 @@ body {
 }
 
 #play-button img{
-    height: 50px;
-    
-    
+    height: 50px;   
 }
 
 #play-button p{
@@ -136,12 +134,9 @@ body {
     display: inline-block;
     top:-14px;
     font-family: "Orbitron";
-    font-size: 2em;
-    
+    font-size: 2em;   
 }
     
-
-
 /* Handle different screen sizes */
     
 @media (min-width:360px) and (max-width:768px){
@@ -179,7 +174,6 @@ body {
     }
 }
     
-
 /* animation */
 
 .dropButton {
@@ -247,9 +241,7 @@ $(document).ready(function(){
         if(introduction.css("top") !== windowHeightInPx){
             introduction.addClass("dropDiv");
             introduction.removeClass("raiseDiv");
-        }
-        
-        
+        } 
     });
 });
 </script>
@@ -316,10 +308,14 @@ $(document).ready(function(){
     <div class="padding col-xs-10"></div>
     <div class="header col-xs-offset-1 col-xs-2"><h2 class="">Introduction</h2></div><div class="col-xs-10"></div>
     <div id="description" class="col-xs-offset-1 col-xs-8">    
-        <p>The animation-fill-mode property specifies what styles will apply for the element when the animation is not playing (when it is finished, or when it has a "delay").
-
-By default, CSS animations will not affect the element you are animating until the first keyframe is "played", and then stops affecting it once the last keyframe has completed. The animation-fill-mode property can override this behavior.
+        <p>
+            My personal project to create a chess server.<br/>
+            The server is implemented using Java and the Spring framework.<br/>
+            The front end UI is implemented using JavaScript, TypeScript and assortment of supporting libraries.<br/>
+            The front end communicates to the back end using AJAX and WebSockets.
         </p>
+        <br/>
+        <p> Source code for the project is available at <a href="https://github.com/subwoofer359/AMCChessGame">GitHub</a></p>
     </div><!-- description -->
 </div><!--row: introduction -->
 
