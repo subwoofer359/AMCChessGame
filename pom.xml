@@ -482,7 +482,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
@@ -516,7 +515,8 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>package</phase>
+								<id>copyProductionFiles</id>
+								<phase>generate-sources</phase>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -544,6 +544,15 @@
 
 										<copy file="src/main/webapp/META-INF/context.prod.xml"
 											tofile="${project.basedir}/target/AMCChessGame/META-INF/context.xml" />
+									</tasks>
+								</configuration>
+							</execution>
+							<execution>
+								<id>CopyWarToDocker</id>
+								<phase>package</phase>
+								<goals><goal>run</goal></goals>
+								<configuration>
+									<tasks>
 										<copy file="${project.basedir}/target/AMCChessGame.war"
 											tofile="${project.basedir}/docker/AMCChessGame.war" />
 									</tasks>
