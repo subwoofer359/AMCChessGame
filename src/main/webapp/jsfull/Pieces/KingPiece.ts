@@ -1,6 +1,6 @@
 /*global ChessPieceModule */
 
-import {ChessPiece, Colour} from "./ChessPiece";
+import { ChessPiece } from "./ChessPiece";
 
 export class KingPiece extends ChessPiece {
     constructor(pieceColour) {

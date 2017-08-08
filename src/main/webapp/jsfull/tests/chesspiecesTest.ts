@@ -16,7 +16,6 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", (assert) 
     let t;
     let coordinate;
     const boardWidth = Chessboard.boardWidth;
-    const piece = new BishopPiece(Colour.black);
 
     for (i in coordinates) {
         if (coordinates.hasOwnProperty(i)) {

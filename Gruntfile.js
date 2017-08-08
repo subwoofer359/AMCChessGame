@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                 '!src/main/webapp/jsfull/sinon*.js',
                 '!src/main/webapp/jsfull/**/bootstrap.min.js',
                 '!src/main/webapp/jsfull/**/require.js',
-		        '!src/main/webapp/jsfull/**/snap.svg.js'
+                '!src/main/webapp/jsfull/**/snap.svg.js'
             ],
         },
         qunit: {

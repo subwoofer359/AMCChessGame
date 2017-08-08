@@ -203,4 +203,3 @@ QUnit.test("testing StompActions: function topicUpdate(INFO) ", (assert) => {
 
     assert.equal(Chessboard.updateChessBoardCall, true);
 });
-
