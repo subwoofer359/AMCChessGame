@@ -20,9 +20,6 @@ QUnit.module("ChessBoard Move test", {
 });
 
 QUnit.test("Test", (assert) => {
-    const piece = new ChessPiece(Colour.black);
-    const location = { file: "A", rank: "2" };
-
     const done = assert.async();
     Chessboard.move("A2-A3", () => {
         const board = Snap("svg");

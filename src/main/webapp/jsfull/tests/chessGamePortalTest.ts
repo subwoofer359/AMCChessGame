@@ -3,7 +3,6 @@
 /*global Chessboard*/
 /*global chessgameportalModule*/
 
-import * as chessGamePortal from "../chessGamePortal";
 import { OneViewStompActions } from "../OneViewStompActions";
 import { Colour } from "../Pieces/ChessPiece";
 import { StompActions } from "../StompActions";

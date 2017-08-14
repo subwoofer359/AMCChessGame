@@ -30,7 +30,6 @@ QUnit.test("testing chesspieces.js: function parseSquareCoordinates ", (assert) 
 
 QUnit.test("testing chesspieces.js: function parseSquareCoordinates throws Exception ", (assert) => {
     "use strict";
-    const piece = new BishopPiece(Colour.black);
     assert.throws(() => {
         ChessPiece.parseSquareCoordinates("A9");
     }, /Not valid ChessBoard coordinate/);
