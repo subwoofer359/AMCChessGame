@@ -8,7 +8,7 @@
             gameUUID : "${GAME_UUID}",
             playerColour : "${CHESSPLAYER.colour}",
             headers : {},
-            URL : "http://${HOSTIP}:${PORT}" +
+            URL : "http://" + location.hostname + ":" + location.port +
                         "${pageContext.request.contextPath}" +
                         "/app/chessgame/chessgame"
         },
