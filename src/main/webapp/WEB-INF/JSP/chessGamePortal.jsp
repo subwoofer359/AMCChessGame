@@ -146,6 +146,11 @@
             overflow-x: auto;
             background-repeat: repeat-x;
         }
+
+        /* Stop screen scrolling on smaller screens */
+        .full-height {
+            height: 80%;
+        }
     }
     
     @media (max-height:650px) {
