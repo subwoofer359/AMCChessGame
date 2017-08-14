@@ -4,7 +4,6 @@
 /*global console*/
 
 import { InteractActions } from "../InteractActions";
-import { OneViewInteractActions } from "../OneViewInteractActions";
 
 const stompClient: any = {
     send(destination, priorityObj, moveString) {
@@ -82,22 +81,6 @@ QUnit.test("chessGameInteract: function onDrop", (assert) => {
     const interactActions = new InteractActions(stompClient, gameUID);
     const expectedPriority = {priority: 9};
     const expectedDestination = "/app/move/" + gameUID;
-    interactActions.sourceId = "A1";
-    event.target.id = "A2";
-    interactActions.onDrop(event);
-
-    assert.equal(interactActions.destId, event.target.id);
-    assert.equal(interactActions.startOfMove, true);
-    assert.equal(stompClient.moveString, interactActions.sourceId + "-" + interactActions.destId);
-    assert.equal(stompClient.priorityObj.priority, expectedPriority.priority);
-    assert.equal(stompClient.destination, expectedDestination);
-});
-
-QUnit.test("chessGameInteract: OneViewInteractActions: function onDrop", (assert) => {
-    const interactActions = new OneViewInteractActions(stompClient, gameUID);
-    const expectedPriority = {priority: 9};
-    const expectedDestination = "/app/oneViewMove/" + gameUID;
-
     interactActions.sourceId = "A1";
     event.target.id = "A2";
     interactActions.onDrop(event);

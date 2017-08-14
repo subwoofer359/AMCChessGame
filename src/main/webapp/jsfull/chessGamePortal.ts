@@ -11,7 +11,6 @@ import * as _SockJS from "sockjs-client";
 import * as _Stomp from "stompjs";
 import "./chessGameInteract";
 import { InteractActions } from "./InteractActions";
-import { OneViewInteractActions } from "./OneViewInteractActions";
 import { OneViewStompActions } from "./OneViewStompActions";
 import { StompActions } from "./StompActions";
 import { StompObject } from "./StompObject";
@@ -92,7 +91,7 @@ export function setupOneViewStompConnection(stompObject) {
     const stompCallBack = new OneViewStompActions(stompObject);
     const stompClient = openStompConnection(stompObject, stompCallBack);
 
-    chessGameInteract(new OneViewInteractActions(stompClient, stompObject.gameUUID));
+    chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID));
     addMessageDialogListener();
     return stompClient;
 }

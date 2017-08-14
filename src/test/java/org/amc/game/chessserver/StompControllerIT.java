@@ -56,8 +56,6 @@ public class StompControllerIT {
 
     private static final String MESSAGE_DESTINATION = "/app/move/";
     private static final String SAVE_MESSAGE_DESTINATION = "/app/save/";
-
-    private static final String ONEVIEW_MESSAGE_DESTINATION = "/app/oneViewMove/";
     
     private static final int ASYNC_TIMEOUT = 5;
 
@@ -219,7 +217,7 @@ public class StompControllerIT {
     }
 
     private void oneViewMove(Player player, long gameUid, String moveString) throws Exception {
-        move(player, gameUid, ONEVIEW_MESSAGE_DESTINATION, moveString);
+        move(player, gameUid, MESSAGE_DESTINATION, moveString);
     }
 
     private void move(Player player, long gameUid, String messageDestination, String moveString)
@@ -346,6 +344,7 @@ public class StompControllerIT {
     		sendMessageToUser(user, TEST_MESSAGE, MessageType.INFO);
     	}
 
+    	/*
     	@MessageMapping("/oneViewMove/{gameUUID}")
     	@SendToUser(value = "/queue/updates", broadcast = false)
     	@Override
@@ -354,6 +353,6 @@ public class StompControllerIT {
     		super.registerOneViewMoveMove(user, gameUUID, moveString);
     		sendMessageToUser(user, TEST_MESSAGE, MessageType.INFO);
     	}
-
+    	 */
     }
 }
