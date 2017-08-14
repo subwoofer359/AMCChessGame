@@ -1,7 +1,5 @@
 <script src="${pageContext.request.contextPath}/jsfull/Promotion.js"></script>
 <script>
-    $(document).ready(function(){
-    
     var headerName = "${_csrf.headerName}",
         token = "${_csrf.token}",
         stompObject = {
@@ -17,9 +15,6 @@
     
     stompObject.headers[headerName] = token;
     promotionModule = promotion(stompObject, promotionAction);
-    connection = new promotionModule.OneViewStompConnection();
-    connection.connect();
-});
 </script>
 <div id="promotionDialog" class="container hidePromotionDialog">
     <div class="row">

@@ -253,7 +253,13 @@
     <div class="row bottom-spacer">
     </div>
   </div>
-<%@ include file="/WEB-INF/JSP/Promotion2.jspf" %>
+<%@ include file="/WEB-INF/JSP/Promotion.jspf" %>
+<script>
+    $(document).ready(function(){
+        connection = new promotionModule.TwoViewStompConnection();
+        connection.connect();
+    });
+</script>
 <%@ include file="/BootStrapFooter.jsp" %>
 </body>
 </html>

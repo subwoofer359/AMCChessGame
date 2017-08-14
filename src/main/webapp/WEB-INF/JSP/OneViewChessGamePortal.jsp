@@ -212,6 +212,12 @@
     </div>
   </div>
 <%@ include file="/WEB-INF/JSP/Promotion.jspf" %>
+<script>
+    $(document).ready(function(){
+        connection = new promotionModule.OneViewStompConnection();
+        connection.connect();
+    });
+</script>
 <%@ include file="/BootStrapFooter.jsp" %>
 </body>
 </html>
