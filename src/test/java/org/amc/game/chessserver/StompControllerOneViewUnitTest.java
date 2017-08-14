@@ -42,7 +42,7 @@ public class StompControllerOneViewUnitTest {
 
     private ArgumentCaptor<String> destinationArgument;
 
-    private ArgumentCaptor<String> payoadArgument;
+    private ArgumentCaptor<String> payloadArgument;
 
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
@@ -79,7 +79,7 @@ public class StompControllerOneViewUnitTest {
         this.controller.setTemplate(template);
         userArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
-        payoadArgument = ArgumentCaptor.forClass(String.class);
+        payloadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
 
         when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
@@ -96,7 +96,7 @@ public class StompControllerOneViewUnitTest {
     @SuppressWarnings("unchecked")
     private void verifySimpMessagingTemplateCallToUser() {
         verify(template).convertAndSendToUser(userArgument.capture(),
-                        destinationArgument.capture(), payoadArgument.capture(),
+                        destinationArgument.capture(), payloadArgument.capture(),
                         headersArgument.capture());
     }
 
@@ -106,7 +106,7 @@ public class StompControllerOneViewUnitTest {
         String move = "A1-A3";
         controller.registerOneViewMoveMove(principal, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not a valid move", payoadArgument.getValue());
+        assertEquals("Error:Not a valid move", payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
@@ -116,7 +116,7 @@ public class StompControllerOneViewUnitTest {
         controller.registerOneViewMoveMove(principal, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
@@ -128,7 +128,7 @@ public class StompControllerOneViewUnitTest {
         controller.registerOneViewMoveMove(principal, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
     

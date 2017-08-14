@@ -50,7 +50,7 @@ public class GameActionsStompControllerTest {
 
     private ArgumentCaptor<String> destinationArgument;
 
-    private ArgumentCaptor<String> payoadArgument;
+    private ArgumentCaptor<String> payloadArgument;
     
     @Mock
     private SCGDAOInterface serverChessGameDAO;
@@ -86,7 +86,7 @@ public class GameActionsStompControllerTest {
         this.controller.setTemplate(template);
         userArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
-        payoadArgument = ArgumentCaptor.forClass(String.class);
+        payloadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
     }
 
@@ -106,7 +106,7 @@ public class GameActionsStompControllerTest {
         assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(GameActionsStompController.MSG_PLAYER_HAS_QUIT, principal.getName()),
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());
     }
@@ -124,7 +124,7 @@ public class GameActionsStompControllerTest {
         assertEquals(AbstractServerChessGame.ServerGameStatus.FINISHED, scg.getCurrentStatus());
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(GameActionsStompController.MSG_GAME_ALREADY_OVER,
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         assertEquals(String.format("%s/%d", DESTINATION_BOTH_PLAYERS, gameUUID),
                         destinationArgument.getValue());
     }
@@ -141,8 +141,8 @@ public class GameActionsStompControllerTest {
         assertEquals(principal.getName(), userArgument.getValue());
         assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
         assertEquals(MessageType.UPDATE, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertNotNull(payoadArgument.getValue());
-        assertTrue(payoadArgument.getValue().length() > 0);
+        assertNotNull(payloadArgument.getValue());
+        assertTrue(payloadArgument.getValue().length() > 0);
         
     }
     
@@ -155,7 +155,7 @@ public class GameActionsStompControllerTest {
         assertEquals(principal.getName(), userArgument.getValue());
         assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(GameActionsStompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue()); 
+        assertEquals(GameActionsStompController.ERROR_CHESSBOARD_DOESNT_EXIST, payloadArgument.getValue()); 
     }
     
     @Test
@@ -167,20 +167,20 @@ public class GameActionsStompControllerTest {
         assertEquals(principal.getName(), userArgument.getValue());
         assertEquals(StompController.MESSAGE_USER_DESTINATION, destinationArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(GameActionsStompController.ERROR_CHESSBOARD_DOESNT_EXIST, payoadArgument.getValue());
+        assertEquals(GameActionsStompController.ERROR_CHESSBOARD_DOESNT_EXIST, payloadArgument.getValue());
         
     }
     
     @SuppressWarnings("unchecked")
     private void verifySimpMessagingTemplateCallToUser() {
         verify(template).convertAndSendToUser(userArgument.capture(),
-                        destinationArgument.capture(), payoadArgument.capture(),
+                        destinationArgument.capture(), payloadArgument.capture(),
                         headersArgument.capture());
     }
     
     @SuppressWarnings("unchecked")
     private void verifySimpMessagingTemplateCall() {
-        verify(template).convertAndSend(destinationArgument.capture(), payoadArgument.capture(),
+        verify(template).convertAndSend(destinationArgument.capture(), payloadArgument.capture(),
                         headersArgument.capture());
     }
 }

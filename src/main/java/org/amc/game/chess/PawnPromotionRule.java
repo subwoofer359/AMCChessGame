@@ -13,6 +13,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
 	
 	public static final String ERROR_CAN_ONLY_PROMOTE_PAWN = "Can't promote Chess pieces " + 
 			"other than a pawn";
+	public static final String ERROR_PAWN_CANT_BE_PROMOTED = "Pawn can't be promoted";
 
     private static final int BLACK_PROMOTION_RANK = 1;
     private static final int WHITE_PROMOTION_RANK = 8;
@@ -75,7 +76,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
         } else if(isKingOrPawn(promotedPiece)) {
             throw new IllegalMoveException("Pawn can't be promoted to " + promotedPiece);
         } else if(!isRuleApplicable(location, pieceToBePromoted)) {
-            throw new IllegalMoveException("Pawn can't be promoted");   
+            throw new IllegalMoveException(ERROR_PAWN_CANT_BE_PROMOTED);   
         } else if(pieceToBePromoted.getColour() != promotedPiece.getColour()) {
             throw new IllegalMoveException("Promoted piece must be replaced with piece of the same colour");  
         }

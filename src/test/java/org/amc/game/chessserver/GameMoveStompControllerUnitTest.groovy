@@ -29,7 +29,7 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifyZeroInteractions(template);
         //verifySimpMessagingTemplateCallToUser();
-        //assertEquals("", payoadArgument.getValue());
+        //assertEquals("", payloadArgument.getValue());
         //assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
@@ -40,7 +40,7 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not a valid move", payoadArgument.getValue());
+        assertEquals("Error:Not a valid move", payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
@@ -51,7 +51,7 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
         String move = "A1-A3";
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not Player's turn", payoadArgument.getValue());
+        assertEquals("Error:Not Player's turn", payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
@@ -62,7 +62,7 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
@@ -74,7 +74,7 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
         verifySimpMessagingTemplateCallToUser();
         assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
     

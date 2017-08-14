@@ -65,7 +65,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         this.verifySimpMessagingTemplateCallToUser();
         assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.ERROR;
-		assert this.payoadArgument.getValue() == PromotionStompController.PARSE_ERROR;
+		assert this.payloadArgument.getValue() == PromotionStompController.PARSE_ERROR;
     }
     
     @Test
@@ -74,6 +74,15 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         this.verifySimpMessagingTemplateCallToUser();
         assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.ERROR;
-		assert this.payoadArgument.getValue() == PawnPromotionRule.ERROR_CAN_ONLY_PROMOTE_PAWN;
+		assert this.payloadArgument.getValue() == PawnPromotionRule.ERROR_CAN_ONLY_PROMOTE_PAWN;
     }
+	
+	@Test
+	public void testPromotionOfNonEligiblePawn() {
+		def message = 'promote qa6';
+		controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
+		this.verifySimpMessagingTemplateCallToUser();
+		assert headersArgument.value[StompController.MESSAGE_HEADER_TYPE] == MessageType.ERROR;
+		assert this.payloadArgument.getValue() == PawnPromotionRule.ERROR_PAWN_CANT_BE_PROMOTED;
+	}
 }

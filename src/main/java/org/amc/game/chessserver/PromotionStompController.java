@@ -36,7 +36,13 @@ public class PromotionStompController extends StompController {
 
         AbstractServerChessGame scGame = getServerChessGame(gameUUID);
         
-        Player player = (Player) wsSession.get("PLAYER");
+        Player player;
+        
+        if(scGame instanceof OneViewServerChessGame) {
+        	player = scGame.getChessGame().getCurrentPlayer();
+        } else {
+        	player = (Player) wsSession.get("PLAYER");
+        }
  
         String message = checkPlayerCanPromotePawn(player, scGame, promotionMessage);
         

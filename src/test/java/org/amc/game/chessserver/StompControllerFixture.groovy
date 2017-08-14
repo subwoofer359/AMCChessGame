@@ -40,7 +40,7 @@ class StompControllerFixture {
 
     ArgumentCaptor<String> destinationArgument;
 
-    ArgumentCaptor<String> payoadArgument;
+    ArgumentCaptor<String> payloadArgument;
 
     ArgumentCaptor<Map> headersArgument;
 
@@ -72,19 +72,18 @@ class StompControllerFixture {
         
         userArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
-        payoadArgument = ArgumentCaptor.forClass(String.class);
+        payloadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
         
         
         
-        when(serverChessGameDAO.getServerChessGame(anyLong())).thenReturn(scg);
-        
+        when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
     }
     
     @CompileStatic
     void verifySimpMessagingTemplateCallToUser() {
         verify(template).convertAndSendToUser(userArgument.capture(),
-                        destinationArgument.capture(), payoadArgument.capture(),
+                        destinationArgument.capture(), payloadArgument.capture(),
                         headersArgument.capture());
     }
 }

@@ -50,7 +50,7 @@ public class SaveGameStompControllerUnitTest {
 
     private ArgumentCaptor<String> destinationArgument;
 
-    private ArgumentCaptor<String> payoadArgument;
+    private ArgumentCaptor<String> payloadArgument;
 
     @SuppressWarnings("rawtypes")
     private ArgumentCaptor<Map> headersArgument;
@@ -93,7 +93,7 @@ public class SaveGameStompControllerUnitTest {
         this.controller.setTemplate(template);
         userArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
-        payoadArgument = ArgumentCaptor.forClass(String.class);
+        payloadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
             
         scg.addOpponent(blackPlayer);
@@ -117,14 +117,14 @@ public class SaveGameStompControllerUnitTest {
         verify(serverChessGameDAO,times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(SaveGameStompController.GAME_SAVED_SUCCESS, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.GAME_SAVED_SUCCESS, payloadArgument.getValue());
         
     }
     
     @SuppressWarnings("unchecked")
     private void verifySimpMessagingTemplateCallToUser() {
         verify(template).convertAndSendToUser(userArgument.capture(),
-                        destinationArgument.capture(), payoadArgument.capture(),
+                        destinationArgument.capture(), payloadArgument.capture(),
                         headersArgument.capture());
     }
     
@@ -136,7 +136,7 @@ public class SaveGameStompControllerUnitTest {
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(SaveGameStompController.SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, invalidGameUID), 
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
         
     }
     
@@ -149,7 +149,7 @@ public class SaveGameStompControllerUnitTest {
         verify(serverChessGameDAO, never()).addEntity(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(SaveGameStompController.SAVE_ERROR_GAME_IS_OVER, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_GAME_IS_OVER, payloadArgument.getValue());
     }
     
     @Test
@@ -162,7 +162,7 @@ public class SaveGameStompControllerUnitTest {
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payloadArgument.getValue());
     }
     
     @Test
@@ -175,7 +175,7 @@ public class SaveGameStompControllerUnitTest {
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
         assertEquals(String.format(SaveGameStompController.SAVE_ERROR_GAME_DOESNT_EXIST_ERROR, gameUUID), 
-                        payoadArgument.getValue());
+                        payloadArgument.getValue());
     }
     
     @Test
@@ -186,7 +186,7 @@ public class SaveGameStompControllerUnitTest {
         verify(serverChessGameDAO, never()).addEntity(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(SaveGameStompController.ERROR_UNKNOWN_PLAYER, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.ERROR_UNKNOWN_PLAYER, payloadArgument.getValue());
     }
     
     @Test
@@ -199,7 +199,7 @@ public class SaveGameStompControllerUnitTest {
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payloadArgument.getValue());
     }
     
     @Test
@@ -215,6 +215,6 @@ public class SaveGameStompControllerUnitTest {
         verify(serverChessGameDAO, times(1)).saveServerChessGame(eq(scg));
         verifySimpMessagingTemplateCallToUser();
         assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
-        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payoadArgument.getValue());
+        assertEquals(SaveGameStompController.SAVE_ERROR_CANT_BE_SAVED, payloadArgument.getValue());
     }
 }
