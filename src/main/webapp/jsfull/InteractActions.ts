@@ -1,3 +1,5 @@
+import { viewRatio } from "./Chessboard";
+
 /*
  * Creates an InteractActions object
  * To be used by Interact.js
@@ -31,8 +33,9 @@ export class InteractActions {
 
     public onMove(event) {
         const target = event.target;
-        const x = event.dx + target.transform.baseVal[0].matrix.e;
-        const y = event.dy + target.transform.baseVal[0].matrix.f;
+        const ratio = viewRatio;
+        const x = ( event.dx * ratio ) + target.transform.baseVal[0].matrix.e;
+        const y = ( event.dy * ratio ) + target.transform.baseVal[0].matrix.f;
 
         target.setAttribute("transform", `translate(${x},${y})`);
     }

@@ -22,11 +22,17 @@ export const letterCoordinates = [ "A", "B", "C", "D", "E", "F", "G", "H" ];
 
 export const boardWidth: number = 8;
 
+export let viewRatio = 1;
+
 const whiteSquareColour: string = "#e6e6e6";
 
 const blackSquareColour: string = "#000000";
 
 const serialiser = new XMLSerializer();
+
+const svgWidth = 500;
+
+const svgName = "chessBoard";
 
 const constPieces: any = {
         blackBishop : new BishopPiece(Colour.black),
@@ -61,7 +67,8 @@ export function createBlankChessBoardSVG(): string {
     let letter: string;
     let rect;
 
-    svgDocument.setAttribute("viewBox", "0 0 500 500");
+    svgDocument.setAttribute("viewBox", `0 0 ${svgWidth} ${svgWidth}`);
+    svgDocument.setAttribute("id", svgName);
     layer.setAttribute("id", "layer1");
 
     for (i = boardWidth; i > 0; i -= 1) {
@@ -163,6 +170,18 @@ export function createChessBoard(playerColour, chessboardJSON): void {
     board = $("#layer1");
     board.append(createChessPiecesElements(playerColour, chessboardJSON));
     chessBoardSVG.html(chessBoardSVG.html());
+    this.calculateViewRatio();
+}
+
+/*
+ * Function to calculate the ratio between SVG width and HTML computed width
+ * so dragging dx/dy is correct.
+ */
+export function calculateViewRatio(): void {
+    const element: HTMLElement = document.getElementById(svgName);
+    if (element) {
+        this.viewRatio =  svgWidth / element.getBoundingClientRect().width;
+    }
 }
 
 export function move(moveStr: string, callback ?: () => void ): void {

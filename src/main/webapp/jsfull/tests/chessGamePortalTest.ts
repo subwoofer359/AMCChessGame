@@ -13,6 +13,7 @@ import * as UpdatePlayer from "./MockPlayer";
 let stompObj: StompObject;
 
 let myStompActions;
+let myOneViewStompActions;
 
 const playerObj = `"currentPlayer":{"colour":"WHITE","player":{"id":6,"name":"Caleb Doyle","userName":"Caleb"}}`;
 
@@ -32,6 +33,10 @@ QUnit.module("Stomp Message tests", {
         myStompActions = new StompActions(stompObj);
         myStompActions.chessboard = Chessboard;
         myStompActions.updatePlayer = UpdatePlayer.updatePlayer;
+
+        myOneViewStompActions = new OneViewStompActions(stompObj);
+        myOneViewStompActions.chessboard = Chessboard;
+        myOneViewStompActions.updatePlayer = UpdatePlayer.updatePlayer;
     },
 });
 
@@ -39,17 +44,19 @@ QUnit.test("testing StompActions: function updateChessBoard", (assert) => {
     const json = chessboardString;
 
     myStompActions.updateChessBoard(json);
+
     assert.ok(UpdatePlayer.updatePlayerCall, "UpdatePlayer should be called");
     assert.ok(Chessboard.updateChessBoardCall, "UpdateChessBoard should be called");
 });
 
 QUnit.test("testing StompActions: function updateChessBoard", (assert) => {
     const json = chessboardString;
-    const oneViewStompActions: any = new OneViewStompActions(stompObj);
-    oneViewStompActions.updateChessBoard(json);
+
+    myOneViewStompActions.updateChessBoard(json);
+
     assert.ok(UpdatePlayer.updatePlayerCall, "UpdatePlayer should be called");
     assert.ok(Chessboard.updateChessBoardCall, "UpdateChessBoard should be called");
-    assert.equal("WHITE", oneViewStompActions.playerColour, "Player's colour should be white");
+    assert.equal("WHITE", myOneViewStompActions.playerColour, "Player's colour should be white");
 });
 
 QUnit.test("testing StompActions: function userUpdate(ERROR)", (assert) => {
