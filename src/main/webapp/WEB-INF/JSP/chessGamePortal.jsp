@@ -151,6 +151,48 @@
         .full-height {
             height: 80%;
         }
+
+        .alert {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            min-height: 1em;
+            padding: 8px;
+        }
+
+        #boardContainer {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .player-name {
+            margin-top: 0;
+            overflow: hidden;
+            height: 50px;
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 60px;
+            min-width: 300px;
+        }
+
+        .player-name .name, .player-name .title {
+            border-radius: unset;
+            border-style: none;
+            border-width: 0;
+            box-shadow: unset;
+        }
+
+        .player-name .name {
+            padding:5px 30px 5px 15px;
+        }
+
+        .player-name .title-player,.player-name .title-opponent {
+            padding-top: 7px;
+            padding-bottom: 3px
+        }
+
+        .player-name-holder {
+            margin-bottom: 1px;
+        }
     }
     
     @media (max-height:650px) {
@@ -243,7 +285,7 @@
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 
-        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12 hidden-xs">
+        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>

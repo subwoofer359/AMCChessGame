@@ -132,6 +132,7 @@
         font-size: 2em;
         text-align: center;
     }
+
     .alert {
         margin-bottom: 5px;
         min-height: 2.6em;
@@ -150,6 +151,48 @@
         /* Stop screen scrolling on smaller screens */
         .full-height {
             height: 80%;
+        }
+
+        .alert {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            min-height: 1em;
+            padding: 8px;
+        }
+
+        #boardContainer {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .player-name {
+            margin-top: 0;
+            overflow: hidden;
+            height: 50px;
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 60px;
+            min-width: 300px;
+        }
+
+        .player-name .name, .player-name .title {
+            border-radius: unset;
+            border-style: none;
+            border-width: 0;
+            box-shadow: unset;
+        }
+
+        .player-name .name {
+            padding:5px 30px 5px 15px;
+        }
+
+        .player-name .title-player,.player-name .title-opponent {
+            padding-top: 7px;
+            padding-bottom: 3px
+        }
+
+        .player-name-holder {
+            margin-bottom: 1px;
         }
     }
     
@@ -193,7 +236,7 @@
         <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
     </tags:BottomMenu>
     
-    <div class="container-fluid full-height">
+    <div id="boardContainer" class="container-fluid full-height">
     <div class="row full-height">
         <tags:SideMenu>
                 <li><a href="${pageContext.request.contextPath}/app/chessgame/chessapplication"><button id="home-btn">Home</button></a></li>
@@ -201,14 +244,14 @@
                 <li><button class="quit-btn">Quit Game</button></li>
         </tags:SideMenu>
 
-        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12 hidden-xs">
+        <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>
-        <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
+        <div id="my-alert" class="col-xs-12 col-sm-offset-2 col-sm-5 alert-hidden">
             <div class="alert alert-warning" role="alert"></div>
         </div>
-        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-12">
+        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-12" ontouchmove="return false;">
             <div class="inner col-xs-offset-1 col-xs-11">
             </div><!-- col-xs-11 -->
         </div>
