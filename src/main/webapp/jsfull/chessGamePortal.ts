@@ -61,7 +61,7 @@ export function openStompConnection(stompObj: StompObject, stompCallBack) {
         });
         stompClient.send(APP_GET + stompCallBack.gameUID, PRIORITY, "Get ChessBoard");
     }, function onStompError() {
-        stompCallBack.showAlertMessage.call(stompCallBack, "Couldn't connect to the STOMP server");
+        stompCallBack.showAlertMessage.call(stompCallBack, "Couldn't connect to the Chess server");
     });
     return stompClient;
 }
