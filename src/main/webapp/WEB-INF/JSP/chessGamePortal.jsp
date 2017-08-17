@@ -8,7 +8,7 @@
 
 <%@ include file="/BootStrapHeader.jsp" %>    
 
-<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
@@ -19,255 +19,37 @@
 <style>
     @import url(${pageContext.request.contextPath}/css/General.css);
     @import url(${pageContext.request.contextPath}/css/PromotionDialog.css);
-    body{
-          background-image: url(${pageContext.request.contextPath}/img/1700128.jpg);
-          background-size: cover;
-          background-repeat: no-repeat;
-    }
-    #header{
-        width:100%;
-        padding-bottom: 70px;
-    }
-    
-    #title{
-        border-style: solid;
-        text-align: center;
-        border-radius: 33px;
-        background-color: #428bca;
-        color: white;
-    }
-    
-    .container{
-        width: 100%;
-    }
-    
-    #playerBlock legend{
-        background-color: #428bca;
-        border-radius: 10px 10px;
-        padding-left: 20px;
-        color: white;
-    }
-    
-    #playerBlock span{
-        padding-left: 20px;
-    }
-    
-    .side-menu{
-        font-size:1.8em;
-    }
-    
-    .side-menu button{
-        padding: 0;
-        background-color: #2886d5;
-        border: none;
-    }
-      
-    #chessboard .inner {
-        margin-top: 10%;
-    }
-/** 
-  *   Player's Name boxes 
-  *   Duplicate in ChessAplicationPage.html
-  *   Todo remove
-  */    
-     .player-name {
-        font-family: "Raleway";
-        font-size: 2em;
-        margin-top: 30px;
-        overflow: hidden;
-        height: 50px;
-        padding-bottom: 120px;
-        min-width: 470px;
-    }
-    
-    .player-name .title {
-        display: inline-block;
-        font-family: "Orbitron";
-        border-style: double;
-        border-width: 1px;
-        background-color: antiquewhite;
-        border-radius: 15px 0px 0px 15px;
-        background-color: #2886d5;    
-        box-shadow: 5px 5px 8px #000000;
-    }
-    
-    .player-name .title-player {
-        padding:10px 34px 12px 15px;
-    }
-    
-    .player-name .title-opponent {
-        padding:10px 1px 12px 15px;
-    }
-    
-    .player-name .name {
-        display: inline-block;
-        border-style: double;
-        border-left-style: none;
-        border-width: 1px;
-        padding:8px 30px 14px 15px;
-        background-color: #ffffff;
-        box-shadow: 5px 5px 8px #000000;
-        min-width: 298px;
-    }
-    
-    .player-name-holder {
-        min-width: 488px;
-        margin-bottom: 5px;
-    }
-    
-    .player-name-highlight{
-        background-color: green!important;
-    }
-    
-    .drop-target{
-        fill:red!important;
-    }
-    
-    .alert-hidden {
-        opacity: 0;
-    }
-    
-    #my-alert {
-        /*padding: 15px;*/
-        font-size: 2em;
-        text-align: center;
-    }
-    .alert {
-        margin-bottom: 5px;
-        min-height: 2.6em;
-    }
-    
-    .bottom-spacer {
-         height: 220px;
-    }
-    
-    @media (max-width:600px) {
-        body {
-            overflow-x: auto;
-            background-repeat: repeat-x;
-        }
-
-        /* Stop screen scrolling on smaller screens */
-        .full-height {
-            height: 80%;
-        }
-
-        .alert {
-            margin-top: 3px;
-            margin-bottom: 3px;
-            min-height: 1em;
-            padding: 8px;
-        }
-
-        #boardContainer {
-            padding-right: 0;
-            padding-left: 0;
-        }
-
-        .player-name {
-            margin-top: 0;
-            overflow: hidden;
-            height: 50px;
-            padding-left: 0;
-            padding-right: 0;
-            padding-bottom: 60px;
-            min-width: 300px;
-        }
-
-        .player-name .name, .player-name .title {
-            border-radius: unset;
-            border-style: none;
-            border-width: 0;
-            box-shadow: unset;
-        }
-
-        .player-name .name {
-            padding:5px 30px 5px 15px;
-        }
-
-        .player-name .title-player,.player-name .title-opponent {
-            padding-top: 7px;
-            padding-bottom: 3px
-        }
-
-        .player-name-holder {
-            margin-bottom: 1px;
-        }
-    }
-    
-    @media (max-height:650px) {
-        body {
-            overflow-y: auto;
-            background-repeat: repeat-y;
-        }
-    }
-    
-    #promotionDialog {
-        width:50%;
-    }
-    
-    .hidePromotionDialog {
-        display: none;
-    }
-    .displayPromotionDialog {
-        position: absolute;
-        display: block;
-        top: 20%;
-        left: 25%;
-        right: 25%;
-    }
-    
-    #promotionDialog .panel-body {
-        border-style: dashed;
-        border-width: 1px;
-        border-color: black;
-        background-color: white;
-    }
-    #promotionDialog button {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width:120px;
-        height: 120px;
-        padding: 0;
-        border-radius: 122px 122px;
-        
-    }
-    
-    @media(max-width:992px) {
-        #promotionDialog button {
-            margin-bottom: 20px;
-            width: 100%;
-            border-radius: 12px 12px;
-        }   
-    }
-    
+    @import url(${pageContext.request.contextPath}/css/GamePortal.css);
 </style>
 <script>
-    require(['../../js/app.js'], function () {
+    require(["../../js/app.js"], function () {
         require(["snapsvg",
                  "../../js/chessGamePortal",
                  "../../js/StompObject"
-            ], function (Snap, chessGamePortal, StompObj) {                        
-                        var s = new StompObj.StompObject(
-                            "http://" + location.hostname + ":" + location.port +
-                                            "${pageContext.request.contextPath}" +
-                                            "/app/chessgame/chessgame",
-                            "${GAME_UUID}",
-                            '<c:out value="${GAME.player.name}"/>',
-                            '<c:out value="${GAME.opponent.name}"/>',
-                            '<c:out value="${CHESSPLAYER.colour}"/>'
-                        );
+                ], function (Snap, chessGamePortal, StompObj) {                        
+                    var s = new StompObj.StompObject(
+                        "http://" + location.hostname + ":" + location.port +
+                            "${pageContext.request.contextPath}" +
+                            "/app/chessgame/chessgame",
+                        "${GAME_UUID}",
+                        '<c:out value="${GAME.player.name}"/>',
+                        '<c:out value="${GAME.opponent.name}"/>',
+                        '<c:out value="${CHESSPLAYER.colour}"/>');
 
-                        s.headers["${_csrf.headerName}"] = "${_csrf.token}";
-                        
-                        // todo: A Hack to be fixed
-                        chessGamePortal.setStompjs(Stomp);
-
-                        chessGamePortal.setupStompConnection(s);
+                    s.headers["${_csrf.headerName}"] = "${_csrf.token}";
+                    
+                    // todo: A Hack to be fixed
+                    chessGamePortal.setStompjs(Stomp);
+            <c:choose>
+                <c:when test="${gameType eq 'TWOVIEW'}">
+                    chessGamePortal.setupStompConnection(s);
+                </c:when>
+                <c:when test="${gameType eq 'ONEVIEW'}">
+                    chessGamePortal.setupOneViewStompConnection(s);
+                </c:when>
+            </c:choose>
         });
     });
-
 </script>
 </head>
 <body>
@@ -277,7 +59,7 @@
         <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
     </tags:BottomMenu>
     
-    <div class="container-fluid full-height">
+    <div id="boardContainer" class="container-fluid full-height">
     <div class="row full-height">
         <tags:SideMenu>
                 <li><a href="${pageContext.request.contextPath}/app/chessgame/chessapplication"><button id="home-btn">Home</button></a></li>
@@ -289,10 +71,10 @@
             <div id="white-player" class="player-name-holder col-sm-5"><span class="title title-player">Player:</span><span class="name"><c:out value="${GAME.player.name}"/></span></div>
             <div id="black-player" class="player-name-holder col-sm-5"><span class="title title-opponent">Opponent:</span><span class="name"><c:out value="${GAME.opponent.name}"/></span></div>
         </div>
-        <div id="my-alert" class="col-xs-10 col-sm-offset-2 col-sm-5 alert-hidden">
+        <div id="my-alert" class="col-xs-12 col-sm-offset-2 col-sm-5 alert-hidden">
             <div class="alert alert-warning" role="alert"></div>
         </div>
-        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-12">
+        <div id="chessboard-surround" class="col-sm-6 col-sm-offset-2 col-xs-12" ontouchmove="return false;">
             <div class="inner col-xs-offset-1 col-xs-11">
             </div><!-- col-xs-11 -->
         </div>
@@ -303,7 +85,14 @@
 <%@ include file="/WEB-INF/JSP/Promotion.jspf" %>
 <script>
     $(document).ready(function(){
+    <c:choose>
+        <c:when test="${gameType eq 'TWOVIEW'}">
         connection = new promotionModule.TwoViewStompConnection();
+        </c:when>
+        <c:when test="${gameType eq 'ONEVIEW'}">
+        connection = new promotionModule.OneViewStompConnection();
+        </c:when>
+    </c:choose>
         connection.connect();
     });
 </script>

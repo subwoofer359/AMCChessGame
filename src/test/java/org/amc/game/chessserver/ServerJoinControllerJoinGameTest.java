@@ -26,7 +26,9 @@ public class ServerJoinControllerJoinGameTest {
     private Player whitePlayer;
     private Player blackPlayer;
     private static final long gameUUID = 1234L;
+    private static final long oneViewGameUUID = 4321L;
     private AbstractServerChessGame chessGame;
+    private AbstractServerChessGame oneViewChessGame;
     
     @Mock
     private ServerChessGameDAO serverChessGameDAO;
@@ -40,26 +42,53 @@ public class ServerJoinControllerJoinGameTest {
         
         whitePlayer = new HumanPlayer("Ted");
         blackPlayer = new HumanPlayer("Chris");
-        chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);
-        chessGame.setChessGameFactory(new ChessGameFactory() {
+        
+        ChessGameFactory f = new ChessGameFactory() {
             @Override
             public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
                             ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
             }
-        });
+        };
+        
+        chessGame = new TwoViewServerChessGame(gameUUID, whitePlayer);
+        chessGame.setChessGameFactory(f);
+        
+        oneViewChessGame = new OneViewServerChessGame(oneViewGameUUID, whitePlayer);
+        oneViewChessGame.setChessGameFactory(f);
+        
         when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(chessGame);
+        when(serverChessGameDAO.getServerChessGame(eq(oneViewGameUUID))).thenReturn(oneViewChessGame);
     }
 
     @Test
     public void test() throws DAOException {
         when(serverChessGameDAO.updateEntity(eq(chessGame))).thenReturn(chessGame);
+        
         ModelAndView mav = controller.joinGame(blackPlayer, gameUUID);
         AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(gameUUID);
+        
         assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
         assertTrue(ComparePlayers.isSamePlayer(chessGame.getPlayer(), whitePlayer));
         assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
+        ModelAndViewAssert.assertModelAttributeValue(mav, ServerJoinChessGameController.GAME_TYPE,
+        		ServerJoinChessGameController.TWO_VIEW);
+    }
+    
+    @Test
+    public void testOneServerViewChessGame() throws DAOException {
+        when(serverChessGameDAO.updateEntity(eq(oneViewChessGame))).thenReturn(oneViewChessGame);
+        
+        ModelAndView mav = controller.joinGame(blackPlayer, oneViewGameUUID);
+        AbstractServerChessGame chessGame = serverChessGameDAO.getServerChessGame(oneViewGameUUID);
+        
+        assertEquals(AbstractServerChessGame.ServerGameStatus.IN_PROGRESS, chessGame.getCurrentStatus());
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getPlayer(), whitePlayer));
+        assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
+        assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
+        ModelAndViewAssert.assertModelAttributeValue(mav, ServerJoinChessGameController.GAME_TYPE,
+        		ServerJoinChessGameController.ONE_VIEW);
     }
 
     @Test

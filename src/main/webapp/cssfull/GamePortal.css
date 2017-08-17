@@ -1,0 +1,183 @@
+body{
+          background-image: url(../img/1700128.jpg);
+          background-size: cover;
+          background-repeat: no-repeat;
+    }
+#header{
+    width:100%;
+    padding-bottom: 70px;
+}
+
+#title{
+    border-style: solid;
+    text-align: center;
+    border-radius: 33px;
+    background-color: #428bca;
+    color: white;
+}
+
+.container{
+    width: 100%;
+}
+
+#playerBlock legend{
+    background-color: #428bca;
+    border-radius: 10px 10px;
+    padding-left: 20px;
+    color: white;
+}
+
+#playerBlock span{
+    padding-left: 20px;
+}
+
+.side-menu{
+    font-size:1.8em;
+}
+
+.side-menu button{
+    padding: 0;
+    background-color: #2886d5;
+    border: none;
+}
+    
+#chessboard .inner {
+    margin-top: 10%;
+}
+/** 
+*   Player's Name boxes 
+*   Duplicate in ChessAplicationPage.html
+*   Todo remove
+*/    
+    .player-name {
+    font-family: "Raleway";
+    font-size: 2em;
+    margin-top: 30px;
+    overflow: hidden;
+    height: 50px;
+    padding-bottom: 120px;
+    min-width: 470px;
+}
+
+.player-name .title {
+    display: inline-block;
+    font-family: "Orbitron";
+    border-style: double;
+    border-width: 1px;
+    background-color: antiquewhite;
+    border-radius: 15px 0px 0px 15px;
+    background-color: #2886d5;    
+    box-shadow: 5px 5px 8px #000000;
+}
+
+.player-name .title-player {
+    padding:10px 34px 12px 15px;
+}
+
+.player-name .title-opponent {
+    padding:10px 1px 12px 15px;
+}
+
+.player-name .name {
+    display: inline-block;
+    border-style: double;
+    border-left-style: none;
+    border-width: 1px;
+    padding:8px 30px 14px 15px;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 8px #000000;
+    min-width: 298px;
+}
+
+.player-name-holder {
+    min-width: 488px;
+    margin-bottom: 5px;
+}
+
+.player-name-highlight{
+    background-color: green!important;
+}
+
+.drop-target{
+    fill:red!important;
+}
+
+.alert-hidden {
+    opacity: 0;
+}
+
+#my-alert {
+    /*padding: 15px;*/
+    font-size: 2em;
+    text-align: center;
+}
+
+.alert {
+    margin-bottom: 5px;
+    min-height: 2.6em;
+}
+
+.bottom-spacer {
+        height: 220px;
+}
+
+@media (max-width:600px) {
+    body {
+        overflow-x: auto;
+        background-repeat: repeat-x;
+    }
+
+    /* Stop screen scrolling on smaller screens */
+    .full-height {
+        height: 80%;
+    }
+
+    .alert {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        min-height: 1em;
+        padding: 8px;
+    }
+
+    #boardContainer {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .player-name {
+        margin-top: 0;
+        overflow: hidden;
+        height: 50px;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 60px;
+        min-width: 300px;
+    }
+
+    .player-name .name, .player-name .title {
+        border-radius: unset;
+        border-style: none;
+        border-width: 0;
+        box-shadow: unset;
+    }
+
+    .player-name .name {
+        padding:5px 30px 5px 15px;
+    }
+
+    .player-name .title-player,.player-name .title-opponent {
+        padding-top: 7px;
+        padding-bottom: 3px
+    }
+
+    .player-name-holder {
+        margin-bottom: 1px;
+    }
+}
+
+@media (max-height:650px) {
+    body {
+        overflow-y: auto;
+        background-repeat: repeat-y;
+    }
+}    
