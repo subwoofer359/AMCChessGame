@@ -9,9 +9,9 @@
 <%@ include file="/WEB-INF/JSP/Csrf.jspf" %>
     
 <%@ include file="/BootStrapHeader.jsp" %>
-<script src="${pageContext.request.contextPath}/jsfull/ajaxCSRF.js"></script>
-<script src="jsfull/User.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/cssfull/Login.css">
+<script src="${pageContext.request.contextPath}/js/ajaxCSRF.js"></script>
+<script src="${pageContext.request.contextPath}/js/User.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Login.css">
 <script>
 $(document).ready(function () {
     

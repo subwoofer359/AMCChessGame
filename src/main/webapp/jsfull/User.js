@@ -1,7 +1,5 @@
 /*global document*/
 /*global $*/
-/*global alert*/
-/*global showPanelMessage*/
 
 /**
  * @fileoverview User related functions
@@ -67,16 +65,25 @@ function checkPassword(inputElementOne, inputElementTwo) {
 function canSubmit() {
     "use strict";
     if (!checkPassword('password', 'passwordTwo')) {
+        showErrorMessage("passwordTwo", "Both Passwords need to be the same");
         return false;
     }
 
     if (!validUsername) {
-        showPanelMessage("#alert", "Username is not valid.", true);
+        showErrorMessage("userName", "Username is not valid.");
         return false;
     }
 
     return true;
 
+}
+
+function showErrorMessage(field, messageStr) {
+    var $field = $("#" + field);
+    if($field) {
+        $field.css("background-color", "#dc4040");
+        $field.after('<span class="signup-error">' + messageStr + '</span>');
+    }
 }
 
 $(document).ready(function () {

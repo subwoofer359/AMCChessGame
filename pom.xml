@@ -460,7 +460,7 @@
 						</goals>
 						<phase>generate-resources</phase>
 						<configuration>
-							<arguments>ts</arguments>
+							<arguments>default</arguments>
 						</configuration>
 					</execution>
 				</executions>

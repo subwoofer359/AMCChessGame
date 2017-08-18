@@ -115,7 +115,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-qunit-istanbul');
     grunt.loadNpmTasks('grunt-ts');
 
-    grunt.registerTask('default', ['ts', 'jshint', 'tslint', 'qunit']);
+    grunt.registerTask('default', ['ts', 'jshint', 'tslint', 'sass']);
     grunt.registerTask('QUnit', ['qunit']);
     grunt.registerTask('css_min', ['cssmin']);
 };
