@@ -92,6 +92,17 @@ module.exports = function (grunt) {
                     "src/main/webapp/jsfull/**/*.ts"
                 ]
             }
+        },
+        sass: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/main/webapp/cssfull',
+                    src: ['*.scss'],
+                    dest: 'src/main/webapp/css',
+                    ext: '.css'
+                }]
+            }
         }
     });
 
@@ -104,7 +115,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-qunit-istanbul');
     grunt.loadNpmTasks('grunt-ts');
 
-    grunt.registerTask('default', ['ts', 'jshint', 'qunit']);
+    grunt.registerTask('default', ['ts', 'jshint', 'tslint', 'qunit']);
     grunt.registerTask('QUnit', ['qunit']);
     grunt.registerTask('css_min', ['cssmin']);
 };
