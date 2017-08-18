@@ -11,6 +11,11 @@
 
 @viewport {width:device-width;}
 
+$raleWay: "Raleway";
+$menuColour: #2886d5;
+$iconColour: #2a78ba;
+$bodyColour: #c3d3e1;
+
 *{
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
@@ -22,22 +27,22 @@ html {
 }
 
 h2 {
-    font-family: "Raleway";
+    font-family: $raleWay;
     font-size: 2em;
     font-weight: bold;
 }
 
 p {
-    font-family: "Raleway";
+    font-family: $raleWay;
     font-size: medium;
     font-weight: normal;
     line-height: 1.5em;
 }
 
 body {
-	font-family:"Raleway",serif;
+	font-family:$raleWay,serif;
 	font-weight:normal;
-    background-color: #c3d3e1;
+    background-color: $bodyColour;
     height: 100%;
     overflow: hidden;
 }
@@ -55,7 +60,7 @@ body {
 
 /* Chess Icon */
 #chess-icon {
-    background-color: #2a78ba;
+    background-color: $iconColour;
     margin-top: 20px;
     width:110px;
     height: 110px;
@@ -71,33 +76,34 @@ body {
 
 .side-menu {
     margin-top:70px;
-    font-family: "Raleway";
+    font-family: $raleWay;
     font-size: 2em;
     line-height: 1.5em;
     text-align: left;
     color: black;
-    background-color: #2886d5;
+    background-color: $menuColour;
     box-shadow: 5px 5px 8px black;
     border-radius: 10px;
-}
 
-.side-menu li {
+    li {
+        padding:4px;
+    }
 
-    padding:4px;
-}
-.side-menu a {
-    display: block;
-    text-decoration: none;
-    color: black;
-}
-.side-menu a:hover,.side-menu a {
-    text-decoration: none;
+    a {
+        display: block;
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover, a {
+        text-decoration: none;
+    }
 }
 
 /* NavBar */
 
 nav div, nav button {
-    background-color: #2886d5;
+    background-color: $menuColour;
 }
 
 nav a,nav a:link, .navbar-default .navbar-nav>li>a {
