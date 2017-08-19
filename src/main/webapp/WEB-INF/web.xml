@@ -144,6 +144,11 @@
 		<location>/Login.jsp</location>
 	</error-page>
 	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/FileNotFound.html</location>
+	</error-page>
+	
 </web-app>
 
 
