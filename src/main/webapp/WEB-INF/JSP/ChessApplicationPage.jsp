@@ -140,10 +140,10 @@
     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}"/>
 
     <tags:BottomMenu>
-    	<tags:NavMenuButton id="userToggle"><span class="glyphicon glyphicon-user"></span> User List</tags:NavMenuButton>
-        <tags:NavMenuButton aclass="create-game"><span class="glyphicon glyphicon-plus"></span> Create Game</tags:NavMenuButton>   
         <tags:FormMenuButton aclass="join-button"><span class="glyphicon glyphicon-play"></span> Join Game</tags:FormMenuButton>
+        <tags:NavMenuButton aclass="create-game"><span class="glyphicon glyphicon-plus"></span> Create Game</tags:NavMenuButton>
         <tags:NavMenuButton url="./userSearchPage"><span class="glyphicon glyphicon-search"></span> User Search</tags:NavMenuButton>
+        <tags:NavMenuButton id="userToggle"><span class="glyphicon glyphicon-user"></span> User List</tags:NavMenuButton>
        	<tags:NavMenuButton url="./logout"><span class="glyphicon glyphicon-log-out"></span> Log out</tags:NavMenuButton> 
     </tags:BottomMenu>
 
