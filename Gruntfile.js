@@ -79,7 +79,6 @@ module.exports = function (grunt) {
                     allowJs: true,
                     target: "es5",
                     module: "umd"
-
                 }
             }
         },
@@ -95,12 +94,15 @@ module.exports = function (grunt) {
         },
         sass: {
             dist: {
+		options: {
+			style: "compressed"
+		},
                 files: [{
                     expand: true,
-                    cwd: 'src/main/webapp/cssfull',
-                    src: ['*.scss'],
-                    dest: 'src/main/webapp/css',
-                    ext: '.css'
+                    cwd: "src/main/webapp/cssfull",
+                    src: ["*.scss"],
+                    dest: "src/main/webapp/css",
+                    ext: ".css"
                 }]
             }
         }
