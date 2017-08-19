@@ -65,7 +65,7 @@ public class StartPageControllerIT {
                          .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(ServerConstants.GAME_UUID))
-                        .andExpect(view().name(StartPageController.ONE_VIEW_CHESS_PAGE))
+                        .andExpect(view().name(StartPageController.CHESSGAME_PORTAL))
                         .andReturn();
 
     }

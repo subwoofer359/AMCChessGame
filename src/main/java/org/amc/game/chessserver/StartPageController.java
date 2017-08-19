@@ -38,7 +38,7 @@ public class StartPageController {
     static final String CHESS_APPLICATION_PAGE = "ChessApplicationPage";
     static final String TWOVIEW_FORWARD_PAGE = "forward:/app/chessgame/chessapplication";
     static final String TWOVIEW_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
-    static final String ONE_VIEW_CHESS_PAGE = "OneViewChessGamePortal";
+    static final String CHESSGAME_PORTAL = "chessGamePortal";
     static final String PLAYERS_NAME_FIELD = "playersName";
  
     private static final Logger logger = Logger.getLogger(StartPageController.class);
@@ -106,7 +106,7 @@ public class StartPageController {
         } else {
             AbstractServerChessGame serverGame = createLocalGame(player, playersName);
             setUpModel(model, serverGame.getUid(), serverGame, player);
-            return ONE_VIEW_CHESS_PAGE;
+            return CHESSGAME_PORTAL;
         }
     }
     
@@ -121,7 +121,8 @@ public class StartPageController {
     }
     
     private void setUpModel(Model model, long uuid, AbstractServerChessGame serverGame, Player player) {
-        model.addAttribute(ServerConstants.GAME_UUID, uuid);
+        model.addAttribute(ServerConstants.GAME_TYPE, ServerConstants.ONE_VIEW);
+    	model.addAttribute(ServerConstants.GAME_UUID, uuid);
         model.addAttribute(ServerConstants.GAME, serverGame);
         model.addAttribute(ServerConstants.CHESSPLAYER, serverGame.getPlayer(player));
     }

@@ -36,11 +36,6 @@ public class ServerJoinChessGameController {
     static final String ERROR_REDIRECT_PAGE = "redirect:/app/chessgame/chessapplication";
     static final String TWO_VIEW_CHESS_PAGE = "chessGamePortal";
     
-    /* Passed to the View */
-    static final String GAME_TYPE = "gameType";
-    static final String ONE_VIEW = "ONEVIEW";
-    static final String TWO_VIEW = "TWOVIEW";
-
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView joinGame(@ModelAttribute("PLAYER") Player player,
                     @RequestParam long gameUUID) {
@@ -123,9 +118,9 @@ public class ServerJoinChessGameController {
         mav.setViewName(TWO_VIEW_CHESS_PAGE);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
         if (serverGame instanceof OneViewServerChessGame) {
-            mav.getModel().put(GAME_TYPE, ONE_VIEW);
+            mav.getModel().put(ServerConstants.GAME_TYPE, ServerConstants.ONE_VIEW);
         } else {
-        	mav.getModel().put(GAME_TYPE, TWO_VIEW);
+        	mav.getModel().put(ServerConstants.GAME_TYPE, ServerConstants.TWO_VIEW);
         }
     }
 

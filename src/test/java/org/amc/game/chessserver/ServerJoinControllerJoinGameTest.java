@@ -72,8 +72,7 @@ public class ServerJoinControllerJoinGameTest {
         assertTrue(ComparePlayers.isSamePlayer(chessGame.getPlayer(), whitePlayer));
         assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
-        ModelAndViewAssert.assertModelAttributeValue(mav, ServerJoinChessGameController.GAME_TYPE,
-        		ServerJoinChessGameController.TWO_VIEW);
+        ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.GAME_TYPE, ServerConstants.TWO_VIEW);
     }
     
     @Test
@@ -87,8 +86,7 @@ public class ServerJoinControllerJoinGameTest {
         assertTrue(ComparePlayers.isSamePlayer(chessGame.getPlayer(), whitePlayer));
         assertTrue(ComparePlayers.isSamePlayer(chessGame.getOpponent(), blackPlayer));
         assertModelAndViewAttributesOnSuccess(mav, blackPlayer);
-        ModelAndViewAssert.assertModelAttributeValue(mav, ServerJoinChessGameController.GAME_TYPE,
-        		ServerJoinChessGameController.ONE_VIEW);
+        ModelAndViewAssert.assertModelAttributeValue(mav, ServerConstants.GAME_TYPE, ServerConstants.ONE_VIEW);
     }
 
     @Test

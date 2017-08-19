@@ -71,7 +71,7 @@ public class StartPageControllerCreateGameTest {
         assertPlayerIsAddedToChessGame();
 
         assertLongStoreInSessionAttribute();
-        assertEquals(StartPageController.ONE_VIEW_CHESS_PAGE, viewName);
+        assertEquals(StartPageController.CHESSGAME_PORTAL, viewName);
         assertNotNull(model.asMap().get(ServerConstants.GAME));
         assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
     }
