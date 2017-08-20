@@ -94,6 +94,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
     
     private void returnChessGameToRunningState(ChessGame chessGame) {
             chessGame.setRunningState();
+            chessGame.checkMoveLeadsToNewGameState(chessGame.getCurrentPlayer());
             chessGame.changePlayer();
     }
     

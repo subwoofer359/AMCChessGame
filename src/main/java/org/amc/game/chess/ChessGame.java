@@ -42,7 +42,11 @@ public class ChessGame extends AbstractChessGame {
         checkItsthePlayersPiece(player, piece);
         moveThePlayersChessPiece(player, getChessBoard(), piece, move);
         
-        if (isOpponentsKingInCheck(player, getChessBoard())) {
+        checkMoveLeadsToNewGameState(player);
+    }
+    
+    void checkMoveLeadsToNewGameState(ChessGamePlayer player) {
+    	if (isOpponentsKingInCheck(player, getChessBoard())) {
             checkOpponentKingInCheckMate(player);
         } else if (inStalemate.isStalemate(getOpposingPlayer(player), player,
                 getChessBoard())) {

@@ -40,11 +40,13 @@ class ChessGamePromotePawnTest {
     @Test
     public void test() {
         assert chessGame.getGameState() == GameState.PAWN_PROMOTION;
-        Location promotionLocation = new Location("a8");
-        ChessPiece pieceToBePromotedTo = RookPiece.getPiece(playerWhite.colour);
+        
+		Location promotionLocation = new Location("a8");
+        ChessPiece pieceToBePromotedTo = RookPiece.ROOK_WHITE;
         pawnPromotionRule.promotePawnTo(chessGame, promotionLocation, pieceToBePromotedTo);
-        assertIsARook(promotionLocation);
-        assert chessGame.getGameState() == GameState.RUNNING;
+        
+		assertIsARook(promotionLocation);
+        assert chessGame.getGameState() == GameState.BLACK_IN_CHECK;
         assertCurrentPlayerHasChanged();
     }
     

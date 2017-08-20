@@ -52,10 +52,9 @@ class CG114PromtionNotLeadingToCheckmate {
 		
 		scg.move(cgFixture.whitePlayer, move);
 		
-		scg.promotePawnTo(QueenPiece.QUEEN_WHITE_MOVED, new Location("D8"));
+		scg.promotePawnTo(QueenPiece.QUEEN_WHITE, new Location("D8"));
 		
-		assertEquals("Should be White Checkmate", AbstractChessGame.GameState.WHITE_CHECKMATE, scg.chessGame.gameState);
+		assertEquals("Should be Black Checkmate", AbstractChessGame.GameState.BLACK_CHECKMATE, scg.chessGame.gameState);
 		assertEquals("Should be Game Over", AbstractServerChessGame.ServerGameStatus.FINISHED, scg.currentStatus);
 	}
-
 }
