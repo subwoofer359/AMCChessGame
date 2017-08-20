@@ -8,6 +8,7 @@ import org.amc.dao.DAO;
 import org.amc.dao.EntityManagerCache;
 import org.amc.dao.ServerChessGameDAO;
 import org.amc.game.chess.AbstractChessGame.GameState;
+import org.amc.game.chess.ChessBoard
 import org.amc.game.chess.ChessBoardFactoryImpl;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
@@ -59,8 +60,14 @@ import org.springframework.stereotype.Controller;
 @ContextConfiguration(['/EntityManagerFactory.groovy', '/SpringTestConfig.xml', '/GameServerSecurity.xml',
     '/GameServerWebSockets.xml', '/EmailServiceContext.xml' ])
 class PromotionStompControllerIT extends StompControllerFixtureIT {
+	
+	def scgfactory;
+	
+	static final def chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     
-    private static final String MESSAGE_DESTINATION = '/app/promote/';
+	def sGameFactory = new StandardChessGameFactory();
+	
+    static final String MESSAGE_DESTINATION = '/app/promote/';
     
     private static final Long ONEVIEW_GAMEUUID  = 9409409L;
 	
@@ -72,6 +79,7 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
     void setup() {
         super.setup();
         clearDAO();
+		scgfactory = (ServerChessGameFactory) wac.getBean('serverChessGameFactory');
     }
 
     @After
@@ -85,35 +93,41 @@ class PromotionStompControllerIT extends StompControllerFixtureIT {
     }
 
     private void createChessGame() {
-        def scgfactory = (ServerChessGameFactory) wac.getBean('serverChessGameFactory');
-        def chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-        def board  = chessBoardFactory.getChessBoard(TWOVIEW_BOARD_CONFIG);
-        def sGameFactory = new StandardChessGameFactory();
-
-        def scg = scgfactory.getServerChessGame(GameType.NETWORK_GAME, gameUUID, stephen);
-        scg.addOpponent(nobby);
-        scg.setChessGame(sGameFactory.getChessGame(board, scg.getPlayer(stephen), scg.getPlayer(nobby)));
-        
-        Move move = new Move('a7:a8');
-        scg.move(scg.getPlayer(stephen), move);
+        def scg = setupGame(GameType.NETWORK_GAME);
+     
+        scg.move(scg.getPlayer(stephen), new Move('a7:a8'));
         serverChessGameDAO.saveServerChessGame(scg);
     }
     
     private void createOneViewChessGame() {
-        def scgfactory = (ServerChessGameFactory) wac.getBean('serverChessGameFactory');
-        def chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-        def board  = chessBoardFactory.getChessBoard(ONEVIEW_BOARD_CONFIG);
-        def sGameFactory = new StandardChessGameFactory();
-
-        def scg = scgfactory.getServerChessGame(GameType.LOCAL_GAME, ONEVIEW_GAMEUUID, stephen);
-        scg.addOpponent(nobby);
-        scg.setChessGame(sGameFactory.getChessGame(board, scg.getPlayer(stephen), scg.getPlayer(nobby)));
+		def scg = setupGame(GameType.LOCAL_GAME);
         
         scg.chessGame.changePlayer();
-        Move move = new Move('a2:a1');
-        scg.move(scg.getPlayer(nobby), move);
+        
+        scg.move(scg.getPlayer(nobby), new Move('a2:a1'));
         serverChessGameDAO.saveServerChessGame(scg);
     }
+	
+	private AbstractServerChessGame setupGame(GameType gameType) {
+		def gUUID;
+		def view;
+		
+		if(GameType.LOCAL_GAME == gameType) {
+			gUUID = ONEVIEW_GAMEUUID;
+			view = ONEVIEW_BOARD_CONFIG;
+		} else {
+			gUUID = gameUUID;
+			view = TWOVIEW_BOARD_CONFIG;
+		}
+	
+		def board  = chessBoardFactory.getChessBoard(view);
+		def scg = scgfactory.getServerChessGame(gameType, gUUID, stephen);
+		
+		scg.addOpponent(nobby);
+		scg.setChessGame(sGameFactory.getChessGame(board, scg.getPlayer(stephen), scg.getPlayer(nobby)));
+		
+		return scg;
+	}
 
     @Test
     void testWhitePromote() {
