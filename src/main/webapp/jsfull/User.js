@@ -86,6 +86,7 @@ var loginModule = (function () {
     return {
         isUsernameAvailable: isUsernameAvailable,
         canSubmit: canSubmit,
+        checkPassword: checkPassword
     };
 }());
 

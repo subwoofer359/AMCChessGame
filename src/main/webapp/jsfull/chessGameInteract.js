@@ -5,14 +5,15 @@
 
 /*global interact*/
 
-function chessGameInteract(interactCallBack) {
+function chessGameInteract(interactCallBack, sounds) {
     "use strict";
 
     var DRAGGABLE_CLASS = '.draggable',
         DROPZONE_CLASS = '.dropzone',
         DROPZONE_ACCEPT_CLASS = '.chesspiece',
         RESTRICTION_ELEMENT = '#layer',
-        actions = interactCallBack;
+        actions = interactCallBack,
+        sound = sounds;
 
     interact(DRAGGABLE_CLASS).draggable({
         // enable inertial throwing
@@ -46,6 +47,7 @@ function chessGameInteract(interactCallBack) {
         },
         ondrop: function (event) {
             actions.onDrop.call(actions, event);
+            sound.playMoveSound();
         },
         ondropdeactivate: function (event) {
             actions.onDropDeactivate.call(actions, event);

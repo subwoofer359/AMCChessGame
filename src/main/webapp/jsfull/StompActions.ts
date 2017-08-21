@@ -1,5 +1,7 @@
 
 import * as Chessboard from "./Chessboard";
+import { ChessSounds } from "./ChessSounds";
+import { IChessAudio, NoChessSounds } from "./IChessAudio";
 import "./player";
 import { StompObject } from "./StompObject";
 
@@ -44,6 +46,8 @@ export class StompActions {
      * Injection is possible
      */
     private updatePlayer: (message) => void = updatePlayer;
+
+    private sounds: IChessAudio = new NoChessSounds();
 
     constructor(stompObject: StompObject) {
         this.gameUID = stompObject.gameUUID;
@@ -100,6 +104,7 @@ export class StompActions {
      */
     public userUpdate(message: any): void {
         if (message.headers.TYPE === "ERROR") {
+            this.sounds.playErrorSound();
             this.showFadingAlertMessage(message.body);
             if (this.oldChessBoard !== undefined && !$.isEmptyObject(this.oldChessBoard)) {
                 this.chessboard.createChessBoard(this.playerColour, this.oldChessBoard);
@@ -121,23 +126,28 @@ export class StompActions {
      */
     public topicUpdate(message: any): void {
         if (message.headers.TYPE === "ERROR") {
+            this.sounds.playErrorSound();
             this.updateChessBoard(message.body);
         } else if (message.headers.TYPE === "STATUS") {
             switch (message.body) {
             case this.GAME_STATUS.WHITE_CHECKMATE:
                 this.showAlertMessage(this.opponentName + " has won the game");
+                this.sounds.playPlayerWinsSound();
                 break;
             case this.GAME_STATUS.BLACK_CHECKMATE:
                 this.showAlertMessage(this.playerName + " has won the game");
+                this.sounds.playPlayerWinsSound();
                 break;
             case this.GAME_STATUS.STALEMATE:
                 this.showAlertMessage("Game has ended in a draw");
                 break;
             case this.GAME_STATUS.WHITE_IN_CHECK:
                 this.showFadingAlertMessage(this.playerName + "'s king is in check");
+                this.sounds.playCheckSound();
                 break;
             case this.GAME_STATUS.BLACK_IN_CHECK:
                 this.showFadingAlertMessage(this.opponentName + "'s king is in check");
+                this.sounds.playCheckSound();
                 break;
             default:
                 break;
@@ -149,5 +159,9 @@ export class StompActions {
         } else if (message.headers.TYPE === "UPDATE") {
             this.updateChessBoard(message.body);
         }
+    }
+
+    public setSounds(sounds: IChessAudio) {
+        this.sounds = sounds;
     }
 }

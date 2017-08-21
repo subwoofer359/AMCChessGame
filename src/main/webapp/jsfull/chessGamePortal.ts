@@ -10,6 +10,7 @@
 import * as _SockJS from "sockjs-client";
 import * as _Stomp from "stompjs";
 import "./chessGameInteract";
+import { ChessSounds } from "./ChessSounds";
 import { InteractActions } from "./InteractActions";
 import { OneViewStompActions } from "./OneViewStompActions";
 import { StompActions } from "./StompActions";
@@ -17,6 +18,8 @@ import { StompObject } from "./StompObject";
 
 let SockJS = _SockJS;
 let Stomp = _Stomp;
+
+const sounds = new ChessSounds();
 
 /* makes Message disappear when chessboard is clicked*/
 export function addMessageDialogListener() {
@@ -74,9 +77,10 @@ export function openStompConnection(stompObj: StompObject, stompCallBack) {
  */
 export function setupStompConnection(stompObject: StompObject) {
     const stompCallBack = new StompActions(stompObject);
+    stompCallBack.setSounds(sounds);
     const stompClient = openStompConnection(stompObject, stompCallBack);
 
-    chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID));
+    chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID), sounds);
     addMessageDialogListener();
     return stompClient;
 }
@@ -89,9 +93,10 @@ export function setupStompConnection(stompObject: StompObject) {
  */
 export function setupOneViewStompConnection(stompObject) {
     const stompCallBack = new OneViewStompActions(stompObject);
+    stompCallBack.setSounds(sounds);
     const stompClient = openStompConnection(stompObject, stompCallBack);
 
-    chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID));
+    chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID), sounds);
     addMessageDialogListener();
     return stompClient;
 }
