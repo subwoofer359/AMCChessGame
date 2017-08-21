@@ -3,9 +3,9 @@ package org.amc.game.chess.controller;
 import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.BishopPiece;
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Colour;
@@ -27,7 +27,7 @@ public class ConsoleControllerTest {
     private ChessBoard board;
     private Location startLocation;
     private Location endLocation;
-    private ChessGame game;
+    private AbstractChessGame game;
     private ChessPiece piece;
 
     @Before

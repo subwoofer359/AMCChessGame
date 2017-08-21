@@ -1,6 +1,6 @@
 package org.amc.game.chessserver.messaging;
 
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.UrlViewChessGameController;
@@ -32,7 +32,7 @@ public abstract class EmailTemplateFactory {
 			email.setMailImageFactory(mailImageFactory);
 			email.setUrlRoot(urlRoot);
 			return email;
-		} else if (clss.equals(ChessGame.class)) {
+		} else if (clss.equals(AbstractChessGame.class)) {
 			MoveUpdateEmail email = new MoveUpdateEmail();
 			
 			email.setChessBoardSVGFactory(getChessBoardSVGFactory());

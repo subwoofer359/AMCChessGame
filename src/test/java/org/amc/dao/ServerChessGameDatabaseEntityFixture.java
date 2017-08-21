@@ -3,7 +3,7 @@ package org.amc.dao;
 import static org.mockito.Mockito.*;
 
 import org.amc.DAOException;
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGameFixture;
 import org.amc.game.chess.Colour;
@@ -31,7 +31,7 @@ public class ServerChessGameDatabaseEntityFixture {
     private Player whitePlayer;
     private Player blackPlayer;
     private AbstractServerChessGame scgGame;
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
     private final long UID = 29393L;
     private final ServerChessGameDAO scgDAO;
     private ChessGameFactory chessGamefactory; 
@@ -69,7 +69,7 @@ public class ServerChessGameDatabaseEntityFixture {
     }
     
     private AbstractServerChessGame createServerGame(long id) {
-        ChessGame chessGame = chessGamefactory.getChessGame(this.chessGame.getChessBoard(), 
+        AbstractChessGame chessGame = chessGamefactory.getChessGame(this.chessGame.getChessBoard(), 
                         new RealChessGamePlayer(whitePlayer, Colour.WHITE),
                         new RealChessGamePlayer(blackPlayer, Colour.BLACK));
         scgGame = new TwoViewServerChessGame(id, chessGame);
@@ -94,7 +94,7 @@ public class ServerChessGameDatabaseEntityFixture {
         return blackPlayer;
     }
     
-    public ChessGame getChessGame() {
+    public AbstractChessGame getChessGame() {
         return scgGame.getChessGame();
     }
 

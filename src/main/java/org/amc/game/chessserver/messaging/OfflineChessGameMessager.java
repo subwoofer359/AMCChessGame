@@ -4,7 +4,7 @@ import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAOInterface;
 import org.amc.game.GameObserver;
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -33,7 +33,7 @@ public class OfflineChessGameMessager extends GameObserver {
             try {
                 Player player = serverChessGame.getChessGame().getCurrentPlayer(); 
                 if (isOffline(player) && doesUserHaveEmailAddress(player)) {
-                    if (message instanceof ChessGame) {
+                    if (message instanceof AbstractChessGame) {
                         handleChessGameUpdate(serverChessGame, message);
                     } else if(message instanceof Player) {
                         handlePlayerUpdate(serverChessGame, message);
@@ -71,7 +71,7 @@ public class OfflineChessGameMessager extends GameObserver {
     }
     
     private void handleChessGameUpdate(AbstractServerChessGame scg, Object message) throws MailException, MessagingException, DAOException{
-        final ChessGame chessGame = (ChessGame) message;
+        final AbstractChessGame chessGame = (AbstractChessGame) message;
         User user = getUser(chessGame);
         Player player = chessGame.getCurrentPlayer();
         logger.debug(String.format("OfflineChessMessager: %s is offline", player));
@@ -90,7 +90,7 @@ public class OfflineChessGameMessager extends GameObserver {
     	}
     }
     
-    private User getUser(ChessGame chessgame) throws DAOException {
+    private User getUser(AbstractChessGame chessgame) throws DAOException {
         Player otherPlayer = chessgame.getCurrentPlayer();
         return getUser(otherPlayer);
     }
@@ -105,7 +105,7 @@ public class OfflineChessGameMessager extends GameObserver {
     }
     
     private EmailTemplate newMoveUpdateEmail(Player player, AbstractServerChessGame serverChessGame) {
-        EmailTemplate template = templateFactory.getEmailTemplate(ChessGame.class);
+        EmailTemplate template = templateFactory.getEmailTemplate(AbstractChessGame.class);
         template.setPlayer(player);
         template.setServerChessGame(serverChessGame);
         return template;

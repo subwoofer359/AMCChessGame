@@ -2,7 +2,7 @@ package org.amc.game.chessserver.messaging;
 
 import java.io.IOException;
 
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame;
@@ -52,7 +52,7 @@ public class MoveUpdateEmail extends EmailTemplate {
     
     @Override
     public void addContextVariables() {
-        ChessGame chessGame = getServerChessGame().getChessGame();
+        AbstractChessGame chessGame = getServerChessGame().getChessGame();
         Player opponent = chessGame
                         .getOpposingPlayer(getServerChessGame().getPlayer(getPlayer()));
         

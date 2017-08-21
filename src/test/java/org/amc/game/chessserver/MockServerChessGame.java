@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
@@ -20,7 +21,7 @@ class MockServerChessGame extends AbstractServerChessGame {
 		super(gameUid, player);
 	}
 
-	public MockServerChessGame(long gameUid, ChessGame chessGame) {
+	public MockServerChessGame(long gameUid, AbstractChessGame chessGame) {
 		super(gameUid, chessGame);
 	}
 

@@ -15,7 +15,7 @@ import java.text.ParseException;
  */
 public class BugCG23TestCase {
     
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
 
     @Before
     public void setUp() throws Exception {

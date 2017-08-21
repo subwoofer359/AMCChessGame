@@ -7,6 +7,7 @@ import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
@@ -80,7 +81,8 @@ public class OfflineChessGameMessagerTest {
         emailService.setMailSender(mailSender);
         
         EmailTemplateFactory templateFactory = mock(EmailTemplateFactory.class);
-        when(templateFactory.getEmailTemplate(ChessGame.class)).thenReturn(new MoveUpdateEmail());
+        
+        when(templateFactory.getEmailTemplate(AbstractChessGame.class)).thenReturn(new MoveUpdateEmail());
         when(templateFactory.getEmailTemplate(Player.class)).thenReturn(new PlayerJoinedChessGameEmail());
 
         offlineGMessager.setMessageService(emailService);

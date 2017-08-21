@@ -23,7 +23,7 @@ public class ChessGameMoveKingOutOfCheckTest {
     private ChessGamePlayer currentPlayer;
     private Move defendingChessPieceMove;
     private ChessBoard board;
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
 
     public ChessGameMoveKingOutOfCheckTest(ChessGamePlayer currentPlayer, Move defendingChessPieceMove) {
         this.currentPlayer = currentPlayer;

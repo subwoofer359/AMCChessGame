@@ -8,7 +8,7 @@ import org.amc.game.GameObserver;
 import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
@@ -53,9 +53,9 @@ public class JsonChessGameView extends GameObserver {
      */
     @Override
     public void update(Subject subject, Object message) {
-        if (message instanceof ChessGame && subject instanceof AbstractServerChessGame) {
+        if (message instanceof AbstractChessGame && subject instanceof AbstractServerChessGame) {
             AbstractServerChessGame serverChessGame = (AbstractServerChessGame) subject;
-            String jsonBoard = convertChessGameToJson((ChessGame)message);
+            String jsonBoard = convertChessGameToJson((AbstractChessGame)message);
        
             this.template.convertAndSend(getMessageDestination(serverChessGame), jsonBoard, getDefaultHeaders());
             logger.debug("Message sent to " + getMessageDestination(serverChessGame));
@@ -72,7 +72,7 @@ public class JsonChessGameView extends GameObserver {
         return headers;
     }
     
-    public static String convertChessGameToJson(ChessGame chessGame) {
+    public static String convertChessGameToJson(AbstractChessGame chessGame) {
         final Gson gson = new Gson();
         return gson.toJson(new JsonChessGame(chessGame));
     }
@@ -113,7 +113,7 @@ public class JsonChessGameView extends GameObserver {
             }
         }
         
-        public JsonChessGame(ChessGame chessGame) {
+        public JsonChessGame(AbstractChessGame chessGame) {
             this();
             convertChessBoard(chessGame.getChessBoard());
             currentPlayer = chessGame.getCurrentPlayer();

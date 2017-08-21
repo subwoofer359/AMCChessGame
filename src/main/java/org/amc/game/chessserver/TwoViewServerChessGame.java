@@ -1,7 +1,7 @@
 package org.amc.game.chessserver;
 
 import org.amc.game.chess.ChessBoard;
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
@@ -26,7 +26,7 @@ public class TwoViewServerChessGame extends ServerChessGame {
       
     }
     
-    public TwoViewServerChessGame(long uid, ChessGame chessGame) {
+    public TwoViewServerChessGame(long uid, AbstractChessGame chessGame) {
         super(uid, chessGame);
     }
     

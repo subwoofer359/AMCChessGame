@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class StandardChessGameFactoryTest {
     private ChessGameFactory factory;
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
 
     @Before
     public void setUp() throws Exception {
@@ -17,7 +17,7 @@ public class StandardChessGameFactoryTest {
 
     @Test
     public void testGetChessGameBoardPlayerPlayer() {
-        ChessGame game = factory.getChessGame(chessGame.getChessBoard(),
+        AbstractChessGame game = factory.getChessGame(chessGame.getChessBoard(),
                         chessGame.getWhitePlayer(), chessGame.getBlackPlayer());
         ChessBoardUtil.compareBoards(chessGame.getChessBoard(), game.getChessBoard());
         assertEquals(chessGame.getWhitePlayer(), game.getWhitePlayer());

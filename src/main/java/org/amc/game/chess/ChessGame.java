@@ -1,7 +1,6 @@
 package org.amc.game.chess;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
@@ -11,7 +10,6 @@ import javax.persistence.Transient;
  *
  */
 @Entity
-@Table(name = "chessGames")
 public class ChessGame extends AbstractChessGame {
 	
     private static final long serialVersionUID = 5323277982974698086L;

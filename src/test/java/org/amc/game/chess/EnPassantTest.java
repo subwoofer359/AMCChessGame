@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.text.ParseException;
 
 public class EnPassantTest {
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
     private ChessBoard board;
     private EnPassantRule enPassantRule;
     private ChessBoardFactory factory;

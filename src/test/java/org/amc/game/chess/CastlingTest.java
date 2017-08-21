@@ -19,7 +19,7 @@ public class CastlingTest {
     private String leftRookStart;
 	private String rightRookStart;
     private CastlingRule gameRule;
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
     
     private ChessBoardUtil cbUtils;
 

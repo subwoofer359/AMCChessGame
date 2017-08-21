@@ -119,6 +119,6 @@ public class GameStateListenerTest {
     	listener.update(serverGame, PAWN_PROMOTION);
     	Player player = serverGame.getChessGame().getCurrentPlayer();
     	verify(template, times(1)).convertAndSendToUser(eq(player.getUserName()), 
-    			eq(GameStateListener.MESSAGE_USER_DESTINATION), eq("PAWN_PROMOTION (A,8)"), anyMap());
+    			eq(GameStateListener.MESSAGE_USER_DESTINATION), eq("PAWN_PROMOTION (A,8)"), anyMapOf(String.class, Object.class));
     }
 }

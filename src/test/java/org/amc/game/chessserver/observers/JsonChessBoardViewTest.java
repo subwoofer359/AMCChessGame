@@ -10,11 +10,11 @@ import com.google.gson.JsonParseException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.HumanPlayer;
@@ -50,7 +50,7 @@ import java.util.Map;
 public class JsonChessBoardViewTest {
 
 	private ServerChessGame serverGame;
-	private ChessGame chessGame;
+	private AbstractChessGame chessGame;
 	private static ChessBoardFactory chBoardFactory;
 	private ChessGamePlayer whitePlayer;
 	private SimpMessagingTemplate template;

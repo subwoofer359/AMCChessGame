@@ -3,6 +3,7 @@ package org.amc.game.chessserver;
 import static org.amc.game.chess.NoChessGame.NO_CHESSGAME;
 import static org.amc.game.chess.NoPlayer.NO_PLAYER;
 import org.amc.game.GameSubject;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
@@ -55,7 +56,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="chessGame", nullable=true)
-    private ChessGame chessGame = null;
+    private AbstractChessGame chessGame = null;
     
     @Column(nullable=false)
     private ServerGameStatus currentStatus;
@@ -109,9 +110,9 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @param uid
      * @param chessGame Already initialise chess game
      */
-    public AbstractServerChessGame(long uid, ChessGame chessGame) {
+    public AbstractServerChessGame(long uid, AbstractChessGame chessGame) {
         super();
-        checkForNull(ChessGame.class, chessGame);
+        checkForNull(AbstractChessGame.class, chessGame);
         this.uid = uid;
         this.player = chessGame.getWhitePlayer();
         this.currentStatus = ServerGameStatus.IN_PROGRESS;
@@ -185,7 +186,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * 
      * @param chessGame 
      */
-    protected void setChessGame(ChessGame chessGame) {
+    protected void setChessGame(AbstractChessGame chessGame) {
         this.chessGame = chessGame;
     }
 
@@ -193,7 +194,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * 
      * @return the ChessGame object
      */
-    public ChessGame getChessGame() {
+    public AbstractChessGame getChessGame() {
         return chessGame == null ? NO_CHESSGAME : chessGame;
     }
 
@@ -221,7 +222,6 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      *             if Move is illegal
      */
     public abstract void move(ChessGamePlayer player, Move move) throws IllegalMoveException;
-
     
     /**
      * Called when a pawn needs to be promoted to another piece

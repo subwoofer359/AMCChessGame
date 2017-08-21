@@ -15,7 +15,7 @@ public class ChessGameTest {
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
     
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
 
     @Before
     public void setUp() throws Exception {

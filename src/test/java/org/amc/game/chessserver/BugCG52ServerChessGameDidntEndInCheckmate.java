@@ -2,6 +2,7 @@ package org.amc.game.chessserver;
 
 import static org.junit.Assert.*;
 
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoardFactory;
 import org.amc.game.chess.ChessBoardFactoryImpl;
@@ -47,7 +48,7 @@ public class BugCG52ServerChessGameDidntEndInCheckmate {
 	public void test() throws IllegalMoveException {
 		Move move = new Move("C2-C7");
 		serverChessGame.move(whitePlayer, move);
-		ChessGame game = serverChessGame.getChessGame();
+		AbstractChessGame game = serverChessGame.getChessGame();
 		System.out.println("Game state:" + game.getGameState());
 		assertTrue(game.getGameState() == ChessGame.GameState.BLACK_CHECKMATE);
 	}

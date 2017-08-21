@@ -50,7 +50,7 @@ public class GameTableControllerTest {
 	    games.put(GAME_UID, scgGameInfo);
 
 		when(serverChessGameDAO.getGameInfoForPlayer(any(Player.class)))
-	    .thenReturn((Map)games);
+	    .thenReturn(games);
 	    
 		Callable<String> callable = gtController.getGames(scgGame.getPlayer());
 		String result = callable.call();

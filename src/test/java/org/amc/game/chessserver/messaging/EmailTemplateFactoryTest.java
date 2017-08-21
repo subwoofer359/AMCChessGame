@@ -3,7 +3,7 @@ package org.amc.game.chessserver.messaging;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
@@ -64,7 +64,7 @@ public class EmailTemplateFactoryTest {
     @Test
     public void testMoveUpdateEmailCreation() {
     	factory.setMailImageFactory(mailImageFactory);
-        EmailTemplate email = factory.getEmailTemplate(ChessGame.class);
+        EmailTemplate email = factory.getEmailTemplate(AbstractChessGame.class);
         
         assertTrue(email instanceof MoveUpdateEmail);
         assertFalse(email instanceof PlayerJoinedChessGameEmail);
@@ -131,7 +131,7 @@ public class EmailTemplateFactoryTest {
     	
     	factory.setServletContext(servletContext);
     	
-    	EmailTemplate emailTemp = factory.getEmailTemplate(ChessGame.class);
+    	EmailTemplate emailTemp = factory.getEmailTemplate(AbstractChessGame.class);
     	
     	assertEquals("http://" + host + ":" + port + contextPath + urlRoot, emailTemp.getUrlRoot());
 

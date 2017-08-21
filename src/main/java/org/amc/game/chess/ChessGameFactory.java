@@ -14,5 +14,5 @@ public interface ChessGameFactory {
      * @param playerBlack ChessGamePlayer
      * @return ChessGame
      */
-    ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack);
+    AbstractChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite, ChessGamePlayer playerBlack);
 }

@@ -2,7 +2,7 @@ package org.amc.game.chess;
 
 public class ChessGameFixture {
 
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
     private ChessGamePlayer whitePlayer;
     private ChessGamePlayer blackPlayer;
 
@@ -13,7 +13,7 @@ public class ChessGameFixture {
         chessGame = factory.getChessGame(new ChessBoard(), whitePlayer, blackPlayer);
     }
 
-    public ChessGame getChessGame() {
+    public AbstractChessGame getChessGame() {
         return chessGame;
     }
 

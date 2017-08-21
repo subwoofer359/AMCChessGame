@@ -62,7 +62,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
         return false;
     }
     
-    public void promotePawnTo(ChessGame chessGame, Location location, ChessPiece promotedPiece) throws IllegalMoveException {
+    public void promotePawnTo(AbstractChessGame chessGame, Location location, ChessPiece promotedPiece) throws IllegalMoveException {
         ChessBoard board = chessGame.getChessBoard();
         ChessPiece pieceToBePromoted = board.get(location);
         validatePromotionMove(location, pieceToBePromoted, promotedPiece);
@@ -92,7 +92,7 @@ public final class PawnPromotionRule extends PawnPieceRule {
            
     }
     
-    private void returnChessGameToRunningState(ChessGame chessGame) {
+    private void returnChessGameToRunningState(AbstractChessGame chessGame) {
             chessGame.setRunningState();
             chessGame.checkMoveLeadsToNewGameState(chessGame.getCurrentPlayer());
             chessGame.changePlayer();

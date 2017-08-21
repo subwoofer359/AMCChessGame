@@ -2,10 +2,10 @@ package org.amc.game.chessserver.messaging;
 
 import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
 
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chess.BishopPiece;
-import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.KnightPiece;
 import org.amc.game.chess.KingPiece;
@@ -103,7 +103,7 @@ public class ChessBoardSVGFactory {
     }
     
     private void addChessPieces() {
-        ChessGame chessGame = this.serverChessGame.getChessGame();
+        AbstractChessGame chessGame = this.serverChessGame.getChessGame();
 
         if (chessGame == NoChessGame.NO_CHESSGAME) {
             logger.debug("ChessBoard doesn't exist in this ServerChessGame");

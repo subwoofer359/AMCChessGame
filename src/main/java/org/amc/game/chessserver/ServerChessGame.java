@@ -1,6 +1,6 @@
 package org.amc.game.chessserver;
 
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.IllegalMoveException;
@@ -67,7 +67,7 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
 	 * @param chessGame
 	 *            Already initialise chess game
 	 */
-	public ServerChessGame(long uid, ChessGame chessGame) {
+	public ServerChessGame(long uid, AbstractChessGame chessGame) {
 		super(uid, chessGame);
 	}
 

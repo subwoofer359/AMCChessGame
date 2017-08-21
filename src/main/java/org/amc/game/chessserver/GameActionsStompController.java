@@ -4,7 +4,7 @@ import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.SESSI
 
 import com.google.gson.Gson;
 
-import org.amc.game.chess.ChessGame;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.Player;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.game.chessserver.observers.JsonChessGameView.JsonChessGame;
@@ -38,7 +38,8 @@ public class GameActionsStompController extends StompController {
                     @Header(SESSION_ATTRIBUTES) Map<String, Object> wsSession,
                     @DestinationVariable long gameUUID, @Payload String message) {
         
-    	ChessGame chessGame = getServerChessGame(gameUUID) == null ? null : getServerChessGame(gameUUID).getChessGame();
+    	AbstractChessGame chessGame = getServerChessGame(gameUUID) == null ? null : 
+    		getServerChessGame(gameUUID).getChessGame();
         
         String payLoadMessage;
         

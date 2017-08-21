@@ -21,7 +21,7 @@ public class PawnIsPromotedTest {
     private ChessPiece piece;
     private ChessMoveRule promotion;
     private Move move;
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
 
     public PawnIsPromotedTest(ChessPiece piece, Move move) {
         this.piece = piece;
@@ -65,7 +65,7 @@ public class PawnIsPromotedTest {
     public void testChessGamePawnPromotion() throws IllegalMoveException {
         ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Test1"), Colour.WHITE);
         ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Test2"), Colour.BLACK);
-        ChessGame chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
+        AbstractChessGame chessGame = new StandardChessGameFactory().getChessGame(board, whitePlayer, blackPlayer);
         board = chessGame.getChessBoard();
         new ChessBoardView(board);
         board.put(piece, move.getStart());

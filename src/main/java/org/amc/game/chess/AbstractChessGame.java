@@ -13,19 +13,21 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-@MappedSuperclass
+@Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Table(name = "chessGames")
 public abstract class AbstractChessGame  implements Serializable {
 
     private static final long serialVersionUID = -3648559410569232983L;
@@ -144,6 +146,8 @@ public abstract class AbstractChessGame  implements Serializable {
      */
     public abstract void move(ChessGamePlayer player, Move move) throws IllegalMoveException;
 
+    
+    abstract void checkMoveLeadsToNewGameState(ChessGamePlayer player);
     /**
      * Checks to see if the game has reached it's completion
      * 

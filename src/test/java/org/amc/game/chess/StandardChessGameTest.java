@@ -11,7 +11,7 @@ import org.junit.Test;
 public class StandardChessGameTest {
 	private ChessGameFixture fixture;
 	private ChessGameFactory chessGameFactory;
-	private ChessGame chessGame;
+	private AbstractChessGame chessGame;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -23,7 +23,7 @@ public class StandardChessGameTest {
 	
 	@Test
 	public void constructorTest() {
-		ChessGame game = chessGameFactory.getChessGame(
+		AbstractChessGame game = chessGameFactory.getChessGame(
 		                chessGame.getChessBoard(), 
 		                chessGame.getWhitePlayer(), 
 		                chessGame.getBlackPlayer());
@@ -34,19 +34,19 @@ public class StandardChessGameTest {
 	
 	@Test 
 	public void testCopyConstructor() {
-		ChessGame game = chessGameFactory.getChessGame(
+		AbstractChessGame game  = chessGameFactory.getChessGame(
 				chessGame.getChessBoard(), 
 				chessGame.getWhitePlayer(), 
 				chessGame.getBlackPlayer());
 		
-		ChessGame copy = new ChessGame(game);
+		AbstractChessGame copy = new ChessGame(game);
 		testForChessRules(copy);
 		checkChessGame(copy);
 		
 		assertEquals(GameState.RUNNING, copy.getGameState());
 	}
 	
-	private void checkChessGame(ChessGame game) {
+	private void checkChessGame(AbstractChessGame game) {
 		assertEquals(chessGame.getBlackPlayer(), game.getBlackPlayer());
 		assertEquals(chessGame.getWhitePlayer(), game.getWhitePlayer());
 		assertNotNull(game.getChessBoard());
@@ -55,7 +55,7 @@ public class StandardChessGameTest {
 		ChessBoardUtil.compareBoards(chessGame.getChessBoard(), game.getChessBoard());
 	}
 	
-	private void testForChessRules(ChessGame game) {
+	private void testForChessRules(AbstractChessGame game) {
 		List<ChessMoveRule> rules = game.getChessMoveRules();
 		
 		assertFalse(rules.isEmpty());

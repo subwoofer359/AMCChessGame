@@ -11,6 +11,7 @@ import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.junit.Before;
@@ -23,10 +24,10 @@ public class ServerChessGameConstructorTest {
     private static final long INVALID_UID = 233l;
     
 	private ChessGameFactory chessGameFactory;
-    private ChessGame chessGame;
+    private AbstractChessGame chessGame;
     
     @Mock
-    private ChessGame mockCGame;
+    private AbstractChessGame mockCGame;
     
     @Before
     public void setUp() throws Exception {
@@ -34,7 +35,7 @@ public class ServerChessGameConstructorTest {
     	
         chessGameFactory = new ChessGameFactory() {
             @Override
-            public ChessGame getChessGame(ChessBoard board, 
+            public AbstractChessGame getChessGame(ChessBoard board, 
             		ChessGamePlayer playerWhite,
                     ChessGamePlayer playerBlack) {
                 return new ChessGame(board, playerWhite, playerBlack);
@@ -60,7 +61,7 @@ public class ServerChessGameConstructorTest {
         return game;
     }
     
-    private ServerChessGame createServerChessGame(long UID, ChessGame chessGame) {
+    private ServerChessGame createServerChessGame(long UID, AbstractChessGame chessGame) {
         ServerChessGame game = new ServerChessGame(UID, chessGame) {
 
             private static final long serialVersionUID = 1L;
