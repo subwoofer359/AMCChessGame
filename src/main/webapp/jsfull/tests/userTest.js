@@ -1,5 +1,6 @@
 /*global QUnit*/
 /*global $*/
+/*global loginModule*/
 QUnit.module("chessboard tests", {
     beforeEach: function () {
         "use strict";

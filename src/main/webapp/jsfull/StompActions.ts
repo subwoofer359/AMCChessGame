@@ -1,6 +1,5 @@
 
 import * as Chessboard from "./Chessboard";
-import { ChessSounds } from "./ChessSounds";
 import { IChessAudio, NoChessSounds } from "./IChessAudio";
 import "./player";
 import { StompObject } from "./StompObject";
