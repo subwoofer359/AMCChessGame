@@ -39,7 +39,7 @@ class PromotionSCBlackPromotionUnitTest extends StompControllerFixture {
 	private static final def message = 'promote Qa1';
     
     @Before
-    void setUp() throws Exception {
+    void setUp() {
         super.setUp();
 		
 		oneViewSCG = new OneViewServerChessGame(gameUUID, whitePlayer);

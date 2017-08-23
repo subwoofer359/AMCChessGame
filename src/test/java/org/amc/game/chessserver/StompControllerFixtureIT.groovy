@@ -22,14 +22,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.security.Principal;
 
-public class StompControllerFixtureIT {
+class StompControllerFixtureIT {
 
+    static final String SESSION_ID = '20';
     
-    public static final String SESSION_ID = "20";
+    static final String SUBSCRIPTION_ID = '20';
     
-    public static final String SUBSCRIPTION_ID = "20";
-    
-    public static final String SESSION_ATTRIBUTE = "PLAYER";
+    static final String SESSION_ATTRIBUTE = 'PLAYER';
 
     @Autowired
     WebApplicationContext wac;
@@ -47,7 +46,7 @@ public class StompControllerFixtureIT {
 
     TestChannelInterceptor brokerChannelInterceptor;
 
-    final long gameUUID = 1234L;
+    static final long gameUUID = 1234L;
 
     DatabaseFixture fixture = new DatabaseFixture();
 
@@ -62,20 +61,20 @@ public class StompControllerFixtureIT {
     SCGDAOInterface serverChessGameDAO;
 
     @Before
-    public void setup() throws Exception {
+    void setup()  {
         fixture.setUp();
         playerDAO = new DAO<Player>(HumanPlayer.class);
         playerDAO.setEntityManager(fixture.getEntityManager());
-        stephen = playerDAO.findEntities("userName", "stephen").get(0);
-        nobby = playerDAO.findEntities("userName", "nobby").get(0);
+        stephen = playerDAO.findEntities('userName', 'stephen').get(0);
+        nobby = playerDAO.findEntities('userName', 'nobby').get(0);
         setUpStompChannels();
-        serverChessGameDAO = (SCGDAOInterface) wac.getBean("myServerChessGameDAO");
+        serverChessGameDAO = (SCGDAOInterface) wac.getBean('myServerChessGameDAO');
         template = mock(SimpMessagingTemplate.class);
     }
 
     private void setUpStompChannels() {
         this.brokerChannelInterceptor = new TestChannelInterceptor();
-        this.brokerChannelInterceptor.setIncludedDestinations("/user/**");
+        this.brokerChannelInterceptor.setIncludedDestinations('/user/**');
         this.brokerChannel.addInterceptor(this.brokerChannelInterceptor);
 
         this.clientOutboundChannelInterceptor = new TestChannelInterceptor();
@@ -84,40 +83,39 @@ public class StompControllerFixtureIT {
     }
 
     @After
-    public void tearDown() throws Exception {
+    void tearDown() {
         this.fixture.tearDown();
     }
 
     Principal getTestPrincipal() {
         Principal p = new Principal() {
-
                     @Override
-                    public String getName() {
-                        return "stephen";
+                    String getName() {
+                        return 'stephen';
                     }
                 };
         return p;
     }
 
-    String testInfoMessageSent() throws Exception {
+    String testInfoMessageSent()  {
         testMessageSent(MessageType.INFO);
     }
     
-    String testStatusMessageSent() throws Exception {
+    String testStatusMessageSent()  {
         testMessageSent(MessageType.STATUS);
     }
 
-    String testErrorMessageSent() throws Exception {
+    String testErrorMessageSent()  {
         testMessageSent(MessageType.ERROR);
     }
 
-    String testMessageSent(MessageType type) throws Exception {
+    String testMessageSent(MessageType type)  {
         Message<?> message = this.brokerChannelInterceptor.awaitMessage(5);
-        assertNotNull("Message sent is null", message);
+        assertNotNull('Message sent is null', message);
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings('unchecked')
                 Map<String, List<String>> nativeHeaders = message.getHeaders()
-                .get("nativeHeaders", Map.class);
+                .get('nativeHeaders', Map.class);
 
         assertEquals(type, MessageType.valueOf(nativeHeaders.get(MESSAGE_HEADER_TYPE).get(0)));
         return new String(message.getPayload());
@@ -128,7 +126,7 @@ public class StompControllerFixtureIT {
 
         headers.setUser(getTestPrincipal());
         headers.setSubscriptionId(SUBSCRIPTION_ID);
-        headers.setDestination("/user/queue/updates");
+        headers.setDestination('/user/queue/updates');
         headers.setSessionId(SESSION_ID);
 
         headers.setSessionAttributes(new HashMap<String, Object>());

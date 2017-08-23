@@ -64,8 +64,7 @@ class CG105PromotionControllerNoPlayerCheckingTest {
 		controller.template = template;
 		
 		wsSession = new HashMap<>();
-		
-		
+
 		when(player.getName()).thenReturn(name);
 		when(serverChesGameDAO.getServerChessGame(eq(gameUid))).thenReturn(scg);
 		when(scg.getChessGame()).thenReturn(chessGame);
@@ -79,7 +78,7 @@ class CG105PromotionControllerNoPlayerCheckingTest {
 		
 		controller.promotePawnTo(player, wsSession, gameUid, message);
 		
-		verify(scg, never()).promotePawnTo(any(ChessPiece.class), any(Location.class));
+		verify(scg, never()).promotePawnTo(any(ChessPiece), any(Location));
 	}
 	
 	@Test
@@ -89,7 +88,7 @@ class CG105PromotionControllerNoPlayerCheckingTest {
 		
 		controller.promotePawnTo(player, wsSession, gameUid, message);
 		
-		verify(scg, times(1)).promotePawnTo(any(ChessPiece.class), any(Location.class));
+		verify(scg, times(1)).promotePawnTo(any(ChessPiece), any(Location));
 	}
 	
 }

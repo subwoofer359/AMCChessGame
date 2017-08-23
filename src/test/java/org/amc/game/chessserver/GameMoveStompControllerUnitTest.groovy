@@ -11,69 +11,76 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
 
     private GameMoveStompController controller;
 
-    
+    private static final String moveStr = 'A1-A3';
 
     @Before
-    public void setUp() throws Exception {
+    void setUp() {
         super.setUp();
-        this.controller = new GameMoveStompController();
-        this.controller.setTemplate(template);
+        controller = new GameMoveStompController();
+        controller.setTemplate(template);
         controller.setServerChessDAO(serverChessGameDAO);
     }
 
     @Test
-    public void testMove() {
+    void testMove() {
         scg.addOpponent(blackPlayer);
-        String move = "A2-A3";
-        sessionAttributes.put("PLAYER", whitePlayer);
+        String move = 'A2-A3';
+        addWhitePlayerSessionAttr();
+        
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
+        
         verifyZeroInteractions(template);
-        //verifySimpMessagingTemplateCallToUser();
-        //assertEquals("", payloadArgument.getValue());
-        //assertEquals(MessageType.INFO, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
+    }
+
+    private void addWhitePlayerSessionAttr() {
+        sessionAttributes.put('PLAYER', whitePlayer);
     }
 
     @Test
-    public void testInvalidMove() {
+    void testInvalidMove() {
         scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        String move = "A1-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
+        addWhitePlayerSessionAttr();
+        
+        controller.registerMove(principal, sessionAttributes, gameUUID, moveStr);
+        
         verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not a valid move", payloadArgument.getValue());
+        assertEquals('Error:Not a valid move', payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
-    public void testNotPlayersMove() {
+    void testNotPlayersMove() {
         scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", blackPlayer);
-        String move = "A1-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
+        sessionAttributes.put('PLAYER', blackPlayer);
+
+        controller.registerMove(principal, sessionAttributes, gameUUID, moveStr);
+        
         verifySimpMessagingTemplateCallToUser();
-        assertEquals("Error:Not Player's turn", payloadArgument.getValue());
+        assertEquals('Error:Not Player\'s turn', payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
-    public void testChessGameNotInitialised() {
-        String move = "A1-A3";
-        sessionAttributes.put("PLAYER", whitePlayer);
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
+    void testChessGameNotInitialised() {
+        addWhitePlayerSessionAttr();
+        
+        controller.registerMove(principal, sessionAttributes, gameUUID, moveStr);
+
         verifySimpMessagingTemplateCallToUser();
-        assertEquals(String.format("Error:Move on game(%d) which hasn't got two players", gameUUID),
+        assertEquals(String.format('Error:Move on game(%d) which hasn\'t got two players', gameUUID),
                         payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
 
     @Test
-    public void testChessGameFinished() {
+    void testChessGameFinished() {
         scg.addOpponent(blackPlayer);
         scg.setCurrentStatus(AbstractServerChessGame.ServerGameStatus.FINISHED);
-        String move = "A1-A3";
-        controller.registerMove(principal, sessionAttributes, gameUUID, move);
+        
+        controller.registerMove(principal, sessionAttributes, gameUUID, moveStr);
+        
         verifySimpMessagingTemplateCallToUser();
-        assertEquals(String.format("Error:Move on game(%d) which has finished", gameUUID),
+        assertEquals(String.format('Error:Move on game(%d) which has finished', gameUUID),
                         payloadArgument.getValue());
         assertEquals(MessageType.ERROR, headersArgument.getValue().get(MESSAGE_HEADER_TYPE));
     }
@@ -82,11 +89,11 @@ class GameMoveStompControllerUnitTest extends StompControllerFixture {
      * JIRA http://192.168.1.5:8081/browse/CG-49
      */
     @Test
-    public void testUnParsableMove()
-    {
+    void testUnParsableMove() {
         scg.addOpponent(blackPlayer);
-        sessionAttributes.put("PLAYER", whitePlayer);
-        String move = "-A3";
+        addWhitePlayerSessionAttr();
+        String move = '-A3';
+        
         controller.registerMove(principal, sessionAttributes, gameUUID, move);
     }
 }

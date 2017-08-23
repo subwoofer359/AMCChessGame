@@ -23,12 +23,12 @@ class DatabaseSignUpFixtureIT {
 	def playerDAO;
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    static void setUpBeforeClass() {
         fixture.setUp();
     }
 	
 	@Before
-	public void setUp() throws Exception {
+	void setUp() {
 		userDAO = new DAO<>(User);
         userDAO.entityManager = fixture.entityManager;
 		playerDAO = new DAO<>(HumanPlayer);
@@ -36,12 +36,12 @@ class DatabaseSignUpFixtureIT {
 	}
 
     @AfterClass
-    public static void tearDown() throws Exception {
+    static void tearDown() {
         fixture.tearDown();
     }
 
     @Test
-    public void testUsers() {
+    void testUsers() {
         userNames.eachWithIndex(
             { item, index ->
                 def userName = item;
@@ -64,11 +64,11 @@ class DatabaseSignUpFixtureIT {
                 
 
             }
-            );
+        );
     }
     
     @Test
-    public void testPlayers() {
+    void testPlayers() {
         def dao = new DAO(HumanPlayer.class);
         dao.entityManager = fixture.entityManager;
         
@@ -82,28 +82,27 @@ class DatabaseSignUpFixtureIT {
                 Player player = players[FIRST];
                 
                 assert player?.userName == userName;
-                
-                assert player?.name == DatabaseFixture.fullNames[index];
-                
+                assert player?.name == DatabaseFixture.fullNames[index];        
                 assert player?.id != 0;
             }
-            );
+        );
     }
     
     @Test
-    public void testGetEntityManager() {
+    void testGetEntityManager() {
         assert fixture.getEntityManagerFactory() instanceof EntityManagerFactory;
         assert fixture.getEntityManagerFactory().isOpen() == true;
     }
 	
 	@Test
-	public void clearTables() {
+	void clearTables() {
 		fixture.clearTables();
 		List users = userDAO.findEntities();
-		assert users.size() == 0;
+		
+        assert users.size() == 0;
 		List players = playerDAO.findEntities();
-		assert players.size() == 0;
+		
+        assert players.size() == 0;
 		setUpBeforeClass();
 	}
-
 }

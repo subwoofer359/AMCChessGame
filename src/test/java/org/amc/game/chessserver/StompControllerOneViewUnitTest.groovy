@@ -35,7 +35,7 @@ class StompControllerOneViewUnitTest extends StompControllerFixture {
 	SCGDAOInterface sCGDAO;
     
     @Before
-    void setUp() throws Exception {
+    void setUp() {
         super.setUp();
         
         controller = new GameMoveStompController();
