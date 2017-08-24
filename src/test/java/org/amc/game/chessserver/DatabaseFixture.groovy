@@ -45,26 +45,26 @@ class DatabaseFixture {
     static final def password = 'C4096cr';
                 
 
-    public void setUpEntitiyManagerFactory() {
-        factory = Persistence.createEntityManagerFactory("myDatabaseTest");
+    void setUpEntitiyManagerFactory() {
+        factory = Persistence.createEntityManagerFactory('myDatabaseTest');
         entityManager = factory.createEntityManager();
     }
 
-    public EntityManagerFactory getEntityManagerFactory() {
+    EntityManagerFactory getEntityManagerFactory() {
         return factory;
     }
 
-    public void setUp() {
+    void setUp() {
         setUpEntitiyManagerFactory();
         entityManagerList = [];
         
         addUsers();
     }
 
-    public void tearDown() {
+    void tearDown() {
         closeEntityManagers();
         try {
-            DriverManager.getConnection("jdbc:derby:memory:amcchessgametest;drop=true");
+            DriverManager.getConnection('jdbc:derby:memory:amcchessgametest;drop=true');
         } catch(SQLException sqle) {
             logger.info(sqle);
         }
@@ -78,28 +78,28 @@ class DatabaseFixture {
         };
     }
     
-    public EntityManager getNewEntityManager() {
+    EntityManager getNewEntityManager() {
         def em  = factory.createEntityManager();
         entityManagerList.add(em);
         return em;
     }
 
-    public void clearTables() throws SQLException {
+    void clearTables() throws SQLException {
         Connection c = entityManager.unwrap(Connection.class);
         List<String> tables = new ArrayList<>();
         try {
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("SELECT * FROM sys.systables");
+            ResultSet r = s.executeQuery('SELECT * FROM sys.systables');
             while(r.next()) {
                 String tableName = r.getString(2);
                 String tableType = r.getString(3);
-                if("T".equals(tableType)) {
+                if('T'.equals(tableType)) {
                     tables.add(tableName);
                 }
             }
 
             for(String tableName : tables) {
-                s.execute("DELETE FROM " + tableName);
+                s.execute('DELETE FROM ' + tableName);
             }
         }
         finally {

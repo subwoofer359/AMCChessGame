@@ -7,39 +7,43 @@ import org.junit.Test;
 
 public class PromotionTest {
 
-    
-    ChessBoardFactory chessBoardFactory;
-    
-    ChessGame chessGame;
-    ChessBoard board;
+    AbstractChessGame chessGame;
+
     static ChessGamePlayer playerWhite;
-    static ChessGamePlayer playerBlack;
+    
+	static ChessGamePlayer playerBlack;
+	
+	private static final BOARD_CONFIG = 'Ke8:ke1:pa7';
+	
+	private final ChessBoardFactory chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     
     @BeforeClass
     static void setUpBeforeClass() {
-        playerWhite = new RealChessGamePlayer(new HumanPlayer("playerOne"), Colour.WHITE);
-        playerBlack = new RealChessGamePlayer(new HumanPlayer("playerTwo"), Colour.BLACK);
+        playerWhite = new RealChessGamePlayer(new HumanPlayer('playerOne'), Colour.WHITE);
+        playerBlack = new RealChessGamePlayer(new HumanPlayer('playerTwo'), Colour.BLACK);
     }
     
     @Before
-    void setup() throws Exception {
-        chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
-        board  = chessBoardFactory.getChessBoard("Ke8:ke1:pa7");
-        StandardChessGameFactory sGameFactory = new StandardChessGameFactory();
-        chessGame = sGameFactory.getChessGame(board, playerWhite, playerBlack);     
+    void setup() {
+        chessGame = new StandardChessGameFactory().getChessGame(
+			chessBoardFactory.getChessBoard(BOARD_CONFIG),
+			playerWhite, 
+			playerBlack
+		);     
     }
     
     @Test
-    public void testPromotionMove() throws IllegalMoveException {
-        Move move = new Move("a7:a8");
+    void testPromotionMove() throws IllegalMoveException {
+        Move move = new Move('a7:a8');
         
         chessGame.move(playerWhite, move);
         
         PawnPromotionRule ppr = PawnPromotionRule.getInstance();
-        ppr.promotePawnTo(chessGame, move.getEnd(), RookPiece.getPiece(Colour.WHITE));
         
-        ChessPiece promotedPiece = chessGame.getChessBoard().get(new Location("a8"));
+		ppr.promotePawnTo(chessGame, move.getEnd(), RookPiece.getPiece(Colour.WHITE));
         
-        assert promotedPiece?.getClass() == RookPiece.class; 
+        final ChessPiece promotedPiece = chessGame.getChessBoard().get(move.end);
+        
+        assert promotedPiece?.class == RookPiece; 
     }
 }
