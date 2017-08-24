@@ -48,7 +48,6 @@ class ServerChessGamePromotionTest {
 	
     @Test
     void test() {
-        Move move = new Move();
         AbstractServerChessGame spyScGame = spy(scGame);
         
 		spyScGame.move(playerWhite, move);
