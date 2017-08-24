@@ -21,13 +21,13 @@ import org.springframework.web.context.support.ServletContextAttributeExporter
 
 class PlayerQuitChessGameEmailTest {
 	
-	final static Long UID = 23330L;
+	private final static Long UID = 23330L;
 	
-	PlayerQuitChessGameEmail emailTemplate;
+	private static final Player player = [name: "adrian", userName: "adrian"] as HumanPlayer;
 	
-	Player player = [name: "adrian", userName: "adrian"] as HumanPlayer;
+	private static final Player chessPlayer = new RealChessGamePlayer(player, Colour.WHITE);
 	
-	Player chessPlayer = new RealChessGamePlayer(player, Colour.WHITE);
+	private PlayerQuitChessGameEmail emailTemplate;
 	
 	AbstractServerChessGame scg = [
 		getPlayer: {
@@ -59,6 +59,7 @@ class PlayerQuitChessGameEmailTest {
 	@Test
 	public void testConstructor() {
 		emailTemplate = new PlayerQuitChessGameEmail();
+		
 		assert emailTemplate.emailTemplateName == PlayerQuitChessGameEmail.EMAIL_TEMPLATE;
 		assert emailTemplate.emailSubject == PlayerChessGameEmail.DEFAULT_EMAIL_SUBJECT;
 	}

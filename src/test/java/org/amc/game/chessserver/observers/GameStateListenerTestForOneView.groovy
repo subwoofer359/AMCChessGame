@@ -26,74 +26,82 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.text.ParseException;
 
 class GameStateListenerTestForOneView {
+	
+	private static final long GAME_UID = 1234l;
+	
+	private static final String MSG_A1 = 'PAWN_PROMOTION (A,1)';
+	private static final String MSG_A8 = 'PAWN_PROMOTION (A,8)';
+	
+	private final String destination = "${GameStateListener.MESSAGE_DESTINATION}/${GAME_UID}";
+	
+	private static final ChessGamePlayer whitePlayer = new RealChessGamePlayer(
+		new HumanPlayer('White Player'), Colour.WHITE);
+	
+	private static final ChessGamePlayer blackPlayer = new RealChessGamePlayer(
+		new HumanPlayer('Black Player'), Colour.BLACK);
+	
+	private static final ChessGameFactory chessGameFactory = new ChessGameFactory() {
+		@Override
+		public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
+						ChessGamePlayer playerBlack) {
+			return new ChessGame(board, playerWhite, playerBlack);
+		}
+	};
     
-    GameStateListener listener;
+    private GameStateListener listener;
+	
     private ServerChessGame serverGame;
-    
-    private static final long GAME_UID = 1234l;
-    
+
     @Mock
     private SCGDAOInterface serverChessGameDAO;
     
     @Mock
-    SimpMessagingTemplate template;
-
-     @Before
-    public void setUp() throws Exception {
+    private SimpMessagingTemplate template;
+	
+	@Mock
+	private ChessBoard board;
+	
+    @Before
+	void setUp() {
         MockitoAnnotations.initMocks(this);
-        setUpServerChessGame();
-        
+        setUpServerChessGame();        
         setUpListener();
     }
     
     private void setUpServerChessGame() {
-        ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("White Player"), Colour.WHITE);
-        ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Black Player"), Colour.BLACK);
-        ChessGameFactory chessGameFactory = new ChessGameFactory() {
-            @Override
-            public ChessGame getChessGame(ChessBoard board, ChessGamePlayer playerWhite,
-                            ChessGamePlayer playerBlack) {
-                return new ChessGame(board, playerWhite, playerBlack);
-            }
-        };
-        
         serverGame = new OneViewServerChessGame(GAME_UID, whitePlayer);
-        serverGame.setChessGameFactory(chessGameFactory);
+        serverGame.chessGameFactory = chessGameFactory;
         serverGame.addOpponent(blackPlayer);
     }
     
     private void setUpListener() {
         listener = new OneViewGameStateListener();
         listener.setGameToObserver(serverGame);
-        listener.setSimpMessagingTemplate(template);
-        listener.setServerChessGameDAO(serverChessGameDAO);
+        listener.simpMessagingTemplate = template;
+        listener.serverChessGameDAO = serverChessGameDAO;
     }
 
     @Test
-    public void promotionWhiteTest() throws DAOException, ParseException {
-        ChessBoard board = mock(ChessBoard.class);
-        ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.WHITE), new Location("A8"));
-        
+    void promotionWhiteTest() {
+		ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.WHITE), new Location('A8'));
         when(board.getPawnToBePromoted(Colour.WHITE)).thenReturn(cpl);
-        serverGame.getChessGame().setChessBoard(board);
+        serverGame.chessGame.chessBoard = board;
         
         listener.update(serverGame, PAWN_PROMOTION);
-        def destination = GameStateListener.MESSAGE_DESTINATION + "/" +serverGame.uid;
-        verify(template, times(1)).convertAndSend(eq(destination), eq("PAWN_PROMOTION (A,8)"), anyMap());
+        
+        verify(template, times(1)).convertAndSend(eq(destination), eq(MSG_A8), anyMap());
     }
     
     @Test
-    public void promotionBlackTest() throws DAOException, ParseException {
-        ChessBoard board = mock(ChessBoard.class);
-        ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.BLACK), new Location("A1"));
-        
+    void promotionBlackTest() {
+		ChessPieceLocation cpl = new ChessPieceLocation(PawnPiece.getPiece(Colour.BLACK), new Location('A1')); 
         when(board.getPawnToBePromoted(Colour.BLACK)).thenReturn(cpl);
-        serverGame.getChessGame().setChessBoard(board);
-        serverGame.getChessGame().changePlayer();
+        serverGame.chessGame.chessBoard = board;
+        serverGame.chessGame.changePlayer();
         
         listener.update(serverGame, PAWN_PROMOTION);
-        def destination = GameStateListener.MESSAGE_DESTINATION + "/" + serverGame.uid;
-        verify(template, times(1)).convertAndSend(eq(destination), eq("PAWN_PROMOTION (A,1)"), anyMap());
+        
+        verify(template, times(1)).convertAndSend(eq(destination), eq(MSG_A1), anyMap());
     }
 
 }
