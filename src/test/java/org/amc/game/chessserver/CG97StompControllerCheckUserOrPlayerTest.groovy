@@ -1,6 +1,5 @@
 package org.amc.game.chessserver
 
-
 import static org.mockito.Mockito.*;
 import java.security.Principal;
 

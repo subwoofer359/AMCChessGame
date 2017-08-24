@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 class StompControllerFixture {
-    ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer("Stephen"), Colour.WHITE);
+    ChessGamePlayer whitePlayer = new RealChessGamePlayer(new HumanPlayer('Stephen'), Colour.WHITE);
 
-    ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer("Chris"), Colour.BLACK);
+    ChessGamePlayer blackPlayer = new RealChessGamePlayer(new HumanPlayer('Chris'), Colour.BLACK);
 
     long gameUUID = 1234L;
 
@@ -34,7 +34,7 @@ class StompControllerFixture {
 
     Map<String, Object> sessionAttributes;
 
-    SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
+    SimpMessagingTemplate template = mock(SimpMessagingTemplate);
 
     ArgumentCaptor<String> userArgument;
 
@@ -48,7 +48,7 @@ class StompControllerFixture {
 
         @Override
         public String getName() {
-            return "Stephen";
+            return 'Stephen';
         }
     };
 
@@ -56,7 +56,7 @@ class StompControllerFixture {
     SCGDAOInterface serverChessGameDAO;
     
     @Before
-    void setUp() throws Exception {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         scg = new TwoViewServerChessGame(gameUUID, whitePlayer);
         scg.setChessGameFactory(new ChessGameFactory() {
@@ -69,14 +69,11 @@ class StompControllerFixture {
         
         sessionAttributes = new HashMap<String, Object>();
 
-        
         userArgument = ArgumentCaptor.forClass(String.class);
         destinationArgument = ArgumentCaptor.forClass(String.class);
         payloadArgument = ArgumentCaptor.forClass(String.class);
         headersArgument = ArgumentCaptor.forClass(Map.class);
-        
-        
-        
+    
         when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(scg);
     }
     

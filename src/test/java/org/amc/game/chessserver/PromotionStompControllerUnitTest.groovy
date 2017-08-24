@@ -32,7 +32,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     PromotionStompController controller;
     
     @Before
-    public void setUp() throws Exception {
+    void setUp() {
         super.setUp();
 		
 		sessionAttributes.put('PLAYER', whitePlayer);
@@ -51,7 +51,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     }
 
     @Test
-    public void test() {
+    void test() {
         def message = 'promote qa8';
 		       
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
@@ -59,7 +59,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     }
     
     @Test
-    public void testNoPromoteHeaderToString() {
+    void testNoPromoteHeaderToString() {
         def message = 'prom qa8';
         
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
@@ -69,7 +69,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     }
     
     @Test
-    public void testPromotionOfNonEligiblePiece() {
+    void testPromotionOfNonEligiblePiece() {
         def message = 'promote qe1';
         controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
         this.verifySimpMessagingTemplateCallToUser();
@@ -78,7 +78,7 @@ class PromotionStompControllerUnitTest extends StompControllerFixture {
     }
 	
 	@Test
-	public void testPromotionOfNonEligiblePawn() {
+	void testPromotionOfNonEligiblePawn() {
 		def message = 'promote qa6';
 		controller.promotePawnTo(principal, sessionAttributes, gameUUID, message);
 		this.verifySimpMessagingTemplateCallToUser();
