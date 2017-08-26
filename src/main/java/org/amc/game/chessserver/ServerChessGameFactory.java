@@ -11,7 +11,8 @@ public class ServerChessGameFactory {
 	
 	public enum GameType {
 		LOCAL_GAME,
-		NETWORK_GAME
+		NETWORK_GAME,
+		COMPUTER_GAME
 	}
     
 	/**
@@ -49,6 +50,10 @@ public class ServerChessGameFactory {
 		switch(gameType) {
 		case LOCAL_GAME:
 			serverChessGame = new OneViewServerChessGame(uid, player);
+			observerStr = ObserversConfig.LOCAL_OBSERVERS.getConfig();
+			break;
+		case COMPUTER_GAME:
+			serverChessGame = new ComputerServerChessGame(uid, player);
 			observerStr = ObserversConfig.LOCAL_OBSERVERS.getConfig();
 			break;
 		case NETWORK_GAME:

@@ -231,7 +231,7 @@ public class ChessBoard extends DefaultSubject {
      *            Player
      * @return List
      */
-    List<ChessPieceLocation> getListOfPieces(ChessGamePlayer player) {
+    public List<ChessPieceLocation> getListOfPieces(ChessGamePlayer player) {
         List<ChessPieceLocation> listOfPieces = new ArrayList<>();
         for (Coordinate letterIndex : Coordinate.values()) {
             searchFileForChessPieces(player, letterIndex, listOfPieces);

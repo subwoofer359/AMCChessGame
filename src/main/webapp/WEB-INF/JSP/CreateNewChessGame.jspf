@@ -12,6 +12,7 @@
                         <div class="col-xs-7">
                             <select id="gameType" name="gameType" class="form-control">
                                 <option value="LOCAL_GAME">Local Chess Game</option>
+                                <option value="COMPUTER_GAME">Computer Game</option>
                                 <%-- <option value="NETWORK_GAME">Network Chess Game</option> --%>
                             </select>
                         </div>

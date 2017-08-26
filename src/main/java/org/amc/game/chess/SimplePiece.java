@@ -96,7 +96,7 @@ abstract class SimplePiece implements ChessPiece {
     /**
      * @see ChessPiece#getPossibleMoveLocations(ChessBoard, Location)
      */
-    public Set<Location> getPossibleMoveLocations(ChessBoard board,Location location){
+    public Set<Location> getPossibleMoveLocations(ChessBoard board, Location location) {
         Set<Location> locations=new HashSet<>();
         for(Coordinate coord:Coordinate.values()){
             for(int i=1;i<=ChessBoard.BOARD_WIDTH;i++){

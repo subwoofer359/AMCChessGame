@@ -55,6 +55,18 @@ public class ServerChessGameFactoryTest {
 		int expectedNoOfObservers = ServerChessGameFactory.ObserversConfig.LOCAL_OBSERVERS.getNumberOfObservers();
 		assertEquals("Wrong number of Observers", expectedNoOfObservers, scgGame.getNoOfObservers());
 	}
+	
+	@Test
+	public void testCreateComputerGame() throws Exception {
+		ServerChessGame scgGame = scgfactory.getServerChessGame(GameType.COMPUTER_GAME, GAME_UID, whitePlayer);
+		assertTrue(scgGame instanceof ServerChessGame);
+		assertTrue("Should be an instance of ComputerServerChessGame", 
+				scgGame instanceof ComputerServerChessGame);
+		assertFalse("Should be no OfflineChessGameMessager added",
+				hasObserverBeenAdded(scgGame, OfflineChessGameMessager.class));
+		int expectedNoOfObservers = ServerChessGameFactory.ObserversConfig.LOCAL_OBSERVERS.getNumberOfObservers();
+		assertEquals("Wrong number of Observers", expectedNoOfObservers, scgGame.getNoOfObservers());
+	}
 
 	private boolean hasObserverBeenAdded(ServerChessGame scgGame, Class<? extends GameObserver> clazz)
 			throws Exception {

@@ -75,6 +75,20 @@ public class StartPageControllerCreateGameTest {
         assertNotNull(model.asMap().get(ServerConstants.GAME));
         assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
     }
+    
+    @Test
+    public void testComputerServerGame() throws DAOException {
+        assertSessionAttributeNull();
+        String viewName = controller.createGame(model, whitePlayer, GameType.COMPUTER_GAME, OPPONENT);
+        assertPlayerIsAddedToChessGame();
+
+        assertLongStoreInSessionAttribute();
+        assertEquals(StartPageController.CHESSGAME_PORTAL, viewName);
+        assertNotNull(model.asMap().get(ServerConstants.GAME));
+        assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
+        assertTrue("Should be computer Server Chess game", 
+        		model.asMap().get(ServerConstants.GAME) instanceof ComputerServerChessGame);
+    }
 
     @Test
     public void testPlayersNameIsEmptyString() throws DAOException {

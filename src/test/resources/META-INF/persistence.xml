@@ -13,6 +13,7 @@
 <class>org.amc.Authorities</class>
 <class>org.amc.game.GameSubject</class>
 <class>org.amc.game.chess.HumanPlayer</class>
+<class>org.amc.game.chess.ComputerPlayer</class>
 <class>org.amc.game.chess.ChessGamePlayer</class>
 <class>org.amc.game.chess.RealChessGamePlayer</class>
 <class>org.amc.game.chess.VirtualChessGamePlayer</class>
@@ -23,6 +24,7 @@
 <class>org.amc.game.chessserver.ServerChessGame</class>
 <class>org.amc.game.chessserver.TwoViewServerChessGame</class>
 <class>org.amc.game.chessserver.OneViewServerChessGame</class>
+<class>org.amc.game.chessserver.ComputerServerChessGame</class>
 <properties>
       <!-- <property name="openjpa.ConnectionURL" value="jdbc:hsqldb:mem:amcchessgametest"/> -->
       <!-- <property name="openjpa.ConnectionDriverName" value="org.hsqldb.jdbcDriver"/> -->
