@@ -7,6 +7,7 @@ import org.amc.DAOException;
 import org.amc.User;
 import org.amc.dao.DAO;
 import org.amc.dao.DAOInterface;
+import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.HumanPlayer;
 import org.amc.game.chess.Player;
 import org.junit.After;
@@ -34,11 +35,11 @@ public class UserPlayerIT {
     public void setUp() {
         this.fixture.setUp();
         userDAO = new DAO<>(User.class);
-        userDAO.setEntityManager(fixture.getEntityManager());
+        userDAO.setEntityManager(fixture.getNewEntityManager());
         playerDAO = new DAO<>(HumanPlayer.class);
-        playerDAO.setEntityManager(fixture.getEntityManager());
+        playerDAO.setEntityManager(fixture.getNewEntityManager());
         authoritiesDAO = new DAO<>(Authorities.class);
-        authoritiesDAO.setEntityManager(fixture.getEntityManager());
+        authoritiesDAO.setEntityManager(fixture.getNewEntityManager());
         
         player = new HumanPlayer(name);
         player.setUserName(userName);
@@ -67,8 +68,12 @@ public class UserPlayerIT {
         userDAO.addEntity(user);
         
         assertEquals(user, userDAO.getEntity(user.getId()));
-        assertEquals(player, playerDAO.getEntity(player.getId()));
-        assertEquals(authorities, authoritiesDAO.getEntity(authorities.getId()));
+        assertTrue("Players should be the same", ComparePlayers.isSamePlayer(
+        		player, playerDAO.getEntity(player.getId())));
+        
+        final Authorities auth = authoritiesDAO.getEntity(authorities.getId());
+        assertEquals("IDs' should be the same", authorities.getId(), auth.getId());
+        assertEquals(authorities.getAuthority(), auth.getAuthority());
     }
     
     @Test
@@ -78,8 +83,8 @@ public class UserPlayerIT {
         
         userDAO.deleteEntity(user);
         
-        assertEquals(true, userDAO.findEntities("userName", userName).isEmpty());
-        assertEquals(true, playerDAO.findEntities("userName", userName).isEmpty());
-        assertEquals(true, authoritiesDAO.findEntities("user", user).isEmpty());
+        assertTrue("Should be no users", userDAO.findEntities("userName", userName).isEmpty());
+        assertTrue("Should be no players", playerDAO.findEntities("userName", userName).isEmpty());
+        assertTrue("Should be no authorities", authoritiesDAO.findEntities("user", user).isEmpty());
     }
 }

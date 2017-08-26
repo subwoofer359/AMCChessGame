@@ -6,6 +6,9 @@ import javax.persistence.Cache
 import javax.persistence.PersistenceUnitUtil
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.metamodel.Metamodel
+
+import groovy.transform.TypeChecked
+
 import java.util.concurrent.CountDownLatch
 
 import static org.mockito.Mockito.*;
@@ -19,31 +22,32 @@ import javax.persistence.EntityManagerFactory;
 /**
  * Created by adrian on 14/06/16.
  */
+@TypeChecked
 class EntityCacheMapGetThreadTest {
 
-    static final Long gameUid = 1L;
-    List<EntityManager> entityManagerList;
+    private static final Long gameUid = 1L;
+    private List<EntityManager> entityManagerList;
 
-    EntityManagerCache emc;
+    private EntityManagerCache emc;
 
-    EntityManagerFactory entityManagerfactory;
+    private EntityManagerFactory entityManagerfactory;
 
     @Before
-    public void setUp() throws Exception {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
 
         entityManagerList = Collections.synchronizedList(new ArrayList<EntityManager>());
         entityManagerfactory = new MockEntityManagerFactory();
         emc = new EntityManagerCache();
-        emc.setEntityManagerFactory(entityManagerfactory);
+        emc.entityManagerFactory = entityManagerfactory;
     }
 
     @Test
     void testGetEntityManager() {
-        def size = 50;
-        def range = (1..size);
+        int size = 50;
+        Range range = (1..size);
         CountDownLatch latch = new CountDownLatch(size);
-        def workers = [];
+        List<CacheWorker> workers = [];
 
         range.each {
             workers << new CacheWorker(latch, emc);

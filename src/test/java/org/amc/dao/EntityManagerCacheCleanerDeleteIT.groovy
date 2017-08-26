@@ -23,19 +23,17 @@ import groovy.transform.TypeChecked;
 @TypeChecked
 class EntityManagerCacheCleanerDeleteIT {
 
-    EntityManagerCacheCleaner cleaner;
-    EntityManagerCache enCache;
-    ServerChessGameDAO serverChessGameDAO;
-    Long gameUid;
+	private static final DatabaseFixture fixture = new DatabaseFixture();
+	
+    private EntityManagerCacheCleaner cleaner;
+    private EntityManagerCache enCache;
+    private ServerChessGameDAO serverChessGameDAO;
+    private Long gameUid;
     
     @Mock
-    ObserverFactoryChain chain;
+    private ObserverFactoryChain chain;
     
-    
-
-    static final DatabaseFixture fixture = new DatabaseFixture();
-
-    def threads = [];
+    private def threads = [];
 
     @BeforeClass
     static void setUpBeforeClass() {
@@ -50,21 +48,22 @@ class EntityManagerCacheCleanerDeleteIT {
     @Before
     void setUp() {
         MockitoAnnotations.initMocks(this);
+		
         ServerChessGameDatabaseEntityFixture scgdef =
-                new ServerChessGameDatabaseEntityFixture(fixture.getEntityManager());
+                new ServerChessGameDatabaseEntityFixture(fixture.getNewEntityManager());
 
-        gameUid = scgdef.getUID();
+        gameUid = scgdef.UID;
                 
         enCache = new EntityManagerCache();
-        enCache.entityManagerFactory = fixture.getFactory();
+        enCache.entityManagerFactory = fixture.entityManagerFactory;
         
         cleaner = new EntityManagerCacheCleaner(enCache, 1,1);
         
         serverChessGameDAO = new ServerChessGameDAO();
         
-        serverChessGameDAO.setEntityManagerCache(enCache);
-        serverChessGameDAO.setEntityManager(fixture.getNewEntityManager());
-        serverChessGameDAO.setObserverFactoryChain(chain);
+        serverChessGameDAO.entityManagerCache = enCache;
+        serverChessGameDAO.entityManager = fixture.getNewEntityManager();
+        serverChessGameDAO.observerFactoryChain = chain;
     }
 
     @Test

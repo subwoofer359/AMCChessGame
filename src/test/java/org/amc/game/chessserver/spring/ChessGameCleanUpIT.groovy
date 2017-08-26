@@ -38,8 +38,8 @@ class ChessGameCleanUpIT {
     @BeforeClass
     static void setUpBeforeClass() {
         fixture.setUp();
-        scgFixture = new ServerChessGameDatabaseEntityFixture(fixture.getEntityManager(), 5);
-        EntityManager em = fixture.getEntityManager();
+        scgFixture = new ServerChessGameDatabaseEntityFixture(fixture.getNewEntityManager(), 5);
+        EntityManager em = fixture.getNewEntityManager();
         DAO<AbstractServerChessGame> scgDAO = new DAO<>(AbstractServerChessGame);
         scgDAO.setEntityManager(em);
         List<AbstractServerChessGame> allGames = scgDAO.findEntities();

@@ -12,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import groovy.transform.TypeChecked
+
 import org.amc.Authorities;
 import org.amc.DAOException;
 import org.amc.User;
@@ -29,22 +31,22 @@ import org.springframework.security.core.userdetails.User.AuthorityComparator;
  *         package
  *
  */
+@TypeChecked
 class DatabaseFixture {
     private static final Logger logger = Logger.getLogger(DatabaseFixture);
+	private static final String DB_URL = 'jdbc:derby:memory:amcchessgametest;drop=true';
+	private static final List<String> userNames = ['nobby', 'laura', 'stephen'];
+	private static final List<String> fullNames = ['Nobby Squeal', 'Laura O\'Neill', 'Stephen Moran'];
+	private static final List<String> emailAddresses = ['subwoofer359@gmail.com', 'laura@adrianmclaughlin.ie',
+					'subwoofer359@gmail.com'];
+	private static final String password = 'C4096cr';
+	
+    private EntityManagerFactory factory;
     
-    EntityManagerFactory factory;
+    private EntityManager entityManager;
     
-    EntityManager entityManager;
-    
-    def entityManagerList;
-    
-    static final def userNames = ['nobby', 'laura', 'stephen'];
-    static final def fullNames = ['Nobby Squeal', 'Laura O\'Neill', 'Stephen Moran'];
-    static final def emailAddresses = ['subwoofer359@gmail.com', 'laura@adrianmclaughlin.ie',
-                    'subwoofer359@gmail.com'];
-    static final def password = 'C4096cr';
+    private List<EntityManager> entityManagerList;
                 
-
     void setUpEntitiyManagerFactory() {
         factory = Persistence.createEntityManagerFactory('myDatabaseTest');
         entityManager = factory.createEntityManager();
@@ -64,7 +66,7 @@ class DatabaseFixture {
     void tearDown() {
         closeEntityManagers();
         try {
-            DriverManager.getConnection('jdbc:derby:memory:amcchessgametest;drop=true');
+            DriverManager.getConnection(DB_URL);
         } catch(SQLException sqle) {
             logger.info(sqle);
         }

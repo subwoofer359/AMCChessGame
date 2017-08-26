@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentMap;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import org.amc.dao.EntityManagerCache.ManagerInfo
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,60 +15,63 @@ import org.mockito.MockitoAnnotations;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import groovy.transform.TypeChecked
+
+@TypeChecked
 class EntityCacheMapTest {
-    EntityManagerCache emc;
+    private EntityManagerCache emc;
     
     @Mock
-    EntityManagerFactory factory;
+    private EntityManagerFactory factory;
     
     @Mock
-    EntityManager em;
+    private EntityManager em;
     
     @Mock
-    EntityManager newEm;
+    private EntityManager newEm;
 
     @Mock
-    ConcurrentMap<Long, EntityManagerCache.ManagerInfo> entityManagerMap;
+    private ConcurrentMap<Long, EntityManagerCache.ManagerInfo> entityManagerMap;
 
-    static final Long GAME_UID = 1234L;
+    private static final Long GAME_UID = 1234L;
     
     @Before
-    public void setUp() throws Exception {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         emc = new EntityManagerCache();
-        emc.setEntityManagerFactory(factory);
+        emc.entityManagerFactory = factory;
     }
 
     @Test
-    public void testGetEntityManagerNoEntityInCache() {
+    void testGetEntityManagerNoEntityInCache() {
         when(factory.createEntityManager()).thenReturn(em);
-        
-        assert emc.isEmpty() == true;
+		assert emc.isEmpty() == true;
+		
         EntityManager enManager = emc.getEntityManager(GAME_UID);
         
         verify(factory, times(1)).createEntityManager();
-        
+		
         //verify EntityManager is stored in cache
         assert emc.isEmpty() == false;
     }
     
     @Test
-    public void testGetEntityManagerWithEntityInCache() {
+    void testGetEntityManagerWithEntityInCache() {
+		
         when(factory.createEntityManager()).thenReturn(em);
         when(em.isOpen()).thenReturn(true);
         emc.putEntityManager(GAME_UID, em);
-        
-        assert emc.isEmpty() == false;
-        EntityManager enManager = emc.getEntityManager(GAME_UID);
-        
+		assert emc.isEmpty() == false;
+		
+		EntityManager enManager = emc.getEntityManager(GAME_UID);
+
         verify(factory, never()).createEntityManager();
-        
         //verify EntityManager is stored in cache
         assert emc.isEmpty() == false;
     }
     
     @Test
-    public void testReturnOnlyOpenEntityManager() {
+    void testReturnOnlyOpenEntityManager() {
         //old entityManager is closed
         when(em.isOpen()).thenReturn(false);
         emc.putEntityManager(GAME_UID, em);
@@ -84,7 +88,7 @@ class EntityCacheMapTest {
     }
     
     @Test
-    public void checkDateUpdateOnAccessOfEntityManager() {
+    void checkDateUpdateOnAccessOfEntityManager() {
         when(factory.createEntityManager()).thenReturn(newEm);
         when(newEm.isOpen()).thenReturn(true);
         
@@ -103,7 +107,7 @@ class EntityCacheMapTest {
     void getOldestEntity() {
         when(factory.createEntityManager()).thenReturn(newEm);
         when(newEm.isOpen()).thenReturn(true);
-        (1..100).each() {
+        (1..100L).each() {
             emc.getEntityManager(it);
         }
         Calendar c = Calendar.getInstance();
@@ -118,10 +122,10 @@ class EntityCacheMapTest {
     void getEntityManagerWhenValueAlreadyInMap() {
         emc.entityManagerMap = entityManagerMap;
 
-        EntityManagerCache.ManagerInfo info = new EntityManagerCache.ManagerInfo(em);
+        ManagerInfo info = new EntityManagerCache.ManagerInfo(em);
 
         when(factory.createEntityManager()).thenReturn(newEm);
-        when(entityManagerMap.putIfAbsent(eq(GAME_UID), any())).thenReturn(info);
+        when(entityManagerMap.putIfAbsent(eq(GAME_UID), any(ManagerInfo))).thenReturn(info);
 
         EntityManager entityManager = this.emc.getEntityManager(GAME_UID);
 

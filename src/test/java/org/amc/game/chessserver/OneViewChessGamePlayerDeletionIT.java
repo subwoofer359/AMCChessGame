@@ -32,14 +32,14 @@ public class OneViewChessGamePlayerDeletionIT {
     public void setUp() throws Exception {
         fixture.setUp();
         serverChessGameDao = new ServerChessGameDAO();
-        serverChessGameDao.setEntityManager(fixture.getEntityManager());
+        serverChessGameDao.setEntityManager(fixture.getNewEntityManager());
         EntityManagerCache cache = new EntityManagerCache();
         cache.setEntityManagerFactory(fixture.getEntityManagerFactory());
         
         serverChessGameDao.setEntityManagerCache(cache);
         
         playerDao = new DAO<>(HumanPlayer.class);
-        playerDao.setEntityManager(fixture.getEntityManager());
+        playerDao.setEntityManager(fixture.getNewEntityManager());
         setUpPlayers();
     }
     

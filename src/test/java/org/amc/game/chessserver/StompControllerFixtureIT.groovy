@@ -64,7 +64,7 @@ class StompControllerFixtureIT {
     void setup()  {
         fixture.setUp();
         playerDAO = new DAO<Player>(HumanPlayer.class);
-        playerDAO.setEntityManager(fixture.getEntityManager());
+        playerDAO.setEntityManager(fixture.getNewEntityManager());
         stephen = playerDAO.findEntities('userName', 'stephen').get(0);
         nobby = playerDAO.findEntities('userName', 'nobby').get(0);
         setUpStompChannels();
