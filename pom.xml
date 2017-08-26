@@ -439,7 +439,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<!-- optional: default phase is "generate-resources" -->
-						<phase>generate-resources</phase>
+						<phase>prepare-package</phase>
 						<configuration>
 							<nodeVersion>v8.2.1</nodeVersion>
 							<npmVersion>3.10.3</npmVersion>
@@ -451,14 +451,14 @@
 							<goal>npm</goal>
 						</goals>
 						<!-- optional: default phase is "generate-resources" -->
-						<phase>generate-resources</phase>
+						<phase>prepare-package</phase>
 					</execution>
 					<execution>
 						<id>Run TypeScript</id>
 						<goals>
 							<goal>grunt</goal>
 						</goals>
-						<phase>generate-resources</phase>
+						<phase>prepare-package</phase>
 						<configuration>
 							<arguments>default</arguments>
 						</configuration>
