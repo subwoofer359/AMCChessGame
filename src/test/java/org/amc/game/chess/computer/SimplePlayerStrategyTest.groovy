@@ -40,7 +40,7 @@ class SimplePlayerStrategyTest {
 
 	@Test
 	public void testMove() {
-		for(int i = 0; i < 1000; i++) {
+		(1 .. 50 ).each({
 			fixture.board = new ChessBoard();
 			final AbstractChessGame game = fixture.chessGame;
 		
@@ -53,7 +53,7 @@ class SimplePlayerStrategyTest {
 			Move move = strategy.getNextMove(game);
 		
 			assertNotNull("Move should not be null", move);
-		}
+		});
 	}
 	
 	@Test
@@ -110,7 +110,23 @@ class SimplePlayerStrategyTest {
 		} catch(IllegalMoveException im) {
 			fail("Should be a valid move");
 		}
+	}
+	
+	@Test
+	public void testMoveOutOfCheck() {
+		(1 .. 5000).each({
+			fixture.board = chessBoardFactory.getChessBoard("kd1:Nc4:Ka8:rb5:qg7");
 		
+			final AbstractChessGame game = fixture.chessGame;
+		
+			game.move(fixture.whitePlayer, new Move("b5-b6"));
+		
+			game.changePlayer();
+		
+			Move move = strategy.getNextMove(game);
+		
+			game.move(game.currentPlayer, move);
+		});
 	}
 
 }

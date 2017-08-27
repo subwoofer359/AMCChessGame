@@ -6,6 +6,7 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.EmptyMove;
 import org.amc.game.chess.IllegalMoveException;
+import org.amc.game.chess.KingInCheck;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.NoChessPiece;
@@ -18,6 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 	
 	final static int NO_OF_TRIES = 50;
+	
+	private static final KingInCheck kingInCheck = KingInCheck.getInstance();
 
 	final static ThreadLocalRandom random = ThreadLocalRandom.current(); 
 	@Override
@@ -52,7 +55,17 @@ public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 			}
 		}
 		
-		return new Move(startOfMove, new ArrayList<>(locations).get(random.nextInt(0, locations.size())));
+		Move move = new Move(startOfMove, new ArrayList<>(locations).get(random.nextInt(0, locations.size())));
+		
+		ChessBoard testBoard = new ChessBoard(chessGame.getChessBoard());
+		testBoard.move(move);
+		
+		if(kingInCheck.isPlayersKingInCheck(chessGame.getBlackPlayer(), 
+				chessGame.getWhitePlayer(), testBoard)) {
+			return getNextMove(chessGame, index -1);
+		}
+		
+		return move;
 	}
 	
 	ChessPieceLocation getChessPiece(AbstractChessGame chessGame) {

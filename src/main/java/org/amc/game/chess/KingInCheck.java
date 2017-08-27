@@ -4,7 +4,7 @@ import org.amc.game.chess.ChessBoard.ChessPieceLocation;
 
 import java.util.List;
 
-final class KingInCheck {
+public final class KingInCheck {
 
 	private static final KingInCheck instance = new KingInCheck();
 
