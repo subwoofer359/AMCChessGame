@@ -1,0 +1,78 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+        <!-- Bootstrap -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+            @import url(/AMCChessGame/css/General.css);
+            @import url(css/General.css);
+            body {
+                background-image: url(/AMCChessGame/img/1700128.jpg), url(img/1700128.jpg);
+                background-size: cover;
+                background-repeat: repeat-y;
+                overflow: auto;
+            }
+            h1 {
+                font-family: "Orbitron";
+                font-size: 2em;
+                line-height: 2em;
+            }
+            h2 {
+                font-family: "Orbitron";
+                font-size: 2em;
+                line-height: 2em;
+            }
+
+            p {
+                font-family: "raleway";
+                font-size: 1.5em;
+                line-height: 1.5em;
+            }
+            #notice {
+                padding: 20px 0 20px 20px;
+                background-color: red;
+                opacity: 0.8;
+            }
+
+            #picture {
+                background-image: url(/AMCChessGame/img/DeadRook.svg), url(img/DeadRook.svg);
+                background-repeat: no-repeat;
+                background-size: contain;
+
+                width: 400px;
+                height: 400px;
+                margin-left: auto;
+                margin-right: auto;
+                
+            }
+
+            @media(min-width:768px) {
+                #picture {
+                    margin-top: 100px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="notice">
+        <h1>Requested Application Path Not Found</h1>
+        <h2>HTTP response: 404</h2>
+        <p>Please contact the System Administrator</p>
+        </div>
+        <a href="/AMCChessGame/app/chessgame/chessapplication">
+        <div id="picture"></div>
+        </a>
+    </body>
+</html>
