@@ -1,11 +1,15 @@
 package org.amc.game.chessserver;
 
+import org.amc.game.chess.AbstractChessGame.GameState;
 import org.amc.game.chess.ChessGamePlayer;
+import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.ComputerPlayer;
 import org.amc.game.chess.IllegalMoveException;
+import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.QueenPiece;
 import org.amc.game.chess.computer.ComputerPlayerStrategy;
 import org.amc.game.chess.computer.SimplePlayerStrategy;
 import org.apache.log4j.Logger;
@@ -42,15 +46,26 @@ public class ComputerServerChessGame extends OneViewServerChessGame {
 
 	@Override
 	public void move(ChessGamePlayer player, Move move) throws IllegalMoveException {
-		LOGGER.info("***********Computer Game Move ********************");
 		super.move(player, move);
-		LOGGER.info("***********" +  getChessGame().getCurrentPlayer() + "***********");
-		LOGGER.info("***********" +  computer + "***********");
-		if(ComparePlayers.isSamePlayer(getChessGame().getCurrentPlayer(), getChessGame().getBlackPlayer())) {
-			LOGGER.info("***********Computer Move Called********************");
-			super.move(getChessGame().getCurrentPlayer(), strategy.getNextMove(getChessGame()));
+		if(ServerGameStatus.IN_PROGRESS == getCurrentStatus()) {
+			computerMakeMove();
 		}
+		
 	}
 	
-	
+	private void computerMakeMove()  throws IllegalMoveException {
+		if(ComparePlayers.isSamePlayer(getChessGame().getCurrentPlayer(), getChessGame().getBlackPlayer())) {
+			Move move = strategy.getNextMove(getChessGame());
+			super.move(getChessGame().getCurrentPlayer(), move);
+			if(GameState.PAWN_PROMOTION == getChessGame().getGameState()) {
+				promotePawnTo(QueenPiece.getPiece(getChessGame().getCurrentPlayer().getColour()), move.getEnd());
+			}
+		}
+	}
+
+	@Override
+	public void promotePawnTo(ChessPiece piece, Location location) throws IllegalMoveException {
+		super.promotePawnTo(piece, location);
+		computerMakeMove();
+	}
 }

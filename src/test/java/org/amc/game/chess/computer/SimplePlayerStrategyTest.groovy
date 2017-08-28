@@ -14,6 +14,8 @@ import org.amc.game.chess.IllegalMoveException
 import org.amc.game.chess.Location
 import org.amc.game.chess.LocationTest
 import org.amc.game.chess.Move
+import org.amc.game.chess.PawnPromotionRule
+import org.amc.game.chess.QueenPiece
 import org.amc.game.chess.SimpleChessBoardSetupNotation
 import org.junit.Before
 import org.junit.Test
@@ -23,6 +25,8 @@ import groovy.transform.TypeChecked
 
 @TypeChecked
 class SimplePlayerStrategyTest {
+	
+	private static final int REPEAT = 50;
 
 	private ChessGameFixture fixture;
 	
@@ -40,7 +44,7 @@ class SimplePlayerStrategyTest {
 
 	@Test
 	public void testMove() {
-		(1 .. 50 ).each({
+		(1 .. REPEAT).each({
 			fixture.board = new ChessBoard();
 			final AbstractChessGame game = fixture.chessGame;
 		
@@ -114,7 +118,7 @@ class SimplePlayerStrategyTest {
 	
 	@Test
 	public void testMoveOutOfCheck() {
-		(1 .. 5000).each({
+		(1 .. REPEAT).each({
 			fixture.board = chessBoardFactory.getChessBoard("kd1:Nc4:Ka8:rb5:qg7");
 		
 			final AbstractChessGame game = fixture.chessGame;
@@ -122,6 +126,24 @@ class SimplePlayerStrategyTest {
 			game.move(fixture.whitePlayer, new Move("b5-b6"));
 		
 			game.changePlayer();
+		
+			Move move = strategy.getNextMove(game);
+		
+			game.move(game.currentPlayer, move);
+		});
+	}
+	
+	@Test
+	public void testPromotionMoveOutOfCheck() {
+		final PawnPromotionRule rule = PawnPromotionRule.getInstance();
+		(1 .. REPEAT).each({
+			fixture.board = chessBoardFactory.getChessBoard("ke1:Ke8:pg7");
+		
+			final AbstractChessGame game = fixture.chessGame;
+		
+			game.move(fixture.whitePlayer, new Move("g7-g8"));
+			
+			rule.promotePawnTo(game, new Location("g8"), QueenPiece.QUEEN_WHITE);
 		
 			Move move = strategy.getNextMove(game);
 		

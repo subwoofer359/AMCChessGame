@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 	
-	final static int NO_OF_TRIES = 50;
+	final static int NO_OF_TRIES = 70;
 	
 	private static final KingInCheck kingInCheck = KingInCheck.getInstance();
 
