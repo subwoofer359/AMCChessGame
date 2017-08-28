@@ -79,9 +79,14 @@ class SimplePlayerStrategyTest {
 		
 		game.changePlayer();
 		
-		Move move = strategy.getNextMove(game);
+		try {
+			Move move = strategy.getNextMove(game);
+			fail("Should throw an exception")
+		} catch(AssertionError ae) {
+			return	
+		}
 		
-		assertEquals(move, EmptyMove.EMPTY_MOVE);
+		fail("Should throw an Assertion exception")
 	}
 	
 	@Test
@@ -95,8 +100,10 @@ class SimplePlayerStrategyTest {
 			Move move = strategy.getNextMove(game);
 			fail("Should throw an exception");
 		} catch(AssertionError ae) {
-			assertTrue("Exception Not Thrown", true);
+			return;
 		}
+		
+		fail("Should throw an Assertion exception")
 	}
 	
 	@Test

@@ -39,11 +39,6 @@ class ComputerServerChessGameTest {
 	}
 	
 	@Test
-	void test() {
-		assertTrue(true);	
-	}
-	
-	@Test
 	void testAddOpponentIgnoredAndLogged() {
 		csc.addOpponent(fixture.blackPlayer);
 		assert csc.opponent != fixture.blackPlayer;

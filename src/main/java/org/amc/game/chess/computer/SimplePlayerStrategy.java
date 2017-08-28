@@ -3,22 +3,17 @@ package org.amc.game.chess.computer;
 import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
-import org.amc.game.chess.ChessPiece;
-import org.amc.game.chess.EmptyMove;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.KingInCheck;
-import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
-import org.amc.game.chess.NoChessPiece;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 	
-	final static int NO_OF_TRIES = 70;
+	static final String ERROR_NO_MOVE = "There are no moves available";
 	
 	private static final KingInCheck kingInCheck = KingInCheck.getInstance();
 
@@ -31,51 +26,36 @@ public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 
 	@Override
 	public Move getNextMove(AbstractChessGame chessGame) {
-		return getNextMove(chessGame, NO_OF_TRIES);
-	}
-	
-	public Move getNextMove(AbstractChessGame chessGame, int index) {
-		ChessPieceLocation pieceLocation = getChessPiece(chessGame);
-		
-		if(NoChessPiece.NO_CHESSPIECE == pieceLocation.getPiece()) {
-			return EmptyMove.EMPTY_MOVE;
-		}
-		
-		ChessPiece piece = pieceLocation.getPiece();
-		
-		Location startOfMove = pieceLocation.getLocation();
-		
-		Set<Location> locations = piece.getPossibleMoveLocations(chessGame.getChessBoard(), startOfMove);
-		
-		if(locations.isEmpty()) {
-			if (index > 0 ) {
-				return getNextMove(chessGame, index -1);
-			} else {
-				throw new AssertionError("No move can be found");
-			}
-		}
-		
-		Move move = new Move(startOfMove, new ArrayList<>(locations).get(random.nextInt(0, locations.size())));
-		
-		ChessBoard testBoard = new ChessBoard(chessGame.getChessBoard());
-		testBoard.move(move);
-		
-		if(kingInCheck.isPlayersKingInCheck(chessGame.getBlackPlayer(), 
-				chessGame.getWhitePlayer(), testBoard)) {
-			return getNextMove(chessGame, index -1);
-		}
-		
-		return move;
-	}
-	
-	ChessPieceLocation getChessPiece(AbstractChessGame chessGame) {
+		List<Move> possibleMoves = new ArrayList<>();
 		List<ChessPieceLocation> pieceLoc = chessGame.getChessBoard().getListOfPieces(chessGame.getCurrentPlayer());
 		
-		if(pieceLoc.isEmpty()) {
-			return new ChessBoard.ChessPieceLocation(NoChessPiece.NO_CHESSPIECE, new Location("A1"));
+		pieceLoc.forEach(piece -> {
+			piece.getPiece().getPossibleMoveLocations(chessGame.getChessBoard(), piece.getLocation()).forEach(loc -> {
+				possibleMoves.add(new Move(piece.getLocation(), loc));
+			});
+		});
+		
+		return getNextMove(chessGame, possibleMoves);
+	}
+	
+	private Move getNextMove(AbstractChessGame chessGame, List<Move> possibleMoves) {
+		if(possibleMoves.isEmpty()) {
+			throw new AssertionError(ERROR_NO_MOVE);
 		}
 		
-		return pieceLoc.get(random.nextInt(0, pieceLoc.size()));
-	}
+		int index = random.nextInt(0, possibleMoves.size());
+		
+		Move move = possibleMoves.get(index);
+		
+		ChessBoard testBoard = new ChessBoard(chessGame.getChessBoard());
+		
+		testBoard.move(move);
+		
+		if(kingInCheck.isPlayersKingInCheck(chessGame.getCurrentPlayer(), chessGame.getOpposingPlayer(chessGame.getCurrentPlayer()), testBoard)) {
+			possibleMoves.remove(index);
+			return getNextMove(chessGame, possibleMoves);
+		}
+		return move;
+	};
 
 }
