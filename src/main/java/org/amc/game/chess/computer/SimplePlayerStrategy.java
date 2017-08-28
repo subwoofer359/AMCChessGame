@@ -3,6 +3,8 @@ package org.amc.game.chess.computer;
 import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
+import org.amc.game.chessserver.ComputerServerChessGame;
+import org.apache.log4j.Logger;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.KingInCheck;
 import org.amc.game.chess.Move;
@@ -16,6 +18,8 @@ public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 	static final String ERROR_NO_MOVE = "There are no moves available";
 	
 	private static final KingInCheck kingInCheck = KingInCheck.getInstance();
+	
+	private static final Logger LOGGER = Logger.getLogger(SimplePlayerStrategy.class); 
 
 	final static ThreadLocalRandom random = ThreadLocalRandom.current(); 
 	@Override
@@ -34,6 +38,8 @@ public class SimplePlayerStrategy implements ComputerPlayerStrategy {
 				possibleMoves.add(new Move(piece.getLocation(), loc));
 			});
 		});
+		
+		LOGGER.info("No of possible moves is " + possibleMoves.size());
 		
 		return getNextMove(chessGame, possibleMoves);
 	}
