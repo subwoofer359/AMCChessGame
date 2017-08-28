@@ -56,7 +56,7 @@
     <tags:BottomMenu>
     	<tags:NavMenuButton id="home-btn" url="${pageContext.request.contextPath}/app/chessgame/chessapplication"><span class="glyphicon glyphicon-home"></span> Home</tags:NavMenuButton>
         <tags:NavMenuButton id="save-btn" aclass="save-btn"><span class="glyphicon glyphicon-floppy-disk"></span> Save Game</tags:NavMenuButton>
-        <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> Quit Game</tags:NavMenuButton>
+        <tags:NavMenuButton id="quit-btn" aclass="quit-btn"><span class="glyphicon glyphicon-remove"></span> End Game</tags:NavMenuButton>
     </tags:BottomMenu>
     
     <div id="boardContainer" class="container-fluid full-height">
@@ -64,7 +64,7 @@
         <tags:SideMenu>
                 <li><a href="${pageContext.request.contextPath}/app/chessgame/chessapplication"><button id="home-btn">Home</button></a></li>
                 <li><button class="save-btn">Save Game</button></li>
-                <li><button class="quit-btn">Quit Game</button></li>
+                <li><button class="quit-btn">End Game</button></li>
         </tags:SideMenu>
 
         <div class="player-name col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-10 col-xs-12">

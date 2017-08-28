@@ -11,9 +11,9 @@
                         <label for="gameType" class="control-label col-xs-4">Select Game Type:</label>
                         <div class="col-xs-7">
                             <select id="gameType" name="gameType" class="form-control">
-                                <option value="LOCAL_GAME">Local Chess Game</option>
+                                <option value="LOCAL_GAME">Local Game</option>
                                 <option value="COMPUTER_GAME">Computer Game</option>
-                                <%-- <option value="NETWORK_GAME">Network Chess Game</option> --%>
+                                <%-- <option value="NETWORK_GAME">Network Game</option> --%>
                             </select>
                         </div>
                     </div>
