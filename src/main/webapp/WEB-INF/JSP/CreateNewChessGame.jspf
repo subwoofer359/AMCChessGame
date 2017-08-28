@@ -56,7 +56,7 @@ $(document).ready(function () {
         var $gameType = $("#gameType").val(),
             $playersName = $("#playersName"),
             $opponentBox = $("#opponentBox");
-        if ($gameType === "NETWORK_GAME") {
+        if ($gameType === "NETWORK_GAME" || $gameType === "COMPUTER_GAME") {
             oldplayersName  = $playersName.val();
             $playersName.val("");
             $playersName.prop('disabled', true);
