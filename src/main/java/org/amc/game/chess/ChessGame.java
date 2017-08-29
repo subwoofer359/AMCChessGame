@@ -143,4 +143,11 @@ public class ChessGame extends AbstractChessGame {
             }
         }
     }
+
+	@Override
+	public String toString() {
+		return "ChessGame(" + getId()+ ":" + getGameState() + ")";
+	}
+    
+    
 }
