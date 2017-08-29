@@ -25,7 +25,7 @@ import org.junit.*;
  * @author Adrian Mclaughlin
  *
  */
-public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchieved {
+public class BugCG42ServerChessGameDidntEndWhenCheckmateWasAchievedTest {
 
     private ServerChessGame serverChessGame;
     private ChessGamePlayer whitePlayer;

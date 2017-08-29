@@ -40,4 +40,6 @@ public interface Player {
      */
     void setUserName(String userName);
     
+    Class<?> getType();
+    
 }

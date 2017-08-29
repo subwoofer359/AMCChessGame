@@ -58,7 +58,7 @@ public class ServerChessGameFactoryTest {
 	
 	@Test
 	public void testCreateComputerGame() throws Exception {
-		ServerChessGame scgGame = scgfactory.getServerChessGame(GameType.COMPUTER_GAME, GAME_UID, whitePlayer);
+		ServerChessGame scgGame = scgfactory.getServerChessGame(GameType.COMPUTER_BLACK_GAME, GAME_UID, whitePlayer);
 		assertTrue(scgGame instanceof ServerChessGame);
 		assertTrue("Should be an instance of ComputerServerChessGame", 
 				scgGame instanceof ComputerServerChessGame);

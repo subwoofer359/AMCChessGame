@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class BugCG52ServerChessGameDidntEndInCheckmate {
+public class BugCG52ServerChessGameDidntEndInCheckmateTest {
 
 	private ServerChessGame serverChessGame;
 	private ChessGamePlayer whitePlayer;

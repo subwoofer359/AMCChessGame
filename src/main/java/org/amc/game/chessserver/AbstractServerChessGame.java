@@ -80,7 +80,7 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
     }
     
     /**
-     * Constructor
+     * Constructor TODO
      * 
      * @param uid
      *            long the unique identifier for this game
@@ -247,6 +247,13 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
         return this.chessGameFactory;
     }
     
+    /*
+     * To be used by Classes in the same package
+     * TODO remove and correct constructor
+     */
+    void setPlayer(ChessGamePlayer player) {
+    	this.player = player;
+    }
     
     /**
      * Remove Observers from receiving updates

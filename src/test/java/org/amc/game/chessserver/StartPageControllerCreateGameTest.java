@@ -79,7 +79,7 @@ public class StartPageControllerCreateGameTest {
     @Test
     public void testComputerServerGame() throws DAOException {
         assertSessionAttributeNull();
-        String viewName = controller.createGame(model, whitePlayer, GameType.COMPUTER_GAME, OPPONENT);
+        String viewName = controller.createGame(model, whitePlayer, GameType.COMPUTER_BLACK_GAME, OPPONENT);
         assertPlayerIsAddedToChessGame();
 
         assertLongStoreInSessionAttribute();

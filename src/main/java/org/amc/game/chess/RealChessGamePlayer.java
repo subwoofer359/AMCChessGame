@@ -49,4 +49,12 @@ public class RealChessGamePlayer extends ChessGamePlayer {
     public String toString(){
         return String.format("%s(%s)",player.getName(),getColour().toString());
     }
+    
+    @Override
+	public Class<?> getType() {
+		if(player == null) {
+			return getClass();
+		}
+		return player.getClass();
+	}
 }

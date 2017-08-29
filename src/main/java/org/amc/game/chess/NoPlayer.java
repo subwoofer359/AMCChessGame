@@ -45,6 +45,10 @@ public class NoPlayer extends ChessGamePlayer
 		return Colour.NONE;
 	}
 	
+	@Override
+	public Class<?> getType() {
+		return getClass();
+	}
 	
 
 }

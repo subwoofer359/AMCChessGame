@@ -1,6 +1,7 @@
 package org.amc.game.chessserver;
 
 
+import org.amc.game.chess.ComputerPlayer;
 import org.amc.game.chess.Player;
 import org.amc.game.chess.StandardChessGameFactory;
 import org.amc.game.chessserver.observers.ObserverFactoryChain;
@@ -12,7 +13,8 @@ public class ServerChessGameFactory {
 	public enum GameType {
 		LOCAL_GAME,
 		NETWORK_GAME,
-		COMPUTER_GAME
+		COMPUTER_WHITE_GAME,
+		COMPUTER_BLACK_GAME
 	}
     
 	/**
@@ -52,8 +54,12 @@ public class ServerChessGameFactory {
 			serverChessGame = new OneViewServerChessGame(uid, player);
 			observerStr = ObserversConfig.LOCAL_OBSERVERS.getConfig();
 			break;
-		case COMPUTER_GAME:
+		case COMPUTER_BLACK_GAME:
 			serverChessGame = new ComputerServerChessGame(uid, player);
+			observerStr = ObserversConfig.LOCAL_OBSERVERS.getConfig();
+			break;
+		case COMPUTER_WHITE_GAME:
+			serverChessGame = new ComputerServerChessGame(uid, new ComputerPlayer());
 			observerStr = ObserversConfig.LOCAL_OBSERVERS.getConfig();
 			break;
 		case NETWORK_GAME:

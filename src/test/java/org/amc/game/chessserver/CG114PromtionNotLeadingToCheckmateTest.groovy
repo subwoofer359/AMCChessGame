@@ -18,7 +18,7 @@ import org.amc.game.chess.StandardChessGame
 import org.junit.Before
 import org.junit.Test
 
-class CG114PromtionNotLeadingToCheckmate {
+class CG114PromtionNotLeadingToCheckmateTest {
  
 	ServerChessGame scg;
 	ChessGameFixture cgFixture;

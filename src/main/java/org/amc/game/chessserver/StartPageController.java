@@ -66,8 +66,9 @@ public class StartPageController {
         switch(gameType) {
         case LOCAL_GAME:
             return createGameLocal(model, player, playersName);
-        case COMPUTER_GAME:
-        	return createGameComputer(model, player);
+        case COMPUTER_BLACK_GAME:
+        case COMPUTER_WHITE_GAME:
+        	return createGameComputer(model, player, gameType);
         case NETWORK_GAME:
         default:
             return createGameNetwork(model, player);
@@ -96,10 +97,14 @@ public class StartPageController {
         return UUID.randomUUID().getMostSignificantBits();
     }
     
-    private String createGameComputer(Model model, Player player) {
+    private String createGameComputer(Model model, Player player, GameType gameType) {
     	long uid = getNewGameUID();
-    	AbstractServerChessGame serverGame = scgFactory.getServerChessGame(GameType.COMPUTER_GAME, uid, player);
-    	((ComputerServerChessGame)serverGame).addOpponent();
+    	AbstractServerChessGame serverGame = scgFactory.getServerChessGame(gameType, uid, player);
+    	if(GameType.COMPUTER_BLACK_GAME == gameType) {
+    		((ComputerServerChessGame)serverGame).addOpponent();
+    	} else {
+    		serverGame.addOpponent(player);
+    	}
     	setUpModel(model, serverGame.getUid(), serverGame, player);
     	saveToDatabase(serverGame);
     	return CHESSGAME_PORTAL;

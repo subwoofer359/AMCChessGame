@@ -78,5 +78,12 @@ public class HumanPlayer implements Player, Serializable {
     @Override
     public void setUserName(String userName) {
         this.userName = userName;
-    }   
+    }
+
+	@Override
+	public Class<?> getType() {
+		return getClass();
+	}
+    
+    
 }
