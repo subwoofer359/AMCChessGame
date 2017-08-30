@@ -2,12 +2,14 @@ package org.amc.game.chess.view;
 
 
 import static org.amc.game.chess.NoChessPiece.NO_CHESSPIECE;
+
+import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessPiece;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.ChessBoard.Coordinate;
 import org.amc.game.chessserver.AbstractServerChessGame;
-
+import org.amc.game.chessserver.AbstractServerChessGame.ServerGameStatus;
 import org.amc.util.Observer;
 import org.amc.util.Subject;
 
@@ -21,6 +23,13 @@ public class ChessGameTextView implements Observer {
     public void update(Subject subject, Object message) {
         if (message instanceof ChessBoard) {
             displayTheBoard((ChessBoard) message);
+        } else if (message instanceof AbstractChessGame) {
+        	ChessBoard board = ((AbstractChessGame) message).getChessBoard();
+        	if(board != null) {
+        		displayTheBoard(board);
+        	}
+        } else if (message instanceof ServerGameStatus) {
+        	System.out.println("ServerStatus:" + message);
         }
     }
 
