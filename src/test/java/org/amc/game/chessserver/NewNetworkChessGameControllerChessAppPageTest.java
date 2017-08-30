@@ -17,7 +17,7 @@ import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.servlet.ModelAndView;
 
-public class StartPageControllerChessAppPageTest {
+public class NewNetworkChessGameControllerChessAppPageTest {
     private MockHttpSession session;
     private NewNetworkChessGameController controller;
     private ChessGamePlayer whitePlayer;

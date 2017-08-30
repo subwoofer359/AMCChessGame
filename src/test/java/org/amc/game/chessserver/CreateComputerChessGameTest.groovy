@@ -34,8 +34,7 @@ class CreateComputerChessGameTest {
 	
 	private ChessGamePlayer player;
 	
-	private ArgumentCaptor<AbstractServerChessGame> gameCaptor = ArgumentCaptor
-	.forClass(AbstractServerChessGame.class);
+	private GameControllerTestHelper helper;
 	
 	@Before
 	void setUp() {
@@ -47,49 +46,33 @@ class CreateComputerChessGameTest {
 		controller.setServerChessGameFactory(scgFactory);
 		controller.setServerChessGameDAO(sCGDAO);
 		player = fixture.whitePlayer;
+		
+		helper = new GameControllerTestHelper(model, sCGDAO);
 	}
 
 	@Test
     public void createComputerChessGameBlack() throws DAOException {
-        assertSessionAttributeNull();
+        helper.assertSessionAttributeNull();
         String viewName = controller.createComputerBlackGame(model, player, GameType.COMPUTER_BLACK_GAME);
-        assertPlayerIsAddedAsWhitePlayer();
+        helper.assertPlayerIsAddedAsWhitePlayer(player);
 
-        assertLongStoreInSessionAttribute();
+        helper.assertLongStoreInSessionAttribute();
         assertEquals(GameControllerHelper.CHESSGAME_PORTAL, viewName);
         assertNotNull(model.asMap().get(ServerConstants.GAME));
         assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
         assertTrue("Should be computer Server Chess game", 
         		model.asMap().get(ServerConstants.GAME) instanceof ComputerServerChessGame);
     }
+	
 
-	private void assertSessionAttributeNull() {
-		assertNull(model.asMap().get(ServerConstants.GAME_UUID.toString()));
-	}
-	
-	private void assertLongStoreInSessionAttribute() {
-		assertEquals(model.asMap().get(ServerConstants.GAME_UUID.toString()).getClass(), Long.class);
-	}
-	
-	private void assertPlayerIsAddedAsWhitePlayer() throws DAOException {
-		verify(sCGDAO, times(1)).saveServerChessGame(gameCaptor.capture());
-		AbstractServerChessGame game = gameCaptor.getValue();
-		assertTrue(ComparePlayers.isSamePlayer(game.getPlayer(), this.player));
-	}
-	
-	private void assertPlayerIsAddedAsBlackPlayer() throws DAOException {
-		verify(sCGDAO, times(1)).saveServerChessGame(gameCaptor.capture());
-		AbstractServerChessGame game = gameCaptor.getValue();
-		assertTrue(ComparePlayers.isSamePlayer(game.getOpponent(), this.player));
-	}
 	
 	@Test
 	public void createComputerChessGameWhite() throws DAOException {
-		assertSessionAttributeNull();
+		helper.assertSessionAttributeNull();
 		String viewName = controller.createComputerWhiteGame(model, player, GameType.COMPUTER_WHITE_GAME);
-		assertPlayerIsAddedAsBlackPlayer();
+		helper.assertPlayerIsAddedAsBlackPlayer(player);
 
-		assertLongStoreInSessionAttribute();
+		helper.assertLongStoreInSessionAttribute();
 		assertEquals(GameControllerHelper.CHESSGAME_PORTAL, viewName);
 		assertNotNull(model.asMap().get(ServerConstants.GAME));
 		assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));

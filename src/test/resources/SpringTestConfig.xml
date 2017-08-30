@@ -45,7 +45,7 @@
 	<bean id="gameMoveStompController" class="org.amc.game.chessserver.StompControllerIT.GameMoveStompControllerHelper"/>
 	<bean id="promotionStompController" class="org.amc.game.chessserver.PromotionStompControllerIT.PromotionStompControllerHelper" />
 	
-	<bean id="NewNetworkChessGameController" class="org.amc.game.chessserver.StartPageController">
+	<bean id="NewNetworkChessGameController" class="org.amc.game.chessserver.NewNetworkChessGameController">
 		<property name="serverChessGameDAO" ref="myServerChessGameDAO"></property>
 	</bean>
 	
