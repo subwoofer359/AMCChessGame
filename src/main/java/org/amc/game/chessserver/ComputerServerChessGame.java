@@ -21,16 +21,19 @@ import org.amc.game.chess.computer.SimplePlayerStrategy;
 import org.apache.log4j.Logger;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class ComputerServerChessGame extends ServerChessGame {
+
+private static final long serialVersionUID = -1118824178927416957L;
 	
+	private static final Logger LOGGER = Logger.getLogger(ComputerServerChessGame.class);
+	
+	@Transient
 	private ComputerPlayerStrategy strategy = new SimplePlayerStrategy();
 
-	private static final long serialVersionUID = -1118824178927416957L;
-	
-	private static final Logger LOGGER = Logger.getLogger(ComputerServerChessGame.class); 
-	
+	@Transient
 	private Player computer = new ComputerPlayer();
 	
 	public ComputerServerChessGame() {
@@ -60,7 +63,7 @@ public class ComputerServerChessGame extends ServerChessGame {
 	    {
 	        LOGGER.error("Player can't chess game already in process");
 	    }
-		v();
+	    ifComputerPlayerMakeMove();
 	}
 	
 	private ChessGamePlayer wrapPlayer(Player player) {
@@ -75,7 +78,7 @@ public class ComputerServerChessGame extends ServerChessGame {
 		return ComputerPlayer.class.equals(player.getType());
 	}
 
-	private void v() {
+	private void ifComputerPlayerMakeMove() {
 		if(isComputerPlayer(getPlayer())) {
 			try {
 				computerMakeMove();
@@ -105,7 +108,6 @@ public class ComputerServerChessGame extends ServerChessGame {
 			if(GameState.PAWN_PROMOTION == getChessGame().getGameState()) {
 				promotePawnTo(QueenPiece.getPiece(getChessGame().getCurrentPlayer().getColour()), move.getEnd());
 			}
-			System.out.println(move);
 			computerMakeMove();
 		}
 		

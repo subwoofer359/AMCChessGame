@@ -117,10 +117,10 @@ public class ServerJoinChessGameController {
         mav.getModel().put(ServerConstants.CHESSPLAYER, player);
         mav.setViewName(TWO_VIEW_CHESS_PAGE);
         logger.info(String.format("Chess Game(%d): has been started", gameUUID));
-        if (serverGame instanceof OneViewServerChessGame) {
-            mav.getModel().put(ServerConstants.GAME_TYPE, ServerConstants.ONE_VIEW);
+        if (serverGame instanceof TwoViewServerChessGame) {
+            mav.getModel().put(ServerConstants.GAME_TYPE, ServerConstants.TWO_VIEW);
         } else {
-        	mav.getModel().put(ServerConstants.GAME_TYPE, ServerConstants.TWO_VIEW);
+        	mav.getModel().put(ServerConstants.GAME_TYPE, ServerConstants.ONE_VIEW);
         }
     }
 
