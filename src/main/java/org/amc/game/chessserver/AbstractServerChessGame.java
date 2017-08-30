@@ -8,13 +8,11 @@ import org.amc.game.chess.ChessGame;
 import org.amc.game.chess.ChessGameFactory;
 import org.amc.game.chess.ChessGamePlayer;
 import org.amc.game.chess.ChessPiece;
-import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.Location;
 import org.amc.game.chess.Move;
 import org.amc.game.chess.Player;
-import org.amc.game.chess.RealChessGamePlayer;
 
 import java.io.Serializable;
 
@@ -87,11 +85,11 @@ public abstract class AbstractServerChessGame extends GameSubject implements Ser
      * @param player
      *            Player who created the game and will be the white player
      */
-    public AbstractServerChessGame(long uid, Player player) {
+    public AbstractServerChessGame(long uid, ChessGamePlayer player) {
         super();
         checkForNull(Player.class, player);
         this.uid = uid;
-        this.player = new RealChessGamePlayer(player, Colour.WHITE);
+        this.player = player;
         this.currentStatus = ServerGameStatus.AWAITING_PLAYER;
     }
     

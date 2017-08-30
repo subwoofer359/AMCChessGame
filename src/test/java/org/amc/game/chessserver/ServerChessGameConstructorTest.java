@@ -46,7 +46,7 @@ public class ServerChessGameConstructorTest {
         chessGame.getChessBoard().initialise();  
     }
         
-    private ServerChessGame createServerChessGame(long UID, Player player) {
+    private ServerChessGame createServerChessGame(long UID, ChessGamePlayer player) {
         ServerChessGame game = new ServerChessGame(UID, player) {
 
             private static final long serialVersionUID = 1L;
@@ -78,7 +78,7 @@ public class ServerChessGameConstructorTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void testNullPlayerPassedToConstructor() {
-    	Player p = null;
+    	ChessGamePlayer p = null;
     	createServerChessGame(INVALID_UID, p);
     }
     

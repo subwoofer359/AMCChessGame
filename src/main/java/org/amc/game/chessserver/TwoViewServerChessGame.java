@@ -22,7 +22,7 @@ public class TwoViewServerChessGame extends ServerChessGame {
     }
     
     public TwoViewServerChessGame(long uid, Player player) {
-        super(uid, player);
+        super(uid, new RealChessGamePlayer(player, Colour.WHITE));
       
     }
     

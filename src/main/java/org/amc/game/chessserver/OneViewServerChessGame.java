@@ -4,6 +4,7 @@ import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.Colour;
 import org.amc.game.chess.ComparePlayers;
 import org.amc.game.chess.Player;
+import org.amc.game.chess.RealChessGamePlayer;
 import org.amc.game.chess.SetupChessBoard;
 import org.amc.game.chess.VirtualChessGamePlayer;
 import org.apache.log4j.Logger;
@@ -24,7 +25,7 @@ public class OneViewServerChessGame extends ServerChessGame {
     }
     
 	public OneViewServerChessGame(long uid, Player player) {
-        super(uid, player);
+        super(uid, new RealChessGamePlayer(player, Colour.WHITE));
         
 	}
 

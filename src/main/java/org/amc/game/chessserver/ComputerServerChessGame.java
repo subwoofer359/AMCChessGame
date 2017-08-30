@@ -36,24 +36,33 @@ private static final long serialVersionUID = -1118824178927416957L;
 	@Transient
 	private Player computer = new ComputerPlayer();
 	
+	private static ChessGamePlayer wrapPlayer(Player player, Colour colour) {
+		if(isComputerPlayer(player)) {
+			return new VirtualChessGamePlayer(player, colour);
+		} else {
+			return new RealChessGamePlayer(player, colour);
+		}
+	}
+	
+	private static boolean isComputerPlayer(Player player) {
+		return ComputerPlayer.class.equals(player.getType());
+	}
+	
 	public ComputerServerChessGame() {
 		super();
 	}
 	
 	public ComputerServerChessGame(long gameUID, Player player) {
-		super(gameUID, player);
-		if(isComputerPlayer(player)) {
-			setPlayer(new VirtualChessGamePlayer(player, Colour.WHITE));
-		}
+		super(gameUID, wrapPlayer(player, Colour.WHITE));
 	}
-
+	
 	@Override
 	public void addOpponent(Player opponent) {
 		checkForNull(Player.class, opponent);
 	    if(ComparePlayers.isSamePlayer(opponent, getPlayer())) {
 	        LOGGER.error("Player can't join their own game");
 	    } else if(isGameAwaitingPlayer()) {
-	    	ChessGamePlayer gamePlayer = wrapPlayer(opponent);
+	    	ChessGamePlayer gamePlayer = wrapPlayer(opponent, Colour.BLACK);
 	        ChessBoard board = new ChessBoard();
 	        
 	        SetupChessBoard.setUpChessBoardToDefault(board);
@@ -64,18 +73,6 @@ private static final long serialVersionUID = -1118824178927416957L;
 	        LOGGER.error("Player can't chess game already in process");
 	    }
 	    ifComputerPlayerMakeMove();
-	}
-	
-	private ChessGamePlayer wrapPlayer(Player player) {
-		if(isComputerPlayer(player)) {
-    		return new VirtualChessGamePlayer(player, Colour.BLACK);
-    	} else {
-    		return new RealChessGamePlayer(player, Colour.BLACK);
-    	}
-	}
-	
-	private boolean isComputerPlayer(Player player) {
-		return ComputerPlayer.class.equals(player.getType());
 	}
 
 	private void ifComputerPlayerMakeMove() {

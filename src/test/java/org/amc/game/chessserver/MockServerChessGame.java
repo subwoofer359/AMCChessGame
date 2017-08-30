@@ -17,7 +17,7 @@ import org.amc.game.chess.RealChessGamePlayer;
 class MockServerChessGame extends AbstractServerChessGame {
 	private static final long serialVersionUID = 1L;
 
-	public MockServerChessGame(long gameUid, Player player) {
+	public MockServerChessGame(long gameUid, ChessGamePlayer player) {
 		super(gameUid, player);
 	}
 

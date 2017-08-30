@@ -53,7 +53,7 @@ public abstract class ServerChessGame extends AbstractServerChessGame {
 	 * @param player
 	 *            Player who created the game and will be the white player
 	 */
-	public ServerChessGame(long uid, Player player) {
+	public ServerChessGame(long uid, ChessGamePlayer player) {
 		super(uid, player);
 	}
 
