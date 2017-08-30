@@ -3,7 +3,6 @@ package org.amc.game.chess.computer;
 import org.amc.game.chess.AbstractChessGame;
 import org.amc.game.chess.ChessBoard;
 import org.amc.game.chess.ChessBoard.ChessPieceLocation;
-import org.amc.game.chessserver.ComputerServerChessGame;
 import org.apache.log4j.Logger;
 import org.amc.game.chess.IllegalMoveException;
 import org.amc.game.chess.KingInCheck;

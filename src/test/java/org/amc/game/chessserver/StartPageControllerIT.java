@@ -65,7 +65,7 @@ public class StartPageControllerIT {
                          .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(ServerConstants.GAME_UUID))
-                        .andExpect(view().name(StartPageController.CHESSGAME_PORTAL))
+                        .andExpect(view().name(GameControllerHelper.CHESSGAME_PORTAL))
                         .andReturn();
 
     }
@@ -80,7 +80,7 @@ public class StartPageControllerIT {
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(ServerConstants.GAME_UUID))
-                        .andExpect(view().name(StartPageController.CHESS_APPLICATION_PAGE))
+                        .andExpect(view().name(GameControllerHelper.CHESS_APPLICATION_PAGE))
                         .andReturn();
 
     }

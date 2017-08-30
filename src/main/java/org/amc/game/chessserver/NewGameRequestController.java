@@ -44,8 +44,8 @@ public class NewGameRequestController {
                     	logger.error("Can't request new game with one self");
                     	return false;
                     }
-                    StartPageController controller = context.getBean(StartPageController.class);
-                    controller.createGame(model, user.getPlayer(), GameType.NETWORK_GAME, null);
+                    NewNetworkChessGameController controller = context.getBean(NewNetworkChessGameController.class);
+                    controller.createGame(model, user.getPlayer(), GameType.NETWORK_GAME);
                                 
                     ServerJoinChessGameController sjcgc = context.getBean(ServerJoinChessGameController.class);
                 

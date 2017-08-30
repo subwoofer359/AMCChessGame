@@ -45,7 +45,15 @@
 	<bean id="gameMoveStompController" class="org.amc.game.chessserver.StompControllerIT.GameMoveStompControllerHelper"/>
 	<bean id="promotionStompController" class="org.amc.game.chessserver.PromotionStompControllerIT.PromotionStompControllerHelper" />
 	
-	<bean id="startPageController" class="org.amc.game.chessserver.StartPageController">
+	<bean id="NewNetworkChessGameController" class="org.amc.game.chessserver.StartPageController">
+		<property name="serverChessGameDAO" ref="myServerChessGameDAO"></property>
+	</bean>
+	
+	<bean id="newComputerGameController" class="org.amc.game.chessserver.NewComputerGameController">
+		<property name="serverChessGameDAO" ref="myServerChessGameDAO"></property>
+	</bean>
+	
+	<bean id="newLocalGameController" class="org.amc.game.chessserver.NewLocalChessGameController">
 		<property name="serverChessGameDAO" ref="myServerChessGameDAO"></property>
 	</bean>
 	

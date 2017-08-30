@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class StartPageControllerChessAppPageTest {
     private MockHttpSession session;
-    private StartPageController controller;
+    private NewNetworkChessGameController controller;
     private ChessGamePlayer whitePlayer;
     
     @Mock
@@ -30,7 +30,7 @@ public class StartPageControllerChessAppPageTest {
         MockitoAnnotations.initMocks(this);
         ServerChessGameFactory scgFactory = new ServerChessGameFactory();
         session = new MockHttpSession();
-        controller = new StartPageController(); 
+        controller = new NewNetworkChessGameController(); 
         controller.setServerChessGameDAO(sCGDAO);
         
         controller.setServerChessGameFactory(scgFactory);
@@ -44,7 +44,7 @@ public class StartPageControllerChessAppPageTest {
         assertNotNull(session.getAttribute(ServerConstants.PLAYER.toString()));
         ModelAndViewAssert.assertModelAttributeAvailable(mav, ServerConstants.GAMEMAP.toString());
         ModelAndViewAssert.assertViewName(mav,
-                        StartPageController.CHESS_APPLICATION_PAGE);
+        		GameControllerHelper.CHESS_APPLICATION_PAGE);
     }
     
     @Test
@@ -52,6 +52,6 @@ public class StartPageControllerChessAppPageTest {
         HttpSessionRequiredException hsre = mock(HttpSessionRequiredException.class);
         when(hsre.getMessage()).thenReturn("Mock Exception");
         String view = controller.handleMissingSessionAttributes(hsre);
-        assertEquals(StartPageController.TWOVIEW_REDIRECT_PAGE, view);
+        assertEquals(GameControllerHelper.TWOVIEW_REDIRECT_PAGE, view);
     }
 }

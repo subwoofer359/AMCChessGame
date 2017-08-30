@@ -22,7 +22,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 public class NewGameRequestControllerTest {
 	private NewGameRequestController controller;
-	private StartPageController spController;
+	private NewNetworkChessGameController spController;
 	private ServerJoinChessGameController sjController;
 	private DAOInterface<User> userDAO;
 	private Player player;
@@ -36,10 +36,10 @@ public class NewGameRequestControllerTest {
     @Before
 	public void setUp() throws Exception {
 		WebApplicationContext wac = mock(GenericWebApplicationContext.class);
-		spController = mock(StartPageController.class);
+		spController = mock(NewNetworkChessGameController.class);
 		sjController = mock(ServerJoinChessGameController.class);
 		
-		when(wac.getBean(StartPageController.class)).thenReturn(spController);
+		when(wac.getBean(NewNetworkChessGameController.class)).thenReturn(spController);
 		when(wac.getBean(ServerJoinChessGameController.class)).thenReturn(sjController);
 		userDAO = mock(DAO.class);
 		controller = new NewGameRequestController();
@@ -70,7 +70,7 @@ public class NewGameRequestControllerTest {
 		Callable<Boolean> m = controller.requestNewChessGame(model, player, userToPlay);
 		assertTrue(m.call());
 		
-		verify(spController, times(1)).createGame(eq(model), eq(opponent), eq(GameType.NETWORK_GAME), anyString());
+		verify(spController, times(1)).createGame(eq(model), eq(opponent), eq(GameType.NETWORK_GAME));
 		verify(sjController, times(1)).joinGame(eq(player), eq(gameUid));
 	}
 	
@@ -92,7 +92,7 @@ public class NewGameRequestControllerTest {
 		when(userDAO.findEntities(eq("userName"), eq(userToPlay))).thenReturn(Arrays.asList(user));
 		Callable<Boolean> m = controller.requestNewChessGame(model, player, userToPlay);
 		
-		verify(spController, never()).createGame(eq(model), any(Player.class), eq(GameType.NETWORK_GAME), anyString());
+		verify(spController, never()).createGame(eq(model), any(Player.class), eq(GameType.NETWORK_GAME));
 		verify(sjController, never()).joinGame(any(Player.class), eq(gameUid));
 		assertFalse(m.call());
 	}

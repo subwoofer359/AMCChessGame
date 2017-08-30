@@ -23,8 +23,8 @@ import org.springframework.ui.Model;
 public class StartPageControllerCreateGameTest {
     private Model model;
     private ChessGamePlayer whitePlayer;
-    private StartPageController controller;
-    private static final String OPPONENT = "Kate Bush";
+    private NewNetworkChessGameController controller;
+    
     private ArgumentCaptor<AbstractServerChessGame> gameCaptor = ArgumentCaptor
                     .forClass(AbstractServerChessGame.class);
     @Mock
@@ -36,7 +36,7 @@ public class StartPageControllerCreateGameTest {
         ServerChessGameFactory scgFactory = new ServerChessGameFactory();
         model = new ExtendedModelMap();
         whitePlayer = new RealChessGamePlayer(new HumanPlayer("Ted"), Colour.WHITE);
-        controller = new StartPageController();
+        controller = new NewNetworkChessGameController();
         scgFactory.setObserverFactoryChain(ObserverFactoryChainFixture.getUpObserverFactoryChain());
         controller.setServerChessGameFactory(scgFactory);
         controller.setServerChessGameDAO(sCGDAO);
@@ -45,13 +45,13 @@ public class StartPageControllerCreateGameTest {
     @Test
     public void testTwoViewServerGame() throws DAOException {
         assertSessionAttributeNull();
-        String viewName = controller.createGame(model, whitePlayer, GameType.NETWORK_GAME, null);
+        String viewName = controller.createGame(model, whitePlayer, GameType.NETWORK_GAME);
 
         assertGameIsSavedInDatabase();
         assertPlayerIsAddedToChessGame();
 
         assertLongStoreInSessionAttribute();
-        assertEquals(StartPageController.CHESS_APPLICATION_PAGE, viewName);
+        assertEquals(GameControllerHelper.CHESS_APPLICATION_PAGE, viewName);
     }
 
     private void assertGameIsSavedInDatabase() throws DAOException {
@@ -62,57 +62,6 @@ public class StartPageControllerCreateGameTest {
         verify(sCGDAO, times(1)).saveServerChessGame(gameCaptor.capture());
         AbstractServerChessGame game = gameCaptor.getValue();
         assertTrue(ComparePlayers.isSamePlayer(game.getPlayer(), whitePlayer));
-    }
-
-    @Test
-    public void testOneViewServerGame() throws DAOException {
-        assertSessionAttributeNull();
-        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME, OPPONENT);
-        assertPlayerIsAddedToChessGame();
-
-        assertLongStoreInSessionAttribute();
-        assertEquals(StartPageController.CHESSGAME_PORTAL, viewName);
-        assertNotNull(model.asMap().get(ServerConstants.GAME));
-        assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
-    }
-    
-    @Test
-    public void testComputerServerGame() throws DAOException {
-        assertSessionAttributeNull();
-        String viewName = controller.createGame(model, whitePlayer, GameType.COMPUTER_BLACK_GAME, OPPONENT);
-        assertPlayerIsAddedToChessGame();
-
-        assertLongStoreInSessionAttribute();
-        assertEquals(StartPageController.CHESSGAME_PORTAL, viewName);
-        assertNotNull(model.asMap().get(ServerConstants.GAME));
-        assertNotNull(model.asMap().get(ServerConstants.CHESSPLAYER));
-        assertTrue("Should be computer Server Chess game", 
-        		model.asMap().get(ServerConstants.GAME) instanceof ComputerServerChessGame);
-    }
-
-    @Test
-    public void testPlayersNameIsEmptyString() throws DAOException {
-        String invalidPlayersName = "";
-        assertSessionAttributeNull();
-        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME,
-                        invalidPlayersName);
-
-        verify(sCGDAO, never()).saveServerChessGame(any(AbstractServerChessGame.class));
-        assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
-        assertEquals(invalidPlayersName, model.asMap().get(StartPageController.PLAYERS_NAME_FIELD));
-
-    }
-
-    @Test
-    public void testPlayersNameIsNull() throws DAOException {
-        String invalidPlayersName = null;
-        assertSessionAttributeNull();
-        String viewName = controller.createGame(model, whitePlayer, GameType.LOCAL_GAME,
-                        invalidPlayersName);
-        verify(sCGDAO, never()).saveServerChessGame(any(AbstractServerChessGame.class));
-        assertEquals(StartPageController.TWOVIEW_FORWARD_PAGE, viewName);
-        assertEquals(invalidPlayersName, model.asMap().get(StartPageController.PLAYERS_NAME_FIELD));
-
     }
 
     private void assertSessionAttributeNull() {
