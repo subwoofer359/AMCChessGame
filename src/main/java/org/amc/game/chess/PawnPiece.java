@@ -63,7 +63,7 @@ public final class PawnPiece extends SimplePiece {
         return isMovingForward(move) && move.getAbsoluteDistanceY() == 1;
     }
 
-    private boolean isMovingForwardDiagonallyOneSquare(Move move) {
+    boolean isMovingForwardDiagonallyOneSquare(Move move) {
         return isMovingForward(move) && Move.isDiagonalMove(move)
                 && move.getAbsoluteDistanceX() == 1;
     }

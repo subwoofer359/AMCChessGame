@@ -191,13 +191,15 @@ public class IsKingCheckmatedTest {
         board = chessBoardFactory.getChessBoard("qh8:Kh3:Ra4:kf2");
         Move move = new Move(new Location(H, 8), new Location(H, 5));
         board.move(move);
-        ChessBoardView view = new ChessBoardView(board);
-        view.displayTheBoard();
         KingInCheckmate pkicc = new KingInCheckmate(blackPlayer,
                         whitePlayer, board);
         assertFalse(pkicc.canAttackingPieceNotBeBlocked());
     }
 
+    private void showBoard(ChessBoard board) {
+    	new ChessBoardView(board).displayTheBoard();
+    }
+    
     @Test
     public void testTwoAttackingPiecesCanNotBeCaptured() throws ParseException {
         board = chessBoardFactory.getChessBoard("Ke8:bc6:bg6:Ne5");
@@ -243,6 +245,22 @@ public class IsKingCheckmatedTest {
         KingInCheckmate pkicc = new KingInCheckmate(blackPlayer,
                         whitePlayer, board);
         assertTrue(pkicc.isKingNotAbleToMoveOutOfCheck());
+    }
+    
+    @Test
+    public void testKingNotInCheck() throws ParseException {
+    	board = chessBoardFactory.getChessBoard("kc1:pa2:Rb1:Nd2:Pa3:Pc3:Pe4:Bf4:pg4:Rf5:Pb7:Qc7:Pd7:Pe7:Ph7:Bc8:Kf8");
+    	showBoard(board);
+    	
+    	KingInCheckmate pkicc = new KingInCheckmate(whitePlayer, blackPlayer, board);
+    	
+    	assertTrue("Attacker can't be blocked", pkicc.canAttackingPieceNotBeBlocked());
+    	
+    	assertTrue("Attacking Rook can't be captured", pkicc.canAttackingPieceNotBeCaptured());
+    	
+    	assertFalse("King can move out of check", pkicc.isKingNotAbleToMoveOutOfCheck());
+    	
+    	assertFalse(pkicc.isCheckMate());
     }
 
 }
