@@ -41,18 +41,14 @@ public final class PawnPiece extends SimplePiece {
     @Override
     boolean validMovement(Move move) {
         if (move.getAbsoluteDistanceX() == 0) {
-            if (pieceHasNotMoved()) {
-                return isMovingForwardOneOrTwoSquares(move);
+            if (this.hasMoved()) {
+            	return isMovingForwardOneSquareOnly(move);
             } else {
-                return isMovingForwardOneSquareOnly(move);
+            	return isMovingForwardOneOrTwoSquares(move);
             }
         } else {
             return isMovingForwardDiagonallyOneSquare(move);
         }
-    }
-
-    private boolean pieceHasNotMoved() {
-        return !hasMoved();
     }
 
     private boolean isMovingForwardOneOrTwoSquares(Move move) {
@@ -76,11 +72,10 @@ public final class PawnPiece extends SimplePiece {
      * @return true if the ChessPiece is moving forward
      */
     private boolean isMovingForward(Move move) {
-        int moveInYDirection = move.getDistanceY();
-        if (Colour.WHITE.equals(this.getColour())) {
-            return moveInYDirection > 0;
+        if (Colour.WHITE == this.getColour()) {
+            return move.getDistanceY() > 0;
         } else {
-            return moveInYDirection < 0;
+            return move.getDistanceY() < 0;
         }
     }
 
