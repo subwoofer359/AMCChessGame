@@ -14,31 +14,62 @@ import java.util.Set;
  * @author Adrian Mclaughlin
  *
  */
-class KingInCheckmate {
+final class KingInCheckmate {
 
 	private final KingInCheck kingIsChecked = KingInCheck.getInstance();
 	private final ChessGamePlayer player;
 	private final ChessGamePlayer opponent;
 	private final ChessBoard board;
-	private final ChessPieceLocation playersKingLocation;
-	private final List<ChessPieceLocation> enemyLocations;
-	private final List<ChessPieceLocation> attackingPieces;
-	private final List<ChessPieceLocation> playersPieces;
+	private List<ChessPieceLocation> enemyLocations;
+	private List<ChessPieceLocation> attackingPieces;
+	private List<ChessPieceLocation> playersPieces;
+	
+	private Location kingLocation;
+	private ChessPiece kingPiece;
 
 	public KingInCheckmate(ChessGamePlayer player, ChessGamePlayer opponent, ChessBoard board) {
 		this.player = player;
 		this.opponent = opponent;
 		this.board = board;
-
-		this.playersKingLocation = findThePlayersKing();
-		this.enemyLocations = board.getListOfPieces(opponent);
-		this.attackingPieces = getAllPiecesAttackingTheKing();
-		this.playersPieces = board.getListOfPieces(player);
+		
+		findThePlayersKing();
 	}
-
-	private final ChessPieceLocation findThePlayersKing() {
-		Location kingLocation = board.getKingLocation(player);
-		return new ChessPieceLocation(board.get(kingLocation), kingLocation);
+	
+	private void findThePlayersKing() {
+		this.kingLocation = board.getKingLocation(player);
+		this.kingPiece = board.get(kingLocation);
+	}
+	
+	private List<ChessPieceLocation> getEnemyLocations() {
+		if (this.enemyLocations == null) {
+			this.enemyLocations = board.getListOfPieces(opponent);
+		}
+		return this.enemyLocations;
+	}
+	
+	/**
+	 * Find all opponents pieces directly attacking the king
+	 *
+	 * @return List of ChessPieceLocation of attacking pieces
+	 */
+	List<ChessPieceLocation> getAttackingPieces() {
+		if(this.attackingPieces == null) {
+			this.attackingPieces = new ArrayList<>();
+			for (ChessPieceLocation cpl : getEnemyLocations()) {
+				Move move = new Move(cpl.getLocation(), kingLocation);
+				if (cpl.getPiece().isValidMove(board, move)) {
+					attackingPieces.add(cpl);
+				}
+			}
+		} 
+		return attackingPieces;
+	}
+	
+	private List<ChessPieceLocation> getPlayerPieces() {
+		if(this.playersPieces == null) {
+			this.playersPieces = board.getListOfPieces(player);
+		}
+		return this.playersPieces;
 	}
 
 	/**
@@ -47,10 +78,25 @@ class KingInCheckmate {
 	 * @return Boolean true if checkmate has occurred
 	 */
 	boolean isCheckMate() {
-		return isPlayersKingInCheck() && 
+		boolean result = isPlayersKingInCheck() && 
 				isKingNotAbleToMoveOutOfCheck() && 
 				canAttackingPieceNotBeCaptured() &&
 				canAttackingPieceNotBeBlocked();
+		
+		clearLists();
+		return result;
+	}
+	
+	private void clearLists() {
+		if(attackingPieces != null) {
+			attackingPieces.clear();
+		}
+		if(enemyLocations != null) {
+			enemyLocations.clear();
+		}
+		if(playersPieces != null) {
+			playersPieces.clear();
+		}
 	}
 
 	boolean isPlayersKingInCheck() {
@@ -63,28 +109,21 @@ class KingInCheckmate {
 	 * @return Boolean
 	 */
 	boolean isKingNotAbleToMoveOutOfCheck() {
-		Set<Location> possibleSafeMoveLocations = findAllSafeMoveLocations(playersKingLocation);
-		return possibleSafeMoveLocations.isEmpty();
+		return findAllSafeMoveLocations().isEmpty();
 	}
 
-	private final Set<Location> findAllSafeMoveLocations(ChessPieceLocation kingsLocation) {
-		Set<Location> possibleMoveLocations = getAllTheKingsPossibleMoveLocations(kingsLocation);
-		removeKingFromTheBoard(kingsLocation);
-		Set<Location> squaresUnderAttack = getSquaresUnderAttack(possibleMoveLocations);
+	private Set<Location> findAllSafeMoveLocations() {
+		ChessBoard testBoard = new ChessBoard(board);
+		Set<Location> possibleMoveLocations = kingPiece.getPossibleMoveLocations(testBoard, kingLocation);
+		
+		//Remove the king
+		testBoard.remove(kingLocation);
+		Set<Location> squaresUnderAttack = getSquaresUnderAttack(testBoard, possibleMoveLocations);
 
 		possibleMoveLocations.removeAll(squaresUnderAttack);
-		replaceKingOnTheBoard(kingsLocation);
 		return possibleMoveLocations;
 	}
-
-	final Set<Location> getAllTheKingsPossibleMoveLocations(ChessPieceLocation kingsLocation) {
-		return kingsLocation.getPiece().getPossibleMoveLocations(board, kingsLocation.getLocation());
-	}
-
-	private final void removeKingFromTheBoard(ChessPieceLocation kingsLocation) {
-		board.remove(kingsLocation.getLocation());
-	}
-
+	
 	/**
 	 * Find Squares that are under attack by other Player Can use
 	 * ChessPiece.isValidMove(ChessBoard, Move) on all pieces except PawnPiece.
@@ -95,17 +134,17 @@ class KingInCheckmate {
 	 *            Set of Squares to be checked
 	 * @return Set of Squares that can be attacked
 	 */
-	private final Set<Location> getSquaresUnderAttack(Set<Location> possibleMoveLocations) {
+	private Set<Location> getSquaresUnderAttack(ChessBoard board, Set<Location> possibleMoveLocations) {
 		Set<Location> squaresUnderAttack = new HashSet<>();
 		for (Location location : possibleMoveLocations) {
-			for (ChessPieceLocation enemyPiece : enemyLocations) {
+			for (ChessPieceLocation enemyPiece : getEnemyLocations()) {
 				Move move = new Move(enemyPiece.getLocation(), location);
 				ChessPiece piece = enemyPiece.getPiece();
 
 				ChessPiece occupyPiece = board.get(location);
 				board.remove(location);
 
-				if (piece instanceof PawnPiece && ((PawnPiece) piece).isMovingForwardDiagonallyOneSquare(move)
+				if (canBeCapturedByPawn(piece, move)
 						|| (!(piece instanceof PawnPiece) && piece.isValidMove(board, move))) {
 					squaresUnderAttack.add(location);
 					board.put(occupyPiece, location);
@@ -116,10 +155,10 @@ class KingInCheckmate {
 			}
 		}
 		return squaresUnderAttack;
-	}
-
-	private final void replaceKingOnTheBoard(ChessPieceLocation kingsLocation) {
-		board.put(kingsLocation.getPiece(), kingsLocation.getLocation());
+	} 
+	
+	private boolean canBeCapturedByPawn(ChessPiece piece, Move move) {
+		return piece instanceof PawnPiece && ((PawnPiece) piece).isMovingForwardDiagonallyOneSquare(move);
 	}
 
 	/**
@@ -132,8 +171,8 @@ class KingInCheckmate {
 		if (isThereMoreThanOneAttacker()) {
 			return true;
 		}
-		Location attackingPieceLocation = attackingPieces.get(0).getLocation();
-		for (ChessPieceLocation cpl : playersPieces) {
+		Location attackingPieceLocation = getAttackingPieces().get(0).getLocation();
+		for (ChessPieceLocation cpl : getPlayerPieces()) {
 			ChessPiece piece = cpl.getPiece();
 			Move move = new Move(cpl.getLocation(), attackingPieceLocation);
 			if (piece.isValidMove(board, move)) {
@@ -145,14 +184,14 @@ class KingInCheckmate {
 		return true;
 	}
 
-	private final boolean willPlayerNotBeInCheck(Move move) {
+	private boolean willPlayerNotBeInCheck(Move move) {
 		ChessBoard testBoard = new ChessBoard(board);
 		testBoard.move(move);
 		return !isPlayersKingInCheck(testBoard);
 	}
 
-	private final boolean isThereMoreThanOneAttacker() {
-		return attackingPieces.size() != 1;
+	private boolean isThereMoreThanOneAttacker() {
+		return getAttackingPieces().size() != 1;
 	}
 
 	/**
@@ -164,13 +203,13 @@ class KingInCheckmate {
 		if (isThereMoreThanOneAttacker()) {
 			return true;
 		}
-		Location attackingPieceLocation = attackingPieces.get(0).getLocation();
+		Location attackingPieceLocation = getAttackingPieces().get(0).getLocation();
 		ChessPiece attacker = board.get(attackingPieceLocation);
 
-		Move move = new Move(attackingPieceLocation, playersKingLocation.getLocation());
+		Move move = new Move(attackingPieceLocation, kingLocation);
 		Set<Location> blockingSquares = getAllSquaresInAMove(attacker, move);
 		for (Location blockingSquare : blockingSquares) {
-			for (ChessPieceLocation cpl : playersPieces) {
+			for (ChessPieceLocation cpl : getPlayerPieces()) {
 				Move blockingMove = new Move(cpl.getLocation(), blockingSquare);
 				ChessPiece piece = cpl.getPiece();
 				if (!(piece instanceof KingPiece) && piece.isValidMove(board, blockingMove)) {
@@ -186,8 +225,7 @@ class KingInCheckmate {
 	/**
 	 * To analyse the ChessBoard configuration for the condition of check
 	 * 
-	 * @param board
-	 *            ChessBoard
+	 * @param board ChessBoard
 	 * @return boolean true if Player is in check
 	 */
 	boolean isPlayersKingInCheck(ChessBoard board) {
@@ -198,14 +236,12 @@ class KingInCheckmate {
 	 * Returns a Set of Squares covered in a move Not including the start and
 	 * end squares
 	 * 
-	 * @param piece
-	 *            {@link ChessPiece}
+	 * @param piece {@link ChessPiece}
 	 *
-	 * @param move
-	 *            Move
+	 * @param move Move
 	 * @return Set of Locations
 	 */
-	private final Set<Location> getAllSquaresInAMove(ChessPiece piece, Move move) {
+	private Set<Location> getAllSquaresInAMove(ChessPiece piece, Move move) {
 		Set<Location> squares = new HashSet<>();
 		if (piece.canSlide()) {
 			int distance = Math.max(move.getAbsoluteDistanceX(), move.getAbsoluteDistanceY());
@@ -220,21 +256,4 @@ class KingInCheckmate {
 		}
 		return squares;
 	}
-
-	/**
-	 * Find all opponents pieces directly attacking the king
-	 *
-	 * @return List of ChessPieceLocation of attacking pieces
-	 */
-	final List<ChessPieceLocation> getAllPiecesAttackingTheKing() {
-		List<ChessPieceLocation> attackingPieces = new ArrayList<>();
-		for (ChessPieceLocation cpl : enemyLocations) {
-			Move move = new Move(cpl.getLocation(), playersKingLocation.getLocation());
-			if (cpl.getPiece().isValidMove(board, move)) {
-				attackingPieces.add(cpl);
-			}
-		}
-		return attackingPieces;
-	}
-
 }

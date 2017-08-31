@@ -53,18 +53,18 @@ public class IsKingCheckmatedTest {
         board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:nf6");
         KingInCheckmate pkicc = new KingInCheckmate(blackPlayer,
                         whitePlayer, board);
-        List<ChessPieceLocation> attackers = pkicc.getAllPiecesAttackingTheKing();
+        List<ChessPieceLocation> attackers = pkicc.getAttackingPieces();
         assertTrue(attackers.size() == 3);
 
         board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:nf6:nd6");
         pkicc = new KingInCheckmate(blackPlayer, whitePlayer, board);
-        attackers = pkicc.getAllPiecesAttackingTheKing();
+        attackers = pkicc.getAttackingPieces();
         assertTrue(attackers.size() == 4);
 
         // pawn blocking queen
         board = chessBoardFactory.getChessBoard("Ke8:bc6:qe1:pe2:nf6:nd6");
         pkicc = new KingInCheckmate(blackPlayer, whitePlayer, board);
-        attackers = pkicc.getAllPiecesAttackingTheKing();
+        attackers = pkicc.getAttackingPieces();
         assertTrue(attackers.size() == 3);
     }
 
