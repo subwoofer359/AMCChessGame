@@ -91,8 +91,7 @@ public final class PawnPiece extends SimplePiece {
     boolean canMakeMove(ChessBoard board, Move move) {
         if (Move.isFileOrRankMove(move)) {
             if (move.getAbsoluteDistanceY() == 2) {
-                return isEndSquareEmpty(board, move)
-                        && canMoveTwoSquaresForward(board, move);
+                return canMoveTwoSquaresForward(board, move);
             } else {
                 return isEndSquareEmpty(board, move);
             }
@@ -101,8 +100,6 @@ public final class PawnPiece extends SimplePiece {
         }
     }
 
-
-
     /**
      * @param board {@link ChessBoard}
      * @param move  {@link Move}
@@ -110,20 +107,14 @@ public final class PawnPiece extends SimplePiece {
      * the end Square
      */
     private boolean canMoveTwoSquaresForward(ChessBoard board, Move move) {
-        int x = move.getStart().getLetter().getIndex();
-        int y = move.getStart().getNumber();
-        x = x + (int) Math.signum(move.getDistanceX());
-        y = y + (int) Math.signum(move.getDistanceY());
-        return board.isEndSquareEmpty(x, y);
-    }
+        return isEndSquareEmpty(board, move) && 
+        		board.isEndSquareEmpty(
+        				move.getStart().getLetter().getIndex() + (int) Math.signum(move.getDistanceX()),
+        				move.getStart().getNumber() + (int) Math.signum(move.getDistanceY()));
+        }
 
     private boolean canCapture(ChessBoard board, Move move) {
-        return isEndSquareNotEmpty(board, move) &&
-                isEndSquareOccupiedByOpponentsPiece(board, move);
-    }
-
-    private boolean isEndSquareNotEmpty(ChessBoard board, Move move) {
-        return !board.isEndSquareEmpty(move.getEnd());
+          return isEndSquareOccupiedByOpponentsPiece(board, move);
     }
 
     @Override
