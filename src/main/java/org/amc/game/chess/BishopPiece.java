@@ -56,7 +56,6 @@ public final class BishopPiece extends ComplexPiece {
 
 	@Override
 	public Set<Location> getPossibleMoveLocations(ChessBoard board, Location location) {
-		//return super.getPossibleMoveLocations(board, location);
 		/*
 		 *  Using eqn y-y1 = m(x-x1) where m = -1 and 1
 		 *  therefore co = y1 - x1 and cp = y1 + x1
