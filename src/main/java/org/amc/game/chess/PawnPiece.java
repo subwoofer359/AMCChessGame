@@ -1,5 +1,10 @@
 package org.amc.game.chess;
 
+import org.amc.game.chess.ChessBoard.Coordinate;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Represents a Pawn in a game of Chess
  * <p>
@@ -124,5 +129,63 @@ public final class PawnPiece extends SimplePiece {
         } else {
             return PAWN_BLACK_MOVED;
         }
+    }
+
+	@Override
+	public Set<Location> getPossibleMoveLocations(ChessBoard board, Location location) {
+		Set<Location> locations = new HashSet<>();
+		int sign;
+		
+		if(Colour.WHITE == getColour()) {
+			sign = 1;
+		} else {
+			sign = -1;
+		}
+		
+		int rank = location.getNumber() + sign * 1;
+		
+		if (rank > 0 && rank <= ChessBoard.BOARD_WIDTH) {
+			addSquareInFront(board, location, locations, rank);
+			
+			addSquareToTheLeft(board, location, locations, rank);
+			
+			addSquareToTheRight(board, location, locations, rank);
+			
+		}
+		
+		if(!hasMoved()) {
+			rank = location.getNumber() + sign * 2;
+			if (rank > 0 && rank <= ChessBoard.BOARD_WIDTH) {
+				Location l = new Location(location.getLetter(), rank);
+				addIfValidMove(locations, board, new Move(location, l));
+			}
+		}
+		
+		return locations;
+	}
+	
+	private void addSquareInFront(ChessBoard board, Location location, Set<Location> locations, int rank) {
+		Location l = new Location(location.getLetter(), rank);
+		addIfValidMove(locations, board, new Move(location, l));
+	}
+	
+	private void addSquareToTheLeft(ChessBoard board, Location location, Set<Location> locations, int rank) {
+		if(location.getLetter().getIndex() > 0) {
+			Location l = new Location(Coordinate.getCoordinate(location.getLetter().getIndex() - 1), rank);
+			addIfValidMove(locations, board, new Move(location, l));
+		}
+	}
+    
+	private void addSquareToTheRight(ChessBoard board, Location location, Set<Location> locations, int rank) {
+		if(location.getLetter().getIndex() < ChessBoard.BOARD_WIDTH) {
+			Location l = new Location(Coordinate.getCoordinate(location.getLetter().getIndex() + 1), rank);
+			addIfValidMove(locations, board, new Move(location, l));
+		}
+	}
+	
+    private void addIfValidMove(Set<Location> locations, ChessBoard board, Move move) {
+    	if(isValidMove(board, move)) {
+			locations.add(move.getEnd());
+		}
     }
 }

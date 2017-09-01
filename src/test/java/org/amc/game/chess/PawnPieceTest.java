@@ -9,6 +9,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class PawnPieceTest extends ChessPieceTest {
     private ChessBoard board;
     private String whiteStart = "F2";
@@ -127,6 +133,103 @@ public class PawnPieceTest extends ChessPieceTest {
         assertTrue(pawn.isValidMove(board, newMove(blackStart, endLocationOne)));
         assertFalse(pawn.isValidMove(board, newMove(blackStart, endLocationTwo)));
     }
+	
+	@Test
+	public void testPossibleMoveLocationsForWhite() {
+		List<String> locationStr = Arrays.asList("C4", "C3", "B3");
+		Location location = new Location("c2");
+		
+		PawnPiece blackPiece = PawnPiece.getPiece(Colour.BLACK);
+		placeOnBoard(blackPiece, "b3");
+		
+		testPawnPossibleMoveLocations(Colour.WHITE, location, locationStr);
+	}
+	
+	@Test
+	public void testPossibleMoveLocationsForWhiteBlockedByWhite() {
+		List<String> locationStr = Arrays.asList("C4", "C3");
+		Location location = new Location("c2");
+		
+		PawnPiece blackPiece = PawnPiece.getPiece(Colour.WHITE);
+		placeOnBoard(blackPiece, "b3");
+		
+		testPawnPossibleMoveLocations(Colour.WHITE, location, locationStr);
+	}
+	
+	@Test
+	public void testPossibleMoveLocationsForWhiteBlockedByBlack() {
+		Location location = new Location("c2");
+		
+		PawnPiece blackPiece = PawnPiece.getPiece(Colour.BLACK);
+		placeOnBoard(blackPiece, "c3");
+
+		testPawnPossibleMoveLocations(Colour.WHITE, location, Collections.emptyList());
+	}
+	
+	@Test
+	public void testPossibleMoveLocationsForWhiteHalfBlockedByBlack() {
+		List<String> locationStr = Arrays.asList("C3");
+		
+		Location location = new Location("c2");
+		
+		PawnPiece blackPiece = PawnPiece.getPiece(Colour.BLACK);
+		placeOnBoard(blackPiece, "c4");
+		
+		testPawnPossibleMoveLocations(Colour.WHITE, location, locationStr);
+	}
+	
+	@Test
+	public void testPossibleMoveLocationsForWhiteAtEnd() {
+		
+		Location location = new Location("h8");
+		
+		testPawnPossibleMoveLocations(Colour.WHITE, location, Collections.emptyList());
+	}
+	
+	private void testPawnPossibleMoveLocations(Colour pawnColour,Location pawnLocation, List<String> locationStr) {   	
+    	Set<Location> expectedLocations = new HashSet<>();   	
+    	locationStr.forEach(loc -> expectedLocations.add(new Location(loc)));
+    	
+    	PawnPiece pawn = PawnPiece.getPiece(pawnColour);
+    	board.put(pawn, pawnLocation);
+    	
+    	Set<Location> locations = pawn.getPossibleMoveLocations(board, pawnLocation);
+    	
+    	assertTrue("Should contain all the expected move locations", 
+    			locations.equals(expectedLocations));
+    }
+	
+	@Test
+	public void testPossibleMoveLocationsForBlack() {
+		List<String> locationStr = Arrays.asList("C6", "C5", "B6");
+		
+		Location location = new Location("c7");
+		
+		PawnPiece whitePiece = PawnPiece.getPiece(Colour.WHITE);
+		placeOnBoard(whitePiece, "b6");
+		
+		testPawnPossibleMoveLocations(Colour.BLACK, location, locationStr);
+	}
+	
+	@Test
+	public void testPossibleMoveLocationsForBlackAtEdge() {
+		List<String> locationStr = Arrays.asList("A6", "A5", "B6");
+		
+		Location location = new Location("a7");
+		
+		PawnPiece whitePiece = PawnPiece.getPiece(Colour.WHITE);
+		placeOnBoard(whitePiece, "B6");
+
+		testPawnPossibleMoveLocations(Colour.BLACK, location, locationStr);
+	}
+	
+	@Test
+	public void testPossibleMoveLocationsForBlackAtEdgeAtEnd() {
+		Location location = new Location("a1");
+		
+		testPawnPossibleMoveLocations(Colour.BLACK, location, Collections.emptyList());
+		
+	}
 	
     private void testOnEmptyBoardIsValidWhiteMove() {
     	setUp();
