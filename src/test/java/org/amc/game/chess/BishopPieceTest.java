@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class BishopPieceTest extends ChessPieceTest {
     private ChessBoard board;
@@ -107,5 +110,48 @@ public class BishopPieceTest extends ChessPieceTest {
     public void testCanSlide() {
         BishopPiece bishop = BishopPiece.getPiece(Colour.BLACK);
         assertTrue(bishop.canSlide());
+    }
+    
+    @Test
+    public void testGetAllPossibleMoveLocationsFromD4() {
+    	List<String> locationStr = Arrays.asList("G7", "F2", "G1", "E3", "B2", "E5", "B6", "F6", "C3",
+    			"A1", "C5", "H8", "A7");
+    	testBishopPossibleMoveLocations(new Location("D4"), locationStr);
+ 
+    }
+    
+    @Test
+    public void testGetAllPossibleMoveLocationsFromG2() {
+    	List<String> locationStr = Arrays.asList("F1", "H3", "H1", "F3", "E4","D5", "C6", "B7", "A8");
+    	testBishopPossibleMoveLocations(new Location("G2"), locationStr);
+ 
+    }
+    
+    @Test
+    public void testGetAllPossibleMoveLocationsFromH8() {
+    	List<String> locationStr = Arrays.asList("G7", "F6", "E5", "D4", "C3", "B2", "A1");
+    	testBishopPossibleMoveLocations(new Location("H8"), locationStr);
+ 
+    }
+    
+    @Test
+    public void testGetAllPossibleMoveLocationsFromH8WithOtherPiece() {
+    	board.put(BishopPiece.getPiece(Colour.WHITE), new Location("E5"));
+    	List<String> locationStr = Arrays.asList("G7", "F6");
+    	testBishopPossibleMoveLocations(new Location("H8"), locationStr);
+ 
+    }
+    
+    private void testBishopPossibleMoveLocations(Location bishopLocation, List<String> locationStr) {   	
+    	Set<Location> expectedLocations = new HashSet<>();   	
+    	locationStr.forEach(loc -> expectedLocations.add(new Location(loc)));
+    	
+    	BishopPiece bishopWhite = BishopPiece.getPiece(Colour.WHITE);
+    	board.put(bishopWhite, bishopLocation);
+    	
+    	Set<Location> locations = bishopWhite.getPossibleMoveLocations(board, bishopLocation);
+    	
+    	assertTrue("Should contain all the expected move locations", 
+    			locations.equals(expectedLocations));
     }
 }

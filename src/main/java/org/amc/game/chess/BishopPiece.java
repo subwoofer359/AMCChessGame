@@ -1,5 +1,10 @@
 package org.amc.game.chess;
 
+import org.amc.game.chess.ChessBoard.Coordinate;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Represents a Bishop in the game of chess
  * 
@@ -48,4 +53,38 @@ public final class BishopPiece extends ComplexPiece {
             return BISHOP_BLACK_MOVED;
         }
     }
+
+	@Override
+	public Set<Location> getPossibleMoveLocations(ChessBoard board, Location location) {
+		//return super.getPossibleMoveLocations(board, location);
+		/*
+		 *  Using eqn y-y1 = m(x-x1) where m = -1 and 1
+		 *  therefore co = y1 - x1 and cp = y1 + x1
+		 */
+		int co = location.getNumber() - location.getLetter().getIndex();
+		int cp = location.getNumber() + location.getLetter().getIndex();
+		
+		Set<Location> locations = new HashSet<>();
+		
+		for (int i = 0; i < ChessBoard.BOARD_WIDTH; i++) {
+			int y1 = i + co;
+			int y2 = cp - i; 
+			addLocationIfValid(locations, location, board, i, y1);
+			
+			addLocationIfValid(locations, location, board, i, y2);
+		}
+		locations.remove(location);
+		return locations;
+	}
+	
+	private void addLocationIfValid(Set<Location> locations, Location location, ChessBoard board, int i, int y) {
+		if((y > 0) && (y <= ChessBoard.BOARD_WIDTH)) {
+			Location newLocation = new Location(Coordinate.getCoordinate(i), y);
+			Move move = new Move(location, newLocation);
+			if(isValidMove(board, move)) {
+				locations.add(newLocation);
+			}
+		}
+	}
 }
+
