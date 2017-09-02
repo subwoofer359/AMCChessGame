@@ -60,6 +60,18 @@ public class ServerJoinControllerJoinGameTest {
         when(serverChessGameDAO.getServerChessGame(eq(gameUUID))).thenReturn(chessGame);
         when(serverChessGameDAO.getServerChessGame(eq(oneViewGameUUID))).thenReturn(oneViewChessGame);
     }
+    
+    @Test
+    public void testNoResourcesSet() {
+    	ServerJoinChessGameController sc = new ServerJoinChessGameController();
+    	
+    	try {
+    		sc.joinGame(blackPlayer, gameUUID);
+    		fail("Null pointer exception should have been thrown");
+    	} catch(NullPointerException npe) {
+    		assertEquals(npe.getMessage(), ServerJoinChessGameController.ERROR_NO_RESOURCES);
+    	}
+    }
 
     @Test
     public void test() throws DAOException {

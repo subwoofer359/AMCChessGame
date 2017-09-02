@@ -22,10 +22,6 @@ import javax.servlet.ServletContextListener;
 public final class StartupShutdownListener implements ServletContextListener {
     
     public final static Logger log = Logger.getLogger(StartupShutdownListener.class);
-
-    private final static String HOST_IP = "HOSTIP";
-    
-    private final static String PORT = "PORT";
     
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
@@ -36,13 +32,6 @@ public final class StartupShutdownListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
-    	String hostName = System.getenv(HOST_IP);
-    	arg0.getServletContext().setAttribute(HOST_IP, hostName);
- 
-        String port = System.getenv(PORT);
-        arg0.getServletContext().setAttribute(PORT, port);
-        
-        log.info(String.format("Storing Server information: (%s:%s)", hostName, port));
         log.info("Servlet started up....");
     }
 
