@@ -21,13 +21,6 @@ let Stomp = _Stomp;
 
 const sounds = new ChessSounds();
 
-/* makes Message disappear when chessboard is clicked*/
-export function addMessageDialogListener() {
-    $("#chessboard-surround").click(() => {
-        $("#my-alert").css("opacity", "0");
-    });
-}
-
 /**
  * Opens a Websocket connection or display a message if the connection fails
  * @param {url} websocketURL url to open a websocket connection
@@ -81,7 +74,6 @@ export function setupStompConnection(stompObject: StompObject) {
     const stompClient = openStompConnection(stompObject, stompCallBack);
 
     chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID), sounds);
-    addMessageDialogListener();
     return stompClient;
 }
 
@@ -97,7 +89,6 @@ export function setupOneViewStompConnection(stompObject) {
     const stompClient = openStompConnection(stompObject, stompCallBack);
 
     chessGameInteract(new InteractActions(stompClient, stompObject.gameUUID), sounds);
-    addMessageDialogListener();
     return stompClient;
 }
 

@@ -36,6 +36,8 @@ export class StompActions {
         WHITE_IN_CHECK : "WHITE_IN_CHECK",
     };
 
+    private surround = $("#chessboard-surround");
+
     /*
      * Injection is possible
      */
@@ -63,6 +65,8 @@ export class StompActions {
         this.alertBoxText.html(message);
         this.alertBox.css("display", "block");
         this.alertBox.css("opacity", "1");
+
+        this.addAlertMessageListener();
     }
 
     /**
@@ -73,6 +77,8 @@ export class StompActions {
         this.alertBoxText.html(message);
         this.alertBox.css("display", "block");
         this.alertBox.css("opacity", "1");
+
+        this.addAlertMessageListener();
     }
 
     /**
@@ -162,5 +168,19 @@ export class StompActions {
 
     public setSounds(sounds: IChessAudio) {
         this.sounds = sounds;
+    }
+
+    private addAlertMessageListener() {
+        const $myalert = this.alertBox;
+        const $surround = this.surround;
+        const hideAlert = () => {
+            if ($myalert.css("opacity") !== "0") {
+                $myalert.css("opacity", "0");
+                $surround.off("mousedown");
+                $surround.off("touchstart");
+            }
+        };
+        $surround.on("mousedown", hideAlert);
+        $surround.on("touchstart", hideAlert);
     }
 }
