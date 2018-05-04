@@ -77,7 +77,7 @@ public final class BishopPiece extends ComplexPiece {
 	}
 	
 	private void addLocationIfValid(Set<Location> locations, Location location, ChessBoard board, int i, int y) {
-		if((y > 0) && (y <= ChessBoard.BOARD_WIDTH)) {
+		if(y > 0 && y <= ChessBoard.BOARD_WIDTH) {
 			Location newLocation = new Location(Coordinate.getCoordinate(i), y);
 			Move move = new Move(location, newLocation);
 			if(isValidMove(board, move)) {
