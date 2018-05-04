@@ -55,7 +55,7 @@ public final class ChessBoardExternalizer {
     
     private static ChessPieceNotation getChessPieceSymbol(ChessPiece piece) {
 
-        if(Colour.BLACK.equals(piece.getColour()))
+        if(Colour.BLACK == piece.getColour())
         {
             if(piece instanceof KingPiece) {
                 return K;
