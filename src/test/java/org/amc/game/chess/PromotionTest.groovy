@@ -1,10 +1,14 @@
 package org.amc.game.chess;
 
+import org.amc.game.chess.AbstractChessGame.GameState
 import org.amc.game.chess.view.ChessGameTextView;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import groovy.transform.TypeChecked
+
+@TypeChecked
 public class PromotionTest {
 
     AbstractChessGame chessGame;
@@ -13,7 +17,7 @@ public class PromotionTest {
     
 	static ChessGamePlayer playerBlack;
 	
-	private static final BOARD_CONFIG = 'Ke8:ke1:pa7';
+	private static final String BOARD_CONFIG = 'Ke8:ke1:pa7:Bb8';
 	
 	private final ChessBoardFactory chessBoardFactory = new ChessBoardFactoryImpl(new SimpleChessBoardSetupNotation());
     
@@ -34,7 +38,7 @@ public class PromotionTest {
     
     @Test
     void testPromotionMove() throws IllegalMoveException {
-        Move move = new Move('a7:a8');
+        Move move = new Move('a7-a8');
         
         chessGame.move(playerWhite, move);
         
