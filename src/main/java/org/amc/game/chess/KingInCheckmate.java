@@ -175,10 +175,8 @@ final class KingInCheckmate {
 		for (ChessPieceLocation cpl : getPlayerPieces()) {
 			ChessPiece piece = cpl.getPiece();
 			Move move = new Move(cpl.getLocation(), attackingPieceLocation);
-			if (piece.isValidMove(board, move)) {
-				if (willPlayerNotBeInCheck(move)) {
+			if (piece.isValidMove(board, move) && willPlayerNotBeInCheck(move)) {
 					return false;
-				}
 			}
 		}
 		return true;
