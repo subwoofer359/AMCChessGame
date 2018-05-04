@@ -133,7 +133,7 @@ public class ManagedDAOFactory {
         }
 
         @Override
-        public Class<?> getEntityClass() {
+        public Class<? extends T> getEntityClass() {
             return dao.getEntityClass();
         }
         

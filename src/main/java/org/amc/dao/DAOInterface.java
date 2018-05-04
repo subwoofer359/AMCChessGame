@@ -113,6 +113,6 @@ public interface DAOInterface<T> {
      * @return Class object which this DAO is handling
      * @see Player
      */
-    Class<?> getEntityClass();
+    Class<? extends T> getEntityClass();
 
 }

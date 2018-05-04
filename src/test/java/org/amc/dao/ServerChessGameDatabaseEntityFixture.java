@@ -42,7 +42,7 @@ public class ServerChessGameDatabaseEntityFixture {
         this.entityManager = entityManager;
         scgDAO = new ServerChessGameDAO();
         scgDAO.setEntityManager(entityManager);
-        DAOInterface<Player> playerDAO = new DAO<>(HumanPlayer.class);
+        DAOInterface<HumanPlayer> playerDAO = new DAO<>(HumanPlayer.class);
         playerDAO.setEntityManager(entityManager);
         chessGame = new ChessGameFixture().getChessGame();
         

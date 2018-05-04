@@ -24,7 +24,7 @@ public class OneViewChessGamePlayerDeletionIT {
     private static final long GAME_UID = 1234L;
     private final ChessGameFactory chessGameFactory = new StandardChessGameFactory(); 
 
-    private DAOInterface<Player> playerDao;
+    private DAOInterface<HumanPlayer> playerDao;
     private Player whitePlayer;
     private Player blackPlayer;
     
@@ -67,7 +67,7 @@ public class OneViewChessGamePlayerDeletionIT {
     }
     
     private void assertPlayersExist() throws DAOException {
-        List<Player> playerList = playerDao.findEntities("userName", whitePlayer.getUserName());
+        List<HumanPlayer> playerList = playerDao.findEntities("userName", whitePlayer.getUserName());
         assertNotNull(playerList);
         assertEquals(1, playerList.size());
         
@@ -87,7 +87,7 @@ public class OneViewChessGamePlayerDeletionIT {
     }
     
     private void assertPlayersDontExist() throws DAOException {
-        List<Player> playerList = playerDao.findEntities("userName", whitePlayer.getUserName());
+        List<HumanPlayer> playerList = playerDao.findEntities("userName", whitePlayer.getUserName());
         assertNotNull(playerList);
         assertEquals(1, playerList.size());
         

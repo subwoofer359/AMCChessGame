@@ -25,7 +25,7 @@ public class UserPlayerIT {
     private static final String ROLE = "ROLE_USER";
     
     private DAOInterface<User> userDAO;
-    private DAOInterface<Player> playerDAO;
+    private DAOInterface<HumanPlayer> playerDAO;
     private DAOInterface<Authorities> authoritiesDAO;
     private Player player;
     private User user;

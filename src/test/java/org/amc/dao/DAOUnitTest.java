@@ -156,7 +156,7 @@ public class DAOUnitTest {
     @Test
     public void findEntities() throws DAOException {
         when(query.getResultList()).thenReturn(Collections.<TestEntity>emptyList());
-        List<TestEntity> entities = dao.findEntities();
+        List<? extends TestEntity> entities = dao.findEntities();
         assertNotNull(entities);
         verify(query, times(1)).getResultList();
         String queryStr  = "Select x from TestEntity x";
@@ -173,7 +173,7 @@ public class DAOUnitTest {
     @Test
     public void findEntitiesThrowsRunTimeException() {
         when(query.getResultList()).thenThrow(new QueryTimeoutException());
-        List<TestEntity> result = null;
+        List<? extends TestEntity> result = null;
         try {
             result = dao.findEntities();
         } catch(DAOException pe) {

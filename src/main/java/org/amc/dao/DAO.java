@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  * 
@@ -18,24 +18,47 @@ import javax.persistence.Query;
  * EntityManager
  * 
  * @author Adrian Mclaughlin
- * @version 1
+ * @version 1.1
  * @param <T> Entity
  */
 public class DAO<T> implements DAOInterface<T> {
 
-    /**
+	//Error messages
+	private static final String PERSIST_ERROR  = "DAO<%s>: Error has occurred when trying to persist entity";
+    
+    private static final String DELETE_ERROR = "DAO<%s>: Error has occurred when trying to delete entity";
+    
+    private static final String FIND_ERROR = "DAO<%s>: Error has occurred when trying to find entities";
+    
+    private static final String ENTITY_NOT_FOUND = "DAO<%s>: Error has occurred when trying to retrieve entity. "
+    		+ "The entity should exist in the database but it doesn't";
+    
+    private static final String RETRIEVE_ERROR = "DAO<%s>: Error has occurred when trying to retrieve entity";
+    
+    private static final String MERGE_ERROR = "DAO<%s>: Error has occurred when trying to merge entity into the persistence context";
+
+    private static final String NOT_ENTITY_ERROR = "DAO: is not an entity";
+    
+    //Queries
+    private static final String FIND_BY_ID = "Select x from %s x where x.id = ?1";
+    
+    private static final String FIND_BY_COL = "Select x from %s x where x.%s = ?1";
+    
+    private static final String FIND_ALL = "Select x from %s x";
+	
+	/**
      * Logger used by the object
      */
-    private static final Logger LOG = Logger.getLogger(DAO.class);
-
+    private static final Logger LOGGER = Logger.getLogger(DAO.class);
+    
     /**
      * The class this DAO is handling
      */
-    private final Class<?> entityClass;
+    private final Class<T> entityClass;
     
     private EntityManager entityManager;
 
-    public DAO(Class<?> entityClass) {
+    public DAO(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -52,8 +75,7 @@ public class DAO<T> implements DAOInterface<T> {
         } catch (OptimisticLockException ole) {
             throw ole;
         } catch (PersistenceException pe) {
-            LOG.error("DAO<" + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to persist entity");
+        	logErrorMsg(PERSIST_ERROR);
             throw new DAOException(pe);
         }
     }
@@ -72,8 +94,7 @@ public class DAO<T> implements DAOInterface<T> {
         } catch (OptimisticLockException ole) {
             throw ole;
         } catch (PersistenceException pe) {
-            LOG.error("DAO<" + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to delete entity");
+        	logErrorMsg(DELETE_ERROR);
             throw new DAOException(pe);
         }
     }
@@ -82,15 +103,13 @@ public class DAO<T> implements DAOInterface<T> {
      * @see org.amc.dao.DAOInterface#findEntities()
      */
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> findEntities() throws DAOException {
-        try {
-            Query query = getEntityManager().createQuery(
-                            "Select x from " + entityClass.getSimpleName() + " x", entityClass);
-            return query.getResultList();
+    	TypedQuery<T> query = getEntityManager().createQuery(getSimpleQuery(FIND_ALL), entityClass);
+    	
+        try {		
+        	return query.getResultList();
         } catch (PersistenceException pe) {
-            LOG.error("DAO<" + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to find entities");
+        	logErrorMsg(FIND_ERROR);
             throw new DAOException(pe);
         }
     }
@@ -99,19 +118,17 @@ public class DAO<T> implements DAOInterface<T> {
      * @see org.amc.dao.DAOInterface#findEntities(java.lang.String, java.lang.Object)
      */
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> findEntities(String col, Object value) throws DAOException {
 
+    	String FIND_QUERY = String.format(FIND_BY_COL, entityClass.getSimpleName(), col);
+        TypedQuery<T> query = getEntityManager().createQuery(FIND_QUERY, entityClass);
+        
         try {
-            Query query = getEntityManager().createQuery(
-                            "Select x from " + entityClass.getSimpleName() + " x where x." + col
-                                            + " = ?1", entityClass);
             query.setParameter(1, value);
-            LOG.debug(query.toString());
+            LOGGER.debug(query.toString());
             return query.getResultList();
         } catch (PersistenceException pe) {
-            LOG.error("DAO<" + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to find entities");
+        	logErrorMsg(FIND_ERROR);
             throw new DAOException(pe);
         }
 
@@ -122,22 +139,18 @@ public class DAO<T> implements DAOInterface<T> {
      * @see org.amc.dao.DAOInterface#getEntity(int)
      */
     @Override
-    @SuppressWarnings("unchecked")
     public T getEntity(int id) throws DAOException {
-
-        Query query = getEntityManager().createQuery(
-                        "Select x from " + entityClass.getSimpleName() + " x where x.id = ?1", entityClass);
+ 
+        TypedQuery<T> query = getEntityManager().createQuery(getSimpleQuery(FIND_BY_ID), entityClass);
+                       
         try {
             query.setParameter(1, id);
-            return (T) query.getSingleResult();
+            return query.getSingleResult();
         } catch (NoResultException nre) {
-            LOG.error("DAO<"
-                            + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to retrieve entity. The entity should exist in the database but it doesn't");
+        	logErrorMsg(ENTITY_NOT_FOUND);
             throw new DAOException(nre);
         } catch (PersistenceException pe) {
-            LOG.error("DAO<" + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to retrieve entity");
+        	logErrorMsg(RETRIEVE_ERROR);
             throw new DAOException(pe);
         }
 
@@ -150,7 +163,7 @@ public class DAO<T> implements DAOInterface<T> {
      * @return Class object which this DAO is handling
      */
     @Override
-    public Class<?> getEntityClass() {
+    public Class<? extends T> getEntityClass() {
         return this.entityClass;
     }
 
@@ -195,9 +208,7 @@ public class DAO<T> implements DAOInterface<T> {
             throw ole;
         } catch (PersistenceException pe) {
             //em.close();
-            LOG.error("DAO<"
-                            + entityClass.getSimpleName()
-                            + ">:Error has occurred when trying to merge entity into the persistence context");
+            logErrorMsg(MERGE_ERROR);
             throw new DAOException(pe);
         }
 
@@ -212,8 +223,16 @@ public class DAO<T> implements DAOInterface<T> {
         try {
             em.detach(entity);
         } catch (IllegalArgumentException iae) {
-            LOG.error("DAO: is not an entity");
+            LOGGER.error(NOT_ENTITY_ERROR);
         }
+    }
+    
+    private void logErrorMsg(String error) {
+    	LOGGER.error(String.format(error, this.entityClass.getSimpleName()));
+    }
+    
+    private String getSimpleQuery(String query) {
+    	return String.format(query, entityClass.getSimpleName());
     }
 
 }

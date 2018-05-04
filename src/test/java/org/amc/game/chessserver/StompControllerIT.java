@@ -88,7 +88,7 @@ public class StompControllerIT {
     public void setUp() throws Exception {
         fixture.setUp();
 
-        DAOInterface<Player> playerDAO = new DAO<Player>(HumanPlayer.class);
+        DAOInterface<HumanPlayer> playerDAO = new DAO<HumanPlayer>(HumanPlayer.class);
         playerDAO.setEntityManager(fixture.getNewEntityManager());
         Player stephen = playerDAO.findEntities("userName", "stephen").get(0);
         Player nobby = playerDAO.findEntities("userName", "nobby").get(0);

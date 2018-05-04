@@ -41,7 +41,7 @@ public class ServerChessGameDAO extends DAO<AbstractServerChessGame> implements 
     private EntityManagerCache entityManagerCache;
 
     public ServerChessGameDAO() {
-        super(ServerChessGame.class);
+        super(AbstractServerChessGame.class);
     }
 
     void addObservers(AbstractServerChessGame serverChessGame) throws DAOException {
